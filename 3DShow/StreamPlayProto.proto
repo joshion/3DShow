@@ -1,0 +1,44 @@
+syntax="proto3";
+
+package StreamPlayProto;
+
+message pbCliReqChangeOrientation
+{
+    int32 orientation = 1;
+    int32 screenWidth = 2;
+    int32 screenHeight = 3;
+}
+
+message pbSrvRespPrepare
+{
+    int32 resultType = 1;
+    string failReason = 2;
+    int32 port = 3;
+}
+
+message pbSrvRespChangeOrientation
+{
+    int32 resultType = 1;
+    string failReason = 2;
+}
+
+message pbSrvRespStart
+{
+    int32 resultType = 1;
+    string failReason = 2;
+}
+
+message pbSrvRespResolution
+{
+    int32 screenWidth = 1;
+    int32 screenHeight = 2;
+}
+
+message pbCliReqTouchBack
+{
+    int32 switch = 1;
+    int32 sockType = 2;
+    int32 port = 3;
+}
+
+
