@@ -1,26 +1,9 @@
-#include "mainwindow.h"
+﻿#include "mainwindow.hpp"
 
-#include <qpushbutton.h>
-#include <qlayout.h>
-
-MainWindow::MainWindow(QWidget *parent)
+MainWindow::MainWindow(QWidget * parent) 
     : QWidget(parent)
 {
-    this->setMinimumSize(QSize(600, 400));
-    QPushButton *button1 = new QPushButton("One");
-    QPushButton *button2 = new QPushButton("Two");
-    QPushButton *button3 = new QPushButton("Three");
-    QPushButton *button4 = new QPushButton("Four");
-    QPushButton *button5 = new QPushButton("Five");
-
-    QHBoxLayout *layout = new QHBoxLayout;
-    layout->addWidget(button1);
-    layout->addWidget(button2);
-    layout->addWidget(button3);
-    layout->addWidget(button4);
-    layout->addWidget(button5);
-
-    this->setLayout(layout);
+    ui.setupUi(this);
 }
 
 MainWindow::~MainWindow()
