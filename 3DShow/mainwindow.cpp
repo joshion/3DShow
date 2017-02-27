@@ -4,11 +4,9 @@
 #include <qlayout.h>
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
+    : QWidget(parent)
 {
     this->setMinimumSize(QSize(600, 400));
-    QWidget *window = new QWidget(this);
-    window->setMinimumSize(QSize(600, 400));
     QPushButton *button1 = new QPushButton("One");
     QPushButton *button2 = new QPushButton("Two");
     QPushButton *button3 = new QPushButton("Three");
@@ -22,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent)
     layout->addWidget(button4);
     layout->addWidget(button5);
 
-    window->setLayout(layout);
+    this->setLayout(layout);
 }
 
 MainWindow::~MainWindow()
