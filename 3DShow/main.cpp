@@ -1,26 +1,26 @@
-
+/*
 #ifdef _MSC_VER
 #define _WIN32_WINNT 0x0501
 #endif
+*/
 
 #include "mainwindow.h"
 #include <QtWidgets/QApplication>
 #include "StreamPlayProto.pb.h"
 
-#include <boost/asio.hpp>
-#include <boost/thread.hpp>
-
-#include <boost/date_time/posix_time/posix_time.hpp>
+using namespace std;
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    boost::asio::io_service io;
+    StreamPlayProto::pbCliReqChangeOrientation orien;
+    orien.set_orientation(10);
+    orien.set_screenheight(10);
+    orien.set_screenwidth(10);
 
-    boost::asio::deadline_timer *p = new boost::asio::deadline_timer(io, boost::posix_time::seconds(5));
+    orien.orientation();
 
-    p->wait();
 
     MainWindow w;
     w.show();
