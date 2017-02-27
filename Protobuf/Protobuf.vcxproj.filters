@@ -15,16 +15,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\3DShow\StreamPlayProto.pb.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\3DShow\StreamPlayProto.pb.cc">
+    <ClCompile Include="StreamPlayProto.pb.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\3DShow\StreamPlayProto.proto" />
+    <ClInclude Include="StreamPlayProto.pb.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="StreamPlayProto.proto" />
   </ItemGroup>
 </Project>
