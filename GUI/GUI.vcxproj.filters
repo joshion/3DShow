@@ -24,12 +24,12 @@
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
     <Filter Include="Generated Files\Debug">
-      <UniqueIdentifier>{33291d50-a3f8-4177-b7a9-c505e3cefd48}</UniqueIdentifier>
+      <UniqueIdentifier>{630e1b23-e2a9-4a36-9713-e02f20626e47}</UniqueIdentifier>
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
     <Filter Include="Generated Files\Release">
-      <UniqueIdentifier>{401c8825-1488-486e-ae81-0d379917c6fd}</UniqueIdentifier>
+      <UniqueIdentifier>{ec4b8a84-b729-40af-a25f-f05c8293ef24}</UniqueIdentifier>
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
@@ -38,7 +38,7 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\qrc_mainwindow.cpp">
+    <ClCompile Include="GeneratedFiles\qrc_gui.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
     <ClCompile Include="mainframe.cpp">
@@ -61,7 +61,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="mainwindow.qrc">
+    <CustomBuild Include="gui.qrc">
       <Filter>Resource Files</Filter>
     </CustomBuild>
     <CustomBuild Include="mainframe.hpp">

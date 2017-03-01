@@ -1,12 +1,12 @@
 ﻿#include "mainwindow.hpp"
 
-MainWindow::MainWindow(QWidget * parent) 
+MainWindow::MainWindow(QWidget * parent)
     : QWidget(parent)
 {
-    ui.setupUi(this);
+	ui.setupUi(this);
 }
 
 MainWindow::~MainWindow()
 {
-
+	
 }
