@@ -11,8 +11,6 @@ int main(int argc, char *argv[])
     ori.set_orientation(10);
     ori.set_screenheight(10);
     ori.set_screenwidth(10);
-    Widget w;
-    w.show();
 
     return a.exec();
 }
