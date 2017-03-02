@@ -37,9 +37,9 @@ void ShowWidget::paintGL()
     int colorLocation = program.attributeLocation("color");
 
     {
-        triangleVertices[0] = QVector4D(0, 1, -0.51, 1);
-        triangleVertices[1] = QVector4D(1, -1, -0.51, 1);
-        triangleVertices[2] = QVector4D(-1, -1, -0.51, 1);
+        triangleVertices[0] = QVector4D(0, 1, -0.5, 1);
+        triangleVertices[1] = QVector4D(1, -1, -0.5, 1);
+        triangleVertices[2] = QVector4D(-1, -1, -0.5, 1);
     }
 
 
@@ -49,6 +49,7 @@ void ShowWidget::paintGL()
         color[2] = QVector4D(0.8f, 0.0f, 0.0f, 0.0f);
     }
 
+
     program.enableAttributeArray(vertexLocation);
     program.setAttributeArray(vertexLocation, triangleVertices);
 
@@ -57,10 +58,11 @@ void ShowWidget::paintGL()
 
     int matrixLocation = program.uniformLocation("matrix");
     QMatrix4x4 pmvMatrix;
-    pmvMatrix.frustum(-1, 1, -1, 1, 0.5, 5.0);
+    pmvMatrix.frustum(-1, 1, -1, 1, 0.3, 5.0);
     program.setUniformValue(matrixLocation, pmvMatrix);
 
     glClear(GL_COLOR_BUFFER_BIT);
+    glViewport(0, 0, this->width()/2, this->height()/2);
     glDrawArrays(GL_TRIANGLES, 0, 3);
     glFlush();
 
@@ -70,7 +72,6 @@ void ShowWidget::paintGL()
 
 void ShowWidget::resizeGL(int w, int h)
 {
-    glViewport(0, 0, (GLsizei) w, (GLsizei) h);
 }
 
 QString ShowWidget::readStringFromFile(const QString &fileName)

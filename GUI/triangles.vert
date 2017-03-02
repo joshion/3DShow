@@ -10,9 +10,10 @@ mat4 genRotateMatrix(float degree, vec4 axis);
 void main(void)
 {
     mat4 scaleMatrix = genScaleMatrix(vec4(1.0, 1.0, 1.0, 0.0));
-    mat4 translateMatrix = genTranslateMatrix(vec4(0.3, 0.3, 0.0, 0.0));
+    mat4 translateMatrix = genTranslateMatrix(vec4(0.0, 0.0, 0.5, 0.0));
+    mat4 translateMatrix2 = genTranslateMatrix(vec4(0.0, 0.0, -0.5, 0.0));
     mat4 roateMatrix = genRotateMatrix(45.0f, vec4(0.0f, 0.0f, 1.0f, 0.0f));
-    gl_Position = matrix * scaleMatrix * vertex;
+    gl_Position = matrix * translateMatrix2 * scaleMatrix * translateMatrix *vertex;
     v_Color = color;
 }
 
