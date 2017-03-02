@@ -1,7 +1,6 @@
 #include <QtWidgets/QApplication>
 #include <mainframe.hpp>
 #include "StreamPlayProto.pb.h"
-#include "widget.h"
 
 int main(int argc, char *argv[])
 {

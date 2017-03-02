@@ -70,7 +70,7 @@
       </widget>
      </item>
      <item>
-      <widget class="Widget" name="openGLWidget">
+      <widget class="ShowWidget" name="openGLWidget">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>4</horstretch>
@@ -86,9 +86,9 @@
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>Widget</class>
+   <class>ShowWidget</class>
    <extends>QOpenGLWidget</extends>
-   <header location="global">widget.h</header>
+   <header>showwidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
