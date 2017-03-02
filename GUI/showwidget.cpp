@@ -7,7 +7,7 @@ ShowWidget::ShowWidget(QWidget *parent)
     : QOpenGLWidget(parent)
 {
     resize(600, 400);
-    triangleVertices = new QVector3D[3];
+    triangleVertices = new QVector4D[3];
     color = new QVector4D[4];
 }
 
@@ -23,8 +23,8 @@ void ShowWidget::initializeGL()
     glViewport(0, 0, width(), height());
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
-    QString vertStr = readStringFromFile(":/GUI/triangles.vert");
-    QString fragStr = readStringFromFile(":/GUI/triangles.frag");
+    QString vertStr = readStringFromFile("triangles.vert");
+    QString fragStr = readStringFromFile("triangles.frag");
     program.addShaderFromSourceCode(QOpenGLShader::Vertex, vertStr);
     program.addShaderFromSourceCode(QOpenGLShader::Fragment, fragStr);
     program.link();
@@ -35,21 +35,13 @@ void ShowWidget::paintGL()
 {
     int vertexLocation = program.attributeLocation("vertex");
     int colorLocation = program.attributeLocation("color");
-    int matrixLocation = program.uniformLocation("matrix");
 
     {
-        triangleVertices[0] = QVector3D(static_cast<float>(this->width()/2),
-            5.0f,
-            0.0f);
-        triangleVertices[1] = QVector3D(static_cast<float>((this->width()-5)), 
-            static_cast<float>((this->height()-5)),
-            0.0f);
-        triangleVertices[2] = QVector3D(5.0f,
-            static_cast<float>((this->height()-5)),
-            0.0f);
-
-
+        triangleVertices[0] = QVector4D(0, 1, -0.51, 1);
+        triangleVertices[1] = QVector4D(1, -1, -0.51, 1);
+        triangleVertices[2] = QVector4D(-1, -1, -0.51, 1);
     }
+
 
     {
         color[0] = QVector4D(0.0f, 0.8, 0.0f, 0.0f);
@@ -57,14 +49,15 @@ void ShowWidget::paintGL()
         color[2] = QVector4D(0.8f, 0.0f, 0.0f, 0.0f);
     }
 
-    QMatrix4x4 pmvMatrix;
-    pmvMatrix.ortho(this->rect());
-
     program.enableAttributeArray(vertexLocation);
     program.setAttributeArray(vertexLocation, triangleVertices);
 
     program.enableAttributeArray(colorLocation);
     program.setAttributeArray(colorLocation, color);
+
+    int matrixLocation = program.uniformLocation("matrix");
+    QMatrix4x4 pmvMatrix;
+    pmvMatrix.frustum(-1, 1, -1, 1, 0.5, 5.0);
     program.setUniformValue(matrixLocation, pmvMatrix);
 
     glClear(GL_COLOR_BUFFER_BIT);
@@ -75,8 +68,9 @@ void ShowWidget::paintGL()
     program.disableAttributeArray(colorLocation);
 }
 
-void ShowWidget::resizeGL(int ,int )
+void ShowWidget::resizeGL(int w, int h)
 {
+    glViewport(0, 0, (GLsizei) w, (GLsizei) h);
 }
 
 QString ShowWidget::readStringFromFile(const QString &fileName)

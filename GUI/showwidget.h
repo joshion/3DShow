@@ -4,12 +4,12 @@
 #include <QOpenGLWidget>
 #include <QOpenGLContext>
 #include <QOpenGLFunctions>
-#include <qopenglfunctions_4_4_core.h>
+#include <qopenglfunctions_4_3_core.h>
 #include <QOpenGLShaderProgram>
 #include <QString>
 #include <QFile>
 
-class ShowWidget : public QOpenGLWidget, protected QOpenGLFunctions_4_4_Core
+class ShowWidget : public QOpenGLWidget, protected QOpenGLFunctions_4_3_Core
 {
     Q_OBJECT
 
@@ -27,7 +27,7 @@ private:
 
 private:
     QOpenGLShaderProgram program;
-    QVector3D *triangleVertices;
+    QVector4D *triangleVertices;
     QVector4D *color;
 };
 
