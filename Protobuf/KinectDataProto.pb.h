@@ -31,356 +31,366 @@
 
 namespace KinectDataProto {
 
-// Internal implementation detail -- do not call these.
-void protobuf_AddDesc_KinectDataProto_2eproto();
-void protobuf_AssignDesc_KinectDataProto_2eproto();
-void protobuf_ShutdownFile_KinectDataProto_2eproto();
+    // Internal implementation detail -- do not call these.
+    void protobuf_AddDesc_KinectDataProto_2eproto();
+    void protobuf_AssignDesc_KinectDataProto_2eproto();
+    void protobuf_ShutdownFile_KinectDataProto_2eproto();
 
-class pbReqStart;
-class pbRespStart;
+    class pbReqStart;
+    class pbRespStart;
 
-// ===================================================================
+    // ===================================================================
 
-class pbReqStart : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:KinectDataProto.pbReqStart) */ {
- public:
-  pbReqStart();
-  virtual ~pbReqStart();
+    class pbReqStart : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:KinectDataProto.pbReqStart) */ {
+    public:
+        pbReqStart();
+        virtual ~pbReqStart();
 
-  pbReqStart(const pbReqStart& from);
+        pbReqStart(const pbReqStart& from);
 
-  inline pbReqStart& operator=(const pbReqStart& from) {
-    CopyFrom(from);
-    return *this;
-  }
+        inline pbReqStart& operator=(const pbReqStart& from) {
+            CopyFrom(from);
+            return *this;
+        }
 
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const pbReqStart& default_instance();
+        static const ::google::protobuf::Descriptor* descriptor();
+        static const pbReqStart& default_instance();
 
-  void Swap(pbReqStart* other);
+        void Swap(pbReqStart* other);
 
-  // implements Message ----------------------------------------------
+        // implements Message ----------------------------------------------
 
-  inline pbReqStart* New() const { return New(NULL); }
+        inline pbReqStart* New() const {
+            return New(NULL);
+        }
 
-  pbReqStart* New(::google::protobuf::Arena* arena) const;
-  void CopyFrom(const ::google::protobuf::Message& from);
-  void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const pbReqStart& from);
-  void MergeFrom(const pbReqStart& from);
-  void Clear();
-  bool IsInitialized() const;
+        pbReqStart* New(::google::protobuf::Arena* arena) const;
+        void CopyFrom(const ::google::protobuf::Message& from);
+        void MergeFrom(const ::google::protobuf::Message& from);
+        void CopyFrom(const pbReqStart& from);
+        void MergeFrom(const pbReqStart& from);
+        void Clear();
+        bool IsInitialized() const;
 
-  int ByteSize() const;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input);
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const;
-  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
-      bool deterministic, ::google::protobuf::uint8* output) const;
-  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const {
-    return InternalSerializeWithCachedSizesToArray(false, output);
-  }
-  int GetCachedSize() const { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const;
-  void InternalSwap(pbReqStart* other);
-  private:
-  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return _internal_metadata_.arena();
-  }
-  inline void* MaybeArenaPtr() const {
-    return _internal_metadata_.raw_arena_ptr();
-  }
-  public:
+        int ByteSize() const;
+        bool MergePartialFromCodedStream(
+            ::google::protobuf::io::CodedInputStream* input);
+        void SerializeWithCachedSizes(
+            ::google::protobuf::io::CodedOutputStream* output) const;
+        ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+            bool deterministic, ::google::protobuf::uint8* output) const;
+        ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const {
+            return InternalSerializeWithCachedSizesToArray(false, output);
+        }
+        int GetCachedSize() const {
+            return _cached_size_;
+        }
+    private:
+        void SharedCtor();
+        void SharedDtor();
+        void SetCachedSize(int size) const;
+        void InternalSwap(pbReqStart* other);
+    private:
+        inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+            return _internal_metadata_.arena();
+        }
+        inline void* MaybeArenaPtr() const {
+            return _internal_metadata_.raw_arena_ptr();
+        }
+    public:
 
-  ::google::protobuf::Metadata GetMetadata() const;
+        ::google::protobuf::Metadata GetMetadata() const;
 
-  // nested types ----------------------------------------------------
+        // nested types ----------------------------------------------------
 
-  // accessors -------------------------------------------------------
+        // accessors -------------------------------------------------------
 
-  // optional string deviceName = 1;
-  void clear_devicename();
-  static const int kDeviceNameFieldNumber = 1;
-  const ::std::string& devicename() const;
-  void set_devicename(const ::std::string& value);
-  void set_devicename(const char* value);
-  void set_devicename(const char* value, size_t size);
-  ::std::string* mutable_devicename();
-  ::std::string* release_devicename();
-  void set_allocated_devicename(::std::string* devicename);
+        // optional string deviceName = 1;
+        void clear_devicename();
+        static const int kDeviceNameFieldNumber = 1;
+        const ::std::string& devicename() const;
+        void set_devicename(const ::std::string& value);
+        void set_devicename(const char* value);
+        void set_devicename(const char* value, size_t size);
+        ::std::string* mutable_devicename();
+        ::std::string* release_devicename();
+        void set_allocated_devicename(::std::string* devicename);
 
-  // optional int32 dataType = 2;
-  void clear_datatype();
-  static const int kDataTypeFieldNumber = 2;
-  ::google::protobuf::int32 datatype() const;
-  void set_datatype(::google::protobuf::int32 value);
+        // optional int32 dataType = 2;
+        void clear_datatype();
+        static const int kDataTypeFieldNumber = 2;
+        ::google::protobuf::int32 datatype() const;
+        void set_datatype(::google::protobuf::int32 value);
 
-  // @@protoc_insertion_point(class_scope:KinectDataProto.pbReqStart)
- private:
+        // @@protoc_insertion_point(class_scope:KinectDataProto.pbReqStart)
+    private:
 
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  bool _is_default_instance_;
-  ::google::protobuf::internal::ArenaStringPtr devicename_;
-  ::google::protobuf::int32 datatype_;
-  mutable int _cached_size_;
-  friend void  protobuf_AddDesc_KinectDataProto_2eproto();
-  friend void protobuf_AssignDesc_KinectDataProto_2eproto();
-  friend void protobuf_ShutdownFile_KinectDataProto_2eproto();
+        ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+        bool _is_default_instance_;
+        ::google::protobuf::internal::ArenaStringPtr devicename_;
+        ::google::protobuf::int32 datatype_;
+        mutable int _cached_size_;
+        friend void  protobuf_AddDesc_KinectDataProto_2eproto();
+        friend void protobuf_AssignDesc_KinectDataProto_2eproto();
+        friend void protobuf_ShutdownFile_KinectDataProto_2eproto();
 
-  void InitAsDefaultInstance();
-  static pbReqStart* default_instance_;
-};
-// -------------------------------------------------------------------
+        void InitAsDefaultInstance();
+        static pbReqStart* default_instance_;
+    };
+    // -------------------------------------------------------------------
 
-class pbRespStart : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:KinectDataProto.pbRespStart) */ {
- public:
-  pbRespStart();
-  virtual ~pbRespStart();
+    class pbRespStart : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:KinectDataProto.pbRespStart) */ {
+    public:
+        pbRespStart();
+        virtual ~pbRespStart();
 
-  pbRespStart(const pbRespStart& from);
+        pbRespStart(const pbRespStart& from);
 
-  inline pbRespStart& operator=(const pbRespStart& from) {
-    CopyFrom(from);
-    return *this;
-  }
+        inline pbRespStart& operator=(const pbRespStart& from) {
+            CopyFrom(from);
+            return *this;
+        }
 
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const pbRespStart& default_instance();
+        static const ::google::protobuf::Descriptor* descriptor();
+        static const pbRespStart& default_instance();
 
-  void Swap(pbRespStart* other);
+        void Swap(pbRespStart* other);
 
-  // implements Message ----------------------------------------------
+        // implements Message ----------------------------------------------
 
-  inline pbRespStart* New() const { return New(NULL); }
+        inline pbRespStart* New() const {
+            return New(NULL);
+        }
 
-  pbRespStart* New(::google::protobuf::Arena* arena) const;
-  void CopyFrom(const ::google::protobuf::Message& from);
-  void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const pbRespStart& from);
-  void MergeFrom(const pbRespStart& from);
-  void Clear();
-  bool IsInitialized() const;
+        pbRespStart* New(::google::protobuf::Arena* arena) const;
+        void CopyFrom(const ::google::protobuf::Message& from);
+        void MergeFrom(const ::google::protobuf::Message& from);
+        void CopyFrom(const pbRespStart& from);
+        void MergeFrom(const pbRespStart& from);
+        void Clear();
+        bool IsInitialized() const;
 
-  int ByteSize() const;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input);
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const;
-  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
-      bool deterministic, ::google::protobuf::uint8* output) const;
-  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const {
-    return InternalSerializeWithCachedSizesToArray(false, output);
-  }
-  int GetCachedSize() const { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const;
-  void InternalSwap(pbRespStart* other);
-  private:
-  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return _internal_metadata_.arena();
-  }
-  inline void* MaybeArenaPtr() const {
-    return _internal_metadata_.raw_arena_ptr();
-  }
-  public:
+        int ByteSize() const;
+        bool MergePartialFromCodedStream(
+            ::google::protobuf::io::CodedInputStream* input);
+        void SerializeWithCachedSizes(
+            ::google::protobuf::io::CodedOutputStream* output) const;
+        ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+            bool deterministic, ::google::protobuf::uint8* output) const;
+        ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const {
+            return InternalSerializeWithCachedSizesToArray(false, output);
+        }
+        int GetCachedSize() const {
+            return _cached_size_;
+        }
+    private:
+        void SharedCtor();
+        void SharedDtor();
+        void SetCachedSize(int size) const;
+        void InternalSwap(pbRespStart* other);
+    private:
+        inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+            return _internal_metadata_.arena();
+        }
+        inline void* MaybeArenaPtr() const {
+            return _internal_metadata_.raw_arena_ptr();
+        }
+    public:
 
-  ::google::protobuf::Metadata GetMetadata() const;
+        ::google::protobuf::Metadata GetMetadata() const;
 
-  // nested types ----------------------------------------------------
+        // nested types ----------------------------------------------------
 
-  // accessors -------------------------------------------------------
+        // accessors -------------------------------------------------------
 
-  // optional int32 resultType = 1;
-  void clear_resulttype();
-  static const int kResultTypeFieldNumber = 1;
-  ::google::protobuf::int32 resulttype() const;
-  void set_resulttype(::google::protobuf::int32 value);
+        // optional int32 resultType = 1;
+        void clear_resulttype();
+        static const int kResultTypeFieldNumber = 1;
+        ::google::protobuf::int32 resulttype() const;
+        void set_resulttype(::google::protobuf::int32 value);
 
-  // optional string failReason = 2;
-  void clear_failreason();
-  static const int kFailReasonFieldNumber = 2;
-  const ::std::string& failreason() const;
-  void set_failreason(const ::std::string& value);
-  void set_failreason(const char* value);
-  void set_failreason(const char* value, size_t size);
-  ::std::string* mutable_failreason();
-  ::std::string* release_failreason();
-  void set_allocated_failreason(::std::string* failreason);
+        // optional string failReason = 2;
+        void clear_failreason();
+        static const int kFailReasonFieldNumber = 2;
+        const ::std::string& failreason() const;
+        void set_failreason(const ::std::string& value);
+        void set_failreason(const char* value);
+        void set_failreason(const char* value, size_t size);
+        ::std::string* mutable_failreason();
+        ::std::string* release_failreason();
+        void set_allocated_failreason(::std::string* failreason);
 
-  // optional int32 pcSvrPoint = 3;
-  void clear_pcsvrpoint();
-  static const int kPcSvrPointFieldNumber = 3;
-  ::google::protobuf::int32 pcsvrpoint() const;
-  void set_pcsvrpoint(::google::protobuf::int32 value);
+        // optional int32 pcSvrPoint = 3;
+        void clear_pcsvrpoint();
+        static const int kPcSvrPointFieldNumber = 3;
+        ::google::protobuf::int32 pcsvrpoint() const;
+        void set_pcsvrpoint(::google::protobuf::int32 value);
 
-  // @@protoc_insertion_point(class_scope:KinectDataProto.pbRespStart)
- private:
+        // @@protoc_insertion_point(class_scope:KinectDataProto.pbRespStart)
+    private:
 
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  bool _is_default_instance_;
-  ::google::protobuf::internal::ArenaStringPtr failreason_;
-  ::google::protobuf::int32 resulttype_;
-  ::google::protobuf::int32 pcsvrpoint_;
-  mutable int _cached_size_;
-  friend void  protobuf_AddDesc_KinectDataProto_2eproto();
-  friend void protobuf_AssignDesc_KinectDataProto_2eproto();
-  friend void protobuf_ShutdownFile_KinectDataProto_2eproto();
+        ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+        bool _is_default_instance_;
+        ::google::protobuf::internal::ArenaStringPtr failreason_;
+        ::google::protobuf::int32 resulttype_;
+        ::google::protobuf::int32 pcsvrpoint_;
+        mutable int _cached_size_;
+        friend void  protobuf_AddDesc_KinectDataProto_2eproto();
+        friend void protobuf_AssignDesc_KinectDataProto_2eproto();
+        friend void protobuf_ShutdownFile_KinectDataProto_2eproto();
 
-  void InitAsDefaultInstance();
-  static pbRespStart* default_instance_;
-};
-// ===================================================================
+        void InitAsDefaultInstance();
+        static pbRespStart* default_instance_;
+    };
+    // ===================================================================
 
 
-// ===================================================================
+    // ===================================================================
 
 #if !PROTOBUF_INLINE_NOT_IN_HEADERS
 // pbReqStart
 
 // optional string deviceName = 1;
-inline void pbReqStart::clear_devicename() {
-  devicename_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline const ::std::string& pbReqStart::devicename() const {
-  // @@protoc_insertion_point(field_get:KinectDataProto.pbReqStart.deviceName)
-  return devicename_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void pbReqStart::set_devicename(const ::std::string& value) {
-  
-  devicename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:KinectDataProto.pbReqStart.deviceName)
-}
-inline void pbReqStart::set_devicename(const char* value) {
-  
-  devicename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:KinectDataProto.pbReqStart.deviceName)
-}
-inline void pbReqStart::set_devicename(const char* value, size_t size) {
-  
-  devicename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:KinectDataProto.pbReqStart.deviceName)
-}
-inline ::std::string* pbReqStart::mutable_devicename() {
-  
-  // @@protoc_insertion_point(field_mutable:KinectDataProto.pbReqStart.deviceName)
-  return devicename_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* pbReqStart::release_devicename() {
-  // @@protoc_insertion_point(field_release:KinectDataProto.pbReqStart.deviceName)
-  
-  return devicename_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void pbReqStart::set_allocated_devicename(::std::string* devicename) {
-  if (devicename != NULL) {
-    
-  } else {
-    
-  }
-  devicename_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), devicename);
-  // @@protoc_insertion_point(field_set_allocated:KinectDataProto.pbReqStart.deviceName)
-}
+    inline void pbReqStart::clear_devicename() {
+        devicename_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+    }
+    inline const ::std::string& pbReqStart::devicename() const {
+        // @@protoc_insertion_point(field_get:KinectDataProto.pbReqStart.deviceName)
+        return devicename_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+    }
+    inline void pbReqStart::set_devicename(const ::std::string& value) {
 
-// optional int32 dataType = 2;
-inline void pbReqStart::clear_datatype() {
-  datatype_ = 0;
-}
-inline ::google::protobuf::int32 pbReqStart::datatype() const {
-  // @@protoc_insertion_point(field_get:KinectDataProto.pbReqStart.dataType)
-  return datatype_;
-}
-inline void pbReqStart::set_datatype(::google::protobuf::int32 value) {
-  
-  datatype_ = value;
-  // @@protoc_insertion_point(field_set:KinectDataProto.pbReqStart.dataType)
-}
+        devicename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+        // @@protoc_insertion_point(field_set:KinectDataProto.pbReqStart.deviceName)
+    }
+    inline void pbReqStart::set_devicename(const char* value) {
 
-// -------------------------------------------------------------------
+        devicename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+        // @@protoc_insertion_point(field_set_char:KinectDataProto.pbReqStart.deviceName)
+    }
+    inline void pbReqStart::set_devicename(const char* value, size_t size) {
 
-// pbRespStart
+        devicename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+            ::std::string(reinterpret_cast<const char*>(value), size));
+        // @@protoc_insertion_point(field_set_pointer:KinectDataProto.pbReqStart.deviceName)
+    }
+    inline ::std::string* pbReqStart::mutable_devicename() {
 
-// optional int32 resultType = 1;
-inline void pbRespStart::clear_resulttype() {
-  resulttype_ = 0;
-}
-inline ::google::protobuf::int32 pbRespStart::resulttype() const {
-  // @@protoc_insertion_point(field_get:KinectDataProto.pbRespStart.resultType)
-  return resulttype_;
-}
-inline void pbRespStart::set_resulttype(::google::protobuf::int32 value) {
-  
-  resulttype_ = value;
-  // @@protoc_insertion_point(field_set:KinectDataProto.pbRespStart.resultType)
-}
+        // @@protoc_insertion_point(field_mutable:KinectDataProto.pbReqStart.deviceName)
+        return devicename_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+    }
+    inline ::std::string* pbReqStart::release_devicename() {
+        // @@protoc_insertion_point(field_release:KinectDataProto.pbReqStart.deviceName)
 
-// optional string failReason = 2;
-inline void pbRespStart::clear_failreason() {
-  failreason_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline const ::std::string& pbRespStart::failreason() const {
-  // @@protoc_insertion_point(field_get:KinectDataProto.pbRespStart.failReason)
-  return failreason_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void pbRespStart::set_failreason(const ::std::string& value) {
-  
-  failreason_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:KinectDataProto.pbRespStart.failReason)
-}
-inline void pbRespStart::set_failreason(const char* value) {
-  
-  failreason_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:KinectDataProto.pbRespStart.failReason)
-}
-inline void pbRespStart::set_failreason(const char* value, size_t size) {
-  
-  failreason_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:KinectDataProto.pbRespStart.failReason)
-}
-inline ::std::string* pbRespStart::mutable_failreason() {
-  
-  // @@protoc_insertion_point(field_mutable:KinectDataProto.pbRespStart.failReason)
-  return failreason_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* pbRespStart::release_failreason() {
-  // @@protoc_insertion_point(field_release:KinectDataProto.pbRespStart.failReason)
-  
-  return failreason_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void pbRespStart::set_allocated_failreason(::std::string* failreason) {
-  if (failreason != NULL) {
-    
-  } else {
-    
-  }
-  failreason_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), failreason);
-  // @@protoc_insertion_point(field_set_allocated:KinectDataProto.pbRespStart.failReason)
-}
+        return devicename_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+    }
+    inline void pbReqStart::set_allocated_devicename(::std::string* devicename) {
+        if (devicename != NULL) {
 
-// optional int32 pcSvrPoint = 3;
-inline void pbRespStart::clear_pcsvrpoint() {
-  pcsvrpoint_ = 0;
-}
-inline ::google::protobuf::int32 pbRespStart::pcsvrpoint() const {
-  // @@protoc_insertion_point(field_get:KinectDataProto.pbRespStart.pcSvrPoint)
-  return pcsvrpoint_;
-}
-inline void pbRespStart::set_pcsvrpoint(::google::protobuf::int32 value) {
-  
-  pcsvrpoint_ = value;
-  // @@protoc_insertion_point(field_set:KinectDataProto.pbRespStart.pcSvrPoint)
-}
+        }
+        else {
+
+        }
+        devicename_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), devicename);
+        // @@protoc_insertion_point(field_set_allocated:KinectDataProto.pbReqStart.deviceName)
+    }
+
+    // optional int32 dataType = 2;
+    inline void pbReqStart::clear_datatype() {
+        datatype_ = 0;
+    }
+    inline ::google::protobuf::int32 pbReqStart::datatype() const {
+        // @@protoc_insertion_point(field_get:KinectDataProto.pbReqStart.dataType)
+        return datatype_;
+    }
+    inline void pbReqStart::set_datatype(::google::protobuf::int32 value) {
+
+        datatype_ = value;
+        // @@protoc_insertion_point(field_set:KinectDataProto.pbReqStart.dataType)
+    }
+
+    // -------------------------------------------------------------------
+
+    // pbRespStart
+
+    // optional int32 resultType = 1;
+    inline void pbRespStart::clear_resulttype() {
+        resulttype_ = 0;
+    }
+    inline ::google::protobuf::int32 pbRespStart::resulttype() const {
+        // @@protoc_insertion_point(field_get:KinectDataProto.pbRespStart.resultType)
+        return resulttype_;
+    }
+    inline void pbRespStart::set_resulttype(::google::protobuf::int32 value) {
+
+        resulttype_ = value;
+        // @@protoc_insertion_point(field_set:KinectDataProto.pbRespStart.resultType)
+    }
+
+    // optional string failReason = 2;
+    inline void pbRespStart::clear_failreason() {
+        failreason_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+    }
+    inline const ::std::string& pbRespStart::failreason() const {
+        // @@protoc_insertion_point(field_get:KinectDataProto.pbRespStart.failReason)
+        return failreason_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+    }
+    inline void pbRespStart::set_failreason(const ::std::string& value) {
+
+        failreason_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+        // @@protoc_insertion_point(field_set:KinectDataProto.pbRespStart.failReason)
+    }
+    inline void pbRespStart::set_failreason(const char* value) {
+
+        failreason_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+        // @@protoc_insertion_point(field_set_char:KinectDataProto.pbRespStart.failReason)
+    }
+    inline void pbRespStart::set_failreason(const char* value, size_t size) {
+
+        failreason_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+            ::std::string(reinterpret_cast<const char*>(value), size));
+        // @@protoc_insertion_point(field_set_pointer:KinectDataProto.pbRespStart.failReason)
+    }
+    inline ::std::string* pbRespStart::mutable_failreason() {
+
+        // @@protoc_insertion_point(field_mutable:KinectDataProto.pbRespStart.failReason)
+        return failreason_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+    }
+    inline ::std::string* pbRespStart::release_failreason() {
+        // @@protoc_insertion_point(field_release:KinectDataProto.pbRespStart.failReason)
+
+        return failreason_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+    }
+    inline void pbRespStart::set_allocated_failreason(::std::string* failreason) {
+        if (failreason != NULL) {
+
+        }
+        else {
+
+        }
+        failreason_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), failreason);
+        // @@protoc_insertion_point(field_set_allocated:KinectDataProto.pbRespStart.failReason)
+    }
+
+    // optional int32 pcSvrPoint = 3;
+    inline void pbRespStart::clear_pcsvrpoint() {
+        pcsvrpoint_ = 0;
+    }
+    inline ::google::protobuf::int32 pbRespStart::pcsvrpoint() const {
+        // @@protoc_insertion_point(field_get:KinectDataProto.pbRespStart.pcSvrPoint)
+        return pcsvrpoint_;
+    }
+    inline void pbRespStart::set_pcsvrpoint(::google::protobuf::int32 value) {
+
+        pcsvrpoint_ = value;
+        // @@protoc_insertion_point(field_set:KinectDataProto.pbRespStart.pcSvrPoint)
+    }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
-// -------------------------------------------------------------------
+    // -------------------------------------------------------------------
 
 
-// @@protoc_insertion_point(namespace_scope)
+    // @@protoc_insertion_point(namespace_scope)
 
 }  // namespace KinectDataProto
 

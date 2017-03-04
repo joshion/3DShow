@@ -4,13 +4,13 @@ package ConnectProto;
 
 message pbRespConnect
 {
-int32 resultType = 1;
-string failReason = 2;
+	int32 resultType = 1;
+	string failReason = 2;
 }
 
 message pbRespDevices
 {
-string deviceList = 1;
-string separator = 2;
+	string deviceList = 1;
+	string separator = 2;
 }
 
