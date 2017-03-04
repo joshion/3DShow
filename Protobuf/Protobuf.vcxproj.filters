@@ -15,16 +15,23 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="StreamPlayProto.pb.cc">
+    <ClCompile Include="ConnectProto.pb.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="KinectDataProto.pb.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="StreamPlayProto.pb.h">
+    <ClInclude Include="ConnectProto.pb.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="KinectDataProto.pb.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="StreamPlayProto.proto" />
+    <None Include="ConnectProto.proto" />
+    <None Include="KinectDataProto.proto" />
   </ItemGroup>
 </Project>

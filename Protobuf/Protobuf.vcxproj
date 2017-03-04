@@ -19,13 +19,16 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="StreamPlayProto.pb.cc" />
+    <ClCompile Include="ConnectProto.pb.cc" />
+    <ClCompile Include="KinectDataProto.pb.cc" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="StreamPlayProto.pb.h" />
+    <ClInclude Include="ConnectProto.pb.h" />
+    <ClInclude Include="KinectDataProto.pb.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="StreamPlayProto.proto" />
+    <None Include="ConnectProto.proto" />
+    <None Include="KinectDataProto.proto" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{8352F74E-C42E-475B-9742-2412695C7D78}</ProjectGuid>
