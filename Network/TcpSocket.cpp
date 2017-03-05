@@ -46,5 +46,10 @@ void TcpSocket::readDataFromServer()
 {
     QByteArray bytes = m_pTcpSocket->readAll();
     FrameBuffer buffer2;
+    buffer2.setCmdNum(1);
+    buffer2.setCmdType(1);
+    buffer2.setData(nullptr, 0);
+    buffer2.setSequence(1);
+    buffer2.setVersion(0);
     buffer2 = FrameBuffer::fromByte(bytes);
 }

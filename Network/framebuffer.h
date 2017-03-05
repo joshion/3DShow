@@ -19,13 +19,50 @@ public:
     static FrameBuffer fromByte(const QByteArray &bytes);
 
 public:
-    //void setLength(unsigned int length);
-    //void setCmdType(unsigned char cmdType);
-    //void setCmdNum(unsigned char cmdNum);
-    //void setSequence(unsigned int sequence);
-    //void setVersion(unsigned char version);
-    //void setData(unsigned char *data, unsigned int length);
-private:
+    inline void setCmdType(const unsigned char cmdType)
+    {
+        m_ucCmdType = cmdType;
+    }
+    inline void setCmdNum(const unsigned char cmdNum)
+    {
+        m_ucCmdNum = cmdNum;
+    }
+    inline void setSequence(const unsigned int sequence)
+    {
+        m_u32Sequence = sequence;
+    }
+    inline void setVersion(const unsigned char version)
+    {
+        m_ucVsersion = version;
+    }
+
+    void setData(const unsigned char *data, const unsigned int length);
+
+    inline unsigned char getCmdType() const
+    {
+        return m_ucCmdType;
+    }
+    inline unsigned char getCmdNum() const
+    {
+        return m_ucCmdNum;
+    }
+    inline unsigned int getSequence() const
+    {
+        return m_u32Sequence;
+    }
+    inline unsigned char getVersion() const
+    {
+        return m_ucVsersion;
+    }
+
+    inline const unsigned char* getData() const
+    {
+        return m_data;
+    }
+    inline unsigned int getLength() const
+    {
+        return m_u32length;
+    }
 
 private:
     union

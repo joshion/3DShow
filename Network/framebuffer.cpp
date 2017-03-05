@@ -80,8 +80,6 @@ FrameBuffer & FrameBuffer::operator=(const FrameBuffer & other)
 
 QByteArray FrameBuffer::toByte(const FrameBuffer &buffer)
 {
-    QByteArray bytes;
-
     /*
     将小端数据转换为大端数据发送
     */
@@ -94,6 +92,7 @@ QByteArray FrameBuffer::toByte(const FrameBuffer &buffer)
     sequence.u32Data = qToBigEndian(buffer.m_u32Sequence);
     length.u32Data = qToBigEndian(buffer.m_u32length);
 
+    QByteArray bytes;
     bytes.append(buffer.m_cmdType);
     bytes.append(buffer.m_cmdNum);
     bytes.append(sequence.cData, 4);
@@ -130,4 +129,20 @@ FrameBuffer FrameBuffer::fromByte(const QByteArray & bytes)
         buffer.m_data = nullptr;
     }
     return buffer;
+}
+
+void FrameBuffer::setData(const unsigned char * data, const unsigned int length)
+{
+    delete m_data;
+    if (length > 0 && data != nullptr)
+    {
+        m_u32length = length;
+        m_data = new unsigned char[length] {0};
+        memcpy(m_data, data, length);
+    }
+    else
+    {
+        m_u32length = 0;
+        m_data = nullptr;
+    }
 }
