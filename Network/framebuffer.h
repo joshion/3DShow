@@ -51,7 +51,7 @@ private:
         char m_length[4];
         unsigned int m_u32length;
     };  //包体长度,也即是m_data的长度,不包括头部长度。头部长度固定为11Bytes
-	unsigned char *m_data;  //与m_u32length想关联,如m_data == nullptr时,m_u32length必须为0
+	unsigned char *m_data;  //与m_u32length相关联,如m_data == nullptr时,m_u32length必须为0
 };
 
 #endif FRAMEBUFFER_H

@@ -85,9 +85,11 @@ FrameBuffer FrameBuffer::fromByte(const QByteArray & bytes)
 
     /*
     将网络传输的大端数据转换回小端数据
+    用qToLittleEndian不会将数据顺序翻转
+    用qToBigEndian却会
     */
-    buffer.m_u32Sequence = qToLittleEndian(buffer.m_u32Sequence);
-    buffer.m_u32length = qToLittleEndian(buffer.m_u32length);
+    buffer.m_u32Sequence = qToBigEndian(buffer.m_u32Sequence);
+    buffer.m_u32length = qToBigEndian(buffer.m_u32length);
 
     if (buffer.m_u32length > 0)
     {
