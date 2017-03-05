@@ -23,6 +23,11 @@ FrameBuffer::FrameBuffer(FrameBuffer & other)
     }
 }
 
+/*
+len即是data的长度
+故只要len<=0 又或者 data==nullptr都是非法数据
+此时两者都要置0
+*/
 FrameBuffer::FrameBuffer(unsigned char cmdType, unsigned char cmdNum, unsigned int sequence,
     unsigned char version, unsigned int len, unsigned char * data)
     : m_u32length(len), m_ucCmdType(cmdType), m_ucCmdNum(cmdNum),
@@ -47,6 +52,30 @@ FrameBuffer::~FrameBuffer()
     {
         delete[] m_data;
     }
+}
+
+FrameBuffer & FrameBuffer::operator=(const FrameBuffer & other)
+{
+    this->m_u32length = other.m_u32length;
+    this->m_ucCmdType = other.m_ucCmdType;
+    this->m_ucCmdNum = other.m_ucCmdNum;
+    this->m_u32Sequence = other.m_u32Sequence;
+    this->m_ucVsersion = other.m_ucVsersion;
+
+    unsigned char *pOrig = this->m_data;
+
+    if (other.m_u32length > 0 && other.m_data != nullptr)
+    {
+        this->m_data = new unsigned char[other.m_u32length] {0};
+        memcpy(this->m_data, other.m_data, m_u32length);
+    }
+    else
+    {
+        this->m_u32length = 0;
+        this->m_data = nullptr;
+    }
+    delete pOrig;
+    return *this;
 }
 
 QByteArray FrameBuffer::toByte(const FrameBuffer &buffer)
@@ -86,7 +115,7 @@ FrameBuffer FrameBuffer::fromByte(const QByteArray & bytes)
     /*
     将网络传输的大端数据转换回小端数据
     用qToLittleEndian不会将数据顺序翻转
-    用qToBigEndian却会
+    但是用qToBigEndian却会
     */
     buffer.m_u32Sequence = qToBigEndian(buffer.m_u32Sequence);
     buffer.m_u32length = qToBigEndian(buffer.m_u32length);

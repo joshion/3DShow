@@ -26,10 +26,8 @@ TcpSocket::~TcpSocket()
 
 bool TcpSocket::writeDataToServer()
 {
-    FrameBuffer buffer(1, 1, 1, 1, 10, nullptr);
+    FrameBuffer buffer(1, 1, 0, 0, 10, nullptr);
     QByteArray bytes = FrameBuffer::toByte(buffer);
-    FrameBuffer buffer2;
-    buffer2 = FrameBuffer::fromByte(bytes);
     int writeLength = m_pTcpSocket->write(bytes);
     return writeLength == bytes.length();
 }
@@ -47,4 +45,6 @@ void TcpSocket::receiveMessage()
 void TcpSocket::readDataFromServer()
 {
     QByteArray bytes = m_pTcpSocket->readAll();
+    FrameBuffer buffer2;
+    buffer2 = FrameBuffer::fromByte(bytes);
 }

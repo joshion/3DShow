@@ -12,6 +12,8 @@ public:
         unsigned char version = 0, unsigned int len = 0, unsigned char * data = nullptr);
 	~FrameBuffer();
 
+    FrameBuffer& operator=(const FrameBuffer& other);
+
 public:
     static QByteArray toByte(const FrameBuffer &buffer);
     static FrameBuffer fromByte(const QByteArray &bytes);
