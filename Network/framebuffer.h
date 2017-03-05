@@ -7,10 +7,10 @@ class QByteArray;
 class FrameBuffer
 {
 public:
-    FrameBuffer();
+
     FrameBuffer(FrameBuffer &other);
-    FrameBuffer(unsigned int len, unsigned char cmdType, unsigned char cmdNum,
-        unsigned int sequence, unsigned char version, unsigned char *data);
+    FrameBuffer(unsigned int len = 0, unsigned char cmdType = 0, unsigned char cmdNum = 0,
+        unsigned int sequence = 0, unsigned char version = 0, unsigned char * data = nullptr);
 	~FrameBuffer();
 
 public:

@@ -13,9 +13,11 @@ int main(int argc, char *argv[])
     p.set_resulttype(10);
     p.set_failreason("hellworld");
 
-    unsigned char *pChar = new  unsigned char[10];
+
+    unsigned char *pChar = new  unsigned char[10] {"hellwor"};
     FrameBuffer buffer = FrameBuffer(10, 'd', 'd', 10, 'v', pChar);
     QByteArray bytes = FrameBuffer::toByte(buffer);
-    FrameBuffer buffer2 = FrameBuffer::fromByte(bytes);
+    FrameBuffer buffer2;
+    buffer2 = FrameBuffer::fromByte(bytes);
     return a.exec();
 }
