@@ -63,6 +63,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IncludePath>C:\boost_1_62_0;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\boost_1_62_0\lib64-msvc-14.0;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
@@ -138,9 +140,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="network.cpp" />
+    <ClCompile Include="framebuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="network.h" />
+    <ClInclude Include="framebuffer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
