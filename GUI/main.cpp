@@ -1,8 +1,9 @@
-#include <QtWidgets/QApplication>
 #include <mainframe.hpp>
 #include <ConnectProto.pb.h>
 #include <KinectDataProto.pb.h>
-#include <network.h>
+#include <framebuffer.h>
+
+#include <QtWidgets/QApplication>
 
 int main(int argc, char *argv[])
 {
@@ -12,7 +13,9 @@ int main(int argc, char *argv[])
     p.set_resulttype(10);
     p.set_failreason("hellworld");
 
-    Network *pp = new Network;
-
+    unsigned char *pChar = new  unsigned char[10];
+    FrameBuffer buffer = FrameBuffer(10, 'd', 'd', 10, 'v', pChar);
+    QByteArray bytes = FrameBuffer::toByte(buffer);
+    FrameBuffer buffer2 = FrameBuffer::fromByte(bytes);
     return a.exec();
 }
