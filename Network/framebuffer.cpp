@@ -1,6 +1,7 @@
 #include "framebuffer.h"
 #include <memory>
 #include <qbytearray.h>
+#include <QtEndian>
 
 FrameBuffer::FrameBuffer(FrameBuffer & other)
 {
@@ -22,8 +23,8 @@ FrameBuffer::FrameBuffer(FrameBuffer & other)
     }
 }
 
-FrameBuffer::FrameBuffer(unsigned int len, unsigned char cmdType, unsigned char cmdNum,
-    unsigned int sequence, unsigned char version, unsigned char * data)
+FrameBuffer::FrameBuffer(unsigned char cmdType, unsigned char cmdNum, unsigned int sequence,
+    unsigned char version, unsigned int len, unsigned char * data)
     : m_u32length(len), m_ucCmdType(cmdType), m_ucCmdNum(cmdNum),
     m_u32Sequence(sequence), m_ucVsersion(version), m_data(data)
 {
@@ -51,11 +52,24 @@ FrameBuffer::~FrameBuffer()
 QByteArray FrameBuffer::toByte(const FrameBuffer &buffer)
 {
     QByteArray bytes;
-    bytes.append(buffer.m_length, 4);
+
+    /*
+    将小端数据转换为大端数据发送
+    */
+    union DataUnion
+    {
+        char cData[4];
+        unsigned int u32Data;
+    };
+    DataUnion length, sequence;
+    sequence.u32Data = qToBigEndian(buffer.m_u32Sequence);
+    length.u32Data = qToBigEndian(buffer.m_u32length);
+
     bytes.append(buffer.m_cmdType);
     bytes.append(buffer.m_cmdNum);
-    bytes.append(buffer.m_sequence, 4);
+    bytes.append(sequence.cData, 4);
     bytes.append(buffer.m_version);
+    bytes.append(length.cData, 4);
     bytes.append((char *)(buffer.m_data), buffer.m_u32length);
     return bytes;
 }
@@ -63,15 +77,21 @@ QByteArray FrameBuffer::toByte(const FrameBuffer &buffer)
 FrameBuffer FrameBuffer::fromByte(const QByteArray & bytes)
 {
     FrameBuffer buffer;
-    memcpy(buffer.m_length, bytes.data(), 4);
-    memcpy(&buffer.m_cmdType, bytes.data() + 4, 1);
-    memcpy(&buffer.m_cmdNum, bytes.data() + 5, 1);
-    memcpy(buffer.m_sequence, bytes.data() + 6, 4);
-    memcpy(&buffer.m_version, bytes.data() + 10, 1);
+    memcpy(&buffer.m_cmdType, bytes.data(), 1);
+    memcpy(&buffer.m_cmdNum, bytes.data() + 1, 1);
+    memcpy(buffer.m_sequence, bytes.data() + 2, 4);
+    memcpy(&buffer.m_version, bytes.data() + 6, 1);
+    memcpy(buffer.m_length, bytes.data() + 7, 4);
+
+    /*
+    将网络传输的大端数据转换回小端数据
+    */
+    buffer.m_u32Sequence = qToLittleEndian(buffer.m_u32Sequence);
+    buffer.m_u32length = qToLittleEndian(buffer.m_u32length);
 
     if (buffer.m_u32length > 0)
     {
-        buffer.m_data = new unsigned char[buffer.m_u32length] {0};
+        buffer.m_data = new unsigned char[buffer.m_u32length] { 0 };
         memcpy(buffer.m_data, bytes.data() + 11, buffer.m_u32length);
     }
     else

@@ -8,8 +8,8 @@ class FrameBuffer
 {
 public:
     FrameBuffer(FrameBuffer &other);
-    FrameBuffer(unsigned int len = 0, unsigned char cmdType = 0, unsigned char cmdNum = 0,
-        unsigned int sequence = 0, unsigned char version = 0, unsigned char * data = nullptr);
+    FrameBuffer(unsigned char cmdType = 0, unsigned char cmdNum = 0, unsigned int sequence = 0,
+        unsigned char version = 0, unsigned int len = 0, unsigned char * data = nullptr);
 	~FrameBuffer();
 
 public:
@@ -24,11 +24,8 @@ public:
     //void setVersion(unsigned char version);
     //void setData(unsigned char *data, unsigned int length);
 private:
-	union
-	{
-		char m_length[4];
-        unsigned int m_u32length;
-	};  //包体长度,也即是m_data的长度,不包括头部长度。头部长度固定为11Bytes
+
+private:
     union
     {
         char m_cmdType;
@@ -49,6 +46,11 @@ private:
         char m_version;
         unsigned char m_ucVsersion;
     };
+    union
+    {
+        char m_length[4];
+        unsigned int m_u32length;
+    };  //包体长度,也即是m_data的长度,不包括头部长度。头部长度固定为11Bytes
 	unsigned char *m_data;  //与m_u32length想关联,如m_data == nullptr时,m_u32length必须为0
 };
 

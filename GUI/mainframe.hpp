@@ -2,6 +2,8 @@
 #include "mainwindow.hpp"
 #include <QObject>
 
+class TcpSocket;
+
 class MainFrame : public QObject 
 {
 	Q_OBJECT
@@ -12,4 +14,5 @@ public:
 
 private:
     MainWindow *m_pMainWindow;
+    TcpSocket *m_pSocket;
 };
