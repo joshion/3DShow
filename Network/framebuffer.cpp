@@ -9,28 +9,33 @@ FrameBuffer::FrameBuffer(FrameBuffer & other)
     this->m_ucCmdNum = other.m_ucCmdNum;
     this->m_u32Sequence = other.m_u32Sequence;
     this->m_ucVsersion = other.m_ucVsersion;
-    if (m_u32length > 0)
+
+    if (m_u32length > 0 && other.m_data != nullptr)
     {
         m_data = new unsigned char[m_u32length] {0};
-    }
-    if (other.m_data)
-    {
         memcpy(this->m_data, other.m_data, m_u32length);
+    }
+    else
+    {
+        m_u32length = 0;
+        m_data = nullptr;
     }
 }
 
-FrameBuffer::FrameBuffer(unsigned int len = 0, unsigned char cmdType = 0, unsigned char cmdNum = 0,
-    unsigned int sequence = 0, unsigned char version = 0, unsigned char * data = nullptr)
+FrameBuffer::FrameBuffer(unsigned int len, unsigned char cmdType, unsigned char cmdNum,
+    unsigned int sequence, unsigned char version, unsigned char * data)
     : m_u32length(len), m_ucCmdType(cmdType), m_ucCmdNum(cmdNum),
-    m_u32Sequence(sequence), m_ucVsersion(version)
+    m_u32Sequence(sequence), m_ucVsersion(version), m_data(data)
 {
-    if (m_u32length > 0)
+    if (m_u32length > 0 && m_data != nullptr)
     {
         m_data = new unsigned char[m_u32length] {0};
-    }
-    if (data)
-    {
         memcpy(m_data, data, m_u32length);
+    }
+    else
+    {
+        m_u32length = 0;
+        m_data = nullptr;
     }
 }
 
@@ -63,6 +68,15 @@ FrameBuffer FrameBuffer::fromByte(const QByteArray & bytes)
     memcpy(&buffer.m_cmdNum, bytes.data() + 5, 1);
     memcpy(buffer.m_sequence, bytes.data() + 6, 4);
     memcpy(&buffer.m_version, bytes.data() + 10, 1);
-    memcpy(buffer.m_data, bytes.data() + 11, buffer.m_u32length);
+
+    if (buffer.m_u32length > 0)
+    {
+        buffer.m_data = new unsigned char[buffer.m_u32length] {0};
+        memcpy(buffer.m_data, bytes.data() + 11, buffer.m_u32length);
+    }
+    else
+    {
+        buffer.m_data = nullptr;
+    }
     return buffer;
 }

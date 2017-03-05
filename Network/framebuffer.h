@@ -7,7 +7,6 @@ class QByteArray;
 class FrameBuffer
 {
 public:
-
     FrameBuffer(FrameBuffer &other);
     FrameBuffer(unsigned int len = 0, unsigned char cmdType = 0, unsigned char cmdNum = 0,
         unsigned int sequence = 0, unsigned char version = 0, unsigned char * data = nullptr);
@@ -18,6 +17,13 @@ public:
     static FrameBuffer fromByte(const QByteArray &bytes);
 
 public:
+    //void setLength(unsigned int length);
+    //void setCmdType(unsigned char cmdType);
+    //void setCmdNum(unsigned char cmdNum);
+    //void setSequence(unsigned int sequence);
+    //void setVersion(unsigned char version);
+    //void setData(unsigned char *data, unsigned int length);
+private:
 	union
 	{
 		char m_length[4];
@@ -43,7 +49,7 @@ public:
         char m_version;
         unsigned char m_ucVsersion;
     };
-	unsigned char *m_data;
+	unsigned char *m_data;  //与m_u32length想关联,如m_data == nullptr时,m_u32length必须为0
 };
 
 #endif FRAMEBUFFER_H
