@@ -65,7 +65,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
-    <IncludePath>C:\boost_1_62_0;C:\protobuf-3.0.0\include;D:\Documents\Visual Studio 2015\Projects\3DShow\Protobuf;$(IncludePath)</IncludePath>
+    <IncludePath>C:\boost_1_62_0;C:\protobuf-3.0.0\include;D:\Documents\Visual Studio 2015\Projects\3DShow\Protobuf;D:\Documents\Visual Studio 2015\Projects\3DShow\Network;$(IncludePath)</IncludePath>
     <LibraryPath>C:\boost_1_62_0\lib64-msvc-14.0;C:\protobuf-3.0.0\lib\Debug;D:\Documents\Visual Studio 2015\Projects\3DShow\x64\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -105,7 +105,7 @@
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
       <AdditionalLibraryDirectories>$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>qtmaind.lib;Qt5Cored.lib;Qt5Guid.lib;Qt5OpenGLd.lib;opengl32.lib;glu32.lib;Qt5Widgetsd.lib;libprotobufd.lib;libprotocd.lib;Protobuf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>qtmaind.lib;Qt5Cored.lib;Qt5Guid.lib;Qt5OpenGLd.lib;opengl32.lib;glu32.lib;Qt5Widgetsd.lib;libprotobufd.lib;libprotocd.lib;Protobuf.lib;Qt5Networkd.lib;Network.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
