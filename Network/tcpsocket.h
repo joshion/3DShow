@@ -25,7 +25,7 @@ private:
     int m_uPort;
     QTcpSocket *m_pTcpSocket;
     FrameBuffer *m_pFrameBuffer;
-
+    bool m_bConnected;
 public:
     bool writeDataToServer();
     bool writeBufferToServer() const;
@@ -36,7 +36,9 @@ public:
     bool startConnect(std::string deviceName, unsigned int dataType);
     bool endConnect();
 
+
 public slots:
+    void setConnected();
     void readDataFromServer();
 };
 

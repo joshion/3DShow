@@ -8,9 +8,9 @@
 MainFrame::MainFrame(QObject * parent) 
     : QObject(parent) 
 {
+    m_pSocket = new TcpSocket;
     m_pMainWindow = new MainWindow;
     m_pMainWindow->show();
-    m_pSocket = new TcpSocket;
     bool flag = m_pSocket->writeDataToServer();
 }
 

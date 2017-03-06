@@ -11,10 +11,13 @@
 TcpSocket::TcpSocket(QString adress, int port, QObject *parent)
     : QObject(parent), m_strIPAdress(adress), m_uPort(port)
 {
+    m_bConnected = false;
     m_pFrameBuffer = new FrameBuffer();
     m_pTcpSocket = new QTcpSocket(this);
     m_pTcpSocket->connectToHost(m_strIPAdress, m_uPort);
+    m_pTcpSocket->setSocketOption(QAbstractSocket::LowDelayOption, 1);
     connect(m_pTcpSocket, &QTcpSocket::readyRead, this, &TcpSocket::readDataFromServer);
+    connect(m_pTcpSocket, &QTcpSocket::connected, this, &TcpSocket::setConnected, Qt::DirectConnection);
 }
 
 TcpSocket::~TcpSocket()
@@ -32,23 +35,26 @@ TcpSocket::~TcpSocket()
 
 bool TcpSocket::writeDataToServer()
 {
-    //requireConnect();
-    //_sleep(2000);
-    ////requireDevices();
+    requireConnect();
+    //requireDevices();
     //startConnect("hello", 1);
-    //_sleep(2000);
-    //endConnect();
-    //_sleep(2000);
+    endConnect();
     exitConnect();
-    _sleep(2000);
     return true;
 }
 
 bool TcpSocket::writeBufferToServer() const
 {
-    QByteArray bytes = FrameBuffer::toByte(*m_pFrameBuffer);
-    int writeLength = m_pTcpSocket->write(bytes);
-    return writeLength == bytes.length();
+    if (m_bConnected)
+    {
+        QByteArray bytes = FrameBuffer::toByte(*m_pFrameBuffer);
+        int writeLength = m_pTcpSocket->write(bytes);
+        return writeLength == bytes.length();
+    }
+    else
+    {
+        return false;
+    }
 }
 
 bool TcpSocket::writeBufferToServer(const FrameBuffer & buffer)
@@ -63,6 +69,7 @@ bool TcpSocket::requireConnect()
     m_pFrameBuffer->setCmdType(1);
     m_pFrameBuffer->setCmdNum(1);
     m_pFrameBuffer->setData(nullptr, 0);
+    qDebug() << "enter require connect";
     return this->writeBufferToServer();
 }
 
@@ -71,6 +78,7 @@ bool TcpSocket::exitConnect()
     m_pFrameBuffer->setCmdType(1);
     m_pFrameBuffer->setCmdNum(2);
     m_pFrameBuffer->setData(nullptr, 0);
+    qDebug() << "enter exit connect";
     return this->writeBufferToServer();
 }
 
@@ -96,7 +104,13 @@ bool TcpSocket::endConnect()
     m_pFrameBuffer->setCmdType(2);
     m_pFrameBuffer->setCmdNum(2);
     m_pFrameBuffer->setData(nullptr, 0);
+    qDebug() << "enter end connect";
     return this->writeBufferToServer();
+}
+
+void TcpSocket::setConnected()
+{
+    this->m_bConnected = true;
 }
 
 void TcpSocket::readDataFromServer()
