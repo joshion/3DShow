@@ -1,4 +1,4 @@
-#include "TcpSocket.h"
+#include "tcpsocket.h"
 #include "framebuffer.h"
 
 //#include <QtNetwork/QNetworkInterface>

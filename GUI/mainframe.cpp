@@ -1,6 +1,6 @@
 ﻿#include "mainframe.hpp"
 #include "framebuffer.h"
-#include "TcpSocket.h"
+#include "tcpsocket.h"
 
 #include <ConnectProto.pb.h>
 #include <KinectDataProto.pb.h>
