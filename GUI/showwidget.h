@@ -2,12 +2,8 @@
 #define SHOWWIDGET_H
 
 #include <QOpenGLWidget>
-#include <QOpenGLContext>
-#include <QOpenGLFunctions>
-#include <qopenglfunctions_4_3_core.h>
+#include <QOpenGLFunctions_4_3_Core>
 #include <QOpenGLShaderProgram>
-#include <QString>
-#include <QFile>
 
 class ShowWidget : public QOpenGLWidget, protected QOpenGLFunctions_4_3_Core
 {

@@ -1,7 +1,7 @@
 #include "framebuffer.h"
-#include <memory>
-#include <qbytearray.h>
+#include <QByteArray>
 #include <QtEndian>
+#include <memory>
 
 FrameBuffer::FrameBuffer(FrameBuffer & other)
 {

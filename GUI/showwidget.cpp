@@ -1,7 +1,7 @@
 #include "showwidget.h"
-#include <QPainter>
-#include <QPen>
-#include <QDebug>
+
+// #include <QOpenGLContext>
+#include <QFile>
 
 ShowWidget::ShowWidget(QWidget *parent)
     : QOpenGLWidget(parent)
