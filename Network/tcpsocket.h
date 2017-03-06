@@ -23,14 +23,12 @@ private:
     QString m_strIPAdress;
     int m_uPort;
     QTcpSocket *m_pTcpSocket;
-    QTimer *m_pTimer;
 
 public:
     bool writeDataToServer();
 
 public slots:
     void readDataFromServer();
-    void receiveMessage();
 };
 
 #endif // TCPSOCKET_H

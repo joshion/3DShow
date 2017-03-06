@@ -2,6 +2,8 @@
 #ifndef FRAMEBUFFER_H
 #define FRAMEBUFFER_H
 
+#include <google/protobuf/message.h>
+
 class QByteArray;
 
 class FrameBuffer
@@ -37,6 +39,7 @@ public:
     }
 
     void setData(const unsigned char *data, const unsigned int length);
+    void setData(const ::google::protobuf::Message &data);
 
     inline unsigned char cmdType() const
     {

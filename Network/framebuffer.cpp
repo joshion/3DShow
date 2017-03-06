@@ -1,4 +1,5 @@
 #include "framebuffer.h"
+
 #include <QByteArray>
 #include <QtEndian>
 #include <memory>
@@ -145,4 +146,13 @@ void FrameBuffer::setData(const unsigned char * data, const unsigned int length)
         m_u32length = 0;
         m_data = nullptr;
     }
+}
+
+void FrameBuffer::setData(const ::google::protobuf::Message & data)
+{
+    unsigned int length = data.ByteSize();
+    unsigned char *byteArray = new unsigned char[length] { 0 };
+    data.SerializePartialToArray(byteArray, length);
+    this->setData(byteArray, length);
+    delete byteArray;
 }
