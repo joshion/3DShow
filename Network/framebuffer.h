@@ -38,28 +38,28 @@ public:
 
     void setData(const unsigned char *data, const unsigned int length);
 
-    inline unsigned char getCmdType() const
+    inline unsigned char cmdType() const
     {
         return m_ucCmdType;
     }
-    inline unsigned char getCmdNum() const
+    inline unsigned char cmdNum() const
     {
         return m_ucCmdNum;
     }
-    inline unsigned int getSequence() const
+    inline unsigned int sequence() const
     {
         return m_u32Sequence;
     }
-    inline unsigned char getVersion() const
+    inline unsigned char version() const
     {
         return m_ucVsersion;
     }
 
-    inline const unsigned char* getData() const
+    inline const unsigned char* data() const
     {
         return m_data;
     }
-    inline unsigned int getLength() const
+    inline unsigned int length() const
     {
         return m_u32length;
     }
