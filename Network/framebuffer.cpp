@@ -75,7 +75,7 @@ FrameBuffer & FrameBuffer::operator=(const FrameBuffer & other)
         this->m_u32length = 0;
         this->m_data = nullptr;
     }
-    delete pOrig;
+    delete[] pOrig;
     return *this;
 }
 
@@ -134,7 +134,7 @@ FrameBuffer FrameBuffer::fromByte(const QByteArray & bytes)
 
 void FrameBuffer::setData(const unsigned char * data, const unsigned int length)
 {
-    delete m_data;
+    delete[] m_data;
     if (length > 0 && data != nullptr)
     {
         m_u32length = length;
