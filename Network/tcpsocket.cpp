@@ -106,6 +106,7 @@ void TcpSocket::WorkingFunc()
 
 void TcpSocket::analysisReceiveByteArrayBuffer()
 {
+    while (true)
     {
         std::unique_lock<std::mutex> ul(m_ReadyReadMutex);
         while (!m_bReadyRead)
@@ -119,6 +120,7 @@ void TcpSocket::analysisReceiveByteArrayBuffer()
             m_receiveBuffer.clear();
         }
         analysisReceiveFrameBuffer(buffer);
+        m_bReadyRead = false;
     }
 }
 

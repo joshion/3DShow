@@ -10,9 +10,12 @@ MainFrame::MainFrame(QObject * parent)
 {
     m_pSocket = new TcpSocket;
     m_pSocket->start();
-    m_pMainWindow = new MainWindow;
+    m_pMainWindow = new MainWindow();
     m_pMainWindow->show();
-    m_pSocket->writeDataToServer();
+    //m_pSocket->writeDataToServer();
+    connect(m_pMainWindow, &MainWindow::requireConnect, m_pSocket, &TcpSocket::requireConnect);
+    connect(m_pMainWindow, &MainWindow::exitConnect, m_pSocket, &TcpSocket::exitConnect);
+    connect(m_pMainWindow, &MainWindow::endConnect, m_pSocket, &TcpSocket::endConnect);
 }
 
 MainFrame::~MainFrame()

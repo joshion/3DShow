@@ -23,10 +23,12 @@ private:
     QTcpSocket *m_pTcpSocket;
     FrameBuffer *m_pFrameBuffer;
 
-public:
+public :
     bool writeDataToServer();
     bool writeBufferToServer() const;
     bool writeBufferToServer(const FrameBuffer & buffer);
+
+public slots:
     bool requireConnect();
     bool exitConnect();
     bool requireDevices();
