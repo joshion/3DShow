@@ -13,8 +13,9 @@ TcpSocket::TcpSocket(QString adress, int port, QObject *parent)
 {
     m_pFrameBuffer = new FrameBuffer();
     m_pTcpSocket = new QTcpSocket(this);
-    m_pTcpSocket->connectToHost(m_strIPAdress, m_uPort);
+    m_pTcpSocket->setSocketOption(QAbstractSocket::KeepAliveOption, 1);
     m_pTcpSocket->setSocketOption(QAbstractSocket::LowDelayOption, 1);
+    m_pTcpSocket->connectToHost(m_strIPAdress, m_uPort);
     connect(m_pTcpSocket, &QTcpSocket::readyRead, this, &TcpSocket::readDataFromServer);
 }
 
