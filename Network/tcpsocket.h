@@ -8,11 +8,6 @@ class FrameBuffer;
 class QString;
 class QTcpSocket;
 
-//using namespace std;
-//
-//const static QString SERVER_IPADRESS = "127.0.0.1";
-//const static int SERVER_PORT = 7892;
-
 class TcpSocket : public QObject
 {
     Q_OBJECT
@@ -25,7 +20,7 @@ private:
     int m_uPort;
     QTcpSocket *m_pTcpSocket;
     FrameBuffer *m_pFrameBuffer;
-    bool m_bConnected;
+
 public:
     bool writeDataToServer();
     bool writeBufferToServer() const;
@@ -36,9 +31,10 @@ public:
     bool startConnect(std::string deviceName, unsigned int dataType);
     bool endConnect();
 
+private:
+    void analysisReceiveBuffer(const FrameBuffer &buffer);
 
 public slots:
-    void setConnected();
     void readDataFromServer();
 };
 

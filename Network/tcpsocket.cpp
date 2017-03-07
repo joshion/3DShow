@@ -11,13 +11,11 @@
 TcpSocket::TcpSocket(QString adress, int port, QObject *parent)
     : QObject(parent), m_strIPAdress(adress), m_uPort(port)
 {
-    m_bConnected = false;
     m_pFrameBuffer = new FrameBuffer();
     m_pTcpSocket = new QTcpSocket(this);
     m_pTcpSocket->connectToHost(m_strIPAdress, m_uPort);
     m_pTcpSocket->setSocketOption(QAbstractSocket::LowDelayOption, 1);
     connect(m_pTcpSocket, &QTcpSocket::readyRead, this, &TcpSocket::readDataFromServer);
-    connect(m_pTcpSocket, &QTcpSocket::connected, this, &TcpSocket::setConnected, Qt::DirectConnection);
 }
 
 TcpSocket::~TcpSocket()
@@ -45,16 +43,9 @@ bool TcpSocket::writeDataToServer()
 
 bool TcpSocket::writeBufferToServer() const
 {
-    if (m_bConnected)
-    {
-        QByteArray bytes = FrameBuffer::toByte(*m_pFrameBuffer);
-        int writeLength = m_pTcpSocket->write(bytes);
-        return writeLength == bytes.length();
-    }
-    else
-    {
-        return false;
-    }
+    QByteArray bytes = FrameBuffer::toByte(*m_pFrameBuffer);
+    int writeLength = m_pTcpSocket->write(bytes);
+    return writeLength == bytes.length();
 }
 
 bool TcpSocket::writeBufferToServer(const FrameBuffer & buffer)
@@ -108,34 +99,27 @@ bool TcpSocket::endConnect()
     return this->writeBufferToServer();
 }
 
-void TcpSocket::setConnected()
+void TcpSocket::analysisReceiveBuffer(const FrameBuffer & buffer)
 {
-    this->m_bConnected = true;
-}
-
-void TcpSocket::readDataFromServer()
-{
-    QByteArray bytes = m_pTcpSocket->readAll();
-    FrameBuffer buffer = FrameBuffer::fromByte(bytes);
     switch (buffer.cmdType())
     {
     case 1:
         switch (buffer.cmdNum())
         {
         case 100:
-            {
-                ConnectProto::pbRespConnect resp;
-                resp.ParseFromArray(buffer.data(), buffer.length());
-                resp.PrintDebugString();
-            }
-            break;
+        {
+            ConnectProto::pbRespConnect resp;
+            resp.ParseFromArray(buffer.data(), buffer.length());
+            resp.PrintDebugString();
+        }
+        break;
         case 101:
-            {
-                ConnectProto::pbRespDevices resp;
-                resp.ParseFromArray(buffer.data(), buffer.length());
-                resp.PrintDebugString();
-            }
-            break;
+        {
+            ConnectProto::pbRespDevices resp;
+            resp.ParseFromArray(buffer.data(), buffer.length());
+            resp.PrintDebugString();
+        }
+        break;
         default:
             break;
         }
@@ -144,19 +128,19 @@ void TcpSocket::readDataFromServer()
         switch (buffer.cmdNum())
         {
         case 100:
-            {
-                KinectDataProto::pbReqStart req;
-                req.ParseFromArray(buffer.data(), buffer.length());
-                req.PrintDebugString();
-            }
-            break;
+        {
+            KinectDataProto::pbReqStart req;
+            req.ParseFromArray(buffer.data(), buffer.length());
+            req.PrintDebugString();
+        }
+        break;
         case 101:
-            {
-                KinectDataProto::pbRespStart resp;
-                resp.ParseFromArray(buffer.data(), buffer.length());
-                resp.PrintDebugString();
-            }
-            break;
+        {
+            KinectDataProto::pbRespStart resp;
+            resp.ParseFromArray(buffer.data(), buffer.length());
+            resp.PrintDebugString();
+        }
+        break;
         default:
             break;
         }
@@ -164,4 +148,10 @@ void TcpSocket::readDataFromServer()
     default:
         break;
     }
+}
+
+void TcpSocket::readDataFromServer()
+{
+    QByteArray bytes = m_pTcpSocket->readAll();
+    FrameBuffer buffer = FrameBuffer::fromByte(bytes);
 }
