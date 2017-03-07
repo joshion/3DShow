@@ -17,7 +17,10 @@ private:
 
 signals: void requireConnect();
 signals: void exitConnect();
-    //void requireDevices();
-    //void startConnect(std::string deviceName, unsigned int dataType);
+signals: void requireDevices();
+signals: void startRequire(std::string deviceName, unsigned int dataType);
 signals: void endConnect();
+
+private slots:
+    void slots_startConnect();
 };

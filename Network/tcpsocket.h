@@ -32,7 +32,7 @@ public slots:
     bool requireConnect();
     bool exitConnect();
     bool requireDevices();
-    bool startConnect(std::string deviceName, unsigned int dataType);
+    bool startRequire(std::string deviceName, unsigned int dataType);
     bool endConnect();
 
 protected:

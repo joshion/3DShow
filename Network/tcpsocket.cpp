@@ -25,6 +25,7 @@ TcpSocket::~TcpSocket()
         m_pTcpSocket->close();
         delete m_pTcpSocket;
     }
+    this->stop();
     if (m_pFrameBuffer)
     {
         delete m_pFrameBuffer;
@@ -78,15 +79,17 @@ bool TcpSocket::requireDevices()
     m_pFrameBuffer->setCmdType(1);
     m_pFrameBuffer->setCmdNum(3);
     m_pFrameBuffer->setData(nullptr, 0);
+    qDebug() << "enter require devices";
     return this->writeBufferToServer();
 }
 
-bool TcpSocket::startConnect(std::string deviceName, unsigned int dataType)
+bool TcpSocket::startRequire(std::string deviceName, unsigned int dataType)
 {
     KinectDataProto::pbReqStart req;
     req.set_devicename(deviceName);
     req.set_datatype(dataType);
     m_pFrameBuffer->setData(req);
+    qDebug() << "enter start require";
     return this->writeBufferToServer();
 }
 
