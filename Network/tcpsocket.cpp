@@ -1,5 +1,6 @@
 #include "tcpsocket.h"
 #include "framebuffer.h"
+#include "tcpsocketinterface.hpp"
 
 #include "ConnectProto.pb.h"
 #include "KinectDataProto.pb.h"
@@ -33,16 +34,6 @@ TcpSocket::~TcpSocket()
     }
 }
 
-bool TcpSocket::writeDataToServer()
-{
-    requireConnect();
-    //requireDevices();
-    //startConnect("hello", 1);
-    endConnect();
-    exitConnect();
-    return true;
-}
-
 bool TcpSocket::writeBufferToServer() const
 {
     QByteArray bytes = FrameBuffer::toByte(*m_pFrameBuffer);
@@ -50,7 +41,7 @@ bool TcpSocket::writeBufferToServer() const
     return writeLength == bytes.length();
 }
 
-bool TcpSocket::writeBufferToServer(const FrameBuffer & buffer)
+bool TcpSocket::writeBufferToServer(const FrameBuffer & buffer) const
 {
     QByteArray bytes = FrameBuffer::toByte(buffer);
     int writeLength = m_pTcpSocket->write(bytes);
@@ -89,6 +80,8 @@ bool TcpSocket::startRequire(std::string deviceName, unsigned int dataType)
     KinectDataProto::pbReqStart req;
     req.set_devicename(deviceName);
     req.set_datatype(dataType);
+    m_pFrameBuffer->setCmdType(2);
+    m_pFrameBuffer->setCmdNum(1);
     m_pFrameBuffer->setData(req);
     qDebug() << "enter start require";
     return this->writeBufferToServer();
@@ -140,6 +133,7 @@ void TcpSocket::analysisReceiveFrameBuffer(const FrameBuffer & buffer)
             ConnectProto::pbRespConnect resp;
             resp.ParseFromArray(buffer.data(), buffer.length());
             resp.PrintDebugString();
+            m_pGUI->signal_respConnect();
         }
         break;
         case 101:
@@ -147,6 +141,7 @@ void TcpSocket::analysisReceiveFrameBuffer(const FrameBuffer & buffer)
             ConnectProto::pbRespDevices resp;
             resp.ParseFromArray(buffer.data(), buffer.length());
             resp.PrintDebugString();
+            m_pGUI->signal_respDevices();
         }
         break;
         default:
@@ -161,6 +156,7 @@ void TcpSocket::analysisReceiveFrameBuffer(const FrameBuffer & buffer)
             KinectDataProto::pbReqStart req;
             req.ParseFromArray(buffer.data(), buffer.length());
             req.PrintDebugString();
+            m_pGUI->signal_respStartRequire();
         }
         break;
         case 101:
@@ -168,6 +164,7 @@ void TcpSocket::analysisReceiveFrameBuffer(const FrameBuffer & buffer)
             KinectDataProto::pbRespStart resp;
             resp.ParseFromArray(buffer.data(), buffer.length());
             resp.PrintDebugString();
+            m_pGUI->signal_reqEndConnect();
         }
         break;
         default:

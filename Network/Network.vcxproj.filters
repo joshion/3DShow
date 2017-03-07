@@ -47,6 +47,9 @@
     <ClCompile Include="GeneratedFiles\Release\moc_tcpsocket.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="tcpsocketinterface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="network.h">
@@ -55,6 +58,9 @@
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="tcpsocket.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="tcpsocketinterface.hpp">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>

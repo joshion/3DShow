@@ -3,10 +3,13 @@
 #include <QObject>
 
 #include "thread.h"
+
 #include <condition_variable>
 #include <string>
 
+class TcpSocketInterface;
 class FrameBuffer;
+
 class QString;
 class QTcpSocket;
 
@@ -21,12 +24,26 @@ private:
     QString m_strIPAdress;
     int m_uPort;
     QTcpSocket *m_pTcpSocket;
+
+/***********************************************************************************/
+/*与GUI通信所用接口*/
+public:
+    void registerGUIClass(TcpSocketInterface*  gui)
+    {
+        this->m_pGUI = gui;
+    };
+private:
+    TcpSocketInterface *m_pGUI;
+/***********************************************************************************/
+
+/***********************************************************************************/
+/*发送指令到服务器的相关函数*/
+private:
     FrameBuffer *m_pFrameBuffer;
 
-public :
-    bool writeDataToServer();
+private:
     bool writeBufferToServer() const;
-    bool writeBufferToServer(const FrameBuffer & buffer);
+    bool writeBufferToServer(const FrameBuffer & buffer) const;
 
 public slots:
     bool requireConnect();
@@ -34,7 +51,10 @@ public slots:
     bool requireDevices();
     bool startRequire(std::string deviceName, unsigned int dataType);
     bool endConnect();
+/***********************************************************************************/
 
+/***********************************************************************************/
+/*与线程相关的变量以及函数*/
 protected:
     virtual void WorkingFunc();
 
@@ -45,15 +65,12 @@ private:
     std::mutex m_ReadyReadMutex;
     std::condition_variable m_ReadyReadCV;
     bool m_bReadyRead = false;
-
-
 private:
     void analysisReceiveByteArrayBuffer();
     void analysisReceiveFrameBuffer(const FrameBuffer &buffer);
-
-public slots:
+private slots:
     void readDataFromServer();
-
+/***********************************************************************************/
 };
 
 #endif // TCPSOCKET_H
