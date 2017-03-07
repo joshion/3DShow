@@ -99,7 +99,19 @@ bool TcpSocket::endConnect()
     return this->writeBufferToServer();
 }
 
-void TcpSocket::analysisReceiveBuffer(const FrameBuffer & buffer)
+void TcpSocket::WorkingFunc()
+{
+}
+
+void TcpSocket::analysisReceiveByteArrayBuffer()
+{
+    {
+        std::lock_guard<std::mutex> lg(m_bufferMutex);
+        m_receiveBuffer.append(m_pTcpSocket->readAll());
+    }
+}
+
+void TcpSocket::analysisReceiveFrameBuffer(const FrameBuffer & buffer)
 {
     switch (buffer.cmdType())
     {
@@ -152,6 +164,9 @@ void TcpSocket::analysisReceiveBuffer(const FrameBuffer & buffer)
 
 void TcpSocket::readDataFromServer()
 {
-    QByteArray bytes = m_pTcpSocket->readAll();
-    FrameBuffer buffer = FrameBuffer::fromByte(bytes);
+    {
+        std::lock_guard<std::mutex> lg(m_bufferMutex);
+        m_receiveBuffer.append(m_pTcpSocket->readAll());
+    }
+    //FrameBuffer buffer = FrameBuffer::fromByte(bytes);
 }

@@ -18,9 +18,15 @@
     <ClCompile Include="thread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="framebuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="thread.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="framebuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

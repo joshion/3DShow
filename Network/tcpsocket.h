@@ -1,6 +1,8 @@
 #ifndef TCPSOCKET_H
 #define TCPSOCKET_H
 
+#include "thread.h"
+
 #include <QObject>
 #include <string>
 
@@ -8,7 +10,7 @@ class FrameBuffer;
 class QString;
 class QTcpSocket;
 
-class TcpSocket : public QObject
+class TcpSocket : public QObject, Thread
 {
     Q_OBJECT
 public:
@@ -31,11 +33,19 @@ public:
     bool startConnect(std::string deviceName, unsigned int dataType);
     bool endConnect();
 
+protected:
+    virtual void WorkingFunc();
 private:
-    void analysisReceiveBuffer(const FrameBuffer &buffer);
+    std::mutex m_bufferMutex;
+    QByteArray m_receiveBuffer;
+
+private:
+    void analysisReceiveByteArrayBuffer();
+    void analysisReceiveFrameBuffer(const FrameBuffer &buffer);
 
 public slots:
     void readDataFromServer();
+
 };
 
 #endif // TCPSOCKET_H
