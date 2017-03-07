@@ -1,16 +1,16 @@
 #ifndef TCPSOCKET_H
 #define TCPSOCKET_H
+#include <QObject>
 
 #include "thread.h"
-
-#include <QObject>
+#include <condition_variable>
 #include <string>
 
 class FrameBuffer;
 class QString;
 class QTcpSocket;
 
-class TcpSocket : public QObject, Thread
+class TcpSocket : public QObject, public Thread
 {
     Q_OBJECT
 public:
@@ -35,9 +35,15 @@ public:
 
 protected:
     virtual void WorkingFunc();
+
 private:
     std::mutex m_bufferMutex;
     QByteArray m_receiveBuffer;
+
+    std::mutex m_ReadyReadMutex;
+    std::condition_variable m_ReadyReadCV;
+    bool m_bReadyRead = false;
+
 
 private:
     void analysisReceiveByteArrayBuffer();

@@ -101,13 +101,24 @@ bool TcpSocket::endConnect()
 
 void TcpSocket::WorkingFunc()
 {
+    analysisReceiveByteArrayBuffer();
 }
 
 void TcpSocket::analysisReceiveByteArrayBuffer()
 {
     {
-        std::lock_guard<std::mutex> lg(m_bufferMutex);
-        m_receiveBuffer.append(m_pTcpSocket->readAll());
+        std::unique_lock<std::mutex> ul(m_ReadyReadMutex);
+        while (!m_bReadyRead)
+        {
+            m_ReadyReadCV.wait(ul);
+        }
+        FrameBuffer buffer;
+        {
+            std::lock_guard<std::mutex> lg(m_bufferMutex);
+            buffer = FrameBuffer::fromByte(m_receiveBuffer);
+            m_receiveBuffer.clear();
+        }
+        analysisReceiveFrameBuffer(buffer);
     }
 }
 
@@ -168,5 +179,9 @@ void TcpSocket::readDataFromServer()
         std::lock_guard<std::mutex> lg(m_bufferMutex);
         m_receiveBuffer.append(m_pTcpSocket->readAll());
     }
-    //FrameBuffer buffer = FrameBuffer::fromByte(bytes);
+    {
+        std::unique_lock<std::mutex> ul(m_ReadyReadMutex);
+        m_bReadyRead = true;
+        m_ReadyReadCV.notify_all();
+    }
 }
