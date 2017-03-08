@@ -12,7 +12,8 @@ class MainWindow : public QWidget ,public TcpSocketInterface
 public:
 	MainWindow(QWidget * parent = Q_NULLPTR);
 	~MainWindow();
-
+protected:
+    void closeEvent(QCloseEvent *event) override;
 private:
 	Ui::MainWindow ui;
 

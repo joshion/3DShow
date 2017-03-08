@@ -21,24 +21,32 @@ MainWindow::~MainWindow()
 	
 }
 
+/*
+主窗口关闭时,关闭所有线程,退出程序
+*/
+void MainWindow::closeEvent(QCloseEvent * event)
+{
+    exit(0);
+}
+
 void MainWindow::slot_respConnect()
 {
-    qDebug() << "enter" << __FILE__ << " " << __LINE__ << "slot_respConnect";
+    qDebug() << "enter" << __FILE__ << __LINE__ << "slot_respConnect";
 }
 
 void MainWindow::slot_respDevices()
 {
-    qDebug() << "enter" << __FILE__ << " " << __LINE__ << "slot_respDevices";
+    qDebug() << "enter" << __FILE__ << __LINE__ << "slot_respDevices";
 }
 
 void MainWindow::slot_respStartRequire()
 {
-    qDebug() << "enter" << __FILE__ << " " << __LINE__ << "slot_respStartRequire";
+    qDebug() << "enter" << __FILE__ << __LINE__ << "slot_respStartRequire";
 }
 
 void MainWindow::slot_reqEndConnect()
 {
-    qDebug() << "enter" << __FILE__ << " " << __LINE__ << "slot_reqEndConnect";
+    qDebug() << "enter" << __FILE__ << __LINE__ << "slot_reqEndConnect";
 }
 
 void MainWindow::slot_startConnect()
