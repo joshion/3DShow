@@ -132,9 +132,58 @@ FrameBuffer FrameBuffer::fromByte(const QByteArray & bytes)
     return buffer;
 }
 
+// 
+bool FrameBuffer::setHead(const QByteArray & bytes)
+{
+    if (bytes.length() < 11)
+        return false;
+
+    memcpy(&this->m_cmdType, bytes.data(), 1);
+    memcpy(&this->m_cmdNum, bytes.data() + 1, 1);
+    memcpy(this->m_sequence, bytes.data() + 2, 4);
+    memcpy(&this->m_version, bytes.data() + 6, 1);
+    memcpy(this->m_length, bytes.data() + 7, 4);
+
+    /*
+    将网络传输的大端数据转换回小端数据
+    用qToLittleEndian不会将数据顺序翻转
+    但是用qToBigEndian却会
+    */
+    this->m_u32Sequence = qToBigEndian(this->m_u32Sequence);
+    this->m_u32length = qToBigEndian(this->m_u32length);
+
+    // 清空数据,保留包体长度,之后的设置数据需要用到包体长度
+    delete[] m_data;
+    m_data = nullptr;
+
+    return true;
+}
+
+bool FrameBuffer::setData(const QByteArray & bytes, const unsigned int length)
+{
+    if (bytes.length() < length || length <= 0)
+    {
+        return false;
+    }
+    else
+    {
+        if (m_data != nullptr)
+        {
+            delete[] m_data;
+        }
+        m_u32length = length;
+        m_data = new unsigned char[length] {0};
+        memcpy(m_data, bytes.data(), length);
+        return true;
+    }
+}
+
 void FrameBuffer::setData(const unsigned char * data, const unsigned int length)
 {
-    delete[] m_data;
+    if (m_data != nullptr)
+    {
+        delete[] m_data;
+    }
     if (length > 0 && data != nullptr)
     {
         m_u32length = length;
@@ -154,5 +203,8 @@ void FrameBuffer::setData(const ::google::protobuf::Message & data)
     unsigned char *byteArray = new unsigned char[length] { 0 };
     data.SerializePartialToArray(byteArray, length);
     this->setData(byteArray, length);
-    delete byteArray;
+    if (byteArray != nullptr)
+    {
+        delete[] byteArray;
+    }
 }

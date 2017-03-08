@@ -39,7 +39,7 @@ private:
 /***********************************************************************************/
 /*发送指令到服务器的相关函数*/
 private:
-    FrameBuffer *m_pFrameBuffer;
+    FrameBuffer *m_pSendFrameBuffer;
 
 private:
     bool writeBufferToServer() const;
@@ -65,6 +65,9 @@ private:
     std::mutex m_ReadyReadMutex;
     std::condition_variable m_ReadyReadCV;
     bool m_bReadyRead = false;
+
+    bool m_bNotHasHead = true;
+    FrameBuffer *m_pReceiveFrameBuffer;
 private:
     void analysisReceiveByteArrayBuffer();
     void analysisReceiveFrameBuffer(const FrameBuffer &buffer);
