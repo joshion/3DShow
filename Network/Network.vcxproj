@@ -148,12 +148,10 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="network.cpp" />
     <ClCompile Include="ordersocket.cpp" />
     <ClCompile Include="orderinterface.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="network.h" />
     <CustomBuild Include="orderinterface.hpp">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </Message>

@@ -4,11 +4,11 @@ MainWindow::MainWindow(QWidget * parent)
     : QWidget(parent)
 {
     ui.setupUi(this);
-    connect(ui.pushButton, &QPushButton::clicked, this, &MainWindow::requireConnect);
-    connect(ui.pushButton_2, &QPushButton::clicked, this, &MainWindow::exitConnect);
-    connect(ui.pushButton_3, &QPushButton::clicked, this, &MainWindow::requireDevices);
-    connect(ui.pushButton_4, &QPushButton::clicked, this, &MainWindow::slot_startConnect);
-    connect(ui.pushButton_5, &QPushButton::clicked, this, &MainWindow::endConnect);
+    connect(ui.m_ReqConnect, &QPushButton::clicked, this, &MainWindow::requireConnect);
+    connect(ui.m_ExitConnect, &QPushButton::clicked, this, &MainWindow::exitConnect);
+    connect(ui.m_ReqDevices, &QPushButton::clicked, this, &MainWindow::requireDevices);
+    connect(ui.m_StartConnect, &QPushButton::clicked, this, &MainWindow::slot_startConnect);
+    connect(ui.m_EndConnect, &QPushButton::clicked, this, &MainWindow::endConnect);
 
     connect(this, &MainWindow::signal_respConnect, this, &MainWindow::slot_respConnect);
     connect(this, &MainWindow::signal_respDevices, this, &MainWindow::slot_respDevices);
