@@ -111,28 +111,43 @@ void TcpSocket::analysisReceiveByteArrayBuffer()
         {
             m_ReadyReadCV.wait(ul);
         }
-        bool bIsACompleteFrameBuffer = false;
+        /*
+        缓存内可能粘包存在多点指令,也可能存在不完整的指令
+        所以循环解析指令,直到存在不完整的指令,等待接收到更多指令的时候再进行解析
+        */
+        while (true)
         {
-            std::lock_guard<std::mutex> lg(m_bufferMutex);
-            // 若服务器发来的缓存少于11或者已经读取到了头部时跳过此部分,等待下次读取到更多缓存再进行判断
-            if (m_bNotHasHead && m_receiveBuffer.length() >= 11)
+            bool bIsACompleteFrameBuffer = false;
             {
-                m_pReceiveFrameBuffer->setHead(m_receiveBuffer);
-                m_receiveBuffer.remove(0, 11);
-                m_bNotHasHead = false;
+                std::lock_guard<std::mutex> lg(m_bufferMutex);
+                /*
+                若服务器发来的缓存少于11或者已经读取到了头部时跳过此部分,等待下次读取到更多缓存再进行判断
+                */
+                if (m_bNotHasHead && m_receiveBuffer.length() >= 11)
+                {
+                    m_pReceiveFrameBuffer->setHead(m_receiveBuffer);
+                    m_receiveBuffer.remove(0, 11);
+                    m_bNotHasHead = false;
+                }
+                /*
+                若没有读取到头部或者缓存的长度比头部指定的protobuf的长度小时跳过此部分,等待下次读取到更多缓存时再进行判断
+                */
+                if (!m_bNotHasHead && m_receiveBuffer.length() >= m_pReceiveFrameBuffer->length())
+                {
+                    m_pReceiveFrameBuffer->setData(m_receiveBuffer, m_pReceiveFrameBuffer->length());
+                    m_receiveBuffer.remove(0, m_pReceiveFrameBuffer->length());
+                    m_bNotHasHead = true;
+                    bIsACompleteFrameBuffer = true;
+                }
             }
-            // 若没有读取到头部或者缓存的长度比头部指定的protobuf的长度小时跳过此部分,等待下次读取到更多缓存时再进行判断
-            if (!m_bNotHasHead && m_receiveBuffer.length() >= m_pReceiveFrameBuffer->length())
+            if (bIsACompleteFrameBuffer)
             {
-                m_pReceiveFrameBuffer->setData(m_receiveBuffer, m_pReceiveFrameBuffer->length());
-                m_receiveBuffer.remove(0, m_pReceiveFrameBuffer->length());
-                m_bNotHasHead = true;
-                bIsACompleteFrameBuffer = true;
+                analysisReceiveFrameBuffer(*m_pReceiveFrameBuffer);
             }
-        }
-        if (bIsACompleteFrameBuffer)
-        {
-            analysisReceiveFrameBuffer(*m_pReceiveFrameBuffer);
+            else //指令不完整,等待读取更待缓存
+            {
+                break;
+            }
         }
         m_bReadyRead = false;
     }
