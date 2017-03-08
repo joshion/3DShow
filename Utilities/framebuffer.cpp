@@ -153,8 +153,11 @@ bool FrameBuffer::setHead(const QByteArray & bytes)
     this->m_u32length = qToBigEndian(this->m_u32length);
 
     // 清空数据,保留包体长度,之后的设置数据需要用到包体长度
-    delete[] m_data;
-    m_data = nullptr;
+    if (m_data != nullptr)
+    {
+        delete[] m_data;
+        m_data = nullptr;
+    }
 
     return true;
 }
