@@ -1,11 +1,11 @@
 ﻿#pragma once
 
-#include "tcpsocketinterface.hpp"
+#include "orderinterface.hpp"
 
 #include <QWidget>
 #include "ui_mainwindow.h"
 
-class MainWindow : public QWidget ,public TcpSocketInterface
+class MainWindow : public QWidget ,public OrderInterface
 {
 	Q_OBJECT
 

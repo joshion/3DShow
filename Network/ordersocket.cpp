@@ -1,6 +1,6 @@
-#include "tcpsocket.h"
+#include "ordersocket.h"
 #include "framebuffer.h"
-#include "tcpsocketinterface.hpp"
+#include "orderinterface.hpp"
 
 #include "ConnectProto.pb.h"
 #include "KinectDataProto.pb.h"
@@ -8,8 +8,25 @@
 #include <QtNetwork/QTcpSocket>
 #include <QString>
 
+namespace
+{
+    const static unsigned int CONNECT_PROTOCOL = 1;
 
-TcpSocket::TcpSocket(QString adress, int port, QObject *parent)
+    const static unsigned int REQUIRE_CONNECT = 1;
+    const static unsigned int EXIT_CONNECT = 2;
+    const static unsigned int REQUIRE_DEVICES = 3;
+    const static unsigned int RESP_REQUIRE_CONNECT = 100;
+    const static unsigned int RESP_DEVICES = 101;
+
+    const static unsigned int KINECT_PROTOCOL = 2;
+
+    const static unsigned int START_REQUIRE = 1;
+    const static unsigned int END_REQUIRE = 2;
+    const static unsigned int RESP_START_REQUIRE = 100;
+    const static unsigned int SERVER_REQUIRE_END_CONNECT = 102;
+}
+
+OrderSocket::OrderSocket(QString adress, int port, QObject *parent)
     : QObject(parent), m_strIPAdress(adress), m_uPort(port)
 {
     m_pSendFrameBuffer = new FrameBuffer();
@@ -18,10 +35,12 @@ TcpSocket::TcpSocket(QString adress, int port, QObject *parent)
     m_pTcpSocket->setSocketOption(QAbstractSocket::KeepAliveOption, 1);
     m_pTcpSocket->setSocketOption(QAbstractSocket::LowDelayOption, 1);
     m_pTcpSocket->connectToHost(m_strIPAdress, m_uPort);
-    connect(m_pTcpSocket, &QTcpSocket::readyRead, this, &TcpSocket::readDataFromServer);
+    connect(m_pTcpSocket, &QTcpSocket::connected, this, &OrderSocket::slot_setConnected);
+    connect(m_pTcpSocket, &QTcpSocket::disconnected, this, &OrderSocket::slot_setDisConnected);
+    connect(m_pTcpSocket, &QTcpSocket::readyRead, this, &OrderSocket::readDataFromServer);
 }
 
-TcpSocket::~TcpSocket()
+OrderSocket::~OrderSocket()
 {
     if (m_pTcpSocket)
     {
@@ -35,21 +54,44 @@ TcpSocket::~TcpSocket()
     }
 }
 
-bool TcpSocket::writeBufferToServer() const
+void OrderSocket::slot_setConnected()
 {
-    QByteArray bytes = FrameBuffer::toByte(*m_pSendFrameBuffer);
-    int writeLength = m_pTcpSocket->write(bytes);
-    return writeLength == bytes.length();
+    m_bConnected = true;
 }
 
-bool TcpSocket::writeBufferToServer(const FrameBuffer & buffer) const
+void OrderSocket::slot_setDisConnected()
+{
+    m_bConnected = false;
+}
+
+bool OrderSocket::writeBufferToServer() const
+{
+    QByteArray bytes = FrameBuffer::toByte(*m_pSendFrameBuffer);
+    
+    /*
+    若服务器已经链接上,则发送数据,并返回true
+    没有链接上则重新请求链接,并返回false
+    */
+    if (m_bConnected)
+    {
+        int writeLength = m_pTcpSocket->write(bytes);
+        return writeLength == bytes.length();
+    }
+    else
+    {
+        m_pTcpSocket->connectToHost(m_strIPAdress, m_uPort);
+        return false;
+    }
+}
+
+bool OrderSocket::writeBufferToServer(const FrameBuffer & buffer) const
 {
     QByteArray bytes = FrameBuffer::toByte(buffer);
     int writeLength = m_pTcpSocket->write(bytes);
     return writeLength == bytes.length();
 }
 
-bool TcpSocket::requireConnect()
+bool OrderSocket::requireConnect()
 {
     m_pSendFrameBuffer->setCmdType(1);
     m_pSendFrameBuffer->setCmdNum(1);
@@ -58,7 +100,7 @@ bool TcpSocket::requireConnect()
     return this->writeBufferToServer();
 }
 
-bool TcpSocket::exitConnect()
+bool OrderSocket::exitConnect()
 {
     m_pSendFrameBuffer->setCmdType(1);
     m_pSendFrameBuffer->setCmdNum(2);
@@ -67,7 +109,7 @@ bool TcpSocket::exitConnect()
     return this->writeBufferToServer();
 }
 
-bool TcpSocket::requireDevices()
+bool OrderSocket::requireDevices()
 {
     m_pSendFrameBuffer->setCmdType(1);
     m_pSendFrameBuffer->setCmdNum(3);
@@ -76,19 +118,19 @@ bool TcpSocket::requireDevices()
     return this->writeBufferToServer();
 }
 
-bool TcpSocket::startRequire(std::string deviceName, unsigned int dataType)
+bool OrderSocket::startRequire(std::string deviceName, unsigned int dataType)
 {
-    KinectDataProto::pbReqStart req;
-    req.set_devicename(deviceName);
-    req.set_datatype(dataType);
     m_pSendFrameBuffer->setCmdType(2);
     m_pSendFrameBuffer->setCmdNum(1);
+    KinectDataProto::pbReqStart req {};
+    req.set_devicename(deviceName);
+    req.set_datatype(dataType);
     m_pSendFrameBuffer->setData(req);
     qDebug() << "enter start require";
     return this->writeBufferToServer();
 }
 
-bool TcpSocket::endConnect()
+bool OrderSocket::endConnect()
 {
     m_pSendFrameBuffer->setCmdType(2);
     m_pSendFrameBuffer->setCmdNum(2);
@@ -97,12 +139,12 @@ bool TcpSocket::endConnect()
     return this->writeBufferToServer();
 }
 
-void TcpSocket::WorkingFunc()
+void OrderSocket::WorkingFunc()
 {
     analysisReceiveByteArrayBuffer();
 }
 
-void TcpSocket::analysisReceiveByteArrayBuffer()
+void OrderSocket::analysisReceiveByteArrayBuffer()
 {
     while (true)
     {
@@ -153,14 +195,14 @@ void TcpSocket::analysisReceiveByteArrayBuffer()
     }
 }
 
-void TcpSocket::analysisReceiveFrameBuffer(const FrameBuffer & buffer)
+void OrderSocket::analysisReceiveFrameBuffer(const FrameBuffer & buffer)
 {
     switch (buffer.cmdType())
     {
-    case 1:
+    case CONNECT_PROTOCOL:
         switch (buffer.cmdNum())
         {
-        case 100:
+        case RESP_REQUIRE_CONNECT:
         {
             ConnectProto::pbRespConnect resp;
             resp.ParseFromArray(buffer.data(), buffer.length());
@@ -168,7 +210,7 @@ void TcpSocket::analysisReceiveFrameBuffer(const FrameBuffer & buffer)
             m_pGUI->signal_respConnect();
         }
         break;
-        case 101:
+        case RESP_DEVICES:
         {
             ConnectProto::pbRespDevices resp;
             resp.ParseFromArray(buffer.data(), buffer.length());
@@ -180,10 +222,10 @@ void TcpSocket::analysisReceiveFrameBuffer(const FrameBuffer & buffer)
             break;
         }
         break;
-    case 2:
+    case KINECT_PROTOCOL:
         switch (buffer.cmdNum())
         {
-        case 100:
+        case RESP_START_REQUIRE:
         {
             KinectDataProto::pbReqStart req;
             req.ParseFromArray(buffer.data(), buffer.length());
@@ -191,7 +233,7 @@ void TcpSocket::analysisReceiveFrameBuffer(const FrameBuffer & buffer)
             m_pGUI->signal_respStartRequire();
         }
         break;
-        case 101:
+        case SERVER_REQUIRE_END_CONNECT:
         {
             KinectDataProto::pbRespStart resp;
             resp.ParseFromArray(buffer.data(), buffer.length());
@@ -208,7 +250,7 @@ void TcpSocket::analysisReceiveFrameBuffer(const FrameBuffer & buffer)
     }
 }
 
-void TcpSocket::readDataFromServer()
+void OrderSocket::readDataFromServer()
 {
     {
         std::lock_guard<std::mutex> lg(m_bufferMutex);

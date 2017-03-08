@@ -38,16 +38,16 @@
     <ClCompile Include="network.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tcpsocket.cpp">
+    <ClCompile Include="orderinterface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_tcpsocket.cpp">
+    <ClCompile Include="GeneratedFiles\Debug\moc_ordersocket.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_tcpsocket.cpp">
+    <ClCompile Include="GeneratedFiles\Release\moc_ordersocket.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="tcpsocketinterface.cpp">
+    <ClCompile Include="ordersocket.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -57,10 +57,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="tcpsocket.h">
+    <CustomBuild Include="orderinterface.hpp">
       <Filter>Header Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="tcpsocketinterface.hpp">
+    <CustomBuild Include="ordersocket.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>

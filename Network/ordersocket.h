@@ -7,33 +7,45 @@
 #include <condition_variable>
 #include <string>
 
-class TcpSocketInterface;
+class OrderInterface;
 class FrameBuffer;
 
 class QString;
 class QTcpSocket;
 
-class TcpSocket : public QObject, public Thread
+/*
+该类应用于与服务器的网络交互
+a.请求链接
+b.控制与kinect设备的链接
+c.断开链接
+该类所对应的接口类为 OrderInterface
+*/
+class OrderSocket : public QObject, public Thread
 {
     Q_OBJECT
 public:
-    explicit TcpSocket(QString adress="127.0.0.1", int port= 7892, QObject *parent = 0);
-    ~TcpSocket();
+    explicit OrderSocket(QString adress="127.0.0.1", int port= 7892, QObject *parent = 0);
+    ~OrderSocket();
 
 private:
     QString m_strIPAdress;
     int m_uPort;
     QTcpSocket *m_pTcpSocket;
 
+private:
+    bool m_bConnected = false;
+private slots:
+    inline void slot_setConnected();
+    inline void slot_setDisConnected();
 /***********************************************************************************/
 /*与GUI通信所用接口*/
 public:
-    void registerGUIClass(TcpSocketInterface*  gui)
+    void registerGUIClass(OrderInterface*  gui)
     {
         this->m_pGUI = gui;
     };
 private:
-    TcpSocketInterface *m_pGUI;
+    OrderInterface *m_pGUI;
 /***********************************************************************************/
 
 /***********************************************************************************/

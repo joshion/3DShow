@@ -1,6 +1,5 @@
 #include "showwidget.h"
 
-// #include <QOpenGLContext>
 #include <QFile>
 
 ShowWidget::ShowWidget(QWidget *parent)
