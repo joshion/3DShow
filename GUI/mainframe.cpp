@@ -22,6 +22,7 @@ MainFrame::MainFrame(QObject * parent)
 
 MainFrame::~MainFrame()
 {
+    m_pOrderSocketThread->wait();
     delete m_pOrderSocketThread;
     delete m_pMainWindow;
 }

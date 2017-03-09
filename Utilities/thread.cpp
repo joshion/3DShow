@@ -16,7 +16,7 @@ void Thread::start()
 	std::lock_guard<std::mutex> lock(m_tMutex);
 	if (!m_thread && !m_bWorkingSwitch)
 	{
-		m_thread = new std::thread(std::bind(&Thread::WorkingFunc, this));
+		m_thread = new std::thread(std::bind(&Thread::workingFunc, this));
 		if (m_thread)
 			m_bWorkingSwitch = true;
 	}

@@ -68,7 +68,7 @@ public slots:
 /***********************************************************************************/
 /*与线程相关的变量以及函数*/
 protected:
-    virtual void WorkingFunc();
+    virtual void workingFunc();
 
 private:
     std::mutex m_bufferMutex;

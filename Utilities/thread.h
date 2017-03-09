@@ -14,7 +14,7 @@ public:
 	bool isWorking();
 
 protected:
-	virtual void WorkingFunc() = 0;
+	virtual void workingFunc() = 0;
 	bool m_bWorkingSwitch;
 
 private:

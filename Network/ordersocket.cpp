@@ -139,7 +139,7 @@ bool OrderSocket::slot_endConnect()
     return this->writeBufferToServer();
 }
 
-void OrderSocket::WorkingFunc()
+void OrderSocket::workingFunc()
 {
     analysisReceiveByteArrayBuffer();
 }
@@ -154,8 +154,8 @@ void OrderSocket::analysisReceiveByteArrayBuffer()
             m_ReadyReadCV.wait(ul);
         }
         /*
-        缓存内可能粘包存在多点指令,也可能存在不完整的指令
-        所以循环解析指令,直到存在不完整的指令,等待接收到更多指令的时候再进行解析
+        缓存内可能粘包而存在多条指令,也可能存在不完整的指令
+        所以循环解析指令,直到发现不完整的指令,等待接收到更多指令的时候再进行解析
         */
         while (true)
         {
