@@ -37,7 +37,7 @@ OrderSocket::OrderSocket(QString adress, int port, QObject *parent)
     m_pTcpSocket->connectToHost(m_strIPAdress, m_uPort);
     connect(m_pTcpSocket, &QTcpSocket::connected, this, &OrderSocket::slot_setConnected, Qt::QueuedConnection);
     connect(m_pTcpSocket, &QTcpSocket::disconnected, this, &OrderSocket::slot_setDisConnected, Qt::QueuedConnection);
-    connect(m_pTcpSocket, &QTcpSocket::readyRead, this, &OrderSocket::readDataFromServer, Qt::QueuedConnection);
+    connect(m_pTcpSocket, &QTcpSocket::readyRead, this, &OrderSocket::slot_readDataFromServer, Qt::QueuedConnection);
 }
 
 OrderSocket::~OrderSocket()
@@ -262,7 +262,7 @@ void OrderSocket::analysisReceiveFrameBuffer(const FrameBuffer & buffer)
     }
 }
 
-void OrderSocket::readDataFromServer()
+void OrderSocket::slot_readDataFromServer()
 {
     {
         std::lock_guard<std::mutex> lg(m_bufferMutex);

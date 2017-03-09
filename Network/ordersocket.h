@@ -84,7 +84,7 @@ private:
     void analysisReceiveByteArrayBuffer();
     void analysisReceiveFrameBuffer(const FrameBuffer &buffer);
 private slots:
-    void readDataFromServer();
+    void slot_readDataFromServer();
 /***********************************************************************************/
 };
 
