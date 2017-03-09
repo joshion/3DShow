@@ -4,11 +4,11 @@ MainWindow::MainWindow(QWidget * parent)
     : QWidget(parent)
 {
     ui.setupUi(this);
-    connect(ui.m_ReqConnect, &QPushButton::clicked, this, &MainWindow::requireConnect);
-    connect(ui.m_ExitConnect, &QPushButton::clicked, this, &MainWindow::exitConnect);
-    connect(ui.m_ReqDevices, &QPushButton::clicked, this, &MainWindow::requireDevices);
+    connect(ui.m_ReqConnect, &QPushButton::clicked, this, &MainWindow::signal_requireConnect);
+    connect(ui.m_ExitConnect, &QPushButton::clicked, this, &MainWindow::signal_exitConnect);
+    connect(ui.m_ReqDevices, &QPushButton::clicked, this, &MainWindow::signal_requireDevices);
     connect(ui.m_StartConnect, &QPushButton::clicked, this, &MainWindow::slot_startConnect);
-    connect(ui.m_EndConnect, &QPushButton::clicked, this, &MainWindow::endConnect);
+    connect(ui.m_EndConnect, &QPushButton::clicked, this, &MainWindow::signal_endConnect);
 
     connect(this, &MainWindow::signal_respConnect, this, &MainWindow::slot_respConnect);
     connect(this, &MainWindow::signal_respDevices, this, &MainWindow::slot_respDevices);
@@ -51,5 +51,5 @@ void MainWindow::slot_reqEndConnect()
 
 void MainWindow::slot_startConnect()
 {
-    emit startRequire("aaa", 1);
+    emit signal_startRequire("aaa", 1);
 }

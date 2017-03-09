@@ -33,11 +33,11 @@ public slots:
 
 /***********************************************************************************/
 /*本GUI类发送消息到底层C++所用接口*/
-signals: void requireConnect();
-signals: void exitConnect();
-signals: void requireDevices();
-signals: void startRequire(std::string deviceName, unsigned int dataType);
-signals: void endConnect();
+signals: void signal_requireConnect();
+signals: void signal_exitConnect();
+signals: void signal_requireDevices();
+signals: void signal_startRequire(QString deviceName, unsigned int dataType);
+signals: void signal_endConnect();
 
 private slots:
     void slot_startConnect();

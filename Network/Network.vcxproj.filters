@@ -47,12 +47,24 @@
     <ClCompile Include="ordersocket.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ordersocketthread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ordersocketthread.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ordersocketthread.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="orderinterface.hpp">
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="ordersocket.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ordersocketthread.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>

@@ -5,7 +5,6 @@
 #include "thread.h"
 
 #include <condition_variable>
-#include <string>
 
 class OrderInterface;
 class FrameBuffer;
@@ -19,6 +18,7 @@ a.请求链接
 b.控制与kinect设备的链接
 c.断开链接
 该类所对应的接口类为 OrderInterface
+需要先调用registerGUIClass()后才可以调用start()以开启线程读取缓存
 */
 class OrderSocket : public QObject, public Thread
 {
@@ -58,11 +58,11 @@ private:
     bool writeBufferToServer(const FrameBuffer & buffer) const;
 
 public slots:
-    bool requireConnect();
-    bool exitConnect();
-    bool requireDevices();
-    bool startRequire(std::string deviceName, unsigned int dataType);
-    bool endConnect();
+    bool slot_requireConnect();
+    bool slot_exitConnect();
+    bool slot_requireDevices();
+    bool slot_startRequire(QString deviceName, unsigned int dataType);
+    bool slot_endConnect();
 /***********************************************************************************/
 
 /***********************************************************************************/

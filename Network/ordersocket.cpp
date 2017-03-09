@@ -35,9 +35,9 @@ OrderSocket::OrderSocket(QString adress, int port, QObject *parent)
     m_pTcpSocket->setSocketOption(QAbstractSocket::KeepAliveOption, 1);
     m_pTcpSocket->setSocketOption(QAbstractSocket::LowDelayOption, 1);
     m_pTcpSocket->connectToHost(m_strIPAdress, m_uPort);
-    connect(m_pTcpSocket, &QTcpSocket::connected, this, &OrderSocket::slot_setConnected);
-    connect(m_pTcpSocket, &QTcpSocket::disconnected, this, &OrderSocket::slot_setDisConnected);
-    connect(m_pTcpSocket, &QTcpSocket::readyRead, this, &OrderSocket::readDataFromServer);
+    connect(m_pTcpSocket, &QTcpSocket::connected, this, &OrderSocket::slot_setConnected, Qt::QueuedConnection);
+    connect(m_pTcpSocket, &QTcpSocket::disconnected, this, &OrderSocket::slot_setDisConnected, Qt::QueuedConnection);
+    connect(m_pTcpSocket, &QTcpSocket::readyRead, this, &OrderSocket::readDataFromServer, Qt::QueuedConnection);
 }
 
 OrderSocket::~OrderSocket()
@@ -91,7 +91,7 @@ bool OrderSocket::writeBufferToServer(const FrameBuffer & buffer) const
     return writeLength == bytes.length();
 }
 
-bool OrderSocket::requireConnect()
+bool OrderSocket::slot_requireConnect()
 {
     m_pSendFrameBuffer->setCmdType(1);
     m_pSendFrameBuffer->setCmdNum(1);
@@ -100,7 +100,7 @@ bool OrderSocket::requireConnect()
     return this->writeBufferToServer();
 }
 
-bool OrderSocket::exitConnect()
+bool OrderSocket::slot_exitConnect()
 {
     m_pSendFrameBuffer->setCmdType(1);
     m_pSendFrameBuffer->setCmdNum(2);
@@ -109,7 +109,7 @@ bool OrderSocket::exitConnect()
     return this->writeBufferToServer();
 }
 
-bool OrderSocket::requireDevices()
+bool OrderSocket::slot_requireDevices()
 {
     m_pSendFrameBuffer->setCmdType(1);
     m_pSendFrameBuffer->setCmdNum(3);
@@ -118,19 +118,19 @@ bool OrderSocket::requireDevices()
     return this->writeBufferToServer();
 }
 
-bool OrderSocket::startRequire(std::string deviceName, unsigned int dataType)
+bool OrderSocket::slot_startRequire(QString deviceName, unsigned int dataType)
 {
     m_pSendFrameBuffer->setCmdType(2);
     m_pSendFrameBuffer->setCmdNum(1);
     KinectDataProto::pbReqStart req {};
-    req.set_devicename(deviceName);
+    req.set_devicename(deviceName.toStdString());
     req.set_datatype(dataType);
     m_pSendFrameBuffer->setData(req);
     qDebug() << "enter start require";
     return this->writeBufferToServer();
 }
 
-bool OrderSocket::endConnect()
+bool OrderSocket::slot_endConnect()
 {
     m_pSendFrameBuffer->setCmdType(2);
     m_pSendFrameBuffer->setCmdNum(2);

@@ -2,9 +2,9 @@
 #include "mainwindow.hpp"
 #include <QObject>
 
-class OrderSocket;
+class OrderSocketThread;
 
-class MainFrame : public QObject 
+class MainFrame : public QObject
 {
 	Q_OBJECT
 
@@ -14,5 +14,5 @@ public:
 
 private:
     MainWindow *m_pMainWindow;
-    OrderSocket *m_pSocket;
+    OrderSocketThread *m_pOrderSocketThread;
 };
