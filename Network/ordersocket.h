@@ -51,7 +51,7 @@ private:
 /***********************************************************************************/
 /*发送指令到服务器的相关函数*/
 private:
-    FrameBuffer *m_pSendFrameBuffer;
+    FrameBuffer *m_pSendFrameBuffer = nullptr;
 
 private:
     bool writeBufferToServer() const;
@@ -79,7 +79,7 @@ private:
     bool m_bReadyRead = false;
 
     bool m_bNotHasHead = true;
-    FrameBuffer *m_pReceiveFrameBuffer;
+    FrameBuffer *m_pReceiveFrameBuffer = nullptr;
 private:
     void analysisReceiveByteArrayBuffer();
     void analysisReceiveFrameBuffer(const FrameBuffer &buffer);

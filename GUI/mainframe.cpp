@@ -1,12 +1,6 @@
 ﻿#include "mainframe.hpp"
-#include "framebuffer.h"
-#include "ordersocket.h"
 
 #include "ordersocketthread.h"
-
-#include <ConnectProto.pb.h>
-#include <KinectDataProto.pb.h>
-
 
 MainFrame::MainFrame(QObject * parent) 
 {

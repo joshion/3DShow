@@ -29,8 +29,8 @@ namespace
 OrderSocket::OrderSocket(QString adress, int port, QObject *parent)
     : QObject(parent), m_strIPAdress(adress), m_uPort(port)
 {
-    m_pSendFrameBuffer = new FrameBuffer();
-    m_pReceiveFrameBuffer = new FrameBuffer();
+    m_pSendFrameBuffer = new FrameBuffer {};
+    m_pReceiveFrameBuffer = new FrameBuffer {};
     m_pTcpSocket = new QTcpSocket(this);
     m_pTcpSocket->setSocketOption(QAbstractSocket::KeepAliveOption, 1);
     m_pTcpSocket->setSocketOption(QAbstractSocket::LowDelayOption, 1);

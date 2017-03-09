@@ -15,7 +15,7 @@ OrderSocketThread::~OrderSocketThread()
 
 void OrderSocketThread::run()
 {
-    m_pOrderSocket = new OrderSocket;
+    m_pOrderSocket = new OrderSocket {};
     connect(this, &OrderSocketThread::signal_requireConnect,
         m_pOrderSocket, &OrderSocket::slot_requireConnect, Qt::QueuedConnection);
     connect(this, &OrderSocketThread::signal_exitConnect,

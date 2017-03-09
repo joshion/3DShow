@@ -13,6 +13,6 @@ public:
 	~MainFrame();
 
 private:
-    MainWindow *m_pMainWindow;
-    OrderSocketThread *m_pOrderSocketThread;
+    MainWindow *m_pMainWindow = nullptr;
+    OrderSocketThread *m_pOrderSocketThread = nullptr;
 };
