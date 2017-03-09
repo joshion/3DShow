@@ -207,7 +207,10 @@ void OrderSocket::analysisReceiveFrameBuffer(const FrameBuffer & buffer)
             ConnectProto::pbRespConnect resp;
             resp.ParseFromArray(buffer.data(), buffer.length());
             resp.PrintDebugString();
-            m_pGUI->signal_respConnect();
+            if (m_pGUI)
+            {
+                m_pGUI->signal_respConnect();
+            }
         }
         break;
         case RESP_DEVICES:
@@ -215,7 +218,10 @@ void OrderSocket::analysisReceiveFrameBuffer(const FrameBuffer & buffer)
             ConnectProto::pbRespDevices resp;
             resp.ParseFromArray(buffer.data(), buffer.length());
             resp.PrintDebugString();
-            m_pGUI->signal_respDevices();
+            if (m_pGUI)
+            {
+                m_pGUI->signal_respDevices();
+            }
         }
         break;
         default:
@@ -230,7 +236,10 @@ void OrderSocket::analysisReceiveFrameBuffer(const FrameBuffer & buffer)
             KinectDataProto::pbReqStart req;
             req.ParseFromArray(buffer.data(), buffer.length());
             req.PrintDebugString();
-            m_pGUI->signal_respStartRequire();
+            if (m_pGUI)
+            {
+                m_pGUI->signal_respStartRequire();
+            }
         }
         break;
         case SERVER_REQUIRE_END_CONNECT:
@@ -238,7 +247,10 @@ void OrderSocket::analysisReceiveFrameBuffer(const FrameBuffer & buffer)
             KinectDataProto::pbRespStart resp;
             resp.ParseFromArray(buffer.data(), buffer.length());
             resp.PrintDebugString();
-            m_pGUI->signal_reqEndConnect();
+            if (m_pGUI)
+            {
+                m_pGUI->signal_reqEndConnect();
+            }
         }
         break;
         default:

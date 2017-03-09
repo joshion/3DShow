@@ -13,7 +13,7 @@ MainFrame::MainFrame(QObject * parent)
     m_pMainWindow = new MainWindow();
     m_pMainWindow->show();
 
-    m_pOrderSocketThread = new OrderSocketThread(m_pMainWindow, nullptr);
+    m_pOrderSocketThread = new OrderSocketThread(*m_pMainWindow, nullptr);
     connect(m_pMainWindow, &MainWindow::signal_requireConnect,
         m_pOrderSocketThread, &OrderSocketThread::signal_requireConnect, Qt::QueuedConnection);
     connect(m_pMainWindow, &MainWindow::signal_exitConnect,
