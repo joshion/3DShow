@@ -26,7 +26,7 @@ namespace
     const static unsigned int SERVER_REQUIRE_END_CONNECT = 102;
 }
 
-OrderSocket::OrderSocket(QString adress, int port, QObject *parent)
+OrderSocket::OrderSocket(QString adress, unsigned int port, QObject *parent)
     : QObject(parent), m_strIPAdress(adress), m_uPort(port)
 {
     m_pSendFrameBuffer = new FrameBuffer {};

@@ -24,12 +24,12 @@ class OrderSocket : public QObject, public Thread
 {
     Q_OBJECT
 public:
-    explicit OrderSocket(QString adress="127.0.0.1", int port= 7892, QObject *parent = 0);
+    explicit OrderSocket(QString adress="127.0.0.1", unsigned int port= 7892, QObject *parent = nullptr);
     ~OrderSocket();
 
 private:
     QString m_strIPAdress;
-    int m_uPort;
+    unsigned int m_uPort;
     QTcpSocket *m_pTcpSocket;
 
 private:

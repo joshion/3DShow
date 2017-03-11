@@ -12,7 +12,7 @@ class OrderSocketThread : public QThread
     Q_OBJECT
 
 public:
-    OrderSocketThread(OrderInterface &rInterface, QObject *parent);
+    OrderSocketThread(OrderInterface &rInterface, QObject *parent = nullptr);
     ~OrderSocketThread();
 protected:
     void run() override;

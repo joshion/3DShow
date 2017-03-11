@@ -2,12 +2,14 @@
 
 #include "ordersocketthread.h"
 
+#include "transfersocket.h"
+
 MainFrame::MainFrame(QObject * parent) 
 {
     m_pMainWindow = new MainWindow();
     m_pMainWindow->show();
 
-    m_pOrderSocketThread = new OrderSocketThread(*m_pMainWindow, nullptr);
+    m_pOrderSocketThread = new OrderSocketThread(*m_pMainWindow);
     connect(m_pMainWindow, &MainWindow::signal_requireConnect,
         m_pOrderSocketThread, &OrderSocketThread::signal_requireConnect, Qt::QueuedConnection);
     connect(m_pMainWindow, &MainWindow::signal_exitConnect,
@@ -18,6 +20,8 @@ MainFrame::MainFrame(QObject * parent)
         m_pOrderSocketThread, &OrderSocketThread::signal_startRequire, Qt::QueuedConnection);
     connect(m_pMainWindow, &MainWindow::signal_endConnect,
         m_pOrderSocketThread, &OrderSocketThread::signal_endConnect, Qt::QueuedConnection);
+
+    TransferSocket socket {};
 }
 
 MainFrame::~MainFrame()
