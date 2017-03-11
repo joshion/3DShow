@@ -5,7 +5,7 @@
 #include "ConnectProto.pb.h"
 #include "KinectDataProto.pb.h"
 
-#include <QtNetwork/QTcpSocket>
+#include <QTcpSocket>
 #include <QString>
 
 namespace
@@ -148,10 +148,12 @@ void OrderSocket::analysisReceiveByteArrayBuffer()
 {
     while (true)
     {
-        std::unique_lock<std::mutex> ul(m_ReadyReadMutex);
-        while (!m_bReadyRead)
         {
-            m_ReadyReadCV.wait(ul);
+            std::unique_lock<std::mutex> ul(m_ReadyReadMutex);
+            while (!m_bReadyRead)
+            {
+                m_ReadyReadCV.wait(ul);
+            }
         }
         /*
         缓存内可能粘包而存在多条指令,也可能存在不完整的指令

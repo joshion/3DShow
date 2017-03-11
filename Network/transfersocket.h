@@ -3,7 +3,7 @@
 
 #include "thread.h"
 
-#include <QtNetwork/QTcpSocket>
+#include <QTcpSocket>
 
 #include <condition_variable>
 
