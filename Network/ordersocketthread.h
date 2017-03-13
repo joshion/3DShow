@@ -12,13 +12,13 @@ class OrderSocketThread : public QThread
     Q_OBJECT
 
 public:
-    OrderSocketThread(OrderInterface &rInterface, QObject *parent = nullptr);
+    OrderSocketThread(OrderInterface *pInterface = nullptr, QObject *parent = nullptr);
     ~OrderSocketThread();
 protected:
     void run() override;
 private:
     OrderSocket *m_pOrderSocket;
-    OrderInterface &m_rOrderInterface;  //上层GUI类,传递其到下层C++服务,用于上下层的通信
+    OrderInterface *m_pOrderInterface;  // 上层GUI类的虚基类,传递其到下层C++服务,用于上下层的通信
 
 /***********************************************************************************/
 /*GUI类发送消息到底层C++所用接口*/

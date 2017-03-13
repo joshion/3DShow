@@ -3,9 +3,11 @@
 
 #include "thread.h"
 
+#include <condition_variable>
+
 #include <QTcpSocket>
 
-#include <condition_variable>
+class TransferInterface;
 
 class TransferSocket : public QTcpSocket, public Thread
 {
@@ -25,6 +27,18 @@ private slots:
     inline void slot_setDisConnected();
 
 /***********************************************************************************/
+/*与GUI通信所用接口*/
+private:
+    TransferInterface *m_pGUI = nullptr;
+public:
+    void registerGUIClass(TransferInterface*  gui)
+    {
+        this->m_pGUI = gui;
+    };
+/***********************************************************************************/
+
+
+/***********************************************************************************/
 /*数据解析相关的线程*/
 protected:
     void workingFunc() override;
@@ -42,6 +56,7 @@ private:
  
 private slots:
     void slot_readDataFromServer();
+/***********************************************************************************/
 
 };
 
