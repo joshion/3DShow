@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "mainwindow.hpp"
+
 #include <QObject>
 
 class OrderSocketThread;

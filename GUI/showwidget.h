@@ -5,6 +5,8 @@
 #include <QOpenGLFunctions_4_3_Core>
 #include <QOpenGLShaderProgram>
 
+#include <QTimer>
+
 class ShowWidget : public QOpenGLWidget, protected QOpenGLFunctions_4_3_Core
 {
     Q_OBJECT
@@ -25,6 +27,11 @@ private:
     QOpenGLShaderProgram program;
     QVector4D *triangleVertices;
     QVector4D *color;
+
+    QTimer *m_pTimer;
+
+private slots:
+    void slot_update();
 };
 
 #endif // SHOWWIDGET_H

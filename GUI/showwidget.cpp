@@ -2,12 +2,17 @@
 
 #include <QFile>
 
+#include <random>
+
 ShowWidget::ShowWidget(QWidget *parent)
     : QOpenGLWidget(parent)
 {
     resize(600, 400);
-    triangleVertices = new QVector4D[3];
-    color = new QVector4D[4];
+    triangleVertices = new QVector4D[30000];
+    color = new QVector4D[30000];
+    m_pTimer = new QTimer;
+    connect(m_pTimer, &QTimer::timeout, this, &ShowWidget::slot_update);
+    m_pTimer->start(2);
 }
 
 ShowWidget::~ShowWidget()
@@ -35,17 +40,21 @@ void ShowWidget::paintGL()
     int vertexLocation = program.attributeLocation("vertex");
     int colorLocation = program.attributeLocation("color");
 
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<double> dis(-1.0, 1.0);
+    for(int i = 0; i< 10000; ++i)
     {
-        triangleVertices[0] = QVector4D(0, 1, -0.5, 1);
-        triangleVertices[1] = QVector4D(1, -1, -0.5, 1);
-        triangleVertices[2] = QVector4D(-1, -1, -0.5, 1);
+        triangleVertices[i * 3 + 0] = QVector4D(dis(gen), dis(gen), dis(gen), dis(gen));
+        triangleVertices[i * 3 + 1] = QVector4D(dis(gen), dis(gen), dis(gen), dis(gen));
+        triangleVertices[i * 3 + 2] = QVector4D(dis(gen), dis(gen), dis(gen), dis(gen));
     }
 
-
+    for (int i = 0; i< 10000; ++i)
     {
-        color[0] = QVector4D(0.0f, 0.8, 0.0f, 0.0f);
-        color[1] = QVector4D(0.0f, 0.0f, 0.8f, 0.0f);
-        color[2] = QVector4D(0.8f, 0.0f, 0.0f, 0.0f);
+        color[i * 3 + 0] = QVector4D(0.0f, 0.8, 0.0f, 0.0f);
+        color[i * 3 + 1] = QVector4D(0.0f, 0.0f, 0.8f, 0.0f);
+        color[i * 3 + 2] = QVector4D(0.8f, 0.0f, 0.0f, 0.0f);
     }
 
 
@@ -61,8 +70,8 @@ void ShowWidget::paintGL()
     program.setUniformValue(matrixLocation, pmvMatrix);
 
     glClear(GL_COLOR_BUFFER_BIT);
-    glViewport(0, 0, this->width()/2, this->height()/2);
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    glViewport(0, 0, this->width(), this->height());
+    glDrawArrays(GL_TRIANGLES, 0, 10000);
     glFlush();
 
     program.disableAttributeArray(vertexLocation);
@@ -84,4 +93,9 @@ QString ShowWidget::readStringFromFile(const QString &fileName)
     {
         return "";
     }
+}
+
+void ShowWidget::slot_update()
+{
+    this->update();
 }
