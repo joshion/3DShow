@@ -13,6 +13,7 @@ OrderSocketThread::OrderSocketThread(OrderInterface *pInterface, QObject *parent
 OrderSocketThread::~OrderSocketThread()
 {
     this->quit();
+    this->wait(1000);
 }
 
 void OrderSocketThread::run()
@@ -32,6 +33,6 @@ void OrderSocketThread::run()
     connect(this, &OrderSocketThread::signal_endConnect,
         m_pOrderSocket, &OrderSocket::slot_endConnect, Qt::QueuedConnection);
     m_pOrderSocket->registerGUIClass(m_pOrderInterface);
-    m_pOrderSocket->start();
+
     exec();
 }

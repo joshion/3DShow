@@ -1,11 +1,6 @@
 #ifndef TCPSOCKET_H
 #define TCPSOCKET_H
 #include <QObject>
-//#include <QThread>
-
-#include "thread.h"
-
-#include <condition_variable>
 
 class OrderInterface;
 class FrameBuffer;
@@ -21,7 +16,7 @@ c.断开链接
 该类所对应的接口类为 OrderInterface
 需要先调用registerGUIClass()后才可以调用start()以开启线程读取缓存
 */
-class OrderSocket : public QObject, public Thread
+class OrderSocket : public QObject
 {
     Q_OBJECT
 public:
@@ -69,15 +64,7 @@ public slots:
 /***********************************************************************************/
 /*与线程相关的变量以及函数*/
 protected:
-    void workingFunc() override;
-
-private:
-    std::mutex m_bufferMutex;
     QByteArray m_receiveBuffer;
-
-    std::mutex m_ReadyReadMutex;
-    std::condition_variable m_ReadyReadCV;
-    bool m_bReadyRead = false;
 
     bool m_bNotHasHead = true;
     FrameBuffer *m_pReceiveFrameBuffer = nullptr;

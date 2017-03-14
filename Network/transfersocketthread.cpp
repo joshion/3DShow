@@ -12,6 +12,7 @@ TransferSocketThread::TransferSocketThread(TransferInterface *pInterface, QObjec
 TransferSocketThread::~TransferSocketThread()
 {
     this->quit();
+    this->wait(1000);
 }
 
 void TransferSocketThread::run()
@@ -21,6 +22,5 @@ void TransferSocketThread::run()
     connect(this, &TransferSocketThread::finished, m_pTransferSocket, &TransferSocket::deleteLater);
 
     m_pTransferSocket->registerGUIClass(m_pTransferInterface);
-    m_pTransferSocket->start();
     exec();
 }

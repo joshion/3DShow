@@ -42,8 +42,6 @@ OrderSocket::OrderSocket(QString adress, unsigned int port, QObject *parent)
 
 OrderSocket::~OrderSocket()
 {
-    this->stop();
-    // this->quit();
     if (m_pTcpSocket)
     {
         m_pTcpSocket->close();
@@ -143,61 +141,44 @@ bool OrderSocket::slot_endConnect()
     return this->writeBufferToServer();
 }
 
-void OrderSocket::workingFunc()
-{
-    analysisReceiveByteArrayBuffer();
-}
-
 void OrderSocket::analysisReceiveByteArrayBuffer()
 {
+    /*
+    缓存内可能粘包而存在多条指令,也可能存在不完整的指令
+    所以循环解析指令,直到发现不完整的指令,等待接收到更多指令的时候再进行解析
+    */
     while (true)
     {
+        bool bIsACompleteFrameBuffer = false;
         {
-            std::unique_lock<std::mutex> ul(m_ReadyReadMutex);
-            while (!m_bReadyRead)
+            /*
+            若服务器发来的缓存少于11或者已经读取到了头部时跳过此部分,等待下次读取到更多缓存再进行判断
+            */
+            if (m_bNotHasHead && m_receiveBuffer.length() >= 11)
             {
-                m_ReadyReadCV.wait(ul);
+                m_pReceiveFrameBuffer->setHead(m_receiveBuffer);
+                m_receiveBuffer.remove(0, 11);
+                m_bNotHasHead = false;
+            }
+            /*
+            若没有读取到头部或者缓存的长度比头部指定的protobuf的长度小时跳过此部分,等待下次读取到更多缓存时再进行判断
+            */
+            if (!m_bNotHasHead && m_receiveBuffer.length() >= m_pReceiveFrameBuffer->length())
+            {
+                m_pReceiveFrameBuffer->setData(m_receiveBuffer, m_pReceiveFrameBuffer->length());
+                m_receiveBuffer.remove(0, m_pReceiveFrameBuffer->length());
+                m_bNotHasHead = true;
+                bIsACompleteFrameBuffer = true;
             }
         }
-        /*
-        缓存内可能粘包而存在多条指令,也可能存在不完整的指令
-        所以循环解析指令,直到发现不完整的指令,等待接收到更多指令的时候再进行解析
-        */
-        while (true)
+        if (bIsACompleteFrameBuffer)
         {
-            bool bIsACompleteFrameBuffer = false;
-            {
-                std::lock_guard<std::mutex> lg(m_bufferMutex);
-                /*
-                若服务器发来的缓存少于11或者已经读取到了头部时跳过此部分,等待下次读取到更多缓存再进行判断
-                */
-                if (m_bNotHasHead && m_receiveBuffer.length() >= 11)
-                {
-                    m_pReceiveFrameBuffer->setHead(m_receiveBuffer);
-                    m_receiveBuffer.remove(0, 11);
-                    m_bNotHasHead = false;
-                }
-                /*
-                若没有读取到头部或者缓存的长度比头部指定的protobuf的长度小时跳过此部分,等待下次读取到更多缓存时再进行判断
-                */
-                if (!m_bNotHasHead && m_receiveBuffer.length() >= m_pReceiveFrameBuffer->length())
-                {
-                    m_pReceiveFrameBuffer->setData(m_receiveBuffer, m_pReceiveFrameBuffer->length());
-                    m_receiveBuffer.remove(0, m_pReceiveFrameBuffer->length());
-                    m_bNotHasHead = true;
-                    bIsACompleteFrameBuffer = true;
-                }
-            }
-            if (bIsACompleteFrameBuffer)
-            {
-                analysisReceiveFrameBuffer(*m_pReceiveFrameBuffer);
-            }
-            else //指令不完整,等待读取更待缓存
-            {
-                break;
-            }
+            analysisReceiveFrameBuffer(*m_pReceiveFrameBuffer);
         }
-        m_bReadyRead = false;
+        else //指令不完整,等待读取更待缓存
+        {
+            break;
+        }
     }
 }
 
@@ -270,13 +251,7 @@ void OrderSocket::analysisReceiveFrameBuffer(const FrameBuffer & buffer)
 
 void OrderSocket::slot_readDataFromServer()
 {
-    {
-        std::lock_guard<std::mutex> lg(m_bufferMutex);
-        m_receiveBuffer.append(m_pTcpSocket->readAll());
-    }
-    {
-        std::unique_lock<std::mutex> ul(m_ReadyReadMutex);
-        m_bReadyRead = true;
-        m_ReadyReadCV.notify_all();
-    }
+    m_receiveBuffer.append(m_pTcpSocket->readAll());
+    analysisReceiveByteArrayBuffer();
+
 }

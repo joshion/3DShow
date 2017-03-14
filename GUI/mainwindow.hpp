@@ -12,12 +12,8 @@ class MainWindow : public QWidget ,public OrderInterface
 public:
 	MainWindow(QWidget * parent = Q_NULLPTR);
 	~MainWindow();
-protected:
-    void closeEvent(QCloseEvent *event) override;
 private:
 	Ui::MainWindow ui;
-
-signals: void signal_exitProcess();
 
 /***********************************************************************************/
 /*底层C++与本GUI类通信所用接口*/

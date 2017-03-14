@@ -1,4 +1,5 @@
 #include "transfersocket.h"
+#include <QByteArray>
 
 TransferSocket::TransferSocket(QString strIPAdress, unsigned int port, QObject *parent)
     : QTcpSocket(parent), m_strIPAdress(strIPAdress), m_uPort(port)
@@ -18,46 +19,21 @@ TransferSocket::~TransferSocket()
 
 void TransferSocket::slot_setConnected()
 {
+    m_bConnected = true;
 }
 
 void TransferSocket::slot_setDisConnected()
 {
-}
-
-void TransferSocket::workingFunc()
-{
-    this->analysisReceiveBuffer();
+    m_bConnected = false;
 }
 
 void TransferSocket::analysisReceiveBuffer()
 {
-    while (true)
-    {
-        std::unique_lock<std::mutex> ul(m_ReadyReadMutex);
-        while (!m_bReadyRead)
-        {
-            m_ReadyReadCV.wait(ul);
-        }
-        while (true)
-        {
-            std::lock_guard<std::mutex> lg(m_bufferMutex);
-            m_receiveBuffer.clear();
-            
-            // 在此处加处理数据以及信号转发的代码
-        }
-        m_bReadyRead = false;
-    }
+
 }
 
 void TransferSocket::slot_readDataFromServer()
 {
-    {
-        std::lock_guard<std::mutex> lg(m_bufferMutex);
-        m_receiveBuffer.append(this->readAll());
-    }
-    {
-        std::unique_lock<std::mutex> ul(m_ReadyReadMutex);
-        m_bReadyRead = true;
-        m_ReadyReadCV.notify_all();
-    }
+    m_receiveBuffer.append(this->readAll());
+ 
 }

@@ -15,9 +15,6 @@ MainFrame::MainFrame(QObject * parent)
 
     m_pOrderSocketThread = new OrderSocketThread(m_pMainWindow);
 
-    connect(m_pMainWindow, &MainWindow::signal_exitProcess,
-        this, &MainFrame::slot_exitProcess);
-
     connect(m_pMainWindow, &MainWindow::signal_requireConnect,
         m_pOrderSocketThread, &OrderSocketThread::signal_requireConnect, Qt::QueuedConnection);
     connect(m_pMainWindow, &MainWindow::signal_exitConnect,
@@ -36,30 +33,18 @@ MainFrame::~MainFrame()
     if (m_pOrderSocketThread)
     {
         delete m_pOrderSocketThread;
+        m_pOrderSocketThread = nullptr;
     }
 
     if (m_pTransferSocketThread)
     {
         delete m_pTransferSocketThread;
+        m_pTransferSocketThread = nullptr;
     }
         
     if (m_pMainWindow)
     {
         delete m_pMainWindow;
+        m_pMainWindow = nullptr;
     }
-}
-
-void MainFrame::slot_exitProcess()
-{
-    if (m_pOrderSocketThread)
-    {
-        delete m_pOrderSocketThread;
-    }
-
-    if (m_pTransferSocketThread)
-    {
-        delete m_pTransferSocketThread;
-    }
-
-    exit(0);
 }

@@ -21,15 +21,6 @@ MainWindow::~MainWindow()
 	
 }
 
-/*
-主窗口关闭时,关闭所有线程,退出程序
-*/
-void MainWindow::closeEvent(QCloseEvent * event)
-{
-    // this->close();
-    emit signal_exitProcess();
-}
-
 void MainWindow::slot_respConnect()
 {
     qDebug() << "enter" << __FILE__ << __LINE__ << "slot_respConnect";
