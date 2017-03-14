@@ -19,11 +19,15 @@ SkeletonFrameWidget::SkeletonFrameWidget(QWidget *parent)
 
 SkeletonFrameWidget::~SkeletonFrameWidget()
 {
+    m_Timer->stop();
+    delete m_Timer;
+    m_Timer = nullptr;
     if (m_Capture->isOpened())
     {
         m_Capture->release();
     }
     delete m_Capture;
+    m_Capture = nullptr;
 }
 
 void SkeletonFrameWidget::initializeGL()
