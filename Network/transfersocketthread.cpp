@@ -11,12 +11,15 @@ TransferSocketThread::TransferSocketThread(TransferInterface *pInterface, QObjec
 
 TransferSocketThread::~TransferSocketThread()
 {
-
+    this->quit();
 }
 
 void TransferSocketThread::run()
 {
     m_pTransferSocket = new TransferSocket {};
+
+    connect(this, &TransferSocketThread::finished, m_pTransferSocket, &TransferSocket::deleteLater);
+
     m_pTransferSocket->registerGUIClass(m_pTransferInterface);
     m_pTransferSocket->start();
     exec();

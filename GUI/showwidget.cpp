@@ -24,11 +24,10 @@ void ShowWidget::initializeGL()
 {
     /* 0. 初始化函数，使得函数可以使用 */
     initializeOpenGLFunctions();
-    glViewport(0, 0, width(), height());
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
-    QString vertStr = Utilities::readStringFromFile("triangles.vert");
-    QString fragStr = Utilities::readStringFromFile("triangles.frag");
+    QString vertStr = Utilities::readStringFromFile("showwidget.vert");
+    QString fragStr = Utilities::readStringFromFile("showwidget.frag");
     program.addShaderFromSourceCode(QOpenGLShader::Vertex, vertStr);
     program.addShaderFromSourceCode(QOpenGLShader::Fragment, fragStr);
     program.link();
@@ -70,7 +69,6 @@ void ShowWidget::paintGL()
     program.setUniformValue(matrixLocation, pmvMatrix);
 
     glClear(GL_COLOR_BUFFER_BIT);
-    glViewport(0, 0, this->width(), this->height());
     glDrawArrays(GL_TRIANGLES, 0, 6);
     glFlush();
 
@@ -80,6 +78,7 @@ void ShowWidget::paintGL()
 
 void ShowWidget::resizeGL(int w, int h)
 {
+    glViewport(0, 0, width(), height());
 }
 
 void ShowWidget::slot_update()

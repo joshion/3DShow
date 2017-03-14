@@ -51,7 +51,15 @@ MainFrame::~MainFrame()
 
 void MainFrame::slot_exitProcess()
 {
-    m_pOrderSocketThread->exit(0);
-    m_pTransferSocketThread->exit(0);
+    if (m_pOrderSocketThread)
+    {
+        delete m_pOrderSocketThread;
+    }
+
+    if (m_pTransferSocketThread)
+    {
+        delete m_pTransferSocketThread;
+    }
+
     exit(0);
 }

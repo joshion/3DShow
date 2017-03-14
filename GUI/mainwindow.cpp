@@ -26,7 +26,7 @@ MainWindow::~MainWindow()
 */
 void MainWindow::closeEvent(QCloseEvent * event)
 {
-    this->close();
+    // this->close();
     emit signal_exitProcess();
 }
 

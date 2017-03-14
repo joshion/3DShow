@@ -14,6 +14,18 @@
    <string>MainWindow</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
+   <property name="leftMargin">
+    <number>6</number>
+   </property>
+   <property name="topMargin">
+    <number>6</number>
+   </property>
+   <property name="rightMargin">
+    <number>6</number>
+   </property>
+   <property name="bottomMargin">
+    <number>6</number>
+   </property>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <property name="leftMargin">
@@ -104,7 +116,7 @@
      <item>
       <layout class="QVBoxLayout" name="verticalLayout" stretch="1,1">
        <property name="spacing">
-        <number>2</number>
+        <number>6</number>
        </property>
        <item>
         <widget class="ShowWidget" name="m_ShowWidget">

@@ -97,20 +97,14 @@
     <CustomBuild Include="skeletonframewidget.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="skeletonframewidget.ui">
-      <Filter>Form Files</Filter>
-    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_mainwindow.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
-    <ClInclude Include="GeneratedFiles\ui_skeletonframewidget.h">
-      <Filter>Generated Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="triangles.frag" />
-    <None Include="triangles.vert" />
+    <None Include="showwidget.frag" />
+    <None Include="showwidget.vert" />
   </ItemGroup>
 </Project>

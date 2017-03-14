@@ -13,7 +13,7 @@ TransferSocket::TransferSocket(QString strIPAdress, unsigned int port, QObject *
 
 TransferSocket::~TransferSocket()
 {
-
+    this->close();
 }
 
 void TransferSocket::slot_setConnected()

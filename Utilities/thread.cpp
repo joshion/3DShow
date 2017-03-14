@@ -31,7 +31,7 @@ void Thread::stop()
 		{
 			m_thread->join();
 			delete m_thread;
-			m_thread = NULL;
+			m_thread = nullptr;
 		}
 		m_bWorkingSwitch = false;
 	}

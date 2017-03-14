@@ -42,15 +42,19 @@ OrderSocket::OrderSocket(QString adress, unsigned int port, QObject *parent)
 
 OrderSocket::~OrderSocket()
 {
+    this->stop();
+    // this->quit();
     if (m_pTcpSocket)
     {
         m_pTcpSocket->close();
-        delete m_pTcpSocket;
     }
-    this->stop();
     if (m_pSendFrameBuffer)
     {
         delete m_pSendFrameBuffer;
+    }
+    if (m_pReceiveFrameBuffer)
+    {
+        delete m_pReceiveFrameBuffer;
     }
 }
 

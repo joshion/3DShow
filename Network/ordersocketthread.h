@@ -16,6 +16,7 @@ public:
     ~OrderSocketThread();
 protected:
     void run() override;
+
 private:
     OrderSocket *m_pOrderSocket;
     OrderInterface *m_pOrderInterface;  // 上层GUI类的虚基类,传递其到下层C++服务,用于上下层的通信

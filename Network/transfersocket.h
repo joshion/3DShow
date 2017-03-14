@@ -6,6 +6,7 @@
 #include <condition_variable>
 
 #include <QTcpSocket>
+#include <QThread>
 
 class TransferInterface;
 

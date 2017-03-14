@@ -1,6 +1,7 @@
 #ifndef TCPSOCKET_H
 #define TCPSOCKET_H
 #include <QObject>
+//#include <QThread>
 
 #include "thread.h"
 
@@ -68,7 +69,7 @@ public slots:
 /***********************************************************************************/
 /*与线程相关的变量以及函数*/
 protected:
-    virtual void workingFunc();
+    void workingFunc() override;
 
 private:
     std::mutex m_bufferMutex;
@@ -83,6 +84,7 @@ private:
 private:
     void analysisReceiveByteArrayBuffer();
     void analysisReceiveFrameBuffer(const FrameBuffer &buffer);
+
 private slots:
     void slot_readDataFromServer();
 /***********************************************************************************/
