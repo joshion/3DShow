@@ -15,11 +15,14 @@ class MainFrame : public QObject
 public:
     MainFrame(QObject * parent = Q_NULLPTR);
     ~MainFrame();
+private slots:
+    void slot_exitProcess();
 
 private:
     MainWindow *m_pMainWindow = nullptr;
     OrderSocketThread *m_pOrderSocketThread = nullptr;
     TransferSocketThread *m_pTransferSocketThread = nullptr;
+
 };
 
 #endif // !MAINFRAME_H

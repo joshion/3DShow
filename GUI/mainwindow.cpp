@@ -26,7 +26,8 @@ MainWindow::~MainWindow()
 */
 void MainWindow::closeEvent(QCloseEvent * event)
 {
-    exit(0);
+    this->close();
+    emit signal_exitProcess();
 }
 
 void MainWindow::slot_respConnect()

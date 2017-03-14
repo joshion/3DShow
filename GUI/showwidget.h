@@ -16,12 +16,9 @@ public:
     ~ShowWidget();
 
 protected:
-    void initializeGL();
-    void paintGL();
-    void resizeGL(int  w ,int h);
-
-private:
-    QString readStringFromFile(const QString &fileName);
+    void initializeGL() override;
+    void paintGL() override;
+    void resizeGL(int  w ,int h) override;
 
 private:
     QOpenGLShaderProgram program;

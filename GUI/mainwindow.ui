@@ -6,29 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>936</width>
-    <height>653</height>
+    <width>941</width>
+    <height>726</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <property name="spacing">
-    <number>6</number>
-   </property>
-   <property name="leftMargin">
-    <number>6</number>
-   </property>
-   <property name="topMargin">
-    <number>6</number>
-   </property>
-   <property name="rightMargin">
-    <number>6</number>
-   </property>
-   <property name="bottomMargin">
-    <number>6</number>
-   </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <property name="leftMargin">
@@ -94,7 +79,7 @@
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="2,3">
      <property name="spacing">
       <number>6</number>
      </property>
@@ -117,14 +102,24 @@
       </widget>
      </item>
      <item>
-      <widget class="ShowWidget" name="m_ShowWidget">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-         <horstretch>4</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
+      <layout class="QVBoxLayout" name="verticalLayout" stretch="1,1">
+       <property name="spacing">
+        <number>2</number>
        </property>
-      </widget>
+       <item>
+        <widget class="ShowWidget" name="m_ShowWidget">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>4</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="SkeletonFrameWidget" name="m_SkeletonFrameWidget"/>
+       </item>
+      </layout>
      </item>
     </layout>
    </item>
@@ -136,6 +131,11 @@
    <class>ShowWidget</class>
    <extends>QOpenGLWidget</extends>
    <header>showwidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SkeletonFrameWidget</class>
+   <extends>QOpenGLWidget</extends>
+   <header>skeletonframewidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

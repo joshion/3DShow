@@ -1,6 +1,6 @@
 #include "showwidget.h"
 
-#include <QFile>
+#include "utilities.h"
 
 #include <random>
 
@@ -8,11 +8,11 @@ ShowWidget::ShowWidget(QWidget *parent)
     : QOpenGLWidget(parent)
 {
     resize(600, 400);
-    triangleVertices = new QVector4D[30000];
-    color = new QVector4D[30000];
+    triangleVertices = new QVector4D[6];
+    color = new QVector4D[6];
     m_pTimer = new QTimer;
     connect(m_pTimer, &QTimer::timeout, this, &ShowWidget::slot_update);
-    m_pTimer->start(2);
+    m_pTimer->start(50);
 }
 
 ShowWidget::~ShowWidget()
@@ -27,8 +27,8 @@ void ShowWidget::initializeGL()
     glViewport(0, 0, width(), height());
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
-    QString vertStr = readStringFromFile("triangles.vert");
-    QString fragStr = readStringFromFile("triangles.frag");
+    QString vertStr = Utilities::readStringFromFile("triangles.vert");
+    QString fragStr = Utilities::readStringFromFile("triangles.frag");
     program.addShaderFromSourceCode(QOpenGLShader::Vertex, vertStr);
     program.addShaderFromSourceCode(QOpenGLShader::Fragment, fragStr);
     program.link();
@@ -43,14 +43,14 @@ void ShowWidget::paintGL()
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_real_distribution<double> dis(-1.0, 1.0);
-    for(int i = 0; i< 10000; ++i)
+    for(int i = 0; i < 2; ++i)
     {
         triangleVertices[i * 3 + 0] = QVector4D(dis(gen), dis(gen), dis(gen), dis(gen));
         triangleVertices[i * 3 + 1] = QVector4D(dis(gen), dis(gen), dis(gen), dis(gen));
         triangleVertices[i * 3 + 2] = QVector4D(dis(gen), dis(gen), dis(gen), dis(gen));
     }
 
-    for (int i = 0; i< 10000; ++i)
+    for (int i = 0; i < 2; ++i)
     {
         color[i * 3 + 0] = QVector4D(0.0f, 0.8, 0.0f, 0.0f);
         color[i * 3 + 1] = QVector4D(0.0f, 0.0f, 0.8f, 0.0f);
@@ -71,7 +71,7 @@ void ShowWidget::paintGL()
 
     glClear(GL_COLOR_BUFFER_BIT);
     glViewport(0, 0, this->width(), this->height());
-    glDrawArrays(GL_TRIANGLES, 0, 10000);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
     glFlush();
 
     program.disableAttributeArray(vertexLocation);
@@ -80,19 +80,6 @@ void ShowWidget::paintGL()
 
 void ShowWidget::resizeGL(int w, int h)
 {
-}
-
-QString ShowWidget::readStringFromFile(const QString &fileName)
-{
-    QFile file(fileName);
-    if (file.open(QFile::ReadOnly))
-    {
-        return file.readAll();
-    }
-    else
-    {
-        return "";
-    }
 }
 
 void ShowWidget::slot_update()

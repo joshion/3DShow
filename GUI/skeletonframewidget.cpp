@@ -15,11 +15,13 @@ SkeletonFrameWidget::SkeletonFrameWidget(QWidget *parent)
 
 SkeletonFrameWidget::~SkeletonFrameWidget()
 {
+    m_Timer->stop();
+    delete m_Timer;
     if (m_Capture->isOpened())
     {
         m_Capture->release();
-        delete m_Capture;
     }
+    delete m_Capture;
 }
 
 void SkeletonFrameWidget::showMat(cv::Mat &mat)
