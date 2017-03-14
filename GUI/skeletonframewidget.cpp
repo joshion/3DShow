@@ -22,10 +22,15 @@ SkeletonFrameWidget::~SkeletonFrameWidget()
     }
 }
 
+void SkeletonFrameWidget::showMat(cv::Mat &mat)
+{
+    cvtColor(mat, mat, CV_BGR2RGB);
+    QImage image((const unsigned char*) mat.data, mat.cols, mat.rows, QImage::Format_RGB888);
+    ui.label->setPixmap(QPixmap::fromImage(image));
+}
+
 void SkeletonFrameWidget::showCamera()
 {
     *m_Capture >> m_Mat;
-    cvtColor(m_Mat, m_Mat, CV_BGR2RGB);
-    QImage qimage = QImage((const unsigned char*) m_Mat.data, m_Mat.cols, m_Mat.rows, QImage::Format_RGB888);
-    ui.label->setPixmap(QPixmap::fromImage(qimage));
+    showMat(m_Mat);
 }

@@ -24,6 +24,9 @@ private:
     cv::VideoCapture *m_Capture;
     QTimer *m_Timer;
 
+private:
+    void showMat(cv::Mat &mat);
+
 public slots:
     void showCamera();
 };

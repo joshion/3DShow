@@ -1,15 +1,17 @@
 ﻿#include "mainframe.hpp"
 
+#include "mainwindow.hpp"
 #include "ordersocketthread.h"
-
 #include "transfersocketthread.h"
+
+#include "skeletonframewidget.h"
 
 MainFrame::MainFrame(QObject * parent) 
 {
     m_pMainWindow = new MainWindow();
     m_pMainWindow->show();
 
-    TransferSocketThread *pTransfer = new TransferSocketThread;
+    m_pTransferSocketThread = new TransferSocketThread;
 
     m_pOrderSocketThread = new OrderSocketThread(m_pMainWindow);
     connect(m_pMainWindow, &MainWindow::signal_requireConnect,
@@ -29,5 +31,9 @@ MainFrame::~MainFrame()
 {
     m_pOrderSocketThread->wait();
     delete m_pOrderSocketThread;
+
+    m_pTransferSocketThread->wait();
+    delete m_pTransferSocketThread;
+
     delete m_pMainWindow;
 }
