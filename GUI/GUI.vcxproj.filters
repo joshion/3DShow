@@ -109,4 +109,8 @@
       <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="triangles.frag" />
+    <None Include="triangles.vert" />
+  </ItemGroup>
 </Project>
