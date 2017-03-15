@@ -4,26 +4,6 @@
 #include <QtEndian>
 #include <memory>
 
-OrderFrameBuffer::OrderFrameBuffer(OrderFrameBuffer & other)
-{
-    this->m_u32length = other.m_u32length;
-    this->m_ucCmdType = other.m_ucCmdType;
-    this->m_ucCmdNum = other.m_ucCmdNum;
-    this->m_u32Sequence = other.m_u32Sequence;
-    this->m_ucVsersion = other.m_ucVsersion;
-
-    if (m_u32length > 0 && other.m_data != nullptr)
-    {
-        m_data = new unsigned char[m_u32length] {0};
-        memcpy(this->m_data, other.m_data, m_u32length);
-    }
-    else
-    {
-        m_u32length = 0;
-        m_data = nullptr;
-    }
-}
-
 /*
 len即是data的长度
 故只要len<=0 又或者 data==nullptr都是非法数据
@@ -32,9 +12,9 @@ len即是data的长度
 OrderFrameBuffer::OrderFrameBuffer(unsigned char cmdType, unsigned char cmdNum, unsigned int sequence,
     unsigned char version, unsigned int len, unsigned char * data)
     : m_u32length(len), m_ucCmdType(cmdType), m_ucCmdNum(cmdNum),
-    m_u32Sequence(sequence), m_ucVsersion(version), m_data(data)
+    m_u32Sequence(sequence), m_ucVsersion(version)
 {
-    if (m_u32length > 0 && m_data != nullptr)
+    if (data && m_u32length > 0)
     {
         m_data = new unsigned char[m_u32length] {0};
         memcpy(m_data, data, m_u32length);
@@ -46,12 +26,29 @@ OrderFrameBuffer::OrderFrameBuffer(unsigned char cmdType, unsigned char cmdNum, 
     }
 }
 
+OrderFrameBuffer::OrderFrameBuffer(OrderFrameBuffer & other)
+    : m_ucCmdType(other.m_ucCmdType), m_ucCmdNum(other.m_ucCmdNum),
+    m_u32Sequence(other.m_u32Sequence), m_ucVsersion(other.m_ucVsersion)
+{
+    if (other.m_u32length > 0 && other.m_data != nullptr)
+    {
+        this->m_data = new unsigned char[other.m_u32length] {0};
+        memcpy(this->m_data, other.m_data, other.m_u32length);
+        this->m_u32length = other.m_u32length;
+    }
+    else
+    {
+        this->m_u32length = 0;
+        this->m_data = nullptr;
+    }
+}
 
 OrderFrameBuffer::~OrderFrameBuffer()
 {
     if (m_data)
     {
         delete[] m_data;
+        m_data = nullptr;
     }
 }
 
@@ -68,7 +65,7 @@ OrderFrameBuffer & OrderFrameBuffer::operator=(const OrderFrameBuffer & other)
     if (other.m_u32length > 0 && other.m_data != nullptr)
     {
         this->m_data = new unsigned char[other.m_u32length] {0};
-        memcpy(this->m_data, other.m_data, m_u32length);
+        memcpy(this->m_data, other.m_data, other.m_u32length);
     }
     else
     {

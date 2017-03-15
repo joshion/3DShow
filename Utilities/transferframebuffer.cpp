@@ -5,13 +5,67 @@
 
 #include <memory>
 
-TransferFrameBuffer::TransferFrameBuffer()
+TransferFrameBuffer::TransferFrameBuffer(unsigned int timeStamp, unsigned int dataType,
+    unsigned int bodyLength, unsigned char * data)
+    : m_u32TimeStamp(timeStamp), m_u32DataType(dataType)
 {
+    if (data && bodyLength > 0)
+    {
+        m_Data = new unsigned char [bodyLength] {0};
+        memcpy(m_Data, data, bodyLength);
+        m_u32BodyLength = bodyLength;
+    }
+    else
+    {
+        m_u32BodyLength = 0;
+        m_Data = nullptr;
+    }
 }
 
+TransferFrameBuffer::TransferFrameBuffer(TransferFrameBuffer & other)
+    : m_u32TimeStamp(other.m_u32TimeStamp), m_u32DataType(other.m_u32DataType)
+{
+    if (other.m_Data && other.m_u32BodyLength > 0)
+    {
+        this->m_Data = new unsigned char [other.m_u32BodyLength] {0};
+        memcpy(this->m_Data, other.m_Data, other.m_u32BodyLength);
+        this->m_u32BodyLength = other.m_u32BodyLength;
+    }
+    else
+    {
+        this->m_u32BodyLength = 0;
+        this->m_Data = nullptr;
+    }
+}
 
 TransferFrameBuffer::~TransferFrameBuffer()
 {
+    if (m_Data)
+    {
+        delete[] m_Data;
+        m_Data = nullptr;
+    }
+}
+
+TransferFrameBuffer & TransferFrameBuffer::operator=(const TransferFrameBuffer & other)
+{
+    m_u32TimeStamp = other.m_u32TimeStamp;
+    m_u32DataType = other.m_u32DataType;
+    m_u32BodyLength = other.m_u32BodyLength;
+
+    unsigned char *pOrig = this->m_Data;
+    if (other.m_u32BodyLength > 0 && other.m_Data != nullptr)
+    {
+        this->m_Data = new unsigned char[other.m_u32BodyLength] { 0 };
+        memcpy(this->m_Data, other.m_Data, other.m_u32BodyLength);
+    }
+    else
+    {
+        this->m_u32BodyLength = 0;
+        this->m_Data = nullptr;
+    }
+    delete[] pOrig;
+    return *this;
 }
 
 bool TransferFrameBuffer::setHead(const QByteArray & bytes)

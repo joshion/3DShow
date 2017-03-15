@@ -9,10 +9,10 @@ class QByteArray;
 class OrderFrameBuffer
 {
 public:
-    OrderFrameBuffer(OrderFrameBuffer &other);
     OrderFrameBuffer(unsigned char cmdType = 0, unsigned char cmdNum = 0, unsigned int sequence = 0,
         unsigned char version = 0, unsigned int len = 0, unsigned char * data = nullptr);
-	~OrderFrameBuffer();
+    OrderFrameBuffer(OrderFrameBuffer &other);
+    ~OrderFrameBuffer();
 
     OrderFrameBuffer& operator=(const OrderFrameBuffer& other);
 

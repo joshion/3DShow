@@ -5,8 +5,11 @@ class QByteArray;
 class TransferFrameBuffer
 {
 public:
-    TransferFrameBuffer();
+    TransferFrameBuffer(unsigned int timeStamp = 0, unsigned int dataType = 0,
+        unsigned int bodyLength = 0, unsigned char* data = nullptr);
+    TransferFrameBuffer(TransferFrameBuffer &other);
     virtual ~TransferFrameBuffer();
+    TransferFrameBuffer& operator= (const TransferFrameBuffer& other);
 
 public:
     inline void setTimeStamp(unsigned int timeStamp)
