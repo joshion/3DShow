@@ -164,7 +164,7 @@ bool OrderFrameBuffer::setHead(const QByteArray & bytes)
 
 bool OrderFrameBuffer::setData(const QByteArray & bytes, const unsigned int length)
 {
-    if (bytes.length() < length || length <= 0)
+    if (bytes.length() <= 0 || bytes.length() < length)
     {
         return false;
     }
@@ -173,6 +173,7 @@ bool OrderFrameBuffer::setData(const QByteArray & bytes, const unsigned int leng
         if (m_data != nullptr)
         {
             delete[] m_data;
+            m_data = nullptr;
         }
         m_u32length = length;
         m_data = new unsigned char[length] {0};
@@ -181,22 +182,24 @@ bool OrderFrameBuffer::setData(const QByteArray & bytes, const unsigned int leng
     }
 }
 
-void OrderFrameBuffer::setData(const unsigned char * data, const unsigned int length)
+bool OrderFrameBuffer::setData(const unsigned char * data, const unsigned int length)
 {
-    if (m_data != nullptr)
+
+    if (data || length <= 0)
     {
-        delete[] m_data;
-    }
-    if (length > 0 && data != nullptr)
-    {
-        m_u32length = length;
-        m_data = new unsigned char[length] {0};
-        memcpy(m_data, data, length);
+        return false;
     }
     else
     {
-        m_u32length = 0;
-        m_data = nullptr;
+        if (m_data != nullptr)
+        {
+            delete[] m_data;
+            m_data = nullptr;
+        }
+        m_u32length = length;
+        m_data = new unsigned char[length] {0};
+        memcpy(m_data, data, length);
+        return true;
     }
 }
 

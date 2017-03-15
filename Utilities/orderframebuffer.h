@@ -47,7 +47,7 @@ public:
     与m_u32length相关联,如m_data == nullptr时, m_u32length也置0
     */
     bool setData(const QByteArray &bytes, const unsigned int length);
-    void setData(const unsigned char *data, const unsigned int length);
+    bool setData(const unsigned char *data, const unsigned int length);
     void setData(const ::google::protobuf::Message &data);
 
     inline unsigned char cmdType() const
