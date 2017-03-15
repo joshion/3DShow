@@ -10,14 +10,16 @@ ShowWidget::ShowWidget(QWidget *parent)
     resize(600, 400);
     triangleVertices = new QVector4D[6];
     color = new QVector4D[6];
-    m_pTimer = new QTimer;
+    m_pTimer = new QTimer(this);
     connect(m_pTimer, &QTimer::timeout, this, &ShowWidget::slot_update);
     m_pTimer->start(50);
 }
 
 ShowWidget::~ShowWidget()
 {
-
+    m_pTimer->stop();
+    delete m_pTimer;
+    m_pTimer = nullptr;
 }
 
 void ShowWidget::initializeGL()
