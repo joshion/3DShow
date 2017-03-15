@@ -22,22 +22,30 @@ public:
     SkeletonFrameWidget(QWidget *parent = 0);
     ~SkeletonFrameWidget();
 
+/*******************************************************************************************/
+/*openGL相关*/
 protected:
     void initializeGL() override;
     void paintGL() override;
     void resizeGL(int  w, int h) override;
 
 private:
-    static QImage mat2QImage(cv::Mat &mat);
-    static QImage mat2GLFormat(cv::Mat &mat);
-
+    void loadTextures();
 private:
     QOpenGLShaderProgram program;
+    GLuint m_Textures[1];
+/********************************************************************************************/
 
+/*******************************************************************************************/
+/*openCV相关*/
+private:
+    static QImage mat2QImage(cv::Mat &mat);
+    static QImage mat2GLFormat(cv::Mat &mat);
 private:
     cv::Mat m_Mat;
     cv::VideoCapture *m_Capture;
     QTimer *m_Timer;
+/********************************************************************************************/
 
 public slots:
     void slot_update();

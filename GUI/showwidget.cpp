@@ -4,6 +4,12 @@
 
 #include <random>
 
+namespace
+{
+    static const unsigned int VERTEX_LOCATION = 1;
+    static const unsigned int COLOR_LOCATION = 2;
+}
+
 ShowWidget::ShowWidget(QWidget *parent)
     : QOpenGLWidget(parent)
 {
@@ -38,8 +44,8 @@ void ShowWidget::initializeGL()
 
 void ShowWidget::paintGL()
 {
-    int vertexLocation = program.attributeLocation("vertex");
-    int colorLocation = program.attributeLocation("color");
+    int vertexLocation = VERTEX_LOCATION;
+    int colorLocation = COLOR_LOCATION;
 
     std::random_device rd;
     std::mt19937 gen(rd());
