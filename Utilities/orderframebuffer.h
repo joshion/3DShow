@@ -6,19 +6,19 @@
 
 class QByteArray;
 
-class FrameBuffer
+class OrderFrameBuffer
 {
 public:
-    FrameBuffer(FrameBuffer &other);
-    FrameBuffer(unsigned char cmdType = 0, unsigned char cmdNum = 0, unsigned int sequence = 0,
+    OrderFrameBuffer(OrderFrameBuffer &other);
+    OrderFrameBuffer(unsigned char cmdType = 0, unsigned char cmdNum = 0, unsigned int sequence = 0,
         unsigned char version = 0, unsigned int len = 0, unsigned char * data = nullptr);
-	~FrameBuffer();
+	~OrderFrameBuffer();
 
-    FrameBuffer& operator=(const FrameBuffer& other);
+    OrderFrameBuffer& operator=(const OrderFrameBuffer& other);
 
 public:
-    static QByteArray toByte(const FrameBuffer &buffer);
-    static FrameBuffer fromByte(const QByteArray &bytes);
+    static QByteArray toByte(const OrderFrameBuffer &buffer);
+    static OrderFrameBuffer fromByte(const QByteArray &bytes);
 
 public:
     inline void setCmdType(const unsigned char cmdType)

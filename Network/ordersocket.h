@@ -3,7 +3,7 @@
 #include <QObject>
 
 class OrderInterface;
-class FrameBuffer;
+class OrderFrameBuffer;
 
 class QString;
 class QTcpSocket;
@@ -47,11 +47,11 @@ private:
 /***********************************************************************************/
 /*发送指令到服务器的相关函数*/
 private:
-    FrameBuffer *m_pSendFrameBuffer = nullptr;
+    OrderFrameBuffer *m_pSendFrameBuffer = nullptr;
 
 private:
     bool writeBufferToServer() const;
-    bool writeBufferToServer(const FrameBuffer & buffer) const;
+    bool writeBufferToServer(const OrderFrameBuffer & buffer) const;
 
 public slots:
     bool slot_requireConnect();
@@ -67,10 +67,10 @@ protected:
     QByteArray m_receiveBuffer;
 
     bool m_bNotHasHead = true;
-    FrameBuffer *m_pReceiveFrameBuffer = nullptr;
+    OrderFrameBuffer *m_pReceiveFrameBuffer = nullptr;
 private:
     void analysisReceiveByteArrayBuffer();
-    void analysisReceiveFrameBuffer(const FrameBuffer &buffer);
+    void analysisReceiveFrameBuffer(const OrderFrameBuffer &buffer);
 
 private slots:
     void slot_readDataFromServer();

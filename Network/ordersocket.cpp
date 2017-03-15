@@ -1,5 +1,5 @@
 #include "ordersocket.h"
-#include "framebuffer.h"
+#include "orderframebuffer.h"
 #include "orderinterface.hpp"
 
 #include "ConnectProto.pb.h"
@@ -29,8 +29,8 @@ namespace
 OrderSocket::OrderSocket(QString adress, unsigned int port, QObject *parent)
     : QObject(parent), m_strIPAdress(adress), m_uPort(port)
 {
-    m_pSendFrameBuffer = new FrameBuffer {};
-    m_pReceiveFrameBuffer = new FrameBuffer {};
+    m_pSendFrameBuffer = new OrderFrameBuffer {};
+    m_pReceiveFrameBuffer = new OrderFrameBuffer {};
     m_pTcpSocket = new QTcpSocket(this);
     m_pTcpSocket->setSocketOption(QAbstractSocket::KeepAliveOption, 1);
     m_pTcpSocket->setSocketOption(QAbstractSocket::LowDelayOption, 1);
@@ -68,7 +68,7 @@ void OrderSocket::slot_setDisConnected()
 
 bool OrderSocket::writeBufferToServer() const
 {
-    QByteArray bytes = FrameBuffer::toByte(*m_pSendFrameBuffer);
+    QByteArray bytes = OrderFrameBuffer::toByte(*m_pSendFrameBuffer);
     
     /*
     若服务器已经链接上,则发送数据,并返回true
@@ -86,9 +86,9 @@ bool OrderSocket::writeBufferToServer() const
     }
 }
 
-bool OrderSocket::writeBufferToServer(const FrameBuffer & buffer) const
+bool OrderSocket::writeBufferToServer(const OrderFrameBuffer & buffer) const
 {
-    QByteArray bytes = FrameBuffer::toByte(buffer);
+    QByteArray bytes = OrderFrameBuffer::toByte(buffer);
     int writeLength = m_pTcpSocket->write(bytes);
     return writeLength == bytes.length();
 }
@@ -182,7 +182,7 @@ void OrderSocket::analysisReceiveByteArrayBuffer()
     }
 }
 
-void OrderSocket::analysisReceiveFrameBuffer(const FrameBuffer & buffer)
+void OrderSocket::analysisReceiveFrameBuffer(const OrderFrameBuffer & buffer)
 {
     switch (buffer.cmdType())
     {

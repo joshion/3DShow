@@ -131,12 +131,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="framebuffer.cpp" />
+    <ClCompile Include="orderframebuffer.cpp" />
     <ClCompile Include="thread.cpp" />
     <ClCompile Include="utilities.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="framebuffer.h" />
+    <ClInclude Include="orderframebuffer.h" />
     <ClInclude Include="thread.h" />
     <ClInclude Include="utilities.h" />
   </ItemGroup>

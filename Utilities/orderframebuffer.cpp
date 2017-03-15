@@ -1,10 +1,10 @@
-#include "framebuffer.h"
+#include "orderframebuffer.h"
 
 #include <QByteArray>
 #include <QtEndian>
 #include <memory>
 
-FrameBuffer::FrameBuffer(FrameBuffer & other)
+OrderFrameBuffer::OrderFrameBuffer(OrderFrameBuffer & other)
 {
     this->m_u32length = other.m_u32length;
     this->m_ucCmdType = other.m_ucCmdType;
@@ -29,7 +29,7 @@ len即是data的长度
 故只要len<=0 又或者 data==nullptr都是非法数据
 此时两者都要置0
 */
-FrameBuffer::FrameBuffer(unsigned char cmdType, unsigned char cmdNum, unsigned int sequence,
+OrderFrameBuffer::OrderFrameBuffer(unsigned char cmdType, unsigned char cmdNum, unsigned int sequence,
     unsigned char version, unsigned int len, unsigned char * data)
     : m_u32length(len), m_ucCmdType(cmdType), m_ucCmdNum(cmdNum),
     m_u32Sequence(sequence), m_ucVsersion(version), m_data(data)
@@ -47,7 +47,7 @@ FrameBuffer::FrameBuffer(unsigned char cmdType, unsigned char cmdNum, unsigned i
 }
 
 
-FrameBuffer::~FrameBuffer()
+OrderFrameBuffer::~OrderFrameBuffer()
 {
     if (m_data)
     {
@@ -55,7 +55,7 @@ FrameBuffer::~FrameBuffer()
     }
 }
 
-FrameBuffer & FrameBuffer::operator=(const FrameBuffer & other)
+OrderFrameBuffer & OrderFrameBuffer::operator=(const OrderFrameBuffer & other)
 {
     this->m_u32length = other.m_u32length;
     this->m_ucCmdType = other.m_ucCmdType;
@@ -79,7 +79,7 @@ FrameBuffer & FrameBuffer::operator=(const FrameBuffer & other)
     return *this;
 }
 
-QByteArray FrameBuffer::toByte(const FrameBuffer &buffer)
+QByteArray OrderFrameBuffer::toByte(const OrderFrameBuffer &buffer)
 {
     /*
     将小端数据转换为大端数据发送
@@ -103,9 +103,9 @@ QByteArray FrameBuffer::toByte(const FrameBuffer &buffer)
     return bytes;
 }
 
-FrameBuffer FrameBuffer::fromByte(const QByteArray & bytes)
+OrderFrameBuffer OrderFrameBuffer::fromByte(const QByteArray & bytes)
 {
-    FrameBuffer buffer;
+    OrderFrameBuffer buffer;
     memcpy(&buffer.m_cmdType, bytes.data(), 1);
     memcpy(&buffer.m_cmdNum, bytes.data() + 1, 1);
     memcpy(buffer.m_sequence, bytes.data() + 2, 4);
@@ -133,7 +133,7 @@ FrameBuffer FrameBuffer::fromByte(const QByteArray & bytes)
 }
 
 // 
-bool FrameBuffer::setHead(const QByteArray & bytes)
+bool OrderFrameBuffer::setHead(const QByteArray & bytes)
 {
     if (bytes.length() < 11)
         return false;
@@ -162,7 +162,7 @@ bool FrameBuffer::setHead(const QByteArray & bytes)
     return true;
 }
 
-bool FrameBuffer::setData(const QByteArray & bytes, const unsigned int length)
+bool OrderFrameBuffer::setData(const QByteArray & bytes, const unsigned int length)
 {
     if (bytes.length() < length || length <= 0)
     {
@@ -181,7 +181,7 @@ bool FrameBuffer::setData(const QByteArray & bytes, const unsigned int length)
     }
 }
 
-void FrameBuffer::setData(const unsigned char * data, const unsigned int length)
+void OrderFrameBuffer::setData(const unsigned char * data, const unsigned int length)
 {
     if (m_data != nullptr)
     {
@@ -200,7 +200,7 @@ void FrameBuffer::setData(const unsigned char * data, const unsigned int length)
     }
 }
 
-void FrameBuffer::setData(const ::google::protobuf::Message & data)
+void OrderFrameBuffer::setData(const ::google::protobuf::Message & data)
 {
     unsigned int length = data.ByteSize();
     unsigned char *byteArray = new unsigned char[length] { 0 };
