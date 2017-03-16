@@ -1,7 +1,8 @@
 #ifndef SKELETONFRAMEWIDGET_H
 #define SKELETONFRAMEWIDGET_H
 
-#include <QWidget>
+#include "framepainter.h"
+#include "imagepainter.h"
 
 #include <opencv2\opencv.hpp>
 #include <opencv2\highgui.hpp>
@@ -10,7 +11,6 @@
 #include <QOpenGLShaderProgram>
 #include <QOpenGLFunctions_4_3_Core>
 
-class QGLWidget;
 class QTimer;
 class QImage;
 
@@ -30,26 +30,13 @@ protected:
     void resizeGL(int  w, int h) override;
 
 private:
-    void loadTextures();
-private:
-    QOpenGLShaderProgram RGBprogram;
-    GLuint m_Textures[1];
-    void buildRGBProgram();
-    void paintRGB();
-
-private:
-    QOpenGLShaderProgram skeletonProgram;
-    void buildSkeletonProgram();
-    void paintFrame();
-
+    FramePainter *m_pFramePainter;
+    ImagePainter *m_pImagePainter;
 
 /********************************************************************************************/
 
 /*******************************************************************************************/
 /*openCVœ‡πÿ*/
-private:
-    static QImage mat2QImage(cv::Mat &mat);
-    static QImage mat2GLFormat(cv::Mat &mat);
 private:
     cv::Mat m_Mat;
     cv::VideoCapture *m_Capture;

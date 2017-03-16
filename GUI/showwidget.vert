@@ -2,7 +2,8 @@
 layout (location = 1) in vec4 vertex;
 layout (location = 2) in vec4 color;
 
-layout (location = 3) uniform mat4 matrix;
+layout (location = 3) uniform mat4 view_matrix;
+layout (location = 4) uniform mat4 projection_matrix;
 
 out vec4 v_Color;
 mat4 genScaleMatrix(vec4 c);
@@ -11,10 +12,7 @@ mat4 genRotateMatrix(float degree, vec4 axis);
 
 void main(void)
 {
-    mat4 scaleMatrix = genScaleMatrix(vec4(1.0, 1.0, 1.0, 0.0));
-    // mat4 translateMatrix = genTranslateMatrix(vec4(0.0, 0.0, 0.5, 0.0));
-    mat4 roateMatrix = genRotateMatrix(45.0f, vec4(0.0f, 0.0f, 1.0f, 0.0f));
-    gl_Position = matrix  * scaleMatrix  *vertex;
+    gl_Position = projection_matrix * vertex * view_matrix;
     v_Color = color;
 }
 

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>941</width>
-    <height>726</height>
+    <width>800</width>
+    <height>480</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -91,12 +91,12 @@
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout" stretch="2,3">
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,4">
      <property name="spacing">
       <number>6</number>
      </property>
      <item>
-      <widget class="QTreeWidget" name="m_DevicesWidget">
+      <widget class="QListWidget" name="m_DevicesWidget">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>2</horstretch>
@@ -106,32 +106,48 @@
        <property name="frameShape">
         <enum>QFrame::StyledPanel</enum>
        </property>
-       <column>
+       <property name="movement">
+        <enum>QListView::Static</enum>
+       </property>
+       <property name="flow">
+        <enum>QListView::TopToBottom</enum>
+       </property>
+       <property name="spacing">
+        <number>1</number>
+       </property>
+       <property name="viewMode">
+        <enum>QListView::ListMode</enum>
+       </property>
+       <property name="currentRow">
+        <number>-1</number>
+       </property>
+       <property name="sortingEnabled">
+        <bool>false</bool>
+       </property>
+       <item>
         <property name="text">
-         <string notr="true">1</string>
+         <string>New Item</string>
         </property>
-       </column>
+       </item>
+       <item>
+        <property name="text">
+         <string>New Item</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>New Item</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>New Item</string>
+        </property>
+       </item>
       </widget>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout" stretch="1,1">
-       <property name="spacing">
-        <number>6</number>
-       </property>
-       <item>
-        <widget class="ShowWidget" name="m_ShowWidget">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-           <horstretch>4</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="SkeletonFrameWidget" name="m_SkeletonFrameWidget"/>
-       </item>
-      </layout>
+      <widget class="SkeletonFrameWidget" name="m_SkeletonFrameWidget"/>
      </item>
     </layout>
    </item>
@@ -139,11 +155,6 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
-  <customwidget>
-   <class>ShowWidget</class>
-   <extends>QOpenGLWidget</extends>
-   <header>showwidget.h</header>
-  </customwidget>
   <customwidget>
    <class>SkeletonFrameWidget</class>
    <extends>QOpenGLWidget</extends>
