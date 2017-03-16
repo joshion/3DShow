@@ -10,9 +10,10 @@
 
 namespace
 {
-    static const unsigned int VERTEX_LOCATION = 1;
-    static const unsigned int COLOR_LOCATION = 2;
-    static const unsigned int MATRIX_LOCATION = 3;
+    static const int VERTEX_LOCATION = 1;
+    static const int COLOR_LOCATION = 2;
+    static const int VIEW_LOCATION = 3;
+    static const int PROJECTION_LOCATION = 4;
 }
 
 
@@ -97,10 +98,14 @@ void SkeletonFrameWidget::paintGL()
     program.enableAttributeArray(colorLocation);
     program.setAttributeArray(colorLocation, coord);
 
-    int matrixLocation = MATRIX_LOCATION;
-    QMatrix4x4 pmvMatrix;
-    pmvMatrix.frustum(-1, 1, -1, 1, 0.3, 5.0);
-    program.setUniformValue(matrixLocation, pmvMatrix);
+    QMatrix4x4 view_Matrix;
+    view_Matrix.lookAt(QVector3D(0.0, 0.0, 0.0), QVector3D(0, 0, -1.0), QVector3D(0, 1, 0));
+    program.setUniformValue(VIEW_LOCATION, view_Matrix);
+
+    QMatrix4x4 projection_Matrix;
+    // projection_Matrix.frustum(-1, 1, -1, 1, 0.3, 5.0);   // 透视投影
+    projection_Matrix.ortho(-1, 1, -1, 1, 0.3, 5);    // 正交投影
+    program.setUniformValue(PROJECTION_LOCATION, projection_Matrix);
 
     glBindTexture(GL_TEXTURE_2D, m_Textures[0]);
     glClear(GL_COLOR_BUFFER_BIT);
