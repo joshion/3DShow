@@ -18,6 +18,24 @@ ImagePainter::~ImagePainter()
 
 }
 
+bool ImagePainter::buildShaderProgram(const QString & strVertFile, const QString & strFragFile)
+{
+    bool flag = Painter::buildShaderProgram(strVertFile, strFragFile);
+    if (flag)
+    {
+        m_Program.bind();
+        QMatrix4x4 view_Matrix;
+        view_Matrix.lookAt(QVector3D(0.0, 0.0, 0.0), QVector3D(0, 0, -1.0), QVector3D(0, 1, 0));
+        m_Program.setUniformValue(VIEW_LOCATION, view_Matrix);
+
+        QMatrix4x4 projection_Matrix;
+        // projection_Matrix.frustum(-1, 1, -1, 1, 0.3, 5.0);   // 透视投影
+        projection_Matrix.ortho(-1, 1, -1, 1, 0.30, 5);    // 正交投影
+        m_Program.setUniformValue(PROJECTION_LOCATION, projection_Matrix);
+    }
+    return flag;
+}
+
 void ImagePainter::paint()
 {
     m_Program.bind();
@@ -47,15 +65,6 @@ void ImagePainter::paint()
 
     m_Program.enableAttributeArray(COORD_LOCATION);
     m_Program.setAttributeArray(COORD_LOCATION, coord);
-
-    QMatrix4x4 view_Matrix;
-    view_Matrix.lookAt(QVector3D(0.0, 0.0, 0.0), QVector3D(0, 0, -1.0), QVector3D(0, 1, 0));
-    m_Program.setUniformValue(VIEW_LOCATION, view_Matrix);
-
-    QMatrix4x4 projection_Matrix;
-    // projection_Matrix.frustum(-1, 1, -1, 1, 0.3, 5.0);   // 透视投影
-    projection_Matrix.ortho(-1, 1, -1, 1, 0.30, 5);    // 正交投影
-    m_Program.setUniformValue(PROJECTION_LOCATION, projection_Matrix);
 
     glBindTexture(GL_TEXTURE_2D, m_Textures[0]);
     // glClear(GL_COLOR_BUFFER_BIT);

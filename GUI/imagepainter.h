@@ -13,6 +13,7 @@ public:
     ~ImagePainter();
 
 public:
+    bool buildShaderProgram(const QString &strVertFile, const QString& strFragFile) override;
     void paint() override;
 
 public:

@@ -10,6 +10,7 @@ public:
     ~FramePainter();
 
 public:
+    bool buildShaderProgram(const QString &strVertFile, const QString& strFragFile) override;
     void paint() override;
 
 private:
