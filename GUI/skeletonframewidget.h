@@ -32,8 +32,17 @@ protected:
 private:
     void loadTextures();
 private:
-    QOpenGLShaderProgram program;
+    QOpenGLShaderProgram RGBprogram;
     GLuint m_Textures[1];
+    void buildRGBProgram();
+    void paintRGB();
+
+private:
+    QOpenGLShaderProgram skeletonProgram;
+    void buildSkeletonProgram();
+    void paintFrame();
+
+
 /********************************************************************************************/
 
 /*******************************************************************************************/
