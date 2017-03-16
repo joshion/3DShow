@@ -41,7 +41,8 @@ SkeletonFrameWidget::~SkeletonFrameWidget()
     delete m_Capture;
     m_Capture = nullptr;
 
-    
+    delete m_pImagePainter;
+    delete m_pFramePainter;
 }
 
 void SkeletonFrameWidget::initializeGL()
@@ -49,6 +50,9 @@ void SkeletonFrameWidget::initializeGL()
     /* 0. 初始化函数，使得函数可以使用 */
     initializeOpenGLFunctions();
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+    glEnable(GL_BLEND);
+    glEnable(GL_LINE_SMOOTH);
+
     m_pFramePainter->buildShaderProgram("showwidget.vert", "showwidget.frag");
     m_pImagePainter->buildShaderProgram("skeletonframewidget.vert", "skeletonframewidget.frag");
 }

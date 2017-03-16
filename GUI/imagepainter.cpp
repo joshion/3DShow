@@ -15,7 +15,8 @@ ImagePainter::ImagePainter()
 
 ImagePainter::~ImagePainter()
 {
-
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glDeleteTextures(1, m_Textures);
 }
 
 bool ImagePainter::buildShaderProgram(const QString & strVertFile, const QString & strFragFile)
@@ -32,6 +33,8 @@ bool ImagePainter::buildShaderProgram(const QString & strVertFile, const QString
         // projection_Matrix.frustum(-1, 1, -1, 1, 0.3, 5.0);   // 透视投影
         projection_Matrix.ortho(-1, 1, -1, 1, 0.30, 5);    // 正交投影
         m_Program.setUniformValue(PROJECTION_LOCATION, projection_Matrix);
+
+        glGenTextures(1, m_Textures);
     }
     return flag;
 }
@@ -79,9 +82,9 @@ void ImagePainter::loadTexture(cv::Mat &mat)
 {
     m_Program.bind();
 
-    glBindTexture(GL_TEXTURE_2D, 0);
-    glDeleteTextures(1, m_Textures);
-    glGenTextures(1, m_Textures);
+    //glBindTexture(GL_TEXTURE_2D, 0);
+    //glDeleteTextures(1, m_Textures);
+    //glGenTextures(1, m_Textures);
     glBindTexture(GL_TEXTURE_2D, m_Textures[0]);
 
     glTexStorage2D(GL_TEXTURE_2D, 2, GL_RGBA8, mat.cols, mat.rows);
@@ -90,8 +93,8 @@ void ImagePainter::loadTexture(cv::Mat &mat)
 
     static const GLint swizzles[] = { GL_BLUE, GL_GREEN, GL_RED, GL_ONE };
     glTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_SWIZZLE_RGBA, swizzles);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
