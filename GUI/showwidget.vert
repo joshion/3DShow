@@ -1,8 +1,10 @@
 #version 430 core
 layout (location = 1) in vec4 vertex;
 layout (location = 2) in vec4 color;
+
+layout (location = 3) uniform mat4 matrix;
+
 out vec4 v_Color;
-uniform mat4 matrix;
 mat4 genScaleMatrix(vec4 c);
 mat4 genTranslateMatrix(vec4 c);
 mat4 genRotateMatrix(float degree, vec4 axis);

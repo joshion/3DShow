@@ -106,5 +106,7 @@
   <ItemGroup>
     <None Include="showwidget.frag" />
     <None Include="showwidget.vert" />
+    <None Include="skeletonframewidget.frag" />
+    <None Include="skeletonframewidget.vert" />
   </ItemGroup>
 </Project>

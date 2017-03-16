@@ -8,12 +8,19 @@
 #include <QImage>
 #include <QTimer>
 
+namespace
+{
+    static const unsigned int VERTEX_LOCATION = 1;
+    static const unsigned int COLOR_LOCATION = 2;
+    static const unsigned int MATRIX_LOCATION = 3;
+}
+
 
 SkeletonFrameWidget::SkeletonFrameWidget(QWidget *parent)
     : QOpenGLWidget(parent)
 {
-
-    m_Capture = new cv::VideoCapture(0);
+    m_Capture = nullptr;
+    // m_Capture = new cv::VideoCapture(0);
     m_Timer = new QTimer(this);
     connect(m_Timer, &QTimer::timeout, this, &SkeletonFrameWidget::slot_update);
     m_Timer->start(50);
@@ -24,7 +31,7 @@ SkeletonFrameWidget::~SkeletonFrameWidget()
     m_Timer->stop();
     delete m_Timer;
     m_Timer = nullptr;
-    if (m_Capture->isOpened())
+    if (m_Capture && m_Capture->isOpened())
     {
         m_Capture->release();
     }
@@ -36,56 +43,69 @@ void SkeletonFrameWidget::initializeGL()
 {
     /* 0. 初始化函数，使得函数可以使用 */
     initializeOpenGLFunctions();
-    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
-    QString vertStr = Utilities::readStringFromFile("showwidget.vert");
-    QString fragStr = Utilities::readStringFromFile("showwidget.frag");
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+    QString vertStr = Utilities::readStringFromFile("skeletonframewidget.vert");
+    QString fragStr = Utilities::readStringFromFile("skeletonframewidget.frag");
     program.addShaderFromSourceCode(QOpenGLShader::Vertex, vertStr);
     program.addShaderFromSourceCode(QOpenGLShader::Fragment, fragStr);
     program.link();
     program.bind();
+
+    loadTextures();
 }
 
 void SkeletonFrameWidget::paintGL()
 {
-    int vertexLocation = program.attributeLocation("vertex");
-    int colorLocation = program.attributeLocation("color");
+    int vertexLocation = VERTEX_LOCATION;
+    int colorLocation = COLOR_LOCATION;
 
 
-    QVector4D *triangleVertices = new QVector4D[6];
-    QVector4D *color = new QVector4D[6];
 
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_real_distribution<double> dis(-1.0, 1.0);
-    for (int i = 0; i < 2; ++i)
+    QVector4D *triangleVertices;
+    QVector4D *color;
+    triangleVertices = new QVector4D[4];
+    color = new QVector4D[4];
+
     {
-        triangleVertices[i * 3 + 0] = QVector4D(dis(gen), dis(gen), dis(gen), dis(gen));
-        triangleVertices[i * 3 + 1] = QVector4D(dis(gen), dis(gen), dis(gen), dis(gen));
-        triangleVertices[i * 3 + 2] = QVector4D(dis(gen), dis(gen), dis(gen), dis(gen));
+        triangleVertices[0] = QVector4D(-1.0, -1.0, -0.31, 1.0);
+        triangleVertices[1] = QVector4D(-1.0, 1.0, -0.31, 1.0);
+        triangleVertices[2] = QVector4D(1.0, 1.0, -0.31, 1.0);
+        triangleVertices[3] = QVector4D(1.0, -1.0, -0.31, 1.0);
     }
-
-    for (int i = 0; i < 2; ++i)
+    
+    /*
     {
-        color[i * 3 + 0] = QVector4D(0.0f, 0.8, 0.0f, 0.0f);
-        color[i * 3 + 1] = QVector4D(0.0f, 0.0f, 0.8f, 0.0f);
-        color[i * 3 + 2] = QVector4D(0.8f, 0.0f, 0.0f, 0.0f);
+        color[0] = QVector4D(0.0f, 0.8, 0.0f, 0.0f);
+        color[1] = QVector4D(0.0f, 0.0f, 0.8f, 0.0f);
+        color[2] = QVector4D(0.8f, 0.0f, 0.0f, 0.0f);
+        color[3] = QVector4D(0.8f, 0.0f, 0.0f, 0.0f);
     }
+    */
 
+    QVector2D *coord = new QVector2D[4];
+
+    {
+        coord[0] = QVector2D(0.0, 0.0);
+        coord[1] = QVector2D(0.0, 1.0);
+        coord[2] = QVector2D(1.0, 1.0);
+        coord[3] = QVector2D(1.0, 0.0);
+    }
 
     program.enableAttributeArray(vertexLocation);
     program.setAttributeArray(vertexLocation, triangleVertices);
 
     program.enableAttributeArray(colorLocation);
-    program.setAttributeArray(colorLocation, color);
+    program.setAttributeArray(colorLocation, coord);
 
-    int matrixLocation = program.uniformLocation("matrix");
+    int matrixLocation = MATRIX_LOCATION;
     QMatrix4x4 pmvMatrix;
     pmvMatrix.frustum(-1, 1, -1, 1, 0.3, 5.0);
     program.setUniformValue(matrixLocation, pmvMatrix);
 
+    glBindTexture(GL_TEXTURE_2D, m_Textures[0]);
     glClear(GL_COLOR_BUFFER_BIT);
-    glDrawArrays(GL_TRIANGLES, 0, 6);
+    glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
     glFlush();
 
     program.disableAttributeArray(vertexLocation);
@@ -99,12 +119,66 @@ void SkeletonFrameWidget::resizeGL(int w, int h)
 
 void SkeletonFrameWidget::loadTextures()
 {
-    QImage tex = QGLWidget::convertToGLFormat(QImage("test.jpg"));
     glGenTextures(1, m_Textures);
     glBindTexture(GL_TEXTURE_2D, m_Textures[0]);
-    glTexImage2D(GL_TEXTURE_2D, 0, 3, tex.width(), tex.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, tex.bits());
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    glTexStorage2D(GL_TEXTURE_2D, 4, GL_RGBA8, 8, 8);
+
+    static const unsigned char texture_data[] =
+    {
+        0x00, 0xFF, 0x00, 0x00, 0xAA, 0xAA, 0xFF, 0x00,
+        0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF,
+        0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00,
+        0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF,
+
+        0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00,
+        0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF,
+        0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00,
+        0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF,
+
+        0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00,
+        0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF,
+        0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00,
+        0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF,
+        0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00,
+        0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF,
+        0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00,
+        0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF,
+
+        0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00,
+        0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF,
+        0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00,
+        0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF,
+        0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00,
+        0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF,
+        0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00,
+        0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF,
+
+        0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00,
+        0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF,
+        0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00,
+        0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF,
+        0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00,
+        0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF,
+        0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00,
+        0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF
+    };
+
+    glTexSubImage2D(GL_TEXTURE_2D,
+        0,
+        0, 0,
+        8, 8,
+        GL_RGBA, GL_UNSIGNED_BYTE,
+        texture_data);
+
+    static const GLint swizzles[] = { GL_RED, GL_GREEN, GL_BLUE, GL_ALPHA };
+    glTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_SWIZZLE_RGBA, swizzles);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+    glGenerateMipmap(GL_TEXTURE_2D);
 }
 
 QImage SkeletonFrameWidget::mat2QImage(cv::Mat &mat)

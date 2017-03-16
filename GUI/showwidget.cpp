@@ -8,6 +8,7 @@ namespace
 {
     static const unsigned int VERTEX_LOCATION = 1;
     static const unsigned int COLOR_LOCATION = 2;
+    static const unsigned int MATRIX_LOCATION = 3;
 }
 
 ShowWidget::ShowWidget(QWidget *parent)
@@ -30,8 +31,7 @@ ShowWidget::~ShowWidget()
 
 void ShowWidget::initializeGL()
 {
-    /* 0. 初始化函数，使得函数可以使用 */
-    initializeOpenGLFunctions();
+    initializeOpenGLFunctions();    // 初始化opengl函数,使得函数可以使用
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
     QString vertStr = Utilities::readStringFromFile("showwidget.vert");
@@ -52,9 +52,9 @@ void ShowWidget::paintGL()
     std::uniform_real_distribution<double> dis(-1.0, 1.0);
     for(int i = 0; i < 2; ++i)
     {
-        triangleVertices[i * 3 + 0] = QVector4D(dis(gen), dis(gen), dis(gen), dis(gen));
-        triangleVertices[i * 3 + 1] = QVector4D(dis(gen), dis(gen), dis(gen), dis(gen));
-        triangleVertices[i * 3 + 2] = QVector4D(dis(gen), dis(gen), dis(gen), dis(gen));
+        triangleVertices[i * 3 + 0] = QVector4D(dis(gen), dis(gen), -0.31, 1.0);
+        triangleVertices[i * 3 + 1] = QVector4D(dis(gen), dis(gen), -0.31, 1.0);
+        triangleVertices[i * 3 + 2] = QVector4D(dis(gen), dis(gen), -0.31, 1.0);
     }
 
     for (int i = 0; i < 2; ++i)
@@ -71,7 +71,7 @@ void ShowWidget::paintGL()
     program.enableAttributeArray(colorLocation);
     program.setAttributeArray(colorLocation, color);
 
-    int matrixLocation = program.uniformLocation("matrix");
+    int matrixLocation = MATRIX_LOCATION;
     QMatrix4x4 pmvMatrix;
     pmvMatrix.frustum(-1, 1, -1, 1, 0.3, 5.0);
     program.setUniformValue(matrixLocation, pmvMatrix);
