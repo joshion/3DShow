@@ -22,7 +22,7 @@ TransferFrameBuffer::TransferFrameBuffer(unsigned int timeStamp, unsigned int da
     }
 }
 
-TransferFrameBuffer::TransferFrameBuffer(TransferFrameBuffer & other)
+TransferFrameBuffer::TransferFrameBuffer(const TransferFrameBuffer & other)
     : m_u32TimeStamp(other.m_u32TimeStamp), m_u32DataType(other.m_u32DataType)
 {
     if (other.m_Data && other.m_u32BodyLength > 0)

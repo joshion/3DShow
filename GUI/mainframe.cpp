@@ -13,7 +13,7 @@ MainFrame::MainFrame(QObject * parent)
 
     m_pTransferSocketThread = new TransferSocketThread;
 
-    m_pOrderSocketThread = new OrderSocketThread(m_pMainWindow);
+    m_pOrderSocketThread = new OrderSocketThread("127.0.0.1", 7892, m_pMainWindow);
 
     connect(m_pMainWindow, &MainWindow::signal_requireConnect,
         m_pOrderSocketThread, &OrderSocketThread::signal_requireConnect, Qt::QueuedConnection);

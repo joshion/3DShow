@@ -12,14 +12,23 @@ class OrderSocketThread : public QThread
     Q_OBJECT
 
 public:
-    OrderSocketThread(OrderInterface *pInterface = nullptr, QObject *parent = nullptr);
+    OrderSocketThread(QString adress = "127.0.0.1", unsigned int port = 7892, 
+        OrderInterface *pInterface = nullptr, QObject *parent = nullptr);
     ~OrderSocketThread();
-protected:
-    void run() override;
 
 private:
-    OrderSocket *m_pOrderSocket;
+    QString m_strIPAdress;
+    unsigned int m_uPort;
+
     OrderInterface *m_pOrderInterface;  // 上层GUI类的虚基类,传递其到下层C++服务,用于上下层的通信
+
+/***********************************************************************************/
+/*QThread内创建的对象, 需要deleteLater()删除*/
+protected:
+    void run() override;
+private:
+    OrderSocket *m_pOrderSocket;
+/***********************************************************************************/
 
 /***********************************************************************************/
 /*GUI类发送消息到底层C++所用接口*/
@@ -28,7 +37,7 @@ signals: void signal_exitConnect();
 signals: void signal_requireDevices();
 signals: void signal_startRequire(QString deviceName, unsigned int dataType);
 signals: void signal_endConnect();
-
+/***********************************************************************************/
 };
 
 #endif // ORDERSOCKETTHREAD_H

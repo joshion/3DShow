@@ -11,7 +11,7 @@ class OrderFrameBuffer
 public:
     OrderFrameBuffer(unsigned char cmdType = 0, unsigned char cmdNum = 0, unsigned int sequence = 0,
         unsigned char version = 0, unsigned int len = 0, unsigned char * data = nullptr);
-    OrderFrameBuffer(OrderFrameBuffer &other);
+    OrderFrameBuffer(const OrderFrameBuffer &other);
     ~OrderFrameBuffer();
 
     OrderFrameBuffer& operator=(const OrderFrameBuffer& other);

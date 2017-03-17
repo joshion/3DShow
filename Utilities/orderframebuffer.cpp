@@ -26,7 +26,7 @@ OrderFrameBuffer::OrderFrameBuffer(unsigned char cmdType, unsigned char cmdNum, 
     }
 }
 
-OrderFrameBuffer::OrderFrameBuffer(OrderFrameBuffer & other)
+OrderFrameBuffer::OrderFrameBuffer(const OrderFrameBuffer & other)
     : m_ucCmdType(other.m_ucCmdType), m_ucCmdNum(other.m_ucCmdNum),
     m_u32Sequence(other.m_u32Sequence), m_ucVsersion(other.m_ucVsersion)
 {

@@ -3,8 +3,12 @@
 #include <QByteArray>
 
 TransferSocket::TransferSocket(QString strIPAdress, unsigned int port, QObject *parent)
-    : QTcpSocket(parent), m_strIPAdress(strIPAdress), m_uPort(port)
+    : m_strIPAdress(strIPAdress), m_uPort(port), QTcpSocket(parent),
+    m_bConnected(false), m_pGUI(nullptr), m_bNotHasHead(true), m_pReceiveFrameBuffer(nullptr)
 {
+    m_receiveBuffer.clear();
+    m_pReceiveFrameBuffer = new TransferFrameBuffer;
+
     this->setSocketOption(QAbstractSocket::KeepAliveOption, 1);
     this->setSocketOption(QAbstractSocket::LowDelayOption, 1);
     this->connectToHost(m_strIPAdress, m_uPort, QIODevice::ReadOnly);
@@ -19,6 +23,8 @@ TransferSocket::~TransferSocket()
 {
     this->close();
     this->stop();   // 关闭解析线程
+
+    delete m_pReceiveFrameBuffer;
 }
 
 void TransferSocket::slot_setConnected()

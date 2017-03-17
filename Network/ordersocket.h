@@ -1,13 +1,5 @@
 #ifndef TCPSOCKET_H
 #define TCPSOCKET_H
-#include <QObject>
-
-class OrderInterface;
-class OrderFrameBuffer;
-
-class QString;
-class QTcpSocket;
-
 /*
 该类应用于与服务器的网络交互
 a.请求链接
@@ -16,11 +8,22 @@ c.断开链接
 该类所对应的接口类为 OrderInterface
 需要先调用registerGUIClass()后才可以调用start()以开启线程读取缓存
 */
+
+#include <QObject>
+
+class OrderInterface;
+class OrderFrameBuffer;
+
+class QString;
+class QTcpSocket;
+
 class OrderSocket : public QObject
 {
     Q_OBJECT
 public:
     explicit OrderSocket(QString adress="127.0.0.1", unsigned int port= 7892, QObject *parent = nullptr);
+    OrderSocket(const OrderSocket& other) = delete;
+    OrderSocket& operator= (const OrderSocket& other) = delete;
     ~OrderSocket();
 
 private:
@@ -29,7 +32,7 @@ private:
     QTcpSocket *m_pTcpSocket;
 
 private:
-    bool m_bConnected = false;
+    bool m_bConnected;
 private slots:
     inline void slot_setConnected();
     inline void slot_setDisConnected();
@@ -41,13 +44,13 @@ public:
         this->m_pGUI = gui;
     };
 private:
-    OrderInterface *m_pGUI = nullptr;
+    OrderInterface *m_pGUI;
 /***********************************************************************************/
 
 /***********************************************************************************/
 /*发送指令到服务器的相关函数*/
 private:
-    OrderFrameBuffer *m_pSendFrameBuffer = nullptr;
+    OrderFrameBuffer *m_pSendFrameBuffer;
 
 private:
     bool writeBufferToServer() const;
@@ -66,8 +69,8 @@ public slots:
 protected:
     QByteArray m_receiveBuffer;
 
-    bool m_bNotHasHead = true;
-    OrderFrameBuffer *m_pReceiveFrameBuffer = nullptr;
+    bool m_bNotHasHead;
+    OrderFrameBuffer *m_pReceiveFrameBuffer;
 private:
     void analysisReceiveByteArrayBuffer();
     void analysisReceiveFrameBuffer(const OrderFrameBuffer &buffer);

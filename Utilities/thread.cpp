@@ -57,5 +57,6 @@ void Thread::stop()
 
 bool Thread::isWorking()
 {
+    std::lock_guard<std::mutex> lock_working(m_mutexWorking);
 	return m_bWorking;
 }

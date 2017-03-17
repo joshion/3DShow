@@ -15,13 +15,15 @@ class TransferSocket : public QTcpSocket, public Thread
     Q_OBJECT
 
 public:
-    TransferSocket(QString strIPAdress = "127.0.0.1", unsigned int port = 7892, QObject *parent = nullptr);
+    explicit TransferSocket(QString strIPAdress = "127.0.0.1", unsigned int port = 7892, QObject *parent = nullptr);
+    TransferSocket(TransferSocket &) = delete;
+    TransferSocket& operator= (const TransferSocket &other) = delete;
     ~TransferSocket();
 
 private:
     QString m_strIPAdress;
     unsigned int m_uPort;
-    bool m_bConnected = false;
+    bool m_bConnected;
 
 private slots:
     inline void slot_setConnected();
@@ -30,7 +32,7 @@ private slots:
 /***********************************************************************************/
 /*与GUI通信所用接口*/
 private:
-    TransferInterface *m_pGUI = nullptr;
+    TransferInterface *m_pGUI;
 public:
     void registerGUIClass(TransferInterface*  gui)
     {
@@ -52,8 +54,8 @@ private:
     QByteArray m_receiveBuffer;
     std::mutex m_mutexReceiveBuffer;
 
-    bool m_bNotHasHead = true;
-    TransferFrameBuffer *m_pReceiveFrameBuffer = nullptr;
+    bool m_bNotHasHead;
+    TransferFrameBuffer *m_pReceiveFrameBuffer;
 
 private slots:
     void slot_readDataFromServer();

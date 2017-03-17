@@ -27,11 +27,16 @@ namespace
 }
 
 OrderSocket::OrderSocket(QString adress, unsigned int port, QObject *parent)
-    : QObject(parent), m_strIPAdress(adress), m_uPort(port)
+    : QObject(parent), m_strIPAdress(adress), m_uPort(port),
+    m_pTcpSocket(nullptr), m_bConnected(false), m_pGUI(nullptr),
+    m_pSendFrameBuffer(nullptr), m_bNotHasHead(true), m_pReceiveFrameBuffer(nullptr)
+
 {
+    m_pTcpSocket = new QTcpSocket { this };
     m_pSendFrameBuffer = new OrderFrameBuffer {};
     m_pReceiveFrameBuffer = new OrderFrameBuffer {};
-    m_pTcpSocket = new QTcpSocket(this);
+    m_receiveBuffer.clear();
+
     m_pTcpSocket->setSocketOption(QAbstractSocket::KeepAliveOption, 1);
     m_pTcpSocket->setSocketOption(QAbstractSocket::LowDelayOption, 1);
     m_pTcpSocket->connectToHost(m_strIPAdress, m_uPort);
@@ -49,10 +54,12 @@ OrderSocket::~OrderSocket()
     if (m_pSendFrameBuffer)
     {
         delete m_pSendFrameBuffer;
+        m_pSendFrameBuffer = nullptr;
     }
     if (m_pReceiveFrameBuffer)
     {
         delete m_pReceiveFrameBuffer;
+        m_pReceiveFrameBuffer = nullptr;
     }
 }
 
