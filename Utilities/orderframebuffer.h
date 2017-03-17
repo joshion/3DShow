@@ -76,6 +76,11 @@ public:
         return m_u32length;
     }
 
+    inline unsigned int headLength() const
+    {
+        return s_u32HeadLength;
+    }
+
 private:
     union
     {
@@ -102,7 +107,9 @@ private:
         char m_length[4];
         unsigned int m_u32length;
     };  //包体长度,也即是m_data的长度,不包括头部长度。头部长度固定为11Bytes
-	unsigned char *m_data; 
+	unsigned char *m_data;
+
+    static const unsigned int s_u32HeadLength = 11;
 };
 
 #endif FRAMEBUFFER_H

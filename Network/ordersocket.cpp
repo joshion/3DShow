@@ -154,10 +154,10 @@ void OrderSocket::analysisReceiveByteArrayBuffer()
             /*
             若服务器发来的缓存少于11或者已经读取到了头部时跳过此部分,等待下次读取到更多缓存再进行判断
             */
-            if (m_bNotHasHead && m_receiveBuffer.length() >= 11)
+            if (m_bNotHasHead && m_receiveBuffer.length() >= m_pReceiveFrameBuffer->headLength())
             {
                 m_pReceiveFrameBuffer->setHead(m_receiveBuffer);
-                m_receiveBuffer.remove(0, 11);
+                m_receiveBuffer.remove(0, m_pReceiveFrameBuffer->headLength());
                 m_bNotHasHead = false;
             }
             /*
