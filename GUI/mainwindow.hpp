@@ -18,13 +18,13 @@ private:
 /***********************************************************************************/
 /*底层C++与本GUI类通信所用接口*/
 signals: void signal_respConnect() override;
-signals: void signal_respDevices() override;
+signals: void signal_respDevices(const QStringList& devicesList) override;
 signals: void signal_respStartRequire() override;
 signals: void signal_reqEndConnect() override;
 
 public slots:
     void slot_respConnect();
-    void slot_respDevices();
+    void slot_respDevices(const QStringList& devicesList);
     void slot_respStartRequire();
     void slot_reqEndConnect();
 /***********************************************************************************/

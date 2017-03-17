@@ -26,9 +26,12 @@ void MainWindow::slot_respConnect()
     qDebug() << "enter" << __FILE__ << __LINE__ << "slot_respConnect";
 }
 
-void MainWindow::slot_respDevices()
+void MainWindow::slot_respDevices(const QStringList& devicesList)
 {
-    qDebug() << "enter" << __FILE__ << __LINE__ << "slot_respDevices";
+    for (auto a : devicesList)
+    {
+        qDebug() << "enter" << __FILE__ << __LINE__ << "slot_respDevices" << a;
+    }
 }
 
 void MainWindow::slot_respStartRequire()

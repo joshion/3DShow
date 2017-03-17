@@ -7,6 +7,7 @@
 
 #include <QTcpSocket>
 #include <QString>
+#include <QStringList>
 
 namespace
 {
@@ -214,7 +215,15 @@ void OrderSocket::analysisReceiveFrameBuffer(const OrderFrameBuffer & buffer)
             resp.PrintDebugString();
             if (m_pGUI)
             {
-                m_pGUI->signal_respDevices();
+                /*
+                将protobuf 数据转换为 设备列表发送到GUI线程
+                */
+                QStringList devicesList;
+                QString strDevices = QString::fromStdString(resp.devicelist());
+                QString strSeparator = QString::fromStdString(resp.separator());
+                devicesList = strDevices.split(strSeparator);
+                devicesList.removeAll("");
+                m_pGUI->signal_respDevices(devicesList);
             }
         }
         break;

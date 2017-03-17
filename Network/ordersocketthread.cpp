@@ -21,7 +21,7 @@ OrderSocketThread::~OrderSocketThread()
 void OrderSocketThread::run()
 {
     m_pOrderSocket = new OrderSocket { m_strIPAdress, m_uPort };
-   
+
     connect(this, &OrderSocketThread::finished, m_pOrderSocket, &OrderSocket::deleteLater);
 
     connect(this, &OrderSocketThread::signal_requireConnect,
