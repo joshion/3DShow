@@ -14,6 +14,10 @@ public:
 	bool isWorking();
 
 protected:
+    /*
+    线程已经实现了无限循环
+    run()中不能有无限循环,亦不能阻塞
+    */
     virtual void run() = 0;
 
 private:

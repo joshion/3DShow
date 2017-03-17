@@ -26,7 +26,7 @@ void Thread::start()
                 run();
                 {
                     std::lock_guard<std::mutex> lock_working(m_mutexWorking);
-                    if (m_bWorking == true)
+                    if (m_bWorking == false)
                     {
                         break;
                     }
