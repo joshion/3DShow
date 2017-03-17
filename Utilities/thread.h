@@ -14,10 +14,12 @@ public:
 	bool isWorking();
 
 protected:
-	virtual void workingFunc() = 0;
-	bool m_bWorkingSwitch;
+    virtual void run() = 0;
 
 private:
-	std::mutex m_tMutex;
+	std::mutex m_mutexThread;
 	std::thread *m_thread;
+    
+    std::mutex m_mutexWorking;
+    bool m_bWorking;
 };
