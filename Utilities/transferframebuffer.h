@@ -49,6 +49,11 @@ public:
         return m_Data;
     }
 
+    inline unsigned int headLength() const
+    {
+        return s_u32HeadLength;
+    }
+
 private:
     union
     {
@@ -65,7 +70,8 @@ private:
         char m_BodyLength[4];
         unsigned int m_u32BodyLength;   // 包体长度
     };
-
     unsigned char *m_Data;
+
+    static const unsigned int s_u32HeadLength = 12;
 };
 

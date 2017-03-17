@@ -1,4 +1,4 @@
-#include "Thread.h"
+#include "thread.h"
 
 Thread::Thread()
 	: m_thread(nullptr)

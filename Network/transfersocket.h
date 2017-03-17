@@ -1,14 +1,16 @@
 #ifndef TRANSFERSOCKET_H
 #define TRANSFERSOCKET_H
 
+#include "thread.h"
+
 #include <QTcpSocket>
-#include <QThread>
 
 class TransferInterface;
+class TransferFrameBuffer;
 
 class QByteArray;
 
-class TransferSocket : public QTcpSocket
+class TransferSocket : public QTcpSocket, public Thread
 {
     Q_OBJECT
 
@@ -40,10 +42,18 @@ public:
 /***********************************************************************************/
 /*数据解析相关的线程*/
 
+protected:
+    void run() override;
+
 private:
-    void analysisReceiveBuffer();
+    void analysisReceiveBytesBuffer();
+    void analysisReceiveFrameBuffer(const TransferFrameBuffer& m_pReceiveFrameBuffer);
 private:
     QByteArray m_receiveBuffer;
+    std::mutex m_mutexReceiveBuffer;
+
+    bool m_bNotHasHead = true;
+    TransferFrameBuffer *m_pReceiveFrameBuffer = nullptr;
 
 private slots:
     void slot_readDataFromServer();
