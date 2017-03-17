@@ -77,6 +77,15 @@
     <ClCompile Include="imagepainter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="deviceswidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_deviceswidget.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_deviceswidget.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="gui.qrc">
@@ -95,6 +104,9 @@
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="imagepainter.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="deviceswidget.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>

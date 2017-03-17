@@ -96,7 +96,7 @@
       <number>6</number>
      </property>
      <item>
-      <widget class="QListWidget" name="m_DevicesWidget">
+      <widget class="DevicesWidget" name="m_DevicesWidget">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>2</horstretch>
@@ -124,26 +124,6 @@
        <property name="sortingEnabled">
         <bool>false</bool>
        </property>
-       <item>
-        <property name="text">
-         <string>New Item</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>New Item</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>New Item</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>New Item</string>
-        </property>
-       </item>
       </widget>
      </item>
      <item>
@@ -159,6 +139,11 @@
    <class>SkeletonFrameWidget</class>
    <extends>QOpenGLWidget</extends>
    <header>skeletonframewidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>DevicesWidget</class>
+   <extends>QListWidget</extends>
+   <header>deviceswidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

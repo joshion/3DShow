@@ -1,5 +1,7 @@
 ﻿#include "mainwindow.hpp"
 
+#include "deviceswidget.h"
+
 MainWindow::MainWindow(QWidget * parent)
     : QWidget(parent)
 {
@@ -14,6 +16,8 @@ MainWindow::MainWindow(QWidget * parent)
     connect(this, &MainWindow::signal_respDevices, this, &MainWindow::slot_respDevices);
     connect(this, &MainWindow::signal_respStartRequire, this, &MainWindow::slot_respStartRequire);
     connect(this, &MainWindow::signal_reqEndConnect, this, &MainWindow::slot_reqEndConnect);
+
+    connect(this, &MainWindow::signal_respDevices, ui.m_DevicesWidget, &DevicesWidget::slot_setDevices);
 }
 
 MainWindow::~MainWindow()
