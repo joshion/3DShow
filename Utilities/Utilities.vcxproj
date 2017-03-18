@@ -135,12 +135,14 @@
     <ClCompile Include="thread.cpp" />
     <ClCompile Include="transferframebuffer.cpp" />
     <ClCompile Include="utilities.cpp" />
+    <ClCompile Include="validatedeive.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="orderframebuffer.h" />
     <ClInclude Include="thread.h" />
     <ClInclude Include="transferframebuffer.h" />
     <ClInclude Include="utilities.h" />
+    <ClInclude Include="validatedeive.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

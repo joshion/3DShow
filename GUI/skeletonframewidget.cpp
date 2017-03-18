@@ -4,7 +4,6 @@
 
 #include <random>
 
-#include <QGLWidget>
 #include <QImage>
 #include <QTimer>
 
