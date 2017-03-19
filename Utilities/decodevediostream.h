@@ -50,8 +50,6 @@ private:
     AVCodec *m_pCodec = NULL;
     AVFrame *m_pFrame = NULL;             //yuv  
     AVPacket m_Packet;                    //h264  
-    AVPicture *m_Picture = NULL;                  //¥¢¥Êrgb∏Ò ΩÕº∆¨  
-    SwsContext *m_pSwsCtx = NULL;
     AVCodecID m_Codec_Id = AV_CODEC_ID_H264;
     bool m_bIsFirstTime = true;
 

@@ -11,6 +11,10 @@
 #include <QOpenGLShaderProgram>
 #include <QOpenGLFunctions_4_3_Core>
 
+#include "decodevediostream.h"
+#include <QFile>
+#include <QByteArray>
+
 class QTimer;
 class QImage;
 
@@ -41,6 +45,10 @@ private:
     cv::Mat m_Mat;
     cv::VideoCapture *m_Capture;
     QTimer *m_Timer;
+
+    DecodeVedioStream *pDecoder;
+    QFile file;
+
 /********************************************************************************************/
 
 public slots:

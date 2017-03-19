@@ -7,6 +7,7 @@
 #include <QImage>
 #include <QTimer>
 
+
 namespace
 {
     const int VERTEX_LOCATION = 1;
@@ -25,6 +26,11 @@ SkeletonFrameWidget::SkeletonFrameWidget(QWidget *parent)
     m_Timer = new QTimer(this);
     connect(m_Timer, &QTimer::timeout, this, &SkeletonFrameWidget::slot_update);
     m_Timer->start(50);
+
+
+    pDecoder = new DecodeVedioStream;
+    file.setFileName("temp.h264");
+    file.open(QFile::ReadOnly);
 }
 
 SkeletonFrameWidget::~SkeletonFrameWidget()
@@ -61,7 +67,12 @@ void SkeletonFrameWidget::paintGL()
     glClear(GL_COLOR_BUFFER_BIT);
 
     *m_Capture >> m_Mat;
-    m_pImagePainter->loadTexture(m_Mat);
+
+    if (pDecoder->matsSize() > 0)
+    {
+        m_pImagePainter->loadTexture(pDecoder->popMats());
+    }
+    //m_pImagePainter->loadTexture(m_Mat);
     m_pImagePainter->paint();
     m_pFramePainter->paint();
 }
@@ -81,5 +92,7 @@ void SkeletonFrameWidget::resizeGL(int w, int h)
 void SkeletonFrameWidget::slot_update()
 {
     this->update();
+    QByteArray temp = file.read(4096);
+    pDecoder->pushBytes(temp);
 }
 

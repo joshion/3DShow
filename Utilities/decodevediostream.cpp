@@ -129,11 +129,6 @@ void DecodeVedioStream::releaseDecodec()
 
     av_free_packet(&m_Packet);
     av_frame_free(&m_pFrame);
-    if (m_Picture)
-    {
-        avpicture_free(m_Picture);
-    }
-    sws_freeContext(m_pSwsCtx);
     avcodec_free_context(&m_pCodecCtx);
     av_parser_close(m_pCodecParserCtx);
 }
@@ -153,8 +148,7 @@ void DecodeVedioStream::decodeH264()
         }
     }
 
-
-    if (m_Packet.size >= 0)
+    if (m_Packet.size > 0)
     {
         int got = 0;
         /* 解码出错, 中断程序 */
@@ -166,21 +160,11 @@ void DecodeVedioStream::decodeH264()
 
         if (got)
         {
-            if (m_bIsFirstTime)	// 分配格式转换存储空间
-            {
+            cv::Mat mYUV(m_pFrame->height, m_pFrame->width, CV_8UC1, m_pFrame->data);
+            cv::Mat mRGB(m_pFrame->height, m_pFrame->width, CV_8UC3);
+            cv::cvtColor(mYUV, mRGB, CV_YUV2BGR_I420);
 
-                m_pSwsCtx = sws_getContext(m_pCodecCtx->width, m_pCodecCtx->height, m_pCodecCtx->pix_fmt,
-                    m_pCodecCtx->width, m_pCodecCtx->height, AV_PIX_FMT_RGB32, SWS_BICUBIC, NULL, NULL, NULL);
-
-                avpicture_alloc(m_Picture, AV_PIX_FMT_RGB32, m_pCodecCtx->width, m_pCodecCtx->height);
-
-                m_bIsFirstTime = false;
-            }
-            /* YUV转RGB */
-            sws_scale(m_pSwsCtx, m_pFrame->data, m_pFrame->linesize, 0, m_pCodecCtx->height, m_Picture->data, m_Picture->linesize);
-
-            cv::Mat mat = cv::Mat(m_pCodecCtx->width, m_pCodecCtx->height, CV_8SC3, m_Picture->data[0]).inv();
-            this->pushMats(mat);
+            this->pushMats(mRGB);
         }
     }
 }
