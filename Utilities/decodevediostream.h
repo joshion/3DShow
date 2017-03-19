@@ -22,8 +22,6 @@ public:
     virtual ~DecodeVedioStream();
 protected:
     void run() override;
-private:
-    void decodeH264();
 
 public:
     void pushBytes(const QByteArray &bytes);
@@ -41,6 +39,7 @@ private:
 private:
     void initDecodec();
     void releaseDecodec();
+    void decodeH264();
 private:
     AVCodecContext *m_pCodecCtx = NULL;
     AVCodecParserContext *m_pCodecParserCtx = NULL;

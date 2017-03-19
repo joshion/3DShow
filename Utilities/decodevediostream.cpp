@@ -15,7 +15,6 @@ namespace
 
 DecodeVedioStream::DecodeVedioStream()
 {
-    
     {
         std::lock_guard<std::mutex> lock_buffer(m_mutexBytesBuffer);
         m_BytesBuffer.reserve(BYTES_BUFFER_RESERVED_SIZE);
@@ -36,53 +35,7 @@ DecodeVedioStream::~DecodeVedioStream()
 
 void DecodeVedioStream::run()
 {
-}
-
-void DecodeVedioStream::decodeH264()
-{
-    {
-        std::lock_guard<std::mutex> lock_buffer(m_mutexBytesBuffer);
-        uint8_t *buffer_ptr = (uint8_t*) m_BytesBuffer.data(); // 缓冲区的数据
-        int buffer_size = m_BytesBuffer.size();   // 缓冲区数据长度
-        if (buffer_size > 0)
-        {
-            /* 返回解析了的字节数 */
-            int len = av_parser_parse2(m_pCodecParserCtx, m_pCodecCtx, &m_Packet.data, &m_Packet.size,
-                buffer_ptr, buffer_size, AV_NOPTS_VALUE, AV_NOPTS_VALUE, AV_NOPTS_VALUE);
-            m_BytesBuffer.remove(0, len);
-        }
-    }
-
-
-    if (m_Packet.size >= 0)
-    {
-        int got = 0;
-        /* 解码出错, 中断程序 */
-        if (avcodec_decode_video2(m_pCodecCtx, m_pFrame, &got, &m_Packet) < 0)
-        {
-            qDebug() << "decodec error";
-            ::exit(0);
-        }
-
-        if (got)
-        {
-            if (m_bIsFirstTime)	// 分配格式转换存储空间
-            {
-
-                m_pSwsCtx = sws_getContext(m_pCodecCtx->width, m_pCodecCtx->height, m_pCodecCtx->pix_fmt,
-                    m_pCodecCtx->width, m_pCodecCtx->height, AV_PIX_FMT_RGB32, SWS_BICUBIC, NULL, NULL, NULL);
-
-                avpicture_alloc(&m_Picture, AV_PIX_FMT_RGB32, m_pCodecCtx->width, m_pCodecCtx->height);
-
-                m_bIsFirstTime = false;
-            }
-            /* YUV转RGB */
-            sws_scale(m_pSwsCtx, m_pFrame->data, m_pFrame->linesize, 0, m_pCodecCtx->height, m_Picture.data, m_Picture.linesize);
-
-            cv::Mat mat = cv::Mat(m_pCodecCtx->width, m_pCodecCtx->height, CV_8SC3, m_Picture.data[0]).inv();
-            this->pushMats(mat);
-        }
-    }
+    decodeH264();
 }
 
 void DecodeVedioStream::pushBytes(const QByteArray & bytes)
@@ -165,4 +118,51 @@ void DecodeVedioStream::releaseDecodec()
     sws_freeContext(m_pSwsCtx);
     avcodec_free_context(&m_pCodecCtx);
     av_parser_close(m_pCodecParserCtx);
+}
+
+void DecodeVedioStream::decodeH264()
+{
+    {
+        std::lock_guard<std::mutex> lock_buffer(m_mutexBytesBuffer);
+        uint8_t *buffer_ptr = (uint8_t*) m_BytesBuffer.data(); // 缓冲区的数据
+        int buffer_size = m_BytesBuffer.size();   // 缓冲区数据长度
+        if (buffer_size > 0)
+        {
+            /* 返回解析了的字节数 */
+            int len = av_parser_parse2(m_pCodecParserCtx, m_pCodecCtx, &m_Packet.data, &m_Packet.size,
+                buffer_ptr, buffer_size, AV_NOPTS_VALUE, AV_NOPTS_VALUE, AV_NOPTS_VALUE);
+            m_BytesBuffer.remove(0, len);
+        }
+    }
+
+
+    if (m_Packet.size >= 0)
+    {
+        int got = 0;
+        /* 解码出错, 中断程序 */
+        if (avcodec_decode_video2(m_pCodecCtx, m_pFrame, &got, &m_Packet) < 0)
+        {
+            qDebug() << "decodec error";
+            ::exit(0);
+        }
+
+        if (got)
+        {
+            if (m_bIsFirstTime)	// 分配格式转换存储空间
+            {
+
+                m_pSwsCtx = sws_getContext(m_pCodecCtx->width, m_pCodecCtx->height, m_pCodecCtx->pix_fmt,
+                    m_pCodecCtx->width, m_pCodecCtx->height, AV_PIX_FMT_RGB32, SWS_BICUBIC, NULL, NULL, NULL);
+
+                avpicture_alloc(&m_Picture, AV_PIX_FMT_RGB32, m_pCodecCtx->width, m_pCodecCtx->height);
+
+                m_bIsFirstTime = false;
+            }
+            /* YUV转RGB */
+            sws_scale(m_pSwsCtx, m_pFrame->data, m_pFrame->linesize, 0, m_pCodecCtx->height, m_Picture.data, m_Picture.linesize);
+
+            cv::Mat mat = cv::Mat(m_pCodecCtx->width, m_pCodecCtx->height, CV_8SC3, m_Picture.data[0]).inv();
+            this->pushMats(mat);
+        }
+    }
 }

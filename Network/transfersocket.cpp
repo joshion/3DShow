@@ -39,6 +39,7 @@ void TransferSocket::slot_setDisConnected()
 
 void TransferSocket::run()
 {
+    analysisReceiveBytesBuffer();
 }
 
 void TransferSocket::analysisReceiveBytesBuffer()
