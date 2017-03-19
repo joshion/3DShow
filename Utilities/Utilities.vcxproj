@@ -70,8 +70,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <TargetExt>.lib</TargetExt>
-    <IncludePath>C:\protobuf-3.0.0\include;D:\Documents\Visual Studio 2015\Projects\3DShow\Protobuf;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\protobuf-3.0.0\lib\Debug;D:\Documents\Visual Studio 2015\Projects\3DShow\x64\Debug;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\protobuf-3.0.0\include;C:\FFmpeg\include;C:\OpenCV\OpenCV3.1.0\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\protobuf-3.0.0\lib\Debug;C:\FFmpeg\lib;C:\OpenCV\OpenCV3.1.0\x64\vc14\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <TargetExt>.lib</TargetExt>
@@ -131,6 +131,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="decodevediostream.cpp" />
     <ClCompile Include="orderframebuffer.cpp" />
     <ClCompile Include="thread.cpp" />
     <ClCompile Include="transferframebuffer.cpp" />
@@ -138,6 +139,7 @@
     <ClCompile Include="validatedeive.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="decodevediostream.h" />
     <ClInclude Include="orderframebuffer.h" />
     <ClInclude Include="thread.h" />
     <ClInclude Include="transferframebuffer.h" />

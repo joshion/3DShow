@@ -30,6 +30,9 @@
     <ClCompile Include="validatedeive.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="decodevediostream.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="thread.h">
@@ -45,6 +48,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="validatedeive.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="decodevediostream.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
