@@ -24,30 +24,21 @@ DecodeVedioStream::DecodeVedioStream()
         m_MatsBuffer.reserve(MATS_BUFFER_RESERVED_SIZE);
     }
 
-    initDecodec();
+    this->initDecodec();
+    this->start();
 }
 
 
 DecodeVedioStream::~DecodeVedioStream()
 {
-    releaseDecodec();
+    this->stop();
+    this->releaseDecodec();
 }
 
 void DecodeVedioStream::run()
 {
+    std::lock_guard<std::mutex> lock_decode(m_mutexDeocder);
     decodeH264();
-}
-
-void DecodeVedioStream::pushBytes(const QByteArray & bytes)
-{
-    std::lock_guard<std::mutex> lock_buffer(m_mutexBytesBuffer);
-    m_BytesBuffer.append(bytes);
-}
-
-void DecodeVedioStream::pushMats(const cv::Mat & mat)
-{
-    std::lock_guard<std::mutex> lock_buffer(m_mutexMatsBuffer);
-    m_MatsBuffer.push_back(mat);
 }
 
 cv::Mat DecodeVedioStream::popMats()
@@ -71,8 +62,30 @@ int DecodeVedioStream::matsSize()
     return m_MatsBuffer.size();
 }
 
+void DecodeVedioStream::pushBytes(const QByteArray & bytes)
+{
+    std::lock_guard<std::mutex> lock_buffer(m_mutexBytesBuffer);
+    m_BytesBuffer.append(bytes);
+}
+
+void DecodeVedioStream::pushBytes(const unsigned char * data, unsigned int length)
+{
+    std::lock_guard<std::mutex> lock_buffer(m_mutexBytesBuffer);
+    if (data != nullptr && length > 0)
+    {
+        m_BytesBuffer.append((char *) data, length);
+    }
+}
+
+void DecodeVedioStream::pushMats(const cv::Mat & mat)
+{
+    std::lock_guard<std::mutex> lock_buffer(m_mutexMatsBuffer);
+    m_MatsBuffer.push_back(mat);
+}
+
 void DecodeVedioStream::initDecodec()
 {
+    std::lock_guard<std::mutex> lock_decode(m_mutexDeocder);
     av_register_all();
     avcodec_register_all();
 
@@ -112,9 +125,14 @@ void DecodeVedioStream::initDecodec()
 
 void DecodeVedioStream::releaseDecodec()
 {
+    std::lock_guard<std::mutex> lock_decode(m_mutexDeocder);
+
     av_free_packet(&m_Packet);
     av_frame_free(&m_pFrame);
-    avpicture_free(&m_Picture);
+    if (m_Picture)
+    {
+        avpicture_free(m_Picture);
+    }
     sws_freeContext(m_pSwsCtx);
     avcodec_free_context(&m_pCodecCtx);
     av_parser_close(m_pCodecParserCtx);
@@ -124,10 +142,10 @@ void DecodeVedioStream::decodeH264()
 {
     {
         std::lock_guard<std::mutex> lock_buffer(m_mutexBytesBuffer);
-        uint8_t *buffer_ptr = (uint8_t*) m_BytesBuffer.data(); // 缓冲区的数据
         int buffer_size = m_BytesBuffer.size();   // 缓冲区数据长度
         if (buffer_size > 0)
         {
+            uint8_t *buffer_ptr = (uint8_t*) m_BytesBuffer.data(); // 缓冲区的数据
             /* 返回解析了的字节数 */
             int len = av_parser_parse2(m_pCodecParserCtx, m_pCodecCtx, &m_Packet.data, &m_Packet.size,
                 buffer_ptr, buffer_size, AV_NOPTS_VALUE, AV_NOPTS_VALUE, AV_NOPTS_VALUE);
@@ -154,14 +172,14 @@ void DecodeVedioStream::decodeH264()
                 m_pSwsCtx = sws_getContext(m_pCodecCtx->width, m_pCodecCtx->height, m_pCodecCtx->pix_fmt,
                     m_pCodecCtx->width, m_pCodecCtx->height, AV_PIX_FMT_RGB32, SWS_BICUBIC, NULL, NULL, NULL);
 
-                avpicture_alloc(&m_Picture, AV_PIX_FMT_RGB32, m_pCodecCtx->width, m_pCodecCtx->height);
+                avpicture_alloc(m_Picture, AV_PIX_FMT_RGB32, m_pCodecCtx->width, m_pCodecCtx->height);
 
                 m_bIsFirstTime = false;
             }
             /* YUV转RGB */
-            sws_scale(m_pSwsCtx, m_pFrame->data, m_pFrame->linesize, 0, m_pCodecCtx->height, m_Picture.data, m_Picture.linesize);
+            sws_scale(m_pSwsCtx, m_pFrame->data, m_pFrame->linesize, 0, m_pCodecCtx->height, m_Picture->data, m_Picture->linesize);
 
-            cv::Mat mat = cv::Mat(m_pCodecCtx->width, m_pCodecCtx->height, CV_8SC3, m_Picture.data[0]).inv();
+            cv::Mat mat = cv::Mat(m_pCodecCtx->width, m_pCodecCtx->height, CV_8SC3, m_Picture->data[0]).inv();
             this->pushMats(mat);
         }
     }

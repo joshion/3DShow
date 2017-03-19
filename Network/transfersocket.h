@@ -2,7 +2,7 @@
 #define TRANSFERSOCKET_H
 
 #include "thread.h"
-
+#include "decodevediostream.h"
 #include <QTcpSocket>
 
 class TransferInterface;
@@ -49,13 +49,15 @@ protected:
 
 private:
     void analysisReceiveBytesBuffer();
-    void analysisReceiveFrameBuffer(const TransferFrameBuffer& m_pReceiveFrameBuffer);
+    void analysisReceiveFrameBuffer(const TransferFrameBuffer& buffer);
 private:
     QByteArray m_receiveBuffer;
     std::mutex m_mutexReceiveBuffer;
 
     bool m_bNotHasHead;
     TransferFrameBuffer *m_pReceiveFrameBuffer;
+
+    DecodeVedioStream *m_pDecoder;
 
 private slots:
     void slot_readDataFromServer();

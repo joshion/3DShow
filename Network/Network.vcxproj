@@ -65,8 +65,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
-    <IncludePath>C:\protobuf-3.0.0\include;D:\Documents\Visual Studio 2015\Projects\3DShow\Protobuf;D:\Documents\Visual Studio 2015\Projects\3DShow\Utilities;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\protobuf-3.0.0\lib\Debug;D:\Documents\Visual Studio 2015\Projects\3DShow\x64\Debug;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\FFmpeg\include;C:\protobuf-3.0.0\include;C:\OpenCV\OpenCV3.1.0\include;D:\Documents\Visual Studio 2015\Projects\3DShow\Protobuf;D:\Documents\Visual Studio 2015\Projects\3DShow\Utilities;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\FFmpeg\lib;C:\protobuf-3.0.0\lib\Debug;C:\OpenCV\OpenCV3.1.0\x64\vc14\lib;D:\Documents\Visual Studio 2015\Projects\3DShow\x64\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>

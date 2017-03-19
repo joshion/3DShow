@@ -66,8 +66,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
-    <IncludePath>C:\protobuf-3.0.0\include;C:\OpenCV\OpenCV3.1.0\include;D:\Documents\Visual Studio 2015\Projects\3DShow\Protobuf;D:\Documents\Visual Studio 2015\Projects\3DShow\Network;D:\Documents\Visual Studio 2015\Projects\3DShow\Utilities;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\protobuf-3.0.0\lib\Debug;C:\OpenCV\OpenCV3.1.0\x64\vc14\lib;D:\Documents\Visual Studio 2015\Projects\3DShow\x64\Debug;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\FFmpeg\include;C:\protobuf-3.0.0\include;C:\OpenCV\OpenCV3.1.0\include;D:\Documents\Visual Studio 2015\Projects\3DShow\Protobuf;D:\Documents\Visual Studio 2015\Projects\3DShow\Network;D:\Documents\Visual Studio 2015\Projects\3DShow\Utilities;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\FFmpeg\lib;C:\protobuf-3.0.0\lib\Debug;C:\OpenCV\OpenCV3.1.0\x64\vc14\lib;D:\Documents\Visual Studio 2015\Projects\3DShow\x64\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
@@ -108,7 +108,7 @@
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
       <AdditionalLibraryDirectories>$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opencv_flann310d.lib;opencv_core310d.lib;opencv_features2d310d.lib;opencv_calib3d310d.lib;opencv_highgui310d.lib;opencv_videoio310d.lib;opencv_imgcodecs310d.lib;opencv_imgproc310d.lib;qtmaind.lib;Qt5Cored.lib;Qt5Guid.lib;Qt5OpenGLd.lib;opengl32.lib;glu32.lib;Qt5Widgetsd.lib;libprotobufd.lib;libprotocd.lib;Protobuf.lib;Qt5Networkd.lib;Network.lib;Utilities.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opencv_flann310d.lib;opencv_core310d.lib;opencv_features2d310d.lib;opencv_calib3d310d.lib;opencv_highgui310d.lib;opencv_videoio310d.lib;opencv_imgcodecs310d.lib;opencv_imgproc310d.lib;qtmaind.lib;Qt5Cored.lib;Qt5Guid.lib;Qt5OpenGLd.lib;opengl32.lib;glu32.lib;Qt5Widgetsd.lib;libprotobufd.lib;libprotocd.lib;Protobuf.lib;Qt5Networkd.lib;Network.lib;Utilities.lib;avcodec.lib;avformat.lib;swscale.lib;avutil.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

@@ -2,12 +2,22 @@
 #include "transferframebuffer.h"
 #include <QByteArray>
 
+namespace
+{
+    static const unsigned int DATATYPE_RGB = 1;
+    static const unsigned int DATATYPE_DEPTH = 2;
+    static const unsigned int DATATYPE_SKELETON = 3;
+}
+
 TransferSocket::TransferSocket(QString strIPAdress, unsigned int port, QObject *parent)
     : m_strIPAdress(strIPAdress), m_uPort(port), QTcpSocket(parent),
-    m_bConnected(false), m_pGUI(nullptr), m_bNotHasHead(true), m_pReceiveFrameBuffer(nullptr)
+    m_bConnected(false), m_pGUI(nullptr), m_bNotHasHead(true), 
+    m_pReceiveFrameBuffer(nullptr), m_pDecoder(nullptr)
 {
     m_receiveBuffer.clear();
     m_pReceiveFrameBuffer = new TransferFrameBuffer;
+
+    m_pDecoder = new DecodeVedioStream;
 
     this->setSocketOption(QAbstractSocket::KeepAliveOption, 1);
     this->setSocketOption(QAbstractSocket::LowDelayOption, 1);
@@ -25,6 +35,7 @@ TransferSocket::~TransferSocket()
     this->stop();   // 关闭解析线程
 
     delete m_pReceiveFrameBuffer;
+    delete m_pDecoder;
 }
 
 void TransferSocket::slot_setConnected()
@@ -50,7 +61,7 @@ void TransferSocket::analysisReceiveBytesBuffer()
         std::lock_guard<std::mutex> lock_buffer(m_mutexReceiveBuffer);
 
         /*
-        若服务器发来的缓存少于11或者已经读取到了头部时跳过此部分,等待下次读取到更多缓存再
+        若服务器发来的缓存少于12或者已经读取到了头部时跳过此部分,等待下次读取到更多缓存再
         进行判断
         */
         if (m_bNotHasHead && m_receiveBuffer.length() >= m_pReceiveFrameBuffer->headLength())
@@ -76,8 +87,27 @@ void TransferSocket::analysisReceiveBytesBuffer()
     }
 }
 
-void TransferSocket::analysisReceiveFrameBuffer(const TransferFrameBuffer& m_pReceiveFrameBuffer)
+void TransferSocket::analysisReceiveFrameBuffer(const TransferFrameBuffer& buffer)
 {
+    switch (buffer.dataType())
+    {
+    case DATATYPE_RGB:
+    {
+        m_pDecoder->pushBytes(buffer.data(), buffer.bodyLength());
+    }
+    break;
+    case DATATYPE_DEPTH:
+    {
+
+    }
+    break;
+    case DATATYPE_SKELETON:
+    {
+
+    }
+    default:
+        break;
+    }
 }
 
 void TransferSocket::slot_readDataFromServer()
