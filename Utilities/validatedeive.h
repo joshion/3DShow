@@ -7,8 +7,10 @@ class QByteArray;
 class ValidateDeive
 {
 public:
-    ValidateDeive();
+    ValidateDeive(const unsigned char length = 0, const unsigned char* data = nullptr);
     virtual ~ValidateDeive();
+    ValidateDeive(const ValidateDeive &other);
+    ValidateDeive& operator=(const ValidateDeive & other);
 
 public:
     static QByteArray toByte(const ValidateDeive &other);

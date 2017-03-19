@@ -25,6 +25,8 @@ TransferFrameBuffer::TransferFrameBuffer(unsigned int timeStamp, unsigned int da
 TransferFrameBuffer::TransferFrameBuffer(const TransferFrameBuffer & other)
     : m_u32TimeStamp(other.m_u32TimeStamp), m_u32DataType(other.m_u32DataType)
 {
+    unsigned char* pOrig = this->m_Data;
+
     if (other.m_Data && other.m_u32BodyLength > 0)
     {
         this->m_Data = new unsigned char [other.m_u32BodyLength] {0};
@@ -36,6 +38,13 @@ TransferFrameBuffer::TransferFrameBuffer(const TransferFrameBuffer & other)
         this->m_u32BodyLength = 0;
         this->m_Data = nullptr;
     }
+
+    if (pOrig != nullptr)
+    {
+        delete[] pOrig;
+        pOrig = nullptr;
+    }
+
 }
 
 TransferFrameBuffer::~TransferFrameBuffer()
@@ -64,7 +73,13 @@ TransferFrameBuffer & TransferFrameBuffer::operator=(const TransferFrameBuffer &
         this->m_u32BodyLength = 0;
         this->m_Data = nullptr;
     }
-    delete[] pOrig;
+
+    if (pOrig != nullptr)
+    {
+        delete[] pOrig;
+        pOrig = nullptr;
+    }
+
     return *this;
 }
 

@@ -30,6 +30,8 @@ OrderFrameBuffer::OrderFrameBuffer(const OrderFrameBuffer & other)
     : m_ucCmdType(other.m_ucCmdType), m_ucCmdNum(other.m_ucCmdNum),
     m_u32Sequence(other.m_u32Sequence), m_ucVsersion(other.m_ucVsersion)
 {
+    unsigned char *pOrig = this->m_data;
+
     if (other.m_u32length > 0 && other.m_data != nullptr)
     {
         this->m_data = new unsigned char[other.m_u32length] {0};
@@ -40,6 +42,12 @@ OrderFrameBuffer::OrderFrameBuffer(const OrderFrameBuffer & other)
     {
         this->m_u32length = 0;
         this->m_data = nullptr;
+    }
+
+    if (pOrig != nullptr)
+    {
+        delete[] pOrig;
+        pOrig = nullptr;
     }
 }
 
@@ -72,7 +80,13 @@ OrderFrameBuffer & OrderFrameBuffer::operator=(const OrderFrameBuffer & other)
         this->m_u32length = 0;
         this->m_data = nullptr;
     }
-    delete[] pOrig;
+
+    if (pOrig != nullptr)
+    {
+        delete[] pOrig;
+        pOrig = nullptr;
+    }
+
     return *this;
 }
 

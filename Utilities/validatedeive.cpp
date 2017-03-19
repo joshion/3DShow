@@ -6,13 +6,62 @@
 #include <QString>
 
 
-ValidateDeive::ValidateDeive()
+ValidateDeive::ValidateDeive(const unsigned char length, const unsigned char * data)
+    : m_ucLength(length)
 {
+    this->setData(data, length);
 }
-
 
 ValidateDeive::~ValidateDeive()
 {
+    delete[] m_data;
+}
+
+ValidateDeive::ValidateDeive(const ValidateDeive & other)
+{
+    unsigned char* pOrig = this->m_data;
+
+    if (other.m_ucLength > 0 && other.m_data != nullptr)
+    {
+        this->m_data = new unsigned char[other.m_ucLength] { 0 };
+        memcpy(this->m_data, other.m_data, other.m_ucLength);
+        this->m_ucLength = other.m_ucLength;
+    }
+    else
+    {
+        this->m_data = nullptr;
+        this->m_ucLength = 0;
+    }
+    if (pOrig != nullptr)
+    {
+        delete[] pOrig;
+        pOrig = nullptr;
+    }
+}
+
+ValidateDeive & ValidateDeive::operator=(const ValidateDeive & other)
+{
+    unsigned char* pOrig = this->m_data;
+
+    if (other.m_ucLength > 0 && other.m_data != nullptr)
+    {
+        this->m_data = new unsigned char[other.m_ucLength] { 0 };
+        memcpy(this->m_data, other.m_data, other.m_ucLength);
+        this->m_ucLength = other.m_ucLength;
+    }
+    else
+    {
+        this->m_data = nullptr;
+        this->m_ucLength = 0;
+    }
+
+    if (pOrig != nullptr)
+    {
+        delete[] pOrig;
+        pOrig = nullptr;
+    }
+
+    return *this;
 }
 
 QByteArray ValidateDeive::toByte(const ValidateDeive & other)
