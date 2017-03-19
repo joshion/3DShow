@@ -13,7 +13,7 @@ Thread::~Thread()
 void Thread::start()
 {
 	std::lock_guard<std::mutex> lock(m_mutexThread);
-	if (!m_thread && !m_bWorking)
+	if (m_thread == nullptr)
 	{
         m_thread = new std::thread([&]() {
             {
