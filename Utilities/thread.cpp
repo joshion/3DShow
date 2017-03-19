@@ -1,8 +1,7 @@
 #include "thread.h"
 
 Thread::Thread()
-	: m_thread(nullptr)
-	, m_bWorking(false)
+	: m_thread(nullptr), m_bWorking(false)
 {
 }
 
@@ -38,10 +37,9 @@ void Thread::start()
 
 void Thread::stop()
 {
+    std::lock_guard<std::mutex> lock(m_mutexThread);
 	if (m_thread)
 	{
-		std::lock_guard<std::mutex> lock(m_mutexThread);
-
         {
             std::lock_guard<std::mutex> lock_working(m_mutexWorking);
             m_bWorking = false;
