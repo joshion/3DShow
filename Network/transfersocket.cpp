@@ -97,8 +97,6 @@ void TransferSocket::analysisReceiveBytesBuffer()
             length = m_receiveBuffer.length();
         }
     }
-
-
 }
 
 void TransferSocket::analysisReceiveFrameBuffer(const TransferFrameBuffer& buffer)

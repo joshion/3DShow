@@ -9,15 +9,13 @@ c.断开链接
 需要先调用registerGUIClass()后才可以调用start()以开启线程读取缓存
 */
 
-#include <QObject>
-
+#include <QTcpSocket>
 class OrderInterface;
 class OrderFrameBuffer;
 
 class QString;
-class QTcpSocket;
 
-class OrderSocket : public QObject
+class OrderSocket : public QTcpSocket
 {
     Q_OBJECT
 public:
@@ -29,7 +27,6 @@ public:
 private:
     QString m_strIPAdress;
     unsigned int m_uPort;
-    QTcpSocket *m_pTcpSocket;
 
 private:
     bool m_bConnected;
@@ -53,8 +50,8 @@ private:
     OrderFrameBuffer *m_pSendFrameBuffer;
 
 private:
-    bool writeBufferToServer() const;
-    bool writeBufferToServer(const OrderFrameBuffer & buffer) const;
+    bool writeBufferToServer();
+    bool writeBufferToServer(const OrderFrameBuffer & buffer);
 
 public slots:
     bool slot_requireConnect();

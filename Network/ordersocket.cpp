@@ -28,30 +28,27 @@ namespace
 }
 
 OrderSocket::OrderSocket(QString adress, unsigned int port, QObject *parent)
-    : QObject(parent), m_strIPAdress(adress), m_uPort(port),
-    m_pTcpSocket(nullptr), m_bConnected(false), m_pGUI(nullptr),
-    m_pSendFrameBuffer(nullptr), m_bNotHasHead(true), m_pReceiveFrameBuffer(nullptr)
+    : QTcpSocket(parent), m_strIPAdress(adress), m_uPort(port),
+    m_bConnected(false), m_pGUI(nullptr), m_pSendFrameBuffer(nullptr),
+    m_bNotHasHead(true), m_pReceiveFrameBuffer(nullptr)
 
 {
-    m_pTcpSocket = new QTcpSocket { this };
     m_pSendFrameBuffer = new OrderFrameBuffer {};
     m_pReceiveFrameBuffer = new OrderFrameBuffer {};
     m_receiveBuffer.clear();
 
-    m_pTcpSocket->setSocketOption(QAbstractSocket::KeepAliveOption, 1);
-    m_pTcpSocket->setSocketOption(QAbstractSocket::LowDelayOption, 1);
-    m_pTcpSocket->connectToHost(m_strIPAdress, m_uPort);
-    connect(m_pTcpSocket, &QTcpSocket::connected, this, &OrderSocket::slot_setConnected, Qt::QueuedConnection);
-    connect(m_pTcpSocket, &QTcpSocket::disconnected, this, &OrderSocket::slot_setDisConnected, Qt::QueuedConnection);
-    connect(m_pTcpSocket, &QTcpSocket::readyRead, this, &OrderSocket::slot_readDataFromServer, Qt::QueuedConnection);
+    setSocketOption(QAbstractSocket::KeepAliveOption, 1);
+    setSocketOption(QAbstractSocket::LowDelayOption, 1);
+    connectToHost(m_strIPAdress, m_uPort);
+    connect(this, &OrderSocket::connected, this, &OrderSocket::slot_setConnected, Qt::QueuedConnection);
+    connect(this, &OrderSocket::disconnected, this, &OrderSocket::slot_setDisConnected, Qt::QueuedConnection);
+    connect(this, &OrderSocket::readyRead, this, &OrderSocket::slot_readDataFromServer, Qt::QueuedConnection);
 }
 
 OrderSocket::~OrderSocket()
 {
-    if (m_pTcpSocket)
-    {
-        m_pTcpSocket->close();
-    }
+    this->close();
+
     if (m_pSendFrameBuffer)
     {
         delete m_pSendFrameBuffer;
@@ -74,7 +71,7 @@ void OrderSocket::slot_setDisConnected()
     m_bConnected = false;
 }
 
-bool OrderSocket::writeBufferToServer() const
+bool OrderSocket::writeBufferToServer()
 {
     QByteArray bytes = OrderFrameBuffer::toBytes(*m_pSendFrameBuffer);
     
@@ -84,20 +81,20 @@ bool OrderSocket::writeBufferToServer() const
     */
     if (m_bConnected)
     {
-        int writeLength = m_pTcpSocket->write(bytes);
+        int writeLength = write(bytes);
         return writeLength == bytes.length();
     }
     else
     {
-        m_pTcpSocket->connectToHost(m_strIPAdress, m_uPort);
+        connectToHost(m_strIPAdress, m_uPort);
         return false;
     }
 }
 
-bool OrderSocket::writeBufferToServer(const OrderFrameBuffer & buffer) const
+bool OrderSocket::writeBufferToServer(const OrderFrameBuffer & buffer)
 {
     QByteArray bytes = OrderFrameBuffer::toBytes(buffer);
-    int writeLength = m_pTcpSocket->write(bytes);
+    int writeLength = this->write(bytes);
     return writeLength == bytes.length();
 }
 
@@ -267,7 +264,7 @@ void OrderSocket::analysisReceiveFrameBuffer(const OrderFrameBuffer & buffer)
 
 void OrderSocket::slot_readDataFromServer()
 {
-    m_receiveBuffer.append(m_pTcpSocket->readAll());
+    m_receiveBuffer.append(this->readAll());
     analysisReceiveByteArrayBuffer();
 
 }
