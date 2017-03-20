@@ -48,9 +48,9 @@ private:
     AVCodecContext *m_pCodecCtx = NULL;
     AVCodecParserContext *m_pCodecParserCtx = NULL;
     AVCodec *m_pCodec = NULL;
+    AVCodecID m_Codec_Id = AV_CODEC_ID_H264;
     AVFrame *m_pFrame = NULL;             //yuv  
     AVPacket m_Packet;                    //h264  
-    AVCodecID m_Codec_Id = AV_CODEC_ID_H264;
     bool m_bIsFirstTime = true;
 
 };

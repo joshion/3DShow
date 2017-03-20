@@ -75,8 +75,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <TargetExt>.lib</TargetExt>
-    <IncludePath>C:\protobuf-3.0.0\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\protobuf-3.0.0\lib\Release;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\protobuf-3.0.0\include;C:\OpenCV\OpenCV3.1.0\include;C:\FFmpeg\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\protobuf-3.0.0\lib\Release;C:\OpenCV\OpenCV3.1.0\x64\vc14\lib;C:\FFmpeg\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

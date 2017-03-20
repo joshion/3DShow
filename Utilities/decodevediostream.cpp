@@ -160,11 +160,34 @@ void DecodeVedioStream::decodeH264()
 
         if (got)
         {
-            cv::Mat mYUV(m_pFrame->height, m_pFrame->width, CV_8UC1, m_pFrame->data);
-            cv::Mat mRGB(m_pFrame->height, m_pFrame->width, CV_8UC3);
-            cv::cvtColor(mYUV, mRGB, CV_YUV2BGR_I420);
+            if (m_pCodecCtx->pix_fmt == AV_PIX_FMT_YUV420P)
+            {
+                cv::Mat mYUV;
+                int height = m_pFrame->height;
+                int width = m_pFrame->width;
+                mYUV.create(height * 3 / 2, width, CV_8UC1);
 
-            this->pushMats(mRGB);
+                /* 复制 Y 分量 */
+                memcpy(mYUV.data,
+                    (unsigned char *) m_pFrame->data[0],
+                    height * width * sizeof(unsigned char));
+
+                /* 复制 V 分量 */
+                memcpy(mYUV.data + height * width * sizeof(unsigned char),
+                    (unsigned char *) m_pFrame->data[1],
+                    height / 4 * width * sizeof(unsigned char));
+
+                /* 复制 U 分量 */
+                memcpy(mYUV.data + height * 5 / 4 * width * sizeof(unsigned char),
+                    (unsigned char *) m_pFrame->data[2],
+                    height / 4 * width * sizeof(unsigned char));
+
+                cv::Mat mRGB(m_pFrame->height, m_pFrame->width, CV_8UC3);
+                cv::cvtColor(mYUV, mRGB, CV_YUV2BGR_I420);
+
+                this->pushMats(mRGB);
+            }
         }
     }
+    av_free_packet(&m_Packet);
 }

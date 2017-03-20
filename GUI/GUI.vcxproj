@@ -74,8 +74,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
-    <IncludePath>C:\protobuf-3.0.0\include;C:\OpenCV\OpenCV3.1.0\include;D:\Documents\Visual Studio 2015\Projects\3DShow\Network;D:\Documents\Visual Studio 2015\Projects\3DShow\Utilities;D:\Documents\Visual Studio 2015\Projects\3DShow\Protobuf;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\protobuf-3.0.0\lib\Release;C:\OpenCV\OpenCV3.1.0\x64\vc14\lib;D:\Documents\Visual Studio 2015\Projects\3DShow\x64\Release;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\FFmpeg\include;C:\protobuf-3.0.0\include;C:\OpenCV\OpenCV3.1.0\include;D:\Documents\Visual Studio 2015\Projects\3DShow\Network;D:\Documents\Visual Studio 2015\Projects\3DShow\Utilities;D:\Documents\Visual Studio 2015\Projects\3DShow\Protobuf;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\FFmpeg\lib;C:\protobuf-3.0.0\lib\Release;C:\OpenCV\OpenCV3.1.0\x64\vc14\lib;D:\Documents\Visual Studio 2015\Projects\3DShow\x64\Release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -140,7 +140,7 @@
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
       <AdditionalLibraryDirectories>$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <AdditionalDependencies>opencv_flann310.lib;opencv_core310.lib;opencv_features2d310.lib;opencv_calib3d310.lib;opencv_highgui310.lib;opencv_videoio310.lib;opencv_imgcodecs310.lib;opencv_imgproc310.lib;qtmain.lib;Qt5Core.lib;Qt5Gui.lib;Qt5OpenGL.lib;opengl32.lib;glu32.lib;Qt5Widgets.lib;Qt5Network.lib;libprotobuf.lib;libprotoc.lib;Protobuf.lib;Network.lib;Utilities.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opencv_flann310.lib;opencv_core310.lib;opencv_features2d310.lib;opencv_calib3d310.lib;opencv_highgui310.lib;opencv_videoio310.lib;opencv_imgcodecs310.lib;opencv_imgproc310.lib;qtmain.lib;Qt5Core.lib;Qt5Gui.lib;Qt5OpenGL.lib;opengl32.lib;glu32.lib;Qt5Widgets.lib;Qt5Network.lib;libprotobuf.lib;libprotoc.lib;Protobuf.lib;Network.lib;Utilities.lib;avcodec.lib;avformat.lib;swscale.lib;avutil.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
