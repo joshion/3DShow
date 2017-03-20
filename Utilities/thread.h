@@ -20,7 +20,7 @@ protected:
     */
     virtual void run() = 0;
 
-    void notifiyThreadToContinue();
+    void notifyThreadToContinue();
 
 private:
 	std::mutex m_mutexThread;

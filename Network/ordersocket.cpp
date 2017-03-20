@@ -76,7 +76,7 @@ void OrderSocket::slot_setDisConnected()
 
 bool OrderSocket::writeBufferToServer() const
 {
-    QByteArray bytes = OrderFrameBuffer::toByte(*m_pSendFrameBuffer);
+    QByteArray bytes = OrderFrameBuffer::toBytes(*m_pSendFrameBuffer);
     
     /*
     若服务器已经链接上,则发送数据,并返回true
@@ -96,7 +96,7 @@ bool OrderSocket::writeBufferToServer() const
 
 bool OrderSocket::writeBufferToServer(const OrderFrameBuffer & buffer) const
 {
-    QByteArray bytes = OrderFrameBuffer::toByte(buffer);
+    QByteArray bytes = OrderFrameBuffer::toBytes(buffer);
     int writeLength = m_pTcpSocket->write(bytes);
     return writeLength == bytes.length();
 }

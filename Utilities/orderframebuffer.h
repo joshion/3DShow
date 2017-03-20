@@ -17,8 +17,8 @@ public:
     OrderFrameBuffer& operator=(const OrderFrameBuffer& other);
 
 public:
-    static QByteArray toByte(const OrderFrameBuffer &buffer);
-    static OrderFrameBuffer fromByte(const QByteArray &bytes);
+    static QByteArray toBytes(const OrderFrameBuffer &buffer);
+    static OrderFrameBuffer fromBytes(const QByteArray &bytes);
 
 public:
     inline void setCmdType(const unsigned char cmdType)
@@ -73,7 +73,7 @@ public:
     }
     inline unsigned int length() const
     {
-        return m_u32length;
+        return m_u32Length;
     }
 
     inline unsigned int headLength() const
@@ -105,7 +105,7 @@ private:
     union
     {
         char m_length[4];
-        unsigned int m_u32length;
+        unsigned int m_u32Length;
     };  //包体长度,也即是m_data的长度,不包括头部长度。头部长度固定为11Bytes
 	unsigned char *m_data;
 

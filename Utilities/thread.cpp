@@ -64,7 +64,7 @@ void Thread::stop()
             std::lock_guard<std::mutex> lock_working(m_mutexWorking);
             m_bWorking = false;
         }
-        notifiyThreadToContinue();
+        notifyThreadToContinue();
         if (m_thread)
 		{
 			m_thread->join();
@@ -80,7 +80,7 @@ bool Thread::isWorking()
 	return m_bWorking;
 }
 
-void Thread::notifiyThreadToContinue()
+void Thread::notifyThreadToContinue()
 {
     std::unique_lock<std::mutex> lock_status(m_mutexStatus);
     m_bStatus = true;

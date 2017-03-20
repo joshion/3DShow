@@ -66,7 +66,7 @@ void DecodeVedioStream::pushBytes(const QByteArray & bytes)
 {
     std::lock_guard<std::mutex> lock_buffer(m_mutexBytesBuffer);
     m_BytesBuffer.append(bytes);
-    notifiyThreadToContinue();
+    notifyThreadToContinue();
 }
 
 void DecodeVedioStream::pushBytes(const unsigned char * data, unsigned int length)
@@ -76,7 +76,7 @@ void DecodeVedioStream::pushBytes(const unsigned char * data, unsigned int lengt
     {
         m_BytesBuffer.append((char *) data, length);
     }
-    notifiyThreadToContinue();
+    notifyThreadToContinue();
 }
 
 void DecodeVedioStream::pushMats(const cv::Mat & mat)

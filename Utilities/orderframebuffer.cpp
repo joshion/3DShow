@@ -11,17 +11,17 @@ len即是data的长度
 */
 OrderFrameBuffer::OrderFrameBuffer(unsigned char cmdType, unsigned char cmdNum, unsigned int sequence,
     unsigned char version, unsigned int len, unsigned char * data)
-    : m_u32length(len), m_ucCmdType(cmdType), m_ucCmdNum(cmdNum),
+    : m_u32Length(len), m_ucCmdType(cmdType), m_ucCmdNum(cmdNum),
     m_u32Sequence(sequence), m_ucVsersion(version)
 {
-    if (data && m_u32length > 0)
+    if (data && m_u32Length > 0)
     {
-        m_data = new unsigned char[m_u32length] {0};
-        memcpy(m_data, data, m_u32length);
+        m_data = new unsigned char[m_u32Length] {0};
+        memcpy(m_data, data, m_u32Length);
     }
     else
     {
-        m_u32length = 0;
+        m_u32Length = 0;
         m_data = nullptr;
     }
 }
@@ -32,15 +32,15 @@ OrderFrameBuffer::OrderFrameBuffer(const OrderFrameBuffer & other)
 {
     unsigned char *pOrig = this->m_data;
 
-    if (other.m_u32length > 0 && other.m_data != nullptr)
+    if (other.m_u32Length > 0 && other.m_data != nullptr)
     {
-        this->m_data = new unsigned char[other.m_u32length] {0};
-        memcpy(this->m_data, other.m_data, other.m_u32length);
-        this->m_u32length = other.m_u32length;
+        this->m_data = new unsigned char[other.m_u32Length] {0};
+        memcpy(this->m_data, other.m_data, other.m_u32Length);
+        this->m_u32Length = other.m_u32Length;
     }
     else
     {
-        this->m_u32length = 0;
+        this->m_u32Length = 0;
         this->m_data = nullptr;
     }
 
@@ -62,7 +62,7 @@ OrderFrameBuffer::~OrderFrameBuffer()
 
 OrderFrameBuffer & OrderFrameBuffer::operator=(const OrderFrameBuffer & other)
 {
-    this->m_u32length = other.m_u32length;
+    this->m_u32Length = other.m_u32Length;
     this->m_ucCmdType = other.m_ucCmdType;
     this->m_ucCmdNum = other.m_ucCmdNum;
     this->m_u32Sequence = other.m_u32Sequence;
@@ -70,14 +70,14 @@ OrderFrameBuffer & OrderFrameBuffer::operator=(const OrderFrameBuffer & other)
 
     unsigned char *pOrig = this->m_data;
 
-    if (other.m_u32length > 0 && other.m_data != nullptr)
+    if (other.m_u32Length > 0 && other.m_data != nullptr)
     {
-        this->m_data = new unsigned char[other.m_u32length] {0};
-        memcpy(this->m_data, other.m_data, other.m_u32length);
+        this->m_data = new unsigned char[other.m_u32Length] {0};
+        memcpy(this->m_data, other.m_data, other.m_u32Length);
     }
     else
     {
-        this->m_u32length = 0;
+        this->m_u32Length = 0;
         this->m_data = nullptr;
     }
 
@@ -90,7 +90,7 @@ OrderFrameBuffer & OrderFrameBuffer::operator=(const OrderFrameBuffer & other)
     return *this;
 }
 
-QByteArray OrderFrameBuffer::toByte(const OrderFrameBuffer &buffer)
+QByteArray OrderFrameBuffer::toBytes(const OrderFrameBuffer &buffer)
 {
     /*
     将小端数据转换为大端数据发送
@@ -102,7 +102,7 @@ QByteArray OrderFrameBuffer::toByte(const OrderFrameBuffer &buffer)
     };
     DataUnion length, sequence;
     sequence.u32Data = qToBigEndian(buffer.m_u32Sequence);
-    length.u32Data = qToBigEndian(buffer.m_u32length);
+    length.u32Data = qToBigEndian(buffer.m_u32Length);
 
     QByteArray bytes;
     bytes.append(buffer.m_cmdType);
@@ -110,11 +110,11 @@ QByteArray OrderFrameBuffer::toByte(const OrderFrameBuffer &buffer)
     bytes.append(sequence.cData, 4);
     bytes.append(buffer.m_version);
     bytes.append(length.cData, 4);
-    bytes.append((char *)(buffer.m_data), buffer.m_u32length);
+    bytes.append((char *)(buffer.m_data), buffer.m_u32Length);
     return bytes;
 }
 
-OrderFrameBuffer OrderFrameBuffer::fromByte(const QByteArray & bytes)
+OrderFrameBuffer OrderFrameBuffer::fromBytes(const QByteArray & bytes)
 {
     OrderFrameBuffer buffer;
     memcpy(&buffer.m_cmdType, bytes.data(), 1);
@@ -129,12 +129,12 @@ OrderFrameBuffer OrderFrameBuffer::fromByte(const QByteArray & bytes)
     但是用qToBigEndian却会
     */
     buffer.m_u32Sequence = qToBigEndian(buffer.m_u32Sequence);
-    buffer.m_u32length = qToBigEndian(buffer.m_u32length);
+    buffer.m_u32Length = qToBigEndian(buffer.m_u32Length);
 
-    if (buffer.m_u32length > 0)
+    if (buffer.m_u32Length > 0)
     {
-        buffer.m_data = new unsigned char[buffer.m_u32length] { 0 };
-        memcpy(buffer.m_data, bytes.data() + 11, buffer.m_u32length);
+        buffer.m_data = new unsigned char[buffer.m_u32Length] { 0 };
+        memcpy(buffer.m_data, bytes.data() + 11, buffer.m_u32Length);
     }
     else
     {
@@ -161,7 +161,7 @@ bool OrderFrameBuffer::setHead(const QByteArray & bytes)
     但是用qToBigEndian却会
     */
     this->m_u32Sequence = qToBigEndian(this->m_u32Sequence);
-    this->m_u32length = qToBigEndian(this->m_u32length);
+    this->m_u32Length = qToBigEndian(this->m_u32Length);
 
     // 清空数据,保留包体长度,之后的设置数据需要用到包体长度
     if (m_data != nullptr)
@@ -186,7 +186,7 @@ bool OrderFrameBuffer::setData(const QByteArray & bytes, const unsigned int leng
             delete[] m_data;
             m_data = nullptr;
         }
-        m_u32length = length;
+        m_u32Length = length;
         m_data = new unsigned char[length] {0};
         memcpy(m_data, bytes.data(), length);
         return true;
@@ -207,7 +207,7 @@ bool OrderFrameBuffer::setData(const unsigned char * data, const unsigned int le
             delete[] m_data;
             m_data = nullptr;
         }
-        m_u32length = length;
+        m_u32Length = length;
         m_data = new unsigned char[length] {0};
         memcpy(m_data, data, length);
         return true;

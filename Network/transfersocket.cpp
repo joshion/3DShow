@@ -131,5 +131,5 @@ void TransferSocket::slot_readDataFromServer()
     /*
     通知解析线程解析数据
     */
-    notifiyThreadToContinue();
+    notifyThreadToContinue();
 }
