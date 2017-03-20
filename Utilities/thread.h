@@ -20,10 +20,17 @@ protected:
     */
     virtual void run() = 0;
 
+    void notifiyThreadToContinue();
+
 private:
 	std::mutex m_mutexThread;
 	std::thread *m_thread;
     
     std::mutex m_mutexWorking;
     bool m_bWorking;
+
+    std::condition_variable m_cvStatus;
+    std::mutex m_mutexStatus;
+    bool m_bStatus;
+
 };

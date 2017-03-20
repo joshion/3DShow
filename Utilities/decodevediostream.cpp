@@ -66,6 +66,7 @@ void DecodeVedioStream::pushBytes(const QByteArray & bytes)
 {
     std::lock_guard<std::mutex> lock_buffer(m_mutexBytesBuffer);
     m_BytesBuffer.append(bytes);
+    notifiyThreadToContinue();
 }
 
 void DecodeVedioStream::pushBytes(const unsigned char * data, unsigned int length)
@@ -75,6 +76,7 @@ void DecodeVedioStream::pushBytes(const unsigned char * data, unsigned int lengt
     {
         m_BytesBuffer.append((char *) data, length);
     }
+    notifiyThreadToContinue();
 }
 
 void DecodeVedioStream::pushMats(const cv::Mat & mat)
@@ -135,62 +137,72 @@ void DecodeVedioStream::releaseDecodec()
 
 void DecodeVedioStream::decodeH264()
 {
+    int buffer_size = 0;
     {
         std::lock_guard<std::mutex> lock_buffer(m_mutexBytesBuffer);
-        int buffer_size = m_BytesBuffer.size();   // 缓冲区数据长度
-        if (buffer_size > 0)
+        buffer_size = m_BytesBuffer.size();   // 缓冲区数据长度
+    }
+    while (buffer_size > 0)
+    {
         {
+            std::lock_guard<std::mutex> lock_buffer(m_mutexBytesBuffer);
             uint8_t *buffer_ptr = (uint8_t*) m_BytesBuffer.data(); // 缓冲区的数据
+            buffer_size = m_BytesBuffer.size();   // 缓冲区数据长度
             /* 返回解析了的字节数 */
             int len = av_parser_parse2(m_pCodecParserCtx, m_pCodecCtx, &m_Packet.data, &m_Packet.size,
                 buffer_ptr, buffer_size, AV_NOPTS_VALUE, AV_NOPTS_VALUE, AV_NOPTS_VALUE);
             m_BytesBuffer.remove(0, len);
         }
-    }
 
-    if (m_Packet.size > 0)
-    {
-        int got = 0;
-        /* 解码出错, 中断程序 */
-        if (avcodec_decode_video2(m_pCodecCtx, m_pFrame, &got, &m_Packet) < 0)
+        if (m_Packet.size > 0)
         {
-            qDebug() << "decodec error";
-            ::exit(0);
-        }
-
-        if (got)
-        {
-            /* YUV420P格式 
-             * Y:V:U = 4:1:1 
-             * 数据分别放在3个通道中
-            */
-            if (m_pCodecCtx->pix_fmt == AV_PIX_FMT_YUV420P)
+            int got = 0;
+            /* 解码出错, 中断程序 */
+            if (avcodec_decode_video2(m_pCodecCtx, m_pFrame, &got, &m_Packet) < 0)
             {
-                int height = m_pFrame->height;
-                int width = m_pFrame->width;
-                cv::Mat mYUV(height * 3 / 2, width, CV_8UC1);
-                cv::Mat mRGB(m_pFrame->height, m_pFrame->width, CV_8UC3);
+                qDebug() << "decodec error";
+                ::exit(0);
+            }
 
-                /* 复制 Y 分量 */
-                memcpy(mYUV.data,
-                    (unsigned char *) m_pFrame->data[0],
-                    height * width * sizeof(unsigned char));
+            if (got)
+            {
+                /* YUV420P格式
+                * Y:V:U = 4:1:1
+                * 数据分别放在3个通道中
+                */
+                if (m_pCodecCtx->pix_fmt == AV_PIX_FMT_YUV420P)
+                {
+                    int height = m_pFrame->height;
+                    int width = m_pFrame->width;
+                    cv::Mat mYUV(height * 3 / 2, width, CV_8UC1);
+                    cv::Mat mRGB(m_pFrame->height, m_pFrame->width, CV_8UC3);
 
-                /* 复制 V 分量 */
-                memcpy(mYUV.data + height * width * sizeof(unsigned char),
-                    (unsigned char *) m_pFrame->data[1],
-                    height / 4 * width * sizeof(unsigned char));
+                    /* 复制 Y 分量 */
+                    memcpy(mYUV.data,
+                        (unsigned char *) m_pFrame->data[0],
+                        height * width * sizeof(unsigned char));
 
-                /* 复制 U 分量 */
-                memcpy(mYUV.data + height * 5 / 4 * width * sizeof(unsigned char),
-                    (unsigned char *) m_pFrame->data[2],
-                    height / 4 * width * sizeof(unsigned char));
+                    /* 复制 V 分量 */
+                    memcpy(mYUV.data + height * width * sizeof(unsigned char),
+                        (unsigned char *) m_pFrame->data[1],
+                        height / 4 * width * sizeof(unsigned char));
 
-                cv::cvtColor(mYUV, mRGB, CV_YUV2BGR_I420);
+                    /* 复制 U 分量 */
+                    memcpy(mYUV.data + height * 5 / 4 * width * sizeof(unsigned char),
+                        (unsigned char *) m_pFrame->data[2],
+                        height / 4 * width * sizeof(unsigned char));
 
-                this->pushMats(mRGB);
+                    cv::cvtColor(mYUV, mRGB, CV_YUV2BGR_I420);
+
+                    this->pushMats(mRGB);
+                }
             }
         }
+        av_free_packet(&m_Packet);
+
+        {
+            std::lock_guard<std::mutex> lock_buffer(m_mutexBytesBuffer);
+            buffer_size = m_BytesBuffer.size();   // 缓冲区数据长度
+        }
     }
-    av_free_packet(&m_Packet);
 }

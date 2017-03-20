@@ -1,7 +1,7 @@
 #include "thread.h"
 
 Thread::Thread()
-	: m_thread(nullptr), m_bWorking(false)
+	: m_thread(nullptr), m_bWorking(false), m_bStatus(false)
 {
 }
 
@@ -22,7 +22,22 @@ void Thread::start()
             }
             while (true)
             {
+                /*
+                等待触发
+                */
+                {
+                    std::unique_lock<std::mutex> lock_status(m_mutexStatus);
+                    while (!m_bStatus)
+                    {
+                        m_cvStatus.wait(lock_status);
+                    }
+                }
+
                 run();
+
+                /*
+                判断是否需要结束线程
+                */
                 {
                     std::lock_guard<std::mutex> lock_working(m_mutexWorking);
                     if (m_bWorking == false)
@@ -30,6 +45,12 @@ void Thread::start()
                         break;
                     }
                 }
+
+                {
+                    std::unique_lock<std::mutex> lock_status(m_mutexStatus);
+                    m_bStatus = false;
+                }
+
             }
         });
 	}
@@ -44,6 +65,7 @@ void Thread::stop()
             std::lock_guard<std::mutex> lock_working(m_mutexWorking);
             m_bWorking = false;
         }
+        notifiyThreadToContinue();
         if (m_thread)
 		{
 			m_thread->join();
@@ -57,4 +79,11 @@ bool Thread::isWorking()
 {
     std::lock_guard<std::mutex> lock_working(m_mutexWorking);
 	return m_bWorking;
+}
+
+void Thread::notifiyThreadToContinue()
+{
+    std::unique_lock<std::mutex> lock_status(m_mutexStatus);
+    m_bStatus = true;
+    m_cvStatus.notify_one();
 }
