@@ -56,35 +56,49 @@ void TransferSocket::run()
 void TransferSocket::analysisReceiveBytesBuffer()
 {
     bool bIsACompleteFrameBuffer = false;
-
+    int length = 0;
     {
         std::lock_guard<std::mutex> lock_buffer(m_mutexReceiveBuffer);
-
-        /*
-        若服务器发来的缓存少于12或者已经读取到了头部时跳过此部分,等待下次读取到更多缓存再
-        进行判断
-        */
-        if (m_bNotHasHead && m_receiveBuffer.length() >= m_pReceiveFrameBuffer->headLength())
-        {
-            m_pReceiveFrameBuffer->setHead(m_receiveBuffer);
-            m_receiveBuffer.remove(0, m_pReceiveFrameBuffer->headLength());
-            m_bNotHasHead = false;
-        }
-        /*
-        若没有读取到头部或者缓存的长度比头部指定的protobuf的长度小时跳过此部分,等待下次读取到更多缓存时再进行判断
-        */
-        if (!m_bNotHasHead && m_receiveBuffer.length() >= m_pReceiveFrameBuffer->bodyLength())
-        {
-            m_pReceiveFrameBuffer->setData(m_receiveBuffer, m_pReceiveFrameBuffer->bodyLength());
-            m_receiveBuffer.remove(0, m_pReceiveFrameBuffer->bodyLength());
-            m_bNotHasHead = true;
-            bIsACompleteFrameBuffer = true;
-        }
+        length = m_receiveBuffer.length();
     }
-    if (bIsACompleteFrameBuffer)
+    while (length > 0)
     {
-        analysisReceiveFrameBuffer(*m_pReceiveFrameBuffer);
+        {
+            std::lock_guard<std::mutex> lock_buffer(m_mutexReceiveBuffer);
+
+            /*
+            若服务器发来的缓存少于12或者已经读取到了头部时跳过此部分,等待下次读取到更多缓存再
+            进行判断
+            */
+            if (m_bNotHasHead && m_receiveBuffer.length() >= m_pReceiveFrameBuffer->headLength())
+            {
+                m_pReceiveFrameBuffer->setHead(m_receiveBuffer);
+                m_receiveBuffer.remove(0, m_pReceiveFrameBuffer->headLength());
+                m_bNotHasHead = false;
+            }
+            /*
+            若没有读取到头部或者缓存的长度比头部指定的protobuf的长度小时跳过此部分,等待下次读取到更多缓存时再进行判断
+            */
+            if (!m_bNotHasHead && m_receiveBuffer.length() >= m_pReceiveFrameBuffer->bodyLength())
+            {
+                m_pReceiveFrameBuffer->setData(m_receiveBuffer, m_pReceiveFrameBuffer->bodyLength());
+                m_receiveBuffer.remove(0, m_pReceiveFrameBuffer->bodyLength());
+                m_bNotHasHead = true;
+                bIsACompleteFrameBuffer = true;
+            }
+        }
+        if (bIsACompleteFrameBuffer)
+        {
+            analysisReceiveFrameBuffer(*m_pReceiveFrameBuffer);
+        }
+
+        {
+            std::lock_guard<std::mutex> lock_buffer(m_mutexReceiveBuffer);
+            length = m_receiveBuffer.length();
+        }
     }
+
+
 }
 
 void TransferSocket::analysisReceiveFrameBuffer(const TransferFrameBuffer& buffer)
@@ -114,4 +128,8 @@ void TransferSocket::slot_readDataFromServer()
 {
     std::lock_guard<std::mutex> lock_buffer(m_mutexReceiveBuffer);
     m_receiveBuffer.append(this->readAll());
+    /*
+    通知解析线程解析数据
+    */
+    notifiyThreadToContinue();
 }

@@ -50,7 +50,6 @@ void Thread::start()
                     std::unique_lock<std::mutex> lock_status(m_mutexStatus);
                     m_bStatus = false;
                 }
-
             }
         });
 	}
