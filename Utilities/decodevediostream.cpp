@@ -160,12 +160,16 @@ void DecodeVedioStream::decodeH264()
 
         if (got)
         {
+            /* YUV420P格式 
+             * Y:V:U = 4:1:1 
+             * 数据分别放在3个通道中
+            */
             if (m_pCodecCtx->pix_fmt == AV_PIX_FMT_YUV420P)
             {
-                cv::Mat mYUV;
                 int height = m_pFrame->height;
                 int width = m_pFrame->width;
-                mYUV.create(height * 3 / 2, width, CV_8UC1);
+                cv::Mat mYUV(height * 3 / 2, width, CV_8UC1);
+                cv::Mat mRGB(m_pFrame->height, m_pFrame->width, CV_8UC3);
 
                 /* 复制 Y 分量 */
                 memcpy(mYUV.data,
@@ -182,7 +186,6 @@ void DecodeVedioStream::decodeH264()
                     (unsigned char *) m_pFrame->data[2],
                     height / 4 * width * sizeof(unsigned char));
 
-                cv::Mat mRGB(m_pFrame->height, m_pFrame->width, CV_8UC3);
                 cv::cvtColor(mYUV, mRGB, CV_YUV2BGR_I420);
 
                 this->pushMats(mRGB);
