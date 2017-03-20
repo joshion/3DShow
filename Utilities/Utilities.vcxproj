@@ -136,7 +136,7 @@
     <ClCompile Include="thread.cpp" />
     <ClCompile Include="transferframebuffer.cpp" />
     <ClCompile Include="utilities.cpp" />
-    <ClCompile Include="validatedeive.cpp" />
+    <ClCompile Include="validatedevice.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="decodevediostream.h" />
@@ -144,7 +144,7 @@
     <ClInclude Include="thread.h" />
     <ClInclude Include="transferframebuffer.h" />
     <ClInclude Include="utilities.h" />
-    <ClInclude Include="validatedeive.h" />
+    <ClInclude Include="validatedevice.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -4,16 +4,16 @@
 class QString;
 class QByteArray;
 
-class ValidateDeive
+class ValidateDevice
 {
 public:
-    ValidateDeive(const unsigned char length = 0, const unsigned char* data = nullptr);
-    virtual ~ValidateDeive();
-    ValidateDeive(const ValidateDeive &other);
-    ValidateDeive& operator=(const ValidateDeive & other);
+    ValidateDevice(const unsigned char length = 0, const unsigned char* data = nullptr);
+    virtual ~ValidateDevice();
+    ValidateDevice(const ValidateDevice &other);
+    ValidateDevice& operator=(const ValidateDevice & other);
 
 public:
-    static QByteArray toByte(const ValidateDeive &other);
+    static QByteArray toByte(const ValidateDevice &other);
 
 public:
     inline void setLength(unsigned char length)

@@ -27,10 +27,10 @@
     <ClCompile Include="transferframebuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="validatedeive.cpp">
+    <ClCompile Include="decodevediostream.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="decodevediostream.cpp">
+    <ClCompile Include="validatedevice.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -47,10 +47,10 @@
     <ClInclude Include="transferframebuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="validatedeive.h">
+    <ClInclude Include="decodevediostream.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="decodevediostream.h">
+    <ClInclude Include="validatedevice.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

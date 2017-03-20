@@ -1,4 +1,4 @@
-#include "validatedeive.h"
+#include "validatedevice.h"
 
 #include <memory>
 
@@ -6,18 +6,18 @@
 #include <QString>
 
 
-ValidateDeive::ValidateDeive(const unsigned char length, const unsigned char * data)
+ValidateDevice::ValidateDevice(const unsigned char length, const unsigned char * data)
     : m_ucLength(length)
 {
     this->setData(data, length);
 }
 
-ValidateDeive::~ValidateDeive()
+ValidateDevice::~ValidateDevice()
 {
     delete[] m_data;
 }
 
-ValidateDeive::ValidateDeive(const ValidateDeive & other)
+ValidateDevice::ValidateDevice(const ValidateDevice & other)
 {
     unsigned char* pOrig = this->m_data;
 
@@ -39,7 +39,7 @@ ValidateDeive::ValidateDeive(const ValidateDeive & other)
     }
 }
 
-ValidateDeive & ValidateDeive::operator=(const ValidateDeive & other)
+ValidateDevice & ValidateDevice::operator=(const ValidateDevice & other)
 {
     unsigned char* pOrig = this->m_data;
 
@@ -64,7 +64,7 @@ ValidateDeive & ValidateDeive::operator=(const ValidateDeive & other)
     return *this;
 }
 
-QByteArray ValidateDeive::toByte(const ValidateDeive & other)
+QByteArray ValidateDevice::toByte(const ValidateDevice & other)
 {
     QByteArray bytes;
     bytes.append(other.m_Length);
@@ -72,7 +72,7 @@ QByteArray ValidateDeive::toByte(const ValidateDeive & other)
     return bytes;
 }
 
-bool ValidateDeive::setData(const unsigned char * data, unsigned char length)
+bool ValidateDevice::setData(const unsigned char * data, unsigned char length)
 {
     if (data || length <= 0)
     {
@@ -92,7 +92,7 @@ bool ValidateDeive::setData(const unsigned char * data, unsigned char length)
     }
 }
 
-bool ValidateDeive::setData(const QByteArray & bytes, unsigned char length)
+bool ValidateDevice::setData(const QByteArray & bytes, unsigned char length)
 {
     if (bytes.length() <= 0 || bytes.length() < length)
     {
@@ -112,7 +112,7 @@ bool ValidateDeive::setData(const QByteArray & bytes, unsigned char length)
     }
 }
 
-void ValidateDeive::setData(const QString & str)
+void ValidateDevice::setData(const QString & str)
 {
     if (m_data != nullptr)
     {
