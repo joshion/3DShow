@@ -2,16 +2,11 @@
 
 #include "mainwindow.hpp"
 #include "ordersocketthread.h"
-#include "transfersocketthread.h"
-
-#include "skeletonframewidget.h"
 
 MainFrame::MainFrame(QObject * parent) 
 {
     m_pMainWindow = new MainWindow();
     m_pMainWindow->show();
-
-    m_pTransferSocketThread = new TransferSocketThread;
 
     m_pOrderSocketThread = new OrderSocketThread("127.0.0.1", 7892, m_pMainWindow);
 
@@ -35,13 +30,7 @@ MainFrame::~MainFrame()
         delete m_pOrderSocketThread;
         m_pOrderSocketThread = nullptr;
     }
-
-    if (m_pTransferSocketThread)
-    {
-        delete m_pTransferSocketThread;
-        m_pTransferSocketThread = nullptr;
-    }
-        
+  
     if (m_pMainWindow)
     {
         delete m_pMainWindow;

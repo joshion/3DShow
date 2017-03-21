@@ -5,6 +5,11 @@
 #include "decodevediostream.h"
 #include <QTcpSocket>
 
+#include "decodevediostream.h"
+#include <QFile>
+#include <QByteArray>
+#include <QTimer>
+
 class TransferInterface;
 class TransferFrameBuffer;
 
@@ -43,6 +48,9 @@ public:
 
 /***********************************************************************************/
 /*数据解析相关的线程*/
+public:
+private:
+    DecodeVedioStream *m_pDecoder;
 
 protected:
     void run() override;
@@ -57,12 +65,17 @@ private:
     bool m_bNotHasHead;
     TransferFrameBuffer *m_pReceiveFrameBuffer;
 
-    DecodeVedioStream *m_pDecoder;
-
 private slots:
     void slot_readDataFromServer();
 
+    void slot_getVedioData();
+
 /***********************************************************************************/
+private:
+
+    QTimer *m_Timer;
+    DecodeVedioStream *pDecoder;
+    QFile file;
 
 };
 

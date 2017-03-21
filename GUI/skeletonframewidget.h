@@ -4,19 +4,13 @@
 #include "framepainter.h"
 #include "imagepainter.h"
 
-#include <opencv2\opencv.hpp>
-#include <opencv2\highgui.hpp>
-
 #include <QOpenGLWidget>
 #include <QOpenGLShaderProgram>
 #include <QOpenGLFunctions_4_3_Core>
 
-#include "decodevediostream.h"
-#include <QFile>
-#include <QByteArray>
 
 class QTimer;
-class QImage;
+class TransferSocketThread;
 
 class SkeletonFrameWidget : public QOpenGLWidget, protected QOpenGLFunctions_4_3_Core
 {
@@ -36,18 +30,9 @@ protected:
 private:
     FramePainter *m_pFramePainter;
     ImagePainter *m_pImagePainter;
+    TransferSocketThread *m_pTransferSocketThread = nullptr;
 
-/********************************************************************************************/
-
-/*******************************************************************************************/
-/*openCVœ‡πÿ*/
-private:
-    cv::Mat m_Mat;
-    cv::VideoCapture *m_Capture;
-    QTimer *m_Timer;
-
-    DecodeVedioStream *pDecoder;
-    QFile file;
+    QTimer* m_pTimer;
 
 /********************************************************************************************/
 

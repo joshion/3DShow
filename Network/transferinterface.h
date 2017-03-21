@@ -9,6 +9,7 @@ public:
     virtual ~TransferInterface();
 public:
     virtual void signal_receiveData() = 0;
+
 };
 
 #endif // TRANSFERINTERFACE_H

@@ -2,6 +2,9 @@
 #include "transferframebuffer.h"
 #include <QByteArray>
 
+
+#include <QTimer>
+
 namespace
 {
     static const unsigned int DATATYPE_RGB = 1;
@@ -27,10 +30,22 @@ TransferSocket::TransferSocket(QString strIPAdress, unsigned int port, QObject *
     connect(this, &TransferSocket::readyRead, this, &TransferSocket::slot_readDataFromServer, Qt::QueuedConnection);
 
     this->start();  // 启动解析线程
+
+    m_Timer = new QTimer(this);
+    connect(m_Timer, &QTimer::timeout, this, &TransferSocket::slot_getVedioData);
+    m_Timer->start(20);
+    pDecoder = new DecodeVedioStream;
+    file.setFileName("temp.h264");
+    file.open(QFile::ReadOnly);
 }
 
 TransferSocket::~TransferSocket()
 {
+
+    m_Timer->stop();
+    delete m_Timer;
+    m_Timer = nullptr;
+
     this->close();
     this->stop();   // 关闭解析线程
 
@@ -130,4 +145,12 @@ void TransferSocket::slot_readDataFromServer()
     通知解析线程解析数据
     */
     notifyThreadToContinue();
+}
+
+void TransferSocket::slot_getVedioData()
+{
+    if (file.isReadable())
+    {
+        m_pDecoder->pushBytes(file.read(4096));
+    }
 }

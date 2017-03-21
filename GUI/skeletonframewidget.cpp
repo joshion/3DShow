@@ -1,12 +1,9 @@
 #include "skeletonframewidget.h"
 
 #include "utilities.h"
+#include "transfersocketthread.h"
 
-#include <random>
-
-#include <QImage>
 #include <QTimer>
-
 
 namespace
 {
@@ -19,33 +16,19 @@ namespace
 SkeletonFrameWidget::SkeletonFrameWidget(QWidget *parent)
     : QOpenGLWidget(parent)
 {
+
+    m_pTransferSocketThread = new TransferSocketThread;
+
     m_pFramePainter = new FramePainter;
     m_pImagePainter = new ImagePainter;
 
-    m_Capture = new cv::VideoCapture(0);
-    m_Timer = new QTimer(this);
-    connect(m_Timer, &QTimer::timeout, this, &SkeletonFrameWidget::slot_update);
-    m_Timer->start(50);
-
-
-    pDecoder = new DecodeVedioStream;
-    file.setFileName("temp.h264");
-    file.open(QFile::ReadOnly);
+    m_pTimer = new QTimer(this);
+    connect(m_pTimer, &QTimer::timeout, this, &SkeletonFrameWidget::slot_update);
+    m_pTimer->start(50);
 }
 
 SkeletonFrameWidget::~SkeletonFrameWidget()
 {
-    m_Timer->stop();
-    delete m_Timer;
-    m_Timer = nullptr;
-
-    if (m_Capture && m_Capture->isOpened())
-    {
-        m_Capture->release();
-    }
-    delete m_Capture;
-    m_Capture = nullptr;
-
     delete m_pImagePainter;
     delete m_pFramePainter;
 }
@@ -66,13 +49,6 @@ void SkeletonFrameWidget::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT);
 
-    *m_Capture >> m_Mat;
-
-    if (pDecoder->matsSize() > 0)
-    {
-        m_pImagePainter->loadTexture(pDecoder->popMats());
-    }
-    //m_pImagePainter->loadTexture(m_Mat);
     m_pImagePainter->paint();
     m_pFramePainter->paint();
 }
@@ -92,7 +68,5 @@ void SkeletonFrameWidget::resizeGL(int w, int h)
 void SkeletonFrameWidget::slot_update()
 {
     this->update();
-    QByteArray temp = file.read(4096);
-    pDecoder->pushBytes(temp);
 }
 
