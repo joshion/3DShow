@@ -9,7 +9,7 @@
 
 namespace
 {
-    static const unsigned int BYTES_BUFFER_RESERVED_SIZE = 4096;
+    static const unsigned int BYTES_BUFFER_RESERVED_SIZE = 409600;
     static const unsigned int MATS_BUFFER_RESERVED_SIZE = 24 * 2;
 }
 

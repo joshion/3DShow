@@ -74,6 +74,9 @@ private:
     QTimer *m_Timer;
     QFile file;
 
+public:
+    cv::Mat popMats();
+    int matsSize();
 };
 
 #endif // TRANSFERSOCKET_H

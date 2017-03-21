@@ -1,6 +1,8 @@
 #ifndef TRANSFERSOCKETTHREAD_H
 #define TRANSFERSOCKETTHREAD_H
 
+#include "transfersocket.h"
+
 #include <QThread>
 
 class TransferSocket;
@@ -26,6 +28,9 @@ protected:
     void run() override;
 private:
     TransferSocket *m_pTransferSocket;
+public:
+    cv::Mat popMats();
+    int matsSize();
 /***********************************************************************************/
 };
 

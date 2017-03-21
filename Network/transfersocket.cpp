@@ -152,3 +152,27 @@ void TransferSocket::slot_getVedioData()
         m_pDecoder->pushBytes(file.read(4096));
     }
 }
+
+cv::Mat TransferSocket::popMats()
+{
+    if (m_pDecoder)
+    {
+        return m_pDecoder->popMats();
+    }
+    else
+    {
+        return cv::Mat {};
+    }
+}
+
+int TransferSocket::matsSize()
+{
+    if (m_pDecoder)
+    {
+        return m_pDecoder->matsSize();
+    }
+    else
+    {
+        return 0;
+    }
+}

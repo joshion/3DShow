@@ -3,6 +3,8 @@
 #include "utilities.h"
 #include "transfersocketthread.h"
 
+#include "decodevediostream.h"
+
 #include <QTimer>
 
 namespace
@@ -49,6 +51,10 @@ void SkeletonFrameWidget::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT);
 
+    if (m_pTransferSocketThread->matsSize() > 0)
+    {
+        m_pImagePainter->loadTexture(m_pTransferSocketThread->popMats());
+    }
     m_pImagePainter->paint();
     m_pFramePainter->paint();
 }

@@ -1,6 +1,5 @@
 #include "transfersocketthread.h"
 
-#include "transfersocket.h"
 #include "transferinterface.h"
 
 TransferSocketThread::TransferSocketThread(QString strIPAdress, unsigned int port,
@@ -26,3 +25,28 @@ void TransferSocketThread::run()
     m_pTransferSocket->registerGUIClass(m_pTransferInterface);
     exec();
 }
+
+cv::Mat TransferSocketThread::popMats()
+{
+    if (m_pTransferSocket)
+    {
+        return m_pTransferSocket->popMats();
+    }
+    else
+    {
+        return cv::Mat {};
+    }
+}
+
+int TransferSocketThread::matsSize()
+{
+    if (m_pTransferSocket)
+    {
+        return m_pTransferSocket->matsSize();
+    }
+    else
+    {
+        return 0;
+    }
+}
+
