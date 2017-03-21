@@ -141,6 +141,7 @@
   <ItemGroup>
     <ClInclude Include="decodevediostream.h" />
     <ClInclude Include="orderframebuffer.h" />
+    <ClInclude Include="singleton.h" />
     <ClInclude Include="thread.h" />
     <ClInclude Include="transferframebuffer.h" />
     <ClInclude Include="utilities.h" />

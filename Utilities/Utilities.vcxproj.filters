@@ -53,5 +53,8 @@
     <ClInclude Include="validatedevice.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="singleton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
