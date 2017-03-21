@@ -20,8 +20,6 @@ TransferSocket::TransferSocket(QString strIPAdress, unsigned int port, QObject *
     m_receiveBuffer.clear();
     m_pReceiveFrameBuffer = new TransferFrameBuffer;
 
-    m_pDecoder = new DecodeVedioStream;
-
     this->setSocketOption(QAbstractSocket::KeepAliveOption, 1);
     this->setSocketOption(QAbstractSocket::LowDelayOption, 1);
     this->connectToHost(m_strIPAdress, m_uPort, QIODevice::ReadOnly);
@@ -32,11 +30,11 @@ TransferSocket::TransferSocket(QString strIPAdress, unsigned int port, QObject *
     this->start();  // 启动解析线程
 
     m_Timer = new QTimer(this);
-    connect(m_Timer, &QTimer::timeout, this, &TransferSocket::slot_getVedioData);
-    m_Timer->start(20);
-    pDecoder = new DecodeVedioStream;
+    m_pDecoder = new DecodeVedioStream;
     file.setFileName("temp.h264");
     file.open(QFile::ReadOnly);
+    connect(m_Timer, &QTimer::timeout, this, &TransferSocket::slot_getVedioData);
+    m_Timer->start(20);
 }
 
 TransferSocket::~TransferSocket()

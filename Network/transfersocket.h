@@ -49,8 +49,6 @@ public:
 /***********************************************************************************/
 /*数据解析相关的线程*/
 public:
-private:
-    DecodeVedioStream *m_pDecoder;
 
 protected:
     void run() override;
@@ -72,9 +70,8 @@ private slots:
 
 /***********************************************************************************/
 private:
-
+    DecodeVedioStream *m_pDecoder;
     QTimer *m_Timer;
-    DecodeVedioStream *pDecoder;
     QFile file;
 
 };
