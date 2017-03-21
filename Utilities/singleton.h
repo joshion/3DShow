@@ -1,24 +1,31 @@
 ﻿#pragma once
 #include <mutex>
 
+/*
+* 继承此模板类
+* 并在子类中添加此类的友元声明 
+* friend class SingleTon<T>;
+*/
+
 template<class T>
 class SingleTon
 {
-public:
+protected:
     SingleTon() {}
     virtual ~SingleTon() {}
     SingleTon(SingleTon &other) = delete;
-    SingleTon& operator= SingleTon(SingleTon &other) = delete;
+    SingleTon& operator= (SingleTon &other) = delete;
 
 public:
-    static T *GetInstance()
+    template<class ... Types>
+    static T *GetInstance(Types ... args)
     {
         if (nullptr == s_Self)
         {
             std::lock_guard<std::mutex> lock(s_Mutex);
             if (nullptr == s_Self)
             {
-                s_Self = new T();
+                s_Self = new T(args...);
             }
         }
         return s_Self;
@@ -37,7 +44,7 @@ public:
         }
     }
 
-private:
+protected:
     static T *s_Self;
     static std::mutex s_Mutex;
 };

@@ -7,9 +7,7 @@ MainFrame::MainFrame(QObject * parent)
     :m_pMainWindow(nullptr), m_pOrderSocketThread (nullptr)
 {
     m_pMainWindow = new MainWindow();
-    m_pMainWindow->show();
-
-    m_pOrderSocketThread = new OrderSocketThread("127.0.0.1", 7892, m_pMainWindow);
+    m_pOrderSocketThread = OrderSocketThread::GetInstance("127.0.0.1", 7892, m_pMainWindow);
 
     connect(m_pMainWindow, &MainWindow::signal_requireConnect,
         m_pOrderSocketThread, &OrderSocketThread::signal_requireConnect, Qt::QueuedConnection);
@@ -22,15 +20,12 @@ MainFrame::MainFrame(QObject * parent)
     connect(m_pMainWindow, &MainWindow::signal_endConnect,
         m_pOrderSocketThread, &OrderSocketThread::signal_endConnect, Qt::QueuedConnection);
 
+    m_pMainWindow->show();
 }
 
 MainFrame::~MainFrame()
 {
-    if (m_pOrderSocketThread)
-    {
-        delete m_pOrderSocketThread;
-        m_pOrderSocketThread = nullptr;
-    }
+    OrderSocketThread::ReleaseInstance();
   
     if (m_pMainWindow)
     {
