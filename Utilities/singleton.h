@@ -13,8 +13,8 @@ class SingleTon
 protected:
     SingleTon() {}
     virtual ~SingleTon() {}
-    SingleTon(SingleTon &other) = delete;
-    SingleTon& operator= (SingleTon &other) = delete;
+    SingleTon(const SingleTon &other) = delete;
+    SingleTon& operator= (const SingleTon &other) = delete;
 
 public:
     template<class ... Types>

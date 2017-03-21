@@ -13,10 +13,11 @@ class OrderSocketThread : public QThread, public SingleTon<OrderSocketThread>
     Q_OBJECT
 
 protected:
-    OrderSocketThread(QString adress = "127.0.0.1", unsigned int port = 7892, 
+    explicit OrderSocketThread(QString adress = "127.0.0.1", unsigned int port = 7892,
         OrderInterface *pInterface = nullptr, QObject *parent = nullptr);
     ~OrderSocketThread();
-
+    OrderSocketThread(const OrderSocketThread & other) = delete;
+    OrderSocketThread& operator= (const OrderSocketThread & other) = delete;
     friend class SingleTon<OrderSocketThread>;
 
 private:
