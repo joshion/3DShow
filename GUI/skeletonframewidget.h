@@ -30,7 +30,7 @@ protected:
 private:
     FramePainter *m_pFramePainter;
     ImagePainter *m_pImagePainter;
-    TransferSocketThread *m_pTransferSocketThread = nullptr;
+    TransferSocketThread *m_pTransferSocketThread;
 
     QTimer* m_pTimer;
 

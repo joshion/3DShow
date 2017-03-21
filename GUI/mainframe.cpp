@@ -3,7 +3,8 @@
 #include "mainwindow.hpp"
 #include "ordersocketthread.h"
 
-MainFrame::MainFrame(QObject * parent) 
+MainFrame::MainFrame(QObject * parent)
+    :m_pMainWindow(nullptr), m_pOrderSocketThread (nullptr)
 {
     m_pMainWindow = new MainWindow();
     m_pMainWindow->show();

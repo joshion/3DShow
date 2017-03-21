@@ -16,13 +16,11 @@ namespace
 }
 
 SkeletonFrameWidget::SkeletonFrameWidget(QWidget *parent)
-    : QOpenGLWidget(parent)
+    : QOpenGLWidget(parent), m_pFramePainter(nullptr), m_pImagePainter(nullptr), m_pTransferSocketThread(nullptr)
 {
-
-    m_pTransferSocketThread = new TransferSocketThread;
-
     m_pFramePainter = new FramePainter;
     m_pImagePainter = new ImagePainter;
+    m_pTransferSocketThread = new TransferSocketThread;
 
     m_pTimer = new QTimer(this);
     connect(m_pTimer, &QTimer::timeout, this, &SkeletonFrameWidget::slot_update);
