@@ -4,7 +4,6 @@
 #include <QByteArray>
 #include <Qdebug>
 
-#pragma warning(disable:4996)   // 使用废除的函数
 
 
 namespace
@@ -129,7 +128,7 @@ void DecodeVedioStream::releaseDecodec()
 {
     std::lock_guard<std::mutex> lock_decode(m_mutexDeocder);
 
-    av_free_packet(&m_Packet);
+    av_packet_unref(&m_Packet);
     av_frame_free(&m_pFrame);
     avcodec_free_context(&m_pCodecCtx);
     av_parser_close(m_pCodecParserCtx);
@@ -158,13 +157,12 @@ void DecodeVedioStream::decodeH264()
         {
             int got = 0;
             /* 解码出错, 中断程序 */
-            if (avcodec_decode_video2(m_pCodecCtx, m_pFrame, &got, &m_Packet) < 0)
+            if (avcodec_send_packet(m_pCodecCtx, &m_Packet) != 0)   // 返回0时成功把数据放入解码器
             {
                 qDebug() << "decodec error";
                 ::exit(0);
-            }
-
-            if (got)
+            }            
+            if (avcodec_receive_frame(m_pCodecCtx, m_pFrame) == 0)  // 返回0时成功把数据解码到m_pFrame中
             {
                 /* YUV420P格式
                 * Y:V:U = 4:1:1
@@ -197,8 +195,13 @@ void DecodeVedioStream::decodeH264()
                     this->pushMats(mRGB);
                 }
             }
+            else
+            {
+                qDebug() << "decodec error";
+                ::exit(0);
+            }
         }
-        av_free_packet(&m_Packet);
+        av_packet_unref(&m_Packet);
 
         {
             std::lock_guard<std::mutex> lock_buffer(m_mutexBytesBuffer);
