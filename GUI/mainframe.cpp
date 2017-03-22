@@ -11,7 +11,7 @@ MainFrame::MainFrame(QObject * parent)
     m_pMainWindow = new MainWindow();
     m_pMainWindow->show();
 
-    m_pOrderSocketThread = new OrderSocketThread("127.0.0.1", 7892, m_pMainWindow);
+    m_pOrderSocketThread = OrderSocketThread::GetInstance("127.0.0.1", 7892, m_pMainWindow);
 
     SkeletonFrameWidget *w = new SkeletonFrameWidget;
     w->show();
@@ -36,7 +36,7 @@ MainFrame::~MainFrame()
 {
     if (m_pOrderSocketThread)
     {
-        delete m_pOrderSocketThread;
+        OrderSocketThread::ReleaseInstance();
         m_pOrderSocketThread = nullptr;
     }
   

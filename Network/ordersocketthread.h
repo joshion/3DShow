@@ -1,20 +1,22 @@
 #ifndef ORDERSOCKETTHREAD_H
 #define ORDERSOCKETTHREAD_H
 
-
+#include "singleton.h"
 #include <QThread>
 
 class OrderSocket;
 class OrderInterface;
 
-class OrderSocketThread : public QThread
+class OrderSocketThread : public QThread, public SingleTon<OrderSocketThread>
 {
     Q_OBJECT
 
-public:
+private:
     OrderSocketThread(QString adress = "127.0.0.1", unsigned int port = 7892, 
         OrderInterface *pInterface = nullptr, QObject *parent = nullptr);
     ~OrderSocketThread();
+
+    friend class SingleTon<OrderSocketThread>;
 
 private:
     QString m_strIPAdress;
