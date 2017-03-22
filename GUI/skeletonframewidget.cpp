@@ -10,11 +10,7 @@
 SkeletonFrameWidget::SkeletonFrameWidget(QWidget *parent)
     : QOpenGLWidget(parent), m_pFramePainter(nullptr), m_pImagePainter(nullptr), m_pTransferSocketThread(nullptr)
 {
-    m_pTransferSocketThread = new TransferSocketThread;
-    m_pTimer = new QTimer(this);
-    connect(m_pTimer, &QTimer::timeout, this, &SkeletonFrameWidget::slot_update);
-    m_pTimer->start(50);
-    show();
+    this->setMinimumSize(640, 480);
 }
 
 SkeletonFrameWidget::~SkeletonFrameWidget()
@@ -48,6 +44,11 @@ void SkeletonFrameWidget::initializeGL()
     m_pImagePainter = new ImagePainter;
     m_pFramePainter->buildShaderProgram("showwidget.vert", "showwidget.frag");
     m_pImagePainter->buildShaderProgram("skeletonframewidget.vert", "skeletonframewidget.frag");
+
+    m_pTransferSocketThread = new TransferSocketThread;
+    m_pTimer = new QTimer(this);
+    connect(m_pTimer, &QTimer::timeout, this, &SkeletonFrameWidget::slot_update);
+    m_pTimer->start(50);
 }
 
 void SkeletonFrameWidget::paintGL()

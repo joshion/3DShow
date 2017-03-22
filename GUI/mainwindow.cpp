@@ -7,6 +7,8 @@ MainWindow::MainWindow(QWidget * parent)
     : QWidget(parent)
 {
     ui.setupUi(this);
+    ui.m_MDIArea->addSubWindow(new SkeletonFrameWidget, Qt::Dialog);
+    ui.m_MDIArea->addSubWindow(new SkeletonFrameWidget, Qt::Widget);
     connect(ui.m_ReqConnect, &QPushButton::clicked, this, &MainWindow::signal_requireConnect);
     connect(ui.m_ExitConnect, &QPushButton::clicked, this, &MainWindow::signal_exitConnect);
     connect(ui.m_ReqDevices, &QPushButton::clicked, this, &MainWindow::signal_requireDevices);
