@@ -11,7 +11,7 @@ Painter::Painter()
 
 Painter::~Painter()
 {
-
+    m_Program.release();
 }
 
 bool Painter::buildShaderProgram(const QString & strVertFile, const QString & strFragFile)

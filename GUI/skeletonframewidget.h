@@ -5,14 +5,14 @@
 #include "imagepainter.h"
 
 #include <QOpenGLWidget>
-#include <QOpenGLShaderProgram>
-#include <QOpenGLFunctions_4_3_Core>
+#include <QOpenGLContext>
+#include <QOpenGLFunctions>
 
 
 class QTimer;
 class TransferSocketThread;
 
-class SkeletonFrameWidget : public QOpenGLWidget, protected QOpenGLFunctions_4_3_Core
+class SkeletonFrameWidget : public QOpenGLWidget, protected QOpenGLFunctions
 {
     Q_OBJECT
 
@@ -31,7 +31,6 @@ private:
     FramePainter *m_pFramePainter;
     ImagePainter *m_pImagePainter;
     TransferSocketThread *m_pTransferSocketThread;
-
     QTimer* m_pTimer;
 
 /********************************************************************************************/

@@ -15,6 +15,9 @@ ImagePainter::ImagePainter()
 
 ImagePainter::~ImagePainter()
 {
+    m_Program.bind();
+    m_Program.disableAttributeArray(VERTEX_LOCATION);
+    m_Program.disableAttributeArray(COORD_LOCATION);
     glBindTexture(GL_TEXTURE_2D, 0);
     glDeleteTextures(1, m_Textures);
 }

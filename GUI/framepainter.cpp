@@ -16,7 +16,9 @@ FramePainter::FramePainter()
 
 FramePainter::~FramePainter()
 {
-
+    m_Program.bind();
+    m_Program.disableAttributeArray(VERTEX_LOCATION);
+    m_Program.disableAttributeArray(COLOR_LOCATION);
 }
 
 bool FramePainter::buildShaderProgram(const QString & strVertFile, const QString & strFragFile)

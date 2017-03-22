@@ -14,6 +14,7 @@ MainFrame::MainFrame(QObject * parent)
 
     SkeletonFrameWidget *w = new SkeletonFrameWidget;
     _sleep(2000);
+    // w->show();
     delete w;
 
     //SkeletonFrameWidget *w2 = new SkeletonFrameWidget;
