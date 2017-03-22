@@ -3,17 +3,19 @@
 #include "deviceswidget.h"
 #include "skeletonframewidget.h"
 
+#include <QMdiSubWindow>
+
 MainWindow::MainWindow(QWidget * parent)
     : QWidget(parent)
 {
     ui.setupUi(this);
-    ui.m_MDIArea->addSubWindow(new SkeletonFrameWidget, Qt::Dialog);
-    ui.m_MDIArea->addSubWindow(new SkeletonFrameWidget, Qt::Widget);
+
     connect(ui.m_ReqConnect, &QPushButton::clicked, this, &MainWindow::signal_requireConnect);
     connect(ui.m_ExitConnect, &QPushButton::clicked, this, &MainWindow::signal_exitConnect);
     connect(ui.m_ReqDevices, &QPushButton::clicked, this, &MainWindow::signal_requireDevices);
+
     connect(ui.m_StartConnect, &QPushButton::clicked, this, &MainWindow::slot_startConnect);
-    connect(ui.m_EndConnect, &QPushButton::clicked, this, &MainWindow::signal_endConnect);
+    connect(ui.m_EndConnect, &QPushButton::clicked, this, &MainWindow::slot_buttonClicked);
 
     connect(this, &MainWindow::signal_respConnect, this, &MainWindow::slot_respConnect);
     connect(this, &MainWindow::signal_respDevices, this, &MainWindow::slot_respDevices);
@@ -26,6 +28,21 @@ MainWindow::MainWindow(QWidget * parent)
 MainWindow::~MainWindow()
 {
 	
+}
+
+void MainWindow::slot_buttonClicked()
+{
+    slot_createSkeletonFrameWidget("11111", 3434);
+}
+
+void MainWindow::slot_createSkeletonFrameWidget(QString strWindowTile, unsigned int uPort)
+{
+    SkeletonFrameWidget *p = new SkeletonFrameWidget();
+    p->setAttribute(Qt::WA_DeleteOnClose);
+    ui.m_MDIArea->addSubWindow(p, Qt::Widget);
+    p->show();
+
+    ui.m_MDIArea->cascadeSubWindows();
 }
 
 void MainWindow::slot_respConnect()

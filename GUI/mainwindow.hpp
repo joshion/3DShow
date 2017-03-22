@@ -2,8 +2,10 @@
 
 #include "orderinterface.hpp"
 
-#include <QWidget>
 #include "ui_mainwindow.h"
+#include <QWidget>
+#include <QMap>
+class  SkeletonFrameWidget;
 
 class MainWindow : public QWidget ,public OrderInterface
 {
@@ -14,6 +16,15 @@ public:
 	~MainWindow();
 private:
 	Ui::MainWindow ui;
+
+/***********************************************************************************/
+/*GUI内部的通信*/
+
+private slots:
+    void slot_createSkeletonFrameWidget(QString strWindowTile, unsigned int uPort);
+    void slot_buttonClicked();
+
+/***********************************************************************************/
 
 /***********************************************************************************/
 /*底层C++与本GUI类通信所用接口*/

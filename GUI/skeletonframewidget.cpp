@@ -10,6 +10,7 @@
 SkeletonFrameWidget::SkeletonFrameWidget(QWidget *parent)
     : QOpenGLWidget(parent), m_pFramePainter(nullptr), m_pImagePainter(nullptr), m_pTransferSocketThread(nullptr)
 {
+    this->setWindowTitle("110000");
     this->setMinimumSize(640, 480);
 }
 
