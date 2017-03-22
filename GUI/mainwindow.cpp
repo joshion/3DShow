@@ -1,6 +1,7 @@
 ﻿#include "mainwindow.hpp"
-
+#include <qdebug.h>
 #include "deviceswidget.h"
+#include "skeletonframewidget.h"
 
 MainWindow::MainWindow(QWidget * parent)
     : QWidget(parent)

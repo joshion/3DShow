@@ -7,14 +7,6 @@
 
 #include <QTimer>
 
-namespace
-{
-    const int VERTEX_LOCATION = 1;
-    static const int COLOR_LOCATION = 2;
-    static const int VIEW_LOCATION = 3;
-    static const int PROJECTION_LOCATION = 4;
-}
-
 SkeletonFrameWidget::SkeletonFrameWidget(QWidget *parent)
     : QOpenGLWidget(parent), m_pFramePainter(nullptr), m_pImagePainter(nullptr), m_pTransferSocketThread(nullptr)
 {
@@ -29,6 +21,8 @@ SkeletonFrameWidget::SkeletonFrameWidget(QWidget *parent)
 
 SkeletonFrameWidget::~SkeletonFrameWidget()
 {
+    this->show();
+    delete m_pTransferSocketThread;
     delete m_pImagePainter;
     delete m_pFramePainter;
 }

@@ -127,7 +127,7 @@
       </widget>
      </item>
      <item>
-      <widget class="SkeletonFrameWidget" name="m_SkeletonFrameWidget"/>
+      <widget class="QMdiArea" name="m_MDIArea"/>
      </item>
     </layout>
    </item>
@@ -135,11 +135,6 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
-  <customwidget>
-   <class>SkeletonFrameWidget</class>
-   <extends>QOpenGLWidget</extends>
-   <header>skeletonframewidget.h</header>
-  </customwidget>
   <customwidget>
    <class>DevicesWidget</class>
    <extends>QListWidget</extends>

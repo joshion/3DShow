@@ -9,15 +9,15 @@ MainFrame::MainFrame(QObject * parent)
     :m_pMainWindow(nullptr), m_pOrderSocketThread (nullptr)
 {
     m_pMainWindow = new MainWindow();
-    m_pMainWindow->show();
-
     m_pOrderSocketThread = OrderSocketThread::GetInstance("127.0.0.1", 7892, m_pMainWindow);
+    
 
     SkeletonFrameWidget *w = new SkeletonFrameWidget;
-    w->show();
+    _sleep(2000);
+    delete w;
 
-    SkeletonFrameWidget *w2 = new SkeletonFrameWidget;
-    w2->show();
+    //SkeletonFrameWidget *w2 = new SkeletonFrameWidget;
+    // delete w2;
 
     connect(m_pMainWindow, &MainWindow::signal_requireConnect,
         m_pOrderSocketThread, &OrderSocketThread::signal_requireConnect, Qt::QueuedConnection);
@@ -30,6 +30,7 @@ MainFrame::MainFrame(QObject * parent)
     connect(m_pMainWindow, &MainWindow::signal_endConnect,
         m_pOrderSocketThread, &OrderSocketThread::signal_endConnect, Qt::QueuedConnection);
 
+    m_pMainWindow->show();
 }
 
 MainFrame::~MainFrame()
