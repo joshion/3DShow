@@ -93,7 +93,7 @@ bool TransferFrameBuffer::setHead(const QByteArray & bytes)
     {
         memcpy(&this->m_TimeStamp, bytes.data(), 4);
         memcpy(&this->m_DataType, bytes.data() + 4, 4);
-        memcpy(&this->m_BodyLength, bytes.data() + 4, 4);
+        memcpy(&this->m_BodyLength, bytes.data() + 8, 4);
 
         /*
         将网络传输的大端数据转换回小端数据

@@ -19,31 +19,21 @@ TransferSocket::TransferSocket(QString strIPAdress, unsigned int port, QObject *
 {
     m_receiveBuffer.clear();
     m_pReceiveFrameBuffer = new TransferFrameBuffer;
+    m_pDecoder = new DecodeVedioStream;
 
     this->setSocketOption(QAbstractSocket::KeepAliveOption, 1);
     this->setSocketOption(QAbstractSocket::LowDelayOption, 1);
-    this->connectToHost(m_strIPAdress, m_uPort, QIODevice::ReadOnly);
+    this->connectToHost(m_strIPAdress, m_uPort, QIODevice::ReadWrite);
     connect(this, &TransferSocket::connected, this, &TransferSocket::slot_setConnected, Qt::QueuedConnection);
     connect(this, &TransferSocket::disconnected, this, &TransferSocket::slot_setDisConnected, Qt::QueuedConnection);
     connect(this, &TransferSocket::readyRead, this, &TransferSocket::slot_readDataFromServer, Qt::QueuedConnection);
 
     this->start();  // 启动解析线程
-
-    m_Timer = new QTimer(this);
-    m_pDecoder = new DecodeVedioStream;
-    file.setFileName("temp.h264");
-    file.open(QFile::ReadOnly);
-    connect(m_Timer, &QTimer::timeout, this, &TransferSocket::slot_getVedioData);
-    m_Timer->start(20);
+    this->write(QByteArray(1, 'c'));
 }
 
 TransferSocket::~TransferSocket()
 {
-
-    m_Timer->stop();
-    delete m_Timer;
-    m_Timer = nullptr;
-
     this->close();
     this->stop();   // 关闭解析线程
 
@@ -143,14 +133,6 @@ void TransferSocket::slot_readDataFromServer()
     通知解析线程解析数据
     */
     notifyThreadToContinue();
-}
-
-void TransferSocket::slot_getVedioData()
-{
-    if (file.isReadable())
-    {
-        m_pDecoder->pushBytes(file.read(4096));
-    }
 }
 
 cv::Mat TransferSocket::popMats()

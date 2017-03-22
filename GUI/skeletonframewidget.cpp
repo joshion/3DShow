@@ -12,7 +12,7 @@ SkeletonFrameWidget::SkeletonFrameWidget(unsigned int port, QString title, QWidg
     m_pFramePainter(nullptr), m_pImagePainter(nullptr), m_pTransferSocketThread(nullptr)
 {
     this->setWindowTitle(m_strTitle);
-    this->setMinimumSize(640, 480);
+    this->setMinimumSize(320, 240);
 }
 
 SkeletonFrameWidget::~SkeletonFrameWidget()
@@ -50,7 +50,7 @@ void SkeletonFrameWidget::initializeGL()
     m_pTransferSocketThread = new TransferSocketThread;
     m_pTimer = new QTimer(this);
     connect(m_pTimer, &QTimer::timeout, this, &SkeletonFrameWidget::slot_update);
-    m_pTimer->start(50);
+    m_pTimer->start(40);
 }
 
 void SkeletonFrameWidget::paintGL()

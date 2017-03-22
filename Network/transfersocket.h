@@ -66,13 +66,9 @@ private:
 private slots:
     void slot_readDataFromServer();
 
-    void slot_getVedioData();
-
 /***********************************************************************************/
 private:
     DecodeVedioStream *m_pDecoder;
-    QTimer *m_Timer;
-    QFile file;
 
 public:
     cv::Mat popMats();
