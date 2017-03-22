@@ -17,8 +17,13 @@ class SkeletonFrameWidget : public QOpenGLWidget, protected QOpenGLFunctions
     Q_OBJECT
 
 public:
-    SkeletonFrameWidget(QWidget *parent = 0);
+    SkeletonFrameWidget(unsigned int port = 0, QString title = "Kinect Show", QWidget *parent = 0);
     ~SkeletonFrameWidget();
+
+private:
+    unsigned int m_uPort;
+    QString m_strTitle;
+    TransferSocketThread *m_pTransferSocketThread;
 
 /*******************************************************************************************/
 /*openGLœ‡πÿ*/
@@ -30,7 +35,6 @@ protected:
 private:
     FramePainter *m_pFramePainter;
     ImagePainter *m_pImagePainter;
-    TransferSocketThread *m_pTransferSocketThread;
     QTimer* m_pTimer;
 
 /********************************************************************************************/

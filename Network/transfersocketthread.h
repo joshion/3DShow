@@ -13,7 +13,7 @@ class TransferSocketThread : public QThread
     Q_OBJECT
 
 public:
-    TransferSocketThread(QString strIPAdress = "127.0.0.1", unsigned int port = 7892, 
+    TransferSocketThread(unsigned int port = 7893, QString strIPAdress = "127.0.0.1",
         TransferInterface *pInterface = nullptr, QObject *parent = nullptr);
     ~TransferSocketThread();
 private:

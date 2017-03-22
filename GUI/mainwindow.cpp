@@ -32,17 +32,18 @@ MainWindow::~MainWindow()
 
 void MainWindow::slot_buttonClicked()
 {
-    slot_createSkeletonFrameWidget("11111", 3434);
+    slot_createSkeletonFrameWidget("Kinect Show", 3434);
 }
 
 void MainWindow::slot_createSkeletonFrameWidget(QString strWindowTile, unsigned int uPort)
 {
-    SkeletonFrameWidget *p = new SkeletonFrameWidget();
+    // ui.m_MDIArea->clearMask();
+    SkeletonFrameWidget *p = new SkeletonFrameWidget { uPort };
     p->setAttribute(Qt::WA_DeleteOnClose);
     ui.m_MDIArea->addSubWindow(p, Qt::Widget);
-    p->show();
+    p->showMaximized();
 
-    ui.m_MDIArea->cascadeSubWindows();
+    // ui.m_MDIArea->cascadeSubWindows();
 }
 
 void MainWindow::slot_respConnect()

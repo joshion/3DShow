@@ -7,10 +7,11 @@
 
 #include <QTimer>
 
-SkeletonFrameWidget::SkeletonFrameWidget(QWidget *parent)
-    : QOpenGLWidget(parent), m_pFramePainter(nullptr), m_pImagePainter(nullptr), m_pTransferSocketThread(nullptr)
+SkeletonFrameWidget::SkeletonFrameWidget(unsigned int port, QString title, QWidget *parent)
+    : QOpenGLWidget(parent), m_uPort(port), m_strTitle(title),
+    m_pFramePainter(nullptr), m_pImagePainter(nullptr), m_pTransferSocketThread(nullptr)
 {
-    this->setWindowTitle("110000");
+    this->setWindowTitle(m_strTitle);
     this->setMinimumSize(640, 480);
 }
 

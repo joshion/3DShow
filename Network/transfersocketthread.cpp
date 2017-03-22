@@ -2,7 +2,7 @@
 
 #include "transferinterface.h"
 
-TransferSocketThread::TransferSocketThread(QString strIPAdress, unsigned int port,
+TransferSocketThread::TransferSocketThread(unsigned int port, QString strIPAdress,
     TransferInterface *pInterface, QObject *parent)
     : m_strIPAdress(strIPAdress), m_uPort(port), m_pTransferInterface(pInterface),
     QThread(parent), m_pTransferSocket(nullptr)
