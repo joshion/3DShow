@@ -3,6 +3,8 @@
 #include "mainwindow.hpp"
 #include "ordersocketthread.h"
 
+#include "skeletonframewidget.h"
+
 MainFrame::MainFrame(QObject * parent)
     :m_pMainWindow(nullptr), m_pOrderSocketThread (nullptr)
 {
@@ -10,6 +12,12 @@ MainFrame::MainFrame(QObject * parent)
     m_pMainWindow->show();
 
     m_pOrderSocketThread = new OrderSocketThread("127.0.0.1", 7892, m_pMainWindow);
+
+    SkeletonFrameWidget *w = new SkeletonFrameWidget;
+    w->show();
+
+    SkeletonFrameWidget *w2 = new SkeletonFrameWidget;
+    w2->show();
 
     connect(m_pMainWindow, &MainWindow::signal_requireConnect,
         m_pOrderSocketThread, &OrderSocketThread::signal_requireConnect, Qt::QueuedConnection);
