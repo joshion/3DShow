@@ -5,11 +5,6 @@
 #include "decodevediostream.h"
 #include <QTcpSocket>
 
-#include "decodevediostream.h"
-#include <QFile>
-#include <QByteArray>
-#include <QTimer>
-
 class TransferInterface;
 class TransferFrameBuffer;
 
