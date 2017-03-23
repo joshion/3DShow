@@ -2,9 +2,6 @@
 #include "transferframebuffer.h"
 #include <QByteArray>
 
-
-#include <QTimer>
-
 namespace
 {
     static const unsigned int DATATYPE_RGB = 1;

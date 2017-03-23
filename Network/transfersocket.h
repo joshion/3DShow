@@ -62,12 +62,12 @@ private slots:
     void slot_readDataFromServer();
 
 /***********************************************************************************/
-private:
-    DecodeVedioStream *m_pDecoder;
 
 public:
     cv::Mat popMats();
     int matsSize();
+private:
+    DecodeVedioStream *m_pDecoder;
 };
 
 #endif // TRANSFERSOCKET_H
