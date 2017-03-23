@@ -1,6 +1,4 @@
 #pragma once
-#ifndef FRAMEBUFFER_H
-#define FRAMEBUFFER_H
 
 #include <google/protobuf/message.h>
 
@@ -111,5 +109,3 @@ private:
 
     static const unsigned int s_u32HeadLength = 11;
 };
-
-#endif FRAMEBUFFER_H

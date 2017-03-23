@@ -1,6 +1,4 @@
-#ifndef FRAMEPAINTER_H
-#define FRAMEPAINTER_H
-
+#pragma once
 #include "painter.h"
 
 class FramePainter : public Painter
@@ -16,5 +14,3 @@ public:
 private:
     
 };
-
-#endif // FRAMEPAINTER_H

@@ -1,5 +1,6 @@
 #include "transfersocket.h"
 #include "transferframebuffer.h"
+#include "decodevideostream.h"
 #include <QByteArray>
 
 namespace
@@ -16,7 +17,7 @@ TransferSocket::TransferSocket(QString strIPAdress, unsigned int port, QObject *
 {
     m_receiveBuffer.clear();
     m_pReceiveFrameBuffer = new TransferFrameBuffer;
-    m_pDecoder = new DecodeVedioStream;
+    m_pDecoder = new DecodeVideoStream;
 
     this->setSocketOption(QAbstractSocket::KeepAliveOption, 1);
     this->setSocketOption(QAbstractSocket::LowDelayOption, 1);

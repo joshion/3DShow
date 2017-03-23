@@ -7,19 +7,19 @@ extern "C"
 #include <libswscale\swscale.h>
 }
 
+#include "thread.h"
+
 #include <opencv2\opencv.hpp>
 
 #include <QList>
 
-#include "thread.h"
-
 class QByteArray;
 
-class DecodeVedioStream : public Thread
+class DecodeVideoStream : public Thread
 {
 public:
-    DecodeVedioStream();
-    virtual ~DecodeVedioStream();
+    DecodeVideoStream();
+    virtual ~DecodeVideoStream();
 protected:
     void run() override;
 
@@ -36,6 +36,7 @@ private:
     void initDecodec();
     void releaseDecodec();
     void decodeH264();
+    void decodeBuffer(const QByteArray &buffer, const int bufferLength);
 private:
     std::mutex m_mutexDeocder;
 
@@ -46,10 +47,17 @@ private:
     AVPacket m_Packet;  // h264数据包
 
     bool m_bFirstTime;  // 判断是否为解码第一帧
-    cv::Mat m_mYUVBuffer;   // 将FFmpeg的yuv图片数据转为cv::Mat的中转缓存
+    /* 
+    * 将FFmpeg的yuv图片数据转为cv::Mat的中转缓存,
+    * 该类中有2个线程,此变量只能在解码线程中使用
+    */
+    cv::Mat m_mYUVBuffer;   
 
-    QByteArray m_DecodeBytesBuffer; // 将socket接收到H264数据拆分成AVPacket包的中转缓存
-    void decodeBuffer(const QByteArray &buffer, const int bufferLength);
+    /*
+    * 将socket接收到H264数据拆分成AVPacket包的中转缓存
+    * 该类中有2个线程,此变量只能在解码线程中使用 
+    */
+    QByteArray m_DecodeBytesBuffer;
 
 private:
     QByteArray m_BytesBuffer;

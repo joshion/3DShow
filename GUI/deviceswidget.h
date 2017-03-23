@@ -1,5 +1,4 @@
-#ifndef DEVICESWIDGET_H
-#define DEVICESWIDGET_H
+#pragma once
 
 #include <QListWidget>
 
@@ -14,5 +13,3 @@ public:
 public slots:
     void slot_setDevices(const QStringList& devicesList);
 };
-
-#endif // DEVICESWIDGET_H

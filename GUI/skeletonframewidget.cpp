@@ -1,9 +1,6 @@
 #include "skeletonframewidget.h"
 
-#include "utilities.h"
 #include "transfersocketthread.h"
-
-#include "decodevediostream.h"
 
 #include <QTimer>
 
@@ -20,6 +17,7 @@ SkeletonFrameWidget::~SkeletonFrameWidget()
     if (m_pTransferSocketThread)
     {
         delete m_pTransferSocketThread;
+        m_pTransferSocketThread = nullptr;
     }
     if (m_pImagePainter)
     {
@@ -63,10 +61,6 @@ void SkeletonFrameWidget::paintGL()
     }
     if (m_pImagePainter)
     {
-        if (m_pTransferSocketThread->matsSize() > 0)
-        {
-            m_pImagePainter->loadTexture(m_pTransferSocketThread->popMat());
-        }
         m_pImagePainter->paint();
     }
 }
@@ -85,6 +79,10 @@ void SkeletonFrameWidget::resizeGL(int w, int h)
 
 void SkeletonFrameWidget::slot_update()
 {
+    if (m_pImagePainter && m_pTransferSocketThread->matsSize() > 0)
+    {
+        m_pImagePainter->loadTexture(m_pTransferSocketThread->popMat());
+    }
     this->update();
 }
 

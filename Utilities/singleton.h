@@ -44,7 +44,7 @@ public:
         }
     }
 
-protected:
+private:
     static T *s_Self;
     static std::mutex s_Mutex;
 };

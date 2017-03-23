@@ -1,5 +1,5 @@
-#ifndef TCPSOCKET_H
-#define TCPSOCKET_H
+#pragma once
+
 /*
 该类应用于与服务器的网络交互
 a.请求链接
@@ -76,5 +76,3 @@ private slots:
     void slot_readDataFromServer();
 /***********************************************************************************/
 };
-
-#endif // TCPSOCKET_H

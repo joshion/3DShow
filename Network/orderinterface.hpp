@@ -1,7 +1,4 @@
-﻿#ifndef ORDERINTERFACE_H
-#define ORDERINTERFACE_H
-
-#pragma once
+﻿#pragma once
 
 class QStringList;
 
@@ -16,5 +13,3 @@ public:
     virtual void signal_respStartRequire() = 0;
     virtual void signal_reqEndConnect() = 0;
 };
-
-#endif // ORDERINTERFACE_H

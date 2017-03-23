@@ -1,6 +1,7 @@
-#include "decodevediostream.h"
+#include "decodevideostream.h"
 
 #include <QByteArray>
+
 #include <Qdebug>
 
 namespace
@@ -11,7 +12,7 @@ namespace
     static const unsigned int DECODE_BUFFER_TOTAL_SIZE = DECODE_BUFFER_SIZE + AV_INPUT_BUFFER_PADDING_SIZE;
 }
 
-DecodeVedioStream::DecodeVedioStream() :
+DecodeVideoStream::DecodeVideoStream() :
     m_pCodecCtx(nullptr), m_pCodecParserCtx(nullptr), m_pCodec(nullptr),
     m_pFrame(nullptr), m_bFirstTime(true), m_DecodeBytesBuffer(DECODE_BUFFER_TOTAL_SIZE, '0')
 {
@@ -29,19 +30,19 @@ DecodeVedioStream::DecodeVedioStream() :
 }
 
 
-DecodeVedioStream::~DecodeVedioStream()
+DecodeVideoStream::~DecodeVideoStream()
 {
     this->stop();
     this->releaseDecodec();
 }
 
-void DecodeVedioStream::run()
+void DecodeVideoStream::run()
 {
     std::lock_guard<std::mutex> lock_decode(m_mutexDeocder);
     decodeH264();
 }
 
-cv::Mat DecodeVedioStream::popMat()
+cv::Mat DecodeVideoStream::popMat()
 {
     std::lock_guard<std::mutex> lock_buffer(m_mutexMatsBuffer);
     if (m_MatsBuffer.isEmpty())
@@ -56,20 +57,20 @@ cv::Mat DecodeVedioStream::popMat()
     }
 }
 
-int DecodeVedioStream::matsSize()
+int DecodeVideoStream::matsSize()
 {
     std::lock_guard<std::mutex> lock_buffer(m_mutexMatsBuffer);
     return m_MatsBuffer.size();
 }
 
-void DecodeVedioStream::pushBytes(const QByteArray & bytes)
+void DecodeVideoStream::pushBytes(const QByteArray & bytes)
 {
     std::lock_guard<std::mutex> lock_buffer(m_mutexBytesBuffer);
     m_BytesBuffer.append(bytes);
     notifyThreadToContinue();
 }
 
-void DecodeVedioStream::pushBytes(const unsigned char * data, unsigned int length)
+void DecodeVideoStream::pushBytes(const unsigned char * data, unsigned int length)
 {
     std::lock_guard<std::mutex> lock_buffer(m_mutexBytesBuffer);
     if (data != nullptr && length > 0)
@@ -79,13 +80,13 @@ void DecodeVedioStream::pushBytes(const unsigned char * data, unsigned int lengt
     notifyThreadToContinue();
 }
 
-void DecodeVedioStream::pushMats(const cv::Mat & mat)
+void DecodeVideoStream::pushMats(const cv::Mat & mat)
 {
     std::lock_guard<std::mutex> lock_buffer(m_mutexMatsBuffer);
     m_MatsBuffer.push_back(mat);
 }
 
-void DecodeVedioStream::initDecodec()
+void DecodeVideoStream::initDecodec()
 {
     std::lock_guard<std::mutex> lock_decode(m_mutexDeocder);
     av_register_all();
@@ -128,7 +129,7 @@ void DecodeVedioStream::initDecodec()
     m_Packet.data = nullptr;
 }
 
-void DecodeVedioStream::releaseDecodec()
+void DecodeVideoStream::releaseDecodec()
 {
     std::lock_guard<std::mutex> lock_decode(m_mutexDeocder);
 
@@ -138,7 +139,7 @@ void DecodeVedioStream::releaseDecodec()
     av_parser_close(m_pCodecParserCtx);
 }
 
-void DecodeVedioStream::decodeH264()
+void DecodeVideoStream::decodeH264()
 {
     int buffer_size = 0;
     {
@@ -177,7 +178,7 @@ void DecodeVedioStream::decodeH264()
 buffer的末尾已经加了av_parser_parse2需要用到的AV_INPUT_BUFFER_PADDING_SIZE个字节数的缓存
 bufferLength的值最大为buufer.length() - AV_INPUT_BUFFER_PADDING_SIZE
 */
-void DecodeVedioStream::decodeBuffer(const QByteArray & buffer, const int bufferLength)
+void DecodeVideoStream::decodeBuffer(const QByteArray & buffer, const int bufferLength)
 {
     uint8_t *currentPtr = (uint8_t*) buffer.data();
     int currentLen = bufferLength;

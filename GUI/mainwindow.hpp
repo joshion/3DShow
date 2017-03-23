@@ -5,6 +5,7 @@
 #include "ui_mainwindow.h"
 #include <QWidget>
 #include <QMap>
+
 class  SkeletonFrameWidget;
 
 class MainWindow : public QWidget ,public OrderInterface

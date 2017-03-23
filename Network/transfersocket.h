@@ -1,12 +1,14 @@
-#ifndef TRANSFERSOCKET_H
-#define TRANSFERSOCKET_H
+#pragma once
 
 #include "thread.h"
-#include "decodevediostream.h"
+
+#include <opencv2\opencv.hpp>
+
 #include <QTcpSocket>
 
 class TransferInterface;
 class TransferFrameBuffer;
+class DecodeVideoStream;
 
 class QByteArray;
 
@@ -67,7 +69,5 @@ public:
     cv::Mat popMat();
     int matsSize();
 private:
-    DecodeVedioStream *m_pDecoder;
+    DecodeVideoStream *m_pDecoder;
 };
-
-#endif // TRANSFERSOCKET_H

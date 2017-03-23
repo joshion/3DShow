@@ -1,5 +1,4 @@
-#ifndef IMAGEPAINTER_H
-#define IMAGEPAINTER_H
+#pragma once
 
 #include "painter.h"
 
@@ -23,5 +22,3 @@ private:
     GLuint m_Textures[1];
     
 };
-
-#endif // IMAGEPAINTER_H

@@ -1,7 +1,8 @@
-#ifndef TRANSFERSOCKETTHREAD_H
-#define TRANSFERSOCKETTHREAD_H
+#pragma once
 
 #include "transfersocket.h"
+
+#include <opencv2\opencv.hpp>
 
 #include <QThread>
 
@@ -33,5 +34,3 @@ public:
     int matsSize();
 /***********************************************************************************/
 };
-
-#endif // TRANSFERSOCKETTHREAD_H

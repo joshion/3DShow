@@ -1,5 +1,4 @@
-#ifndef SKELETONFRAMEWIDGET_H
-#define SKELETONFRAMEWIDGET_H
+#pragma once
 
 #include "framepainter.h"
 #include "imagepainter.h"
@@ -42,5 +41,3 @@ private:
 public slots:
     void slot_update();
 };
-
-#endif // SKELETONFRAMEWIDGET_H

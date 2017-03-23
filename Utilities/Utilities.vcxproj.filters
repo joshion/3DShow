@@ -27,10 +27,10 @@
     <ClCompile Include="transferframebuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="decodevediostream.cpp">
+    <ClCompile Include="validatedevice.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="validatedevice.cpp">
+    <ClCompile Include="decodevideostream.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -47,13 +47,13 @@
     <ClInclude Include="transferframebuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="decodevediostream.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="validatedevice.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="singleton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="decodevideostream.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

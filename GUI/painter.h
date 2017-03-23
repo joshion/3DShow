@@ -1,5 +1,4 @@
-#ifndef PAINTER_H
-#define PAINTER_H
+#pragma once
 
 #include <QOpenGLShaderProgram>
 #include <QOpenGLFunctions_4_3_Core>
@@ -17,7 +16,4 @@ public:
     virtual void paint() = 0;
 protected:
     QOpenGLShaderProgram m_Program;
-private:
 };
-
-#endif // PAINTER_H

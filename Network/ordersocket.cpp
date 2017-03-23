@@ -1,6 +1,6 @@
 #include "ordersocket.h"
-#include "orderframebuffer.h"
 #include "orderinterface.hpp"
+#include "orderframebuffer.h"
 
 #include "ConnectProto.pb.h"
 #include "KinectDataProto.pb.h"

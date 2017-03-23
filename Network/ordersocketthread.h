@@ -1,5 +1,4 @@
-#ifndef ORDERSOCKETTHREAD_H
-#define ORDERSOCKETTHREAD_H
+#pragma once
 
 #include "singleton.h"
 #include <QThread>
@@ -41,5 +40,3 @@ signals: void signal_startRequire(QString deviceName, unsigned int dataType);
 signals: void signal_endConnect();
 /***********************************************************************************/
 };
-
-#endif // ORDERSOCKETTHREAD_H
