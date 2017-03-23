@@ -15,8 +15,8 @@ private:
     QMenu *m_pMenu;
     QAction *m_pStartRequireData;
     QAction *m_pEndRequireData;
-private:
-    void slot_customContextMenuRequested(QPoint point);
 public slots:
     void slot_setDevices(const QStringList& devicesList);
+private slots:
+    void slot_customContextMenuRequested(QPoint point);
 };

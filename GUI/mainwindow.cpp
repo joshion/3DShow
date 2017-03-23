@@ -30,11 +30,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::slot_buttonClicked()
 {
-    slot_createSkeletonFrameWidget("Kinect Show", 3434);
-}
-
-void MainWindow::slot_createSkeletonFrameWidget(QString strWindowTile, unsigned int uPort)
-{
+    ui.m_MultiShowArea->slot_createSkeletonFrameWidget("hello", 7893);
 }
 
 void MainWindow::slot_respConnect()

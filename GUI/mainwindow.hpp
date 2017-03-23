@@ -22,7 +22,6 @@ private:
 /*GUI内部的通信*/
 
 private slots:
-    void slot_createSkeletonFrameWidget(QString strWindowTile, unsigned int uPort);
     void slot_buttonClicked();
 
 /***********************************************************************************/

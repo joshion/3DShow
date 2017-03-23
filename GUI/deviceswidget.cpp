@@ -20,8 +20,7 @@ DevicesWidget::DevicesWidget(QWidget *parent)
 
 
     setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(this, &DevicesWidget::customContextMenuRequested,
-        this, &DevicesWidget::slot_customContextMenuRequested);
+    connect(this, &DevicesWidget::customContextMenuRequested, this, &DevicesWidget::slot_customContextMenuRequested);
 }
 
 DevicesWidget::~DevicesWidget()
