@@ -1,10 +1,7 @@
 #include "decodevediostream.h"
 
-#include <QVector>
 #include <QByteArray>
 #include <Qdebug>
-
-
 
 namespace
 {
@@ -91,7 +88,7 @@ void DecodeVedioStream::initDecodec()
     avcodec_register_all();
 
     /* 初始化AVCodec */
-    m_pCodec = avcodec_find_decoder(m_Codec_Id);
+    m_pCodec = avcodec_find_decoder(AV_CODEC_ID_H264);
 
     /* 初始化AVCodecContext,只是分配，还没打开 */
     m_pCodecCtx = avcodec_alloc_context3(m_pCodec);
@@ -105,10 +102,10 @@ void DecodeVedioStream::initDecodec()
     }
 
     /* 什么意思 */
-    if (m_pCodec->capabilities & CODEC_CAP_TRUNCATED)
-    {
-        m_pCodecCtx->flags |= CODEC_FLAG_TRUNCATED;
-    }
+    //if (m_pCodec->capabilities & CODEC_CAP_TRUNCATED)
+    //{
+    //    m_pCodecCtx->flags |= CODEC_FLAG_TRUNCATED;
+    //}
 
     /* 打开解码器 */
     if (avcodec_open2(m_pCodecCtx, m_pCodec, NULL) < 0)
@@ -141,6 +138,9 @@ void DecodeVedioStream::decodeH264()
         std::lock_guard<std::mutex> lock_buffer(m_mutexBytesBuffer);
         buffer_size = m_BytesBuffer.size();   // 缓冲区数据长度
     }
+    int pts = 0;
+    int dts = 0;
+    int pos = 0;
     while (buffer_size > 0)
     {
         {
@@ -156,13 +156,9 @@ void DecodeVedioStream::decodeH264()
         if (m_Packet.size > 0)
         {
             int got = 0;
-            /* 解码出错, 中断程序 */
-            if (avcodec_send_packet(m_pCodecCtx, &m_Packet) != 0)   // 返回0时成功把数据放入解码器
-            {
-                qDebug() << "decodec error";
-                ::exit(0);
-            }            
-            if (avcodec_receive_frame(m_pCodecCtx, m_pFrame) == 0)  // 返回0时成功把数据解码到m_pFrame中
+            /* 解码出错, 中断程序 */          
+            if (avcodec_send_packet(m_pCodecCtx, &m_Packet) == 0    // 返回0时成功把数据放入解码器
+                && avcodec_receive_frame(m_pCodecCtx, m_pFrame) == 0)  // 返回0时成功把数据解码到m_pFrame中
             {
                 /* YUV420P格式
                 * Y:V:U = 4:1:1
@@ -172,8 +168,15 @@ void DecodeVedioStream::decodeH264()
                 {
                     int height = m_pFrame->height;
                     int width = m_pFrame->width;
-                    cv::Mat mYUV(height * 3 / 2, width, CV_8UC1);
-                    cv::Mat mRGB(m_pFrame->height, m_pFrame->width, CV_8UC3);
+
+                    /*
+                    mYUV仅是一个用来转码中转的临时变量,
+                    所以需要为static变量
+                    而mRGB需要发送到GUI渲染且其copy函数是浅拷贝,
+                    所以每次都需要一个新的mBGR变量存储新的图片
+                    */
+                    static cv::Mat mYUV(height * 3 / 2, width, CV_8UC1);    
+                    cv::Mat mBGR(height, width, CV_8UC3);
 
                     /* 复制 Y 分量 */
                     memcpy(mYUV.data,
@@ -190,9 +193,8 @@ void DecodeVedioStream::decodeH264()
                         (unsigned char *) m_pFrame->data[2],
                         height / 4 * width * sizeof(unsigned char));
 
-                    cv::cvtColor(mYUV, mRGB, CV_YUV2BGR_I420);
-
-                    this->pushMats(mRGB);
+                    cv::cvtColor(mYUV, mBGR, CV_YUV2BGR_I420);
+                    this->pushMats(mBGR);
                 }
             }
             else
@@ -201,7 +203,7 @@ void DecodeVedioStream::decodeH264()
                 ::exit(0);
             }
         }
-        av_packet_unref(&m_Packet);
+        // av_packet_unref(&m_Packet);
 
         {
             std::lock_guard<std::mutex> lock_buffer(m_mutexBytesBuffer);
