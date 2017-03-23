@@ -7,6 +7,7 @@ namespace
 {
     static const unsigned int BYTES_BUFFER_RESERVED_SIZE = 409600;
     static const unsigned int MATS_BUFFER_RESERVED_SIZE = 24 * 2;
+    static const unsigned int DECODE_BUFFER_SIZE = 4096;
 }
 
 DecodeVedioStream::DecodeVedioStream()
@@ -138,27 +139,56 @@ void DecodeVedioStream::decodeH264()
         std::lock_guard<std::mutex> lock_buffer(m_mutexBytesBuffer);
         buffer_size = m_BytesBuffer.size();   // 缓冲区数据长度
     }
-    int pts = 0;
-    int dts = 0;
-    int pos = 0;
     while (buffer_size > 0)
     {
+        QByteArray temp {};
         {
             std::lock_guard<std::mutex> lock_buffer(m_mutexBytesBuffer);
-            uint8_t *buffer_ptr = (uint8_t*) m_BytesBuffer.data(); // 缓冲区的数据
-            buffer_size = m_BytesBuffer.size();   // 缓冲区数据长度
-            /* 返回解析了的字节数 */
-            int len = av_parser_parse2(m_pCodecParserCtx, m_pCodecCtx, &m_Packet.data, &m_Packet.size,
-                buffer_ptr, buffer_size, AV_NOPTS_VALUE, AV_NOPTS_VALUE, AV_NOPTS_VALUE);
-            m_BytesBuffer.remove(0, len);
+            if (buffer_size > DECODE_BUFFER_SIZE)
+            {
+                temp.append(m_BytesBuffer.data(), DECODE_BUFFER_SIZE);
+                temp.append(AV_INPUT_BUFFER_PADDING_SIZE, '0');
+                m_BytesBuffer.remove(0, DECODE_BUFFER_SIZE);
+            }
+            else
+            {
+                temp.append(m_BytesBuffer.data(), buffer_size);
+                temp.append(AV_INPUT_BUFFER_PADDING_SIZE, '0');
+                m_BytesBuffer.remove(0, buffer_size);
+            }
         }
+        decodeBuffer(temp);
+
+        {
+            std::lock_guard<std::mutex> lock_buffer(m_mutexBytesBuffer);
+            buffer_size = m_BytesBuffer.size();   // 缓冲区数据长度
+        }
+    }
+}
+
+/*
+参数buffer已经加了av_parser_parse2需要用到的AV_INPUT_BUFFER_PADDING_SIZE个字节数的缓存
+*/
+void DecodeVedioStream::decodeBuffer(const QByteArray & buffer)
+{
+    int currentLen = buffer.size() - AV_INPUT_BUFFER_PADDING_SIZE;
+    uint8_t *currentPtr = (uint8_t*) buffer.data(); // 缓冲区的数据
+
+    while (currentLen > 0)
+    {
+        /* 返回解析了的字节数 */
+        int len = av_parser_parse2(m_pCodecParserCtx, m_pCodecCtx, &m_Packet.data, &m_Packet.size,
+            currentPtr, currentLen, AV_NOPTS_VALUE, AV_NOPTS_VALUE, AV_NOPTS_VALUE);
+
+        currentPtr += len;
+        currentLen -= len;
 
         if (m_Packet.size > 0)
         {
             int got = 0;
-            /* 解码出错, 中断程序 */          
-            if (avcodec_send_packet(m_pCodecCtx, &m_Packet) == 0    // 返回0时成功把数据放入解码器
-                && avcodec_receive_frame(m_pCodecCtx, m_pFrame) == 0)  // 返回0时成功把数据解码到m_pFrame中
+            /* 解码出错, 中断程序 */
+            avcodec_send_packet(m_pCodecCtx, &m_Packet);
+            if (avcodec_receive_frame(m_pCodecCtx, m_pFrame) == 0)  // 返回0时成功把数据解码到m_pFrame中
             {
                 /* YUV420P格式
                 * Y:V:U = 4:1:1
@@ -175,7 +205,7 @@ void DecodeVedioStream::decodeH264()
                     而mRGB需要发送到GUI渲染且其copy函数是浅拷贝,
                     所以每次都需要一个新的mBGR变量存储新的图片
                     */
-                    static cv::Mat mYUV(height * 3 / 2, width, CV_8UC1);    
+                    static cv::Mat mYUV(height * 3 / 2, width, CV_8UC1);
                     cv::Mat mBGR(height, width, CV_8UC3);
 
                     /* 复制 Y 分量 */
@@ -203,11 +233,6 @@ void DecodeVedioStream::decodeH264()
                 ::exit(0);
             }
         }
-        // av_packet_unref(&m_Packet);
-
-        {
-            std::lock_guard<std::mutex> lock_buffer(m_mutexBytesBuffer);
-            buffer_size = m_BytesBuffer.size();   // 缓冲区数据长度
-        }
+        av_packet_unref(&m_Packet);
     }
 }

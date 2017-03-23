@@ -52,5 +52,7 @@ private:
 
     AVPacket m_Packet;                    //h264
     AVFrame *m_pFrame = NULL;             //yuv
+
+    void decodeBuffer(const QByteArray &buffer);
 };
 
