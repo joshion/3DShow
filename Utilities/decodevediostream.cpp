@@ -5,12 +5,15 @@
 
 namespace
 {
-    static const unsigned int BYTES_BUFFER_RESERVED_SIZE = 409600;
+    static const unsigned int BYTES_BUFFER_RESERVED_SIZE = 4096000;
     static const unsigned int MATS_BUFFER_RESERVED_SIZE = 24 * 2;
     static const unsigned int DECODE_BUFFER_SIZE = 4096;
+    static const unsigned int DECODE_BUFFER_TOTAL_SIZE = DECODE_BUFFER_SIZE + AV_INPUT_BUFFER_PADDING_SIZE;
 }
 
-DecodeVedioStream::DecodeVedioStream()
+DecodeVedioStream::DecodeVedioStream() :
+    m_pCodecCtx(nullptr), m_pCodecParserCtx(nullptr), m_pCodec(nullptr),
+    m_pFrame(nullptr), m_bFirstTime(true), m_DecodeBytesBuffer(DECODE_BUFFER_TOTAL_SIZE, '0')
 {
     {
         std::lock_guard<std::mutex> lock_buffer(m_mutexBytesBuffer);
@@ -109,7 +112,7 @@ void DecodeVedioStream::initDecodec()
     //}
 
     /* 打开解码器 */
-    if (avcodec_open2(m_pCodecCtx, m_pCodec, NULL) < 0)
+    if (avcodec_open2(m_pCodecCtx, m_pCodec, nullptr) < 0)
     {
         qDebug() << "avocodec_open2 error";
         ::exit(0);
@@ -119,7 +122,7 @@ void DecodeVedioStream::initDecodec()
 
     av_init_packet(&m_Packet);
     m_Packet.size = 0;
-    m_Packet.data = NULL;
+    m_Packet.data = nullptr;
 }
 
 void DecodeVedioStream::releaseDecodec()
@@ -141,23 +144,24 @@ void DecodeVedioStream::decodeH264()
     }
     while (buffer_size > 0)
     {
-        QByteArray temp {};
+        if (buffer_size > DECODE_BUFFER_SIZE)
         {
-            std::lock_guard<std::mutex> lock_buffer(m_mutexBytesBuffer);
-            if (buffer_size > DECODE_BUFFER_SIZE)
             {
-                temp.append(m_BytesBuffer.data(), DECODE_BUFFER_SIZE);
-                temp.append(AV_INPUT_BUFFER_PADDING_SIZE, '0');
+                std::lock_guard<std::mutex> lock_buffer(m_mutexBytesBuffer);
+                m_DecodeBytesBuffer.replace(0, DECODE_BUFFER_SIZE, m_BytesBuffer.data(), DECODE_BUFFER_SIZE);
                 m_BytesBuffer.remove(0, DECODE_BUFFER_SIZE);
             }
-            else
+            decodeBuffer(m_DecodeBytesBuffer, DECODE_BUFFER_SIZE);
+        }
+        else
+        {
             {
-                temp.append(m_BytesBuffer.data(), buffer_size);
-                temp.append(AV_INPUT_BUFFER_PADDING_SIZE, '0');
+                std::lock_guard<std::mutex> lock_buffer(m_mutexBytesBuffer);
+                m_DecodeBytesBuffer.replace(0, buffer_size, m_BytesBuffer.data(), buffer_size);
                 m_BytesBuffer.remove(0, buffer_size);
             }
+            decodeBuffer(m_DecodeBytesBuffer, buffer_size);
         }
-        decodeBuffer(temp);
 
         {
             std::lock_guard<std::mutex> lock_buffer(m_mutexBytesBuffer);
@@ -167,12 +171,13 @@ void DecodeVedioStream::decodeH264()
 }
 
 /*
-参数buffer已经加了av_parser_parse2需要用到的AV_INPUT_BUFFER_PADDING_SIZE个字节数的缓存
+buffer的末尾已经加了av_parser_parse2需要用到的AV_INPUT_BUFFER_PADDING_SIZE个字节数的缓存
+bufferLength的值最大为buufer.length() - AV_INPUT_BUFFER_PADDING_SIZE
 */
-void DecodeVedioStream::decodeBuffer(const QByteArray & buffer)
+void DecodeVedioStream::decodeBuffer(const QByteArray & buffer, const int bufferLength)
 {
-    int currentLen = buffer.size() - AV_INPUT_BUFFER_PADDING_SIZE;
-    uint8_t *currentPtr = (uint8_t*) buffer.data(); // 缓冲区的数据
+    uint8_t *currentPtr = (uint8_t*) buffer.data();
+    int currentLen = bufferLength;
 
     while (currentLen > 0)
     {
@@ -185,10 +190,8 @@ void DecodeVedioStream::decodeBuffer(const QByteArray & buffer)
 
         if (m_Packet.size > 0)
         {
-            int got = 0;
-            /* 解码出错, 中断程序 */
-            avcodec_send_packet(m_pCodecCtx, &m_Packet);
-            if (avcodec_receive_frame(m_pCodecCtx, m_pFrame) == 0)  // 返回0时成功把数据解码到m_pFrame中
+            if (avcodec_send_packet(m_pCodecCtx, &m_Packet) == 0    // 返回0时成功把数据放到解码器中
+                && avcodec_receive_frame(m_pCodecCtx, m_pFrame) == 0)  // 返回0时成功把数据解码到m_pFrame中
             {
                 /* YUV420P格式
                 * Y:V:U = 4:1:1
@@ -199,34 +202,38 @@ void DecodeVedioStream::decodeBuffer(const QByteArray & buffer)
                     int height = m_pFrame->height;
                     int width = m_pFrame->width;
 
-                    /*
-                    mYUV仅是一个用来转码中转的临时变量,
-                    所以需要为static变量
-                    而mRGB需要发送到GUI渲染且其copy函数是浅拷贝,
-                    所以每次都需要一个新的mBGR变量存储新的图片
-                    */
-                    static cv::Mat mYUV(height * 3 / 2, width, CV_8UC1);
-                    cv::Mat mBGR(height, width, CV_8UC3);
+                    /* 转换第一帧时,需要依据当前视频每帧图片大小对m_mYUVBuffer分配内存 */
+                    if (m_bFirstTime)
+                    {
+                        m_mYUVBuffer.create(height * 3 / 2, width, CV_8UC1);
+                        m_bFirstTime = false;
+                    }
 
                     /* 复制 Y 分量 */
-                    memcpy(mYUV.data,
+                    memcpy(m_mYUVBuffer.data,
                         (unsigned char *) m_pFrame->data[0],
                         height * width * sizeof(unsigned char));
 
                     /* 复制 V 分量 */
-                    memcpy(mYUV.data + height * width * sizeof(unsigned char),
+                    memcpy(m_mYUVBuffer.data + height * width * sizeof(unsigned char),
                         (unsigned char *) m_pFrame->data[1],
                         height / 4 * width * sizeof(unsigned char));
 
                     /* 复制 U 分量 */
-                    memcpy(mYUV.data + height * 5 / 4 * width * sizeof(unsigned char),
+                    memcpy(m_mYUVBuffer.data + height * 5 / 4 * width * sizeof(unsigned char),
                         (unsigned char *) m_pFrame->data[2],
                         height / 4 * width * sizeof(unsigned char));
 
-                    cv::cvtColor(mYUV, mBGR, CV_YUV2BGR_I420);
+                    /*
+                    * mRGB需要发送到GUI渲染且其copy函数是浅拷贝,
+                    * 所以每次都需要一个新的mBGR变量存储新的图片
+                    */
+                    cv::Mat mBGR(height, width, CV_8UC3);
+                    cv::cvtColor(m_mYUVBuffer, mBGR, CV_YUV2BGR_I420);
                     this->pushMats(mBGR);
                 }
             }
+            /* 解码出错, 退出程序 */
             else
             {
                 qDebug() << "decodec error";

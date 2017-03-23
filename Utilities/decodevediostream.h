@@ -33,26 +33,29 @@ private:
     void pushMats(const cv::Mat &mat);
 
 private:
-    QByteArray m_BytesBuffer;
-    std::mutex m_mutexBytesBuffer;
-
-    QList<cv::Mat> m_MatsBuffer;
-    std::mutex m_mutexMatsBuffer;
-
-private:
     void initDecodec();
     void releaseDecodec();
     void decodeH264();
 private:
     std::mutex m_mutexDeocder;
-    AVCodecContext *m_pCodecCtx = NULL;
-    AVCodecParserContext *m_pCodecParserCtx = NULL;
-    AVCodec *m_pCodec = NULL;
-    // AVCodecID m_Codec_Id = AV_CODEC_ID_H264;
 
-    AVPacket m_Packet;                    //h264
-    AVFrame *m_pFrame = NULL;             //yuv
+    AVCodecContext *m_pCodecCtx;
+    AVCodecParserContext *m_pCodecParserCtx;
+    AVCodec *m_pCodec;
+    AVFrame *m_pFrame;  // 一帧yuv格式图片
+    AVPacket m_Packet;  // h264数据包
 
-    void decodeBuffer(const QByteArray &buffer);
+    bool m_bFirstTime;  // 判断是否为解码第一帧
+    cv::Mat m_mYUVBuffer;   // 将FFmpeg的yuv图片数据转为cv::Mat的中转缓存
+
+    QByteArray m_DecodeBytesBuffer; // 将socket接收到H264数据拆分成AVPacket包的中转缓存
+    void decodeBuffer(const QByteArray &buffer, const int bufferLength);
+
+private:
+    QByteArray m_BytesBuffer;
+    std::mutex m_mutexBytesBuffer;
+
+    QList<cv::Mat> m_MatsBuffer;
+    std::mutex m_mutexMatsBuffer;
 };
 
