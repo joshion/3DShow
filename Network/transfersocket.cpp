@@ -55,13 +55,15 @@ void TransferSocket::run()
 
 void TransferSocket::analysisReceiveBytesBuffer()
 {
+
+#ifdef COMMENT
     {
         std::lock_guard<std::mutex> lock_buffer(m_mutexReceiveBuffer);
         m_pDecoder->pushBytes((unsigned char *) m_receiveBuffer.data(), m_receiveBuffer.length());
         m_receiveBuffer.remove(0, m_receiveBuffer.length());
     }
+#endif // COMMENT
 
-#ifdef COMMENT
     bool bIsACompleteFrameBuffer = false;
     int length = 0;
     {
@@ -98,13 +100,12 @@ void TransferSocket::analysisReceiveBytesBuffer()
         {
             analysisReceiveFrameBuffer(*m_pReceiveFrameBuffer);
         }
+
         {
             std::lock_guard<std::mutex> lock_buffer(m_mutexReceiveBuffer);
             length = m_receiveBuffer.length();
         }
-
     }
-#endif // COMMENT
 }
 
 void TransferSocket::analysisReceiveFrameBuffer(const TransferFrameBuffer& buffer)
@@ -134,9 +135,7 @@ void TransferSocket::slot_readDataFromServer()
 {
     std::lock_guard<std::mutex> lock_buffer(m_mutexReceiveBuffer);
     m_receiveBuffer.append(this->readAll());
-    /*
-    通知解析线程解析数据
-    */
+    /* 通知解析线程解析数据 */
     notifyThreadToContinue();
 }
 
