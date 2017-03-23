@@ -1,7 +1,9 @@
 #include "thread.h"
 
 Thread::Thread()
-	: m_thread(nullptr), m_bWorking(false), m_bStatus(false)
+	: m_thread(nullptr),
+    m_bWorking(false),
+    m_bStatus(false)
 {
 }
 

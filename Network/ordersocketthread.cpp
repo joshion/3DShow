@@ -5,10 +5,12 @@
 
 OrderSocketThread::OrderSocketThread(QString adress, unsigned int port,
     OrderInterface *pInterface, QObject *parent)
-    :m_strIPAdress(adress), m_uPort(port), m_pOrderInterface(pInterface),
-    QThread(parent), m_pOrderSocket(nullptr)
+    : QThread(parent),
+    m_strIPAdress(adress),
+    m_uPort(port),
+    m_pOrderInterface(pInterface),
+    m_pOrderSocket(nullptr)
 {
-    
     this->start();
 }
 
@@ -21,7 +23,7 @@ OrderSocketThread::~OrderSocketThread()
 void OrderSocketThread::run()
 {
     m_pOrderSocket = new OrderSocket { m_strIPAdress, m_uPort };
-
+    m_pOrderSocket->registerGUIClass(m_pOrderInterface);
     connect(this, &OrderSocketThread::finished, m_pOrderSocket, &OrderSocket::deleteLater);
 
     connect(this, &OrderSocketThread::signal_requireConnect,
@@ -34,7 +36,6 @@ void OrderSocketThread::run()
         m_pOrderSocket, &OrderSocket::slot_startRequire, Qt::QueuedConnection);
     connect(this, &OrderSocketThread::signal_endConnect,
         m_pOrderSocket, &OrderSocket::slot_endConnect, Qt::QueuedConnection);
-    m_pOrderSocket->registerGUIClass(m_pOrderInterface);
 
     exec();
 }

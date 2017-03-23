@@ -7,7 +7,8 @@
 
 TransferFrameBuffer::TransferFrameBuffer(unsigned int timeStamp, unsigned int dataType,
     unsigned int bodyLength, unsigned char * data)
-    : m_u32TimeStamp(timeStamp), m_u32DataType(dataType)
+    : m_u32TimeStamp(timeStamp),
+    m_u32DataType(dataType)
 {
     if (data && bodyLength > 0)
     {
@@ -23,7 +24,8 @@ TransferFrameBuffer::TransferFrameBuffer(unsigned int timeStamp, unsigned int da
 }
 
 TransferFrameBuffer::TransferFrameBuffer(const TransferFrameBuffer & other)
-    : m_u32TimeStamp(other.m_u32TimeStamp), m_u32DataType(other.m_u32DataType)
+    : m_u32TimeStamp(other.m_u32TimeStamp),
+    m_u32DataType(other.m_u32DataType)
 {
     unsigned char* pOrig = this->m_Data;
 

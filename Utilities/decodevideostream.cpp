@@ -12,9 +12,13 @@ namespace
     static const unsigned int DECODE_BUFFER_TOTAL_SIZE = DECODE_BUFFER_SIZE + AV_INPUT_BUFFER_PADDING_SIZE;
 }
 
-DecodeVideoStream::DecodeVideoStream() :
-    m_pCodecCtx(nullptr), m_pCodecParserCtx(nullptr), m_pCodec(nullptr),
-    m_pFrame(nullptr), m_bFirstTime(true), m_DecodeBytesBuffer(DECODE_BUFFER_TOTAL_SIZE, '0')
+DecodeVideoStream::DecodeVideoStream() 
+    : m_pCodecCtx(nullptr),
+    m_pCodecParserCtx(nullptr),
+    m_pCodec(nullptr),
+    m_pFrame(nullptr),
+    m_bFirstTime(true),
+    m_DecodeBytesBuffer(DECODE_BUFFER_TOTAL_SIZE, '0')
 {
     {
         std::lock_guard<std::mutex> lock_buffer(m_mutexBytesBuffer);

@@ -2,10 +2,13 @@
 
 #include "transferinterface.h"
 
-TransferSocketThread::TransferSocketThread(unsigned int port, QString strIPAdress,
+TransferSocketThread::TransferSocketThread(unsigned int port, QString strIPAdress, 
     TransferInterface *pInterface, QObject *parent)
-    : m_strIPAdress(strIPAdress), m_uPort(port), m_pTransferInterface(pInterface),
-    QThread(parent), m_pTransferSocket(nullptr)
+    : QThread(parent),
+    m_strIPAdress(strIPAdress),
+    m_uPort(port),
+    m_pTransferInterface(pInterface),
+    m_pTransferSocket(nullptr)
 {
     this->start();
 }
@@ -19,10 +22,9 @@ TransferSocketThread::~TransferSocketThread()
 void TransferSocketThread::run()
 {
     m_pTransferSocket = new TransferSocket { m_strIPAdress, m_uPort };
-
+    m_pTransferSocket->registerGUIClass(m_pTransferInterface);
     connect(this, &TransferSocketThread::finished, m_pTransferSocket, &TransferSocket::deleteLater);
 
-    m_pTransferSocket->registerGUIClass(m_pTransferInterface);
     exec();
 }
 

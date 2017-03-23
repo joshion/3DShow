@@ -4,7 +4,8 @@
 #include "ordersocketthread.h"
 
 MainFrame::MainFrame(QObject * parent)
-    :m_pMainWindow(nullptr), m_pOrderSocketThread (nullptr)
+    :m_pMainWindow(nullptr),
+    m_pOrderSocketThread (nullptr)
 {
     m_pMainWindow = new MainWindow();
     m_pOrderSocketThread = OrderSocketThread::GetInstance("127.0.0.1", 7892, m_pMainWindow);

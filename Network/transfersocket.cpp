@@ -11,9 +11,14 @@ namespace
 }
 
 TransferSocket::TransferSocket(QString strIPAdress, unsigned int port, QObject *parent)
-    : m_strIPAdress(strIPAdress), m_uPort(port), QTcpSocket(parent),
-    m_bConnected(false), m_pGUI(nullptr), m_bNotHasHead(true), 
-    m_pReceiveFrameBuffer(nullptr), m_pDecoder(nullptr)
+    : QTcpSocket(parent),
+    m_strIPAdress(strIPAdress),
+    m_uPort(port),
+    m_bConnected(false),
+    m_pGUI(nullptr),
+    m_bNotHasHead(true), 
+    m_pReceiveFrameBuffer(nullptr),
+    m_pDecoder(nullptr)
 {
     m_receiveBuffer.clear();
     m_pReceiveFrameBuffer = new TransferFrameBuffer;

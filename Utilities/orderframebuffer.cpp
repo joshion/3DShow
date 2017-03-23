@@ -11,8 +11,11 @@ len即是data的长度
 */
 OrderFrameBuffer::OrderFrameBuffer(unsigned char cmdType, unsigned char cmdNum, unsigned int sequence,
     unsigned char version, unsigned int len, unsigned char * data)
-    : m_u32Length(len), m_ucCmdType(cmdType), m_ucCmdNum(cmdNum),
-    m_u32Sequence(sequence), m_ucVsersion(version)
+    : m_u32Length(len),
+    m_ucCmdType(cmdType),
+    m_ucCmdNum(cmdNum),
+    m_u32Sequence(sequence),
+    m_ucVsersion(version)
 {
     if (data && m_u32Length > 0)
     {
@@ -27,8 +30,10 @@ OrderFrameBuffer::OrderFrameBuffer(unsigned char cmdType, unsigned char cmdNum, 
 }
 
 OrderFrameBuffer::OrderFrameBuffer(const OrderFrameBuffer & other)
-    : m_ucCmdType(other.m_ucCmdType), m_ucCmdNum(other.m_ucCmdNum),
-    m_u32Sequence(other.m_u32Sequence), m_ucVsersion(other.m_ucVsersion)
+    : m_ucCmdType(other.m_ucCmdType),
+    m_ucCmdNum(other.m_ucCmdNum),
+    m_u32Sequence(other.m_u32Sequence),
+    m_ucVsersion(other.m_ucVsersion)
 {
     unsigned char *pOrig = this->m_data;
 

@@ -28,9 +28,14 @@ namespace
 }
 
 OrderSocket::OrderSocket(QString adress, unsigned int port, QObject *parent)
-    : QTcpSocket(parent), m_strIPAdress(adress), m_uPort(port),
-    m_bConnected(false), m_pGUI(nullptr), m_pSendFrameBuffer(nullptr),
-    m_bNotHasHead(true), m_pReceiveFrameBuffer(nullptr)
+    : QTcpSocket(parent),
+    m_strIPAdress(adress),
+    m_uPort(port),
+    m_bConnected(false),
+    m_pGUI(nullptr),
+    m_pSendFrameBuffer(nullptr),
+    m_bNotHasHead(true),
+    m_pReceiveFrameBuffer(nullptr)
 
 {
     m_pSendFrameBuffer = new OrderFrameBuffer {};
