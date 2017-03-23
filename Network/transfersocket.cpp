@@ -139,11 +139,11 @@ void TransferSocket::slot_readDataFromServer()
     notifyThreadToContinue();
 }
 
-cv::Mat TransferSocket::popMats()
+cv::Mat TransferSocket::popMat()
 {
     if (m_pDecoder)
     {
-        return m_pDecoder->popMats();
+        return m_pDecoder->popMat();
     }
     else
     {

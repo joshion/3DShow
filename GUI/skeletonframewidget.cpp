@@ -65,7 +65,7 @@ void SkeletonFrameWidget::paintGL()
     {
         if (m_pTransferSocketThread->matsSize() > 0)
         {
-            m_pImagePainter->loadTexture(m_pTransferSocketThread->popMats());
+            m_pImagePainter->loadTexture(m_pTransferSocketThread->popMat());
         }
         m_pImagePainter->paint();
     }

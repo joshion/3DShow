@@ -26,11 +26,11 @@ void TransferSocketThread::run()
     exec();
 }
 
-cv::Mat TransferSocketThread::popMats()
+cv::Mat TransferSocketThread::popMat()
 {
     if (m_pTransferSocket)
     {
-        return m_pTransferSocket->popMats();
+        return m_pTransferSocket->popMat();
     }
     else
     {

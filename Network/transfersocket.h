@@ -64,7 +64,7 @@ private slots:
 /***********************************************************************************/
 
 public:
-    cv::Mat popMats();
+    cv::Mat popMat();
     int matsSize();
 private:
     DecodeVedioStream *m_pDecoder;

@@ -29,7 +29,7 @@ protected:
 private:
     TransferSocket *m_pTransferSocket;
 public:
-    cv::Mat popMats();
+    cv::Mat popMat();
     int matsSize();
 /***********************************************************************************/
 };

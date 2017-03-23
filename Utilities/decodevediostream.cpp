@@ -41,7 +41,7 @@ void DecodeVedioStream::run()
     decodeH264();
 }
 
-cv::Mat DecodeVedioStream::popMats()
+cv::Mat DecodeVedioStream::popMat()
 {
     std::lock_guard<std::mutex> lock_buffer(m_mutexMatsBuffer);
     if (m_MatsBuffer.isEmpty())
@@ -105,11 +105,14 @@ void DecodeVedioStream::initDecodec()
         ::exit(0);
     }
 
-    /* 什么意思 */
-    //if (m_pCodec->capabilities & CODEC_CAP_TRUNCATED)
-    //{
-    //    m_pCodecCtx->flags |= CODEC_FLAG_TRUNCATED;
-    //}
+    /*
+    * 使得视频解码得到的图片完整
+    * 但需要有下一帧的数据才可以解码完上一帧的图片
+    */
+    if (m_pCodec->capabilities & CODEC_CAP_TRUNCATED)
+    {
+        m_pCodecCtx->flags |= CODEC_FLAG_TRUNCATED;
+    }
 
     /* 打开解码器 */
     if (avcodec_open2(m_pCodecCtx, m_pCodec, nullptr) < 0)

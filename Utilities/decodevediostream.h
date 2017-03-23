@@ -24,7 +24,7 @@ protected:
     void run() override;
 
 public:
-    cv::Mat popMats();
+    cv::Mat popMat();
     int matsSize();
     void pushBytes(const QByteArray &bytes);
     void pushBytes(const unsigned char* data, unsigned int length);
