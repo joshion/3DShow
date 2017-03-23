@@ -3,8 +3,6 @@
 #include "deviceswidget.h"
 #include "skeletonframewidget.h"
 
-#include <QMdiSubWindow>
-
 MainWindow::MainWindow(QWidget * parent)
     : QWidget(parent)
 {
@@ -37,13 +35,6 @@ void MainWindow::slot_buttonClicked()
 
 void MainWindow::slot_createSkeletonFrameWidget(QString strWindowTile, unsigned int uPort)
 {
-    // ui.m_MDIArea->clearMask();
-    SkeletonFrameWidget *p = new SkeletonFrameWidget { uPort };
-    p->setAttribute(Qt::WA_DeleteOnClose);
-    ui.m_MDIArea->addSubWindow(p, Qt::Widget);
-    p->showMaximized();
-
-    // ui.m_MDIArea->cascadeSubWindows();
 }
 
 void MainWindow::slot_respConnect()

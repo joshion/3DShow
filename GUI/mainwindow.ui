@@ -127,7 +127,14 @@
       </widget>
      </item>
      <item>
-      <widget class="QMdiArea" name="m_MDIArea"/>
+      <widget class="MultiShowArea" name="m_MultiShowArea">
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -139,6 +146,12 @@
    <class>DevicesWidget</class>
    <extends>QListWidget</extends>
    <header>deviceswidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>MultiShowArea</class>
+   <extends>QFrame</extends>
+   <header>multishowarea.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>
