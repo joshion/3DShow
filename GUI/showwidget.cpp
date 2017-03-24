@@ -53,8 +53,8 @@ void ShowWidget::initializeGL()
     /* 只有在第一次show之后才会调用initializeGL(), 所以画图对象在此处创建 */
     m_pFramePainter = new FramePainter;
     m_pImagePainter = new ImagePainter;
-    m_pFramePainter->buildShaderProgram("showwidget.vert", "showwidget.frag");
-    m_pImagePainter->buildShaderProgram("skeletonframewidget.vert", "skeletonframewidget.frag");
+    m_pFramePainter->buildShaderProgram("frame.vert", "frame.frag");
+    m_pImagePainter->buildShaderProgram("image.vert", "image.frag");
 
     m_pTransferSocketThread = new TransferSocketThread;
     m_pTimer = new QTimer(this);
