@@ -136,7 +136,10 @@ bool OrderSocket::slot_startRequire(QString deviceName, unsigned int dataType)
     m_pSendFrameBuffer->setCmdNum(1);
     KinectDataProto::pbReqStart req {};
     req.set_devicename(deviceName.toStdString());
-    req.set_datatype(dataType);
+    req.set_colorport(-1);
+    req.set_depthport(-1);
+    req.set_skeleport(-1);
+
     m_pSendFrameBuffer->setData(req);
     qDebug() << "enter start require";
     return this->writeBufferToServer();

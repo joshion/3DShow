@@ -3,6 +3,9 @@
 #include "decodevideostream.h"
 #include <QByteArray>
 
+#include <qDebug>
+#include <QHostAddress>
+
 namespace
 {
     static const unsigned int DATATYPE_RGB = 1;
@@ -26,6 +29,8 @@ TransferSocket::TransferSocket(QString strIPAdress, unsigned int port, QObject *
 
     this->setSocketOption(QAbstractSocket::KeepAliveOption, 1);
     this->setSocketOption(QAbstractSocket::LowDelayOption, 1);
+    this->bind();
+    qDebug() << this->localPort();
     this->connectToHost(m_strIPAdress, m_uPort, QIODevice::ReadWrite);
     connect(this, &TransferSocket::connected, this, &TransferSocket::slot_setConnected, Qt::QueuedConnection);
     connect(this, &TransferSocket::disconnected, this, &TransferSocket::slot_setDisConnected, Qt::QueuedConnection);
@@ -46,6 +51,8 @@ TransferSocket::~TransferSocket()
 
 void TransferSocket::slot_setConnected()
 {
+    qDebug() << this->localAddress();
+    qDebug() << this->localPort();
     m_bConnected = true;
 }
 
