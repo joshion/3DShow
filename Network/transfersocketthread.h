@@ -23,14 +23,17 @@ private:
 
     TransferInterface *m_pTransferInterface;    // 上层GUI类的虚基类, 传递其到下层C++服务,用于上下层的通信
 
+public:
+    TransferSocket* getTransferSocketPtr()
+    {
+        return m_pTransferSocket;
+    }
+
 /***********************************************************************************/
 /*QThread内创建的对象, 需要deleteLater()删除*/
 protected:
     void run() override;
 private:
     TransferSocket *m_pTransferSocket;
-public:
-    cv::Mat popMat();
-    int matsSize();
 /***********************************************************************************/
 };

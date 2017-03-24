@@ -17,7 +17,7 @@ class TransferSocket : public QTcpSocket, public Thread
     Q_OBJECT
 
 public:
-    explicit TransferSocket(QString strIPAdress = "127.0.0.1", unsigned int port = 7892, QObject *parent = nullptr);
+    explicit TransferSocket(QString strIPAdress = "127.0.0.1", unsigned int port = 7892);
     TransferSocket(TransferSocket &) = delete;
     TransferSocket& operator= (const TransferSocket &other) = delete;
     ~TransferSocket();
@@ -49,10 +49,10 @@ public:
 
 protected:
     void run() override;
+    virtual void analysisReceiveFrameBuffer(const TransferFrameBuffer& buffer);
 
 private:
     void analysisReceiveBytesBuffer();
-    void analysisReceiveFrameBuffer(const TransferFrameBuffer& buffer);
 private:
     QByteArray m_receiveBuffer;
     std::mutex m_mutexReceiveBuffer;
@@ -64,10 +64,4 @@ private slots:
     void slot_readDataFromServer();
 
 /***********************************************************************************/
-
-public:
-    cv::Mat popMat();
-    int matsSize();
-private:
-    DecodeVideoStream *m_pDecoder;
 };

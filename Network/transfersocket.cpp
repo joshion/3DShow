@@ -1,6 +1,5 @@
 #include "transfersocket.h"
 #include "transferframebuffer.h"
-#include "decodevideostream.h"
 #include <QByteArray>
 
 #include <qDebug>
@@ -13,19 +12,16 @@ namespace
     static const unsigned int DATATYPE_SKELETON = 3;
 }
 
-TransferSocket::TransferSocket(QString strIPAdress, unsigned int port, QObject *parent)
-    : QTcpSocket(parent),
-    m_strIPAdress(strIPAdress),
+TransferSocket::TransferSocket(QString strIPAdress, unsigned int port)
+    : m_strIPAdress(strIPAdress),
     m_uPort(port),
     m_bConnected(false),
     m_pGUI(nullptr),
     m_bNotHasHead(true), 
-    m_pReceiveFrameBuffer(nullptr),
-    m_pDecoder(nullptr)
+    m_pReceiveFrameBuffer(nullptr)
 {
     m_receiveBuffer.clear();
     m_pReceiveFrameBuffer = new TransferFrameBuffer;
-    m_pDecoder = new DecodeVideoStream;
 
     this->setSocketOption(QAbstractSocket::KeepAliveOption, 1);
     this->setSocketOption(QAbstractSocket::LowDelayOption, 1);
@@ -46,7 +42,6 @@ TransferSocket::~TransferSocket()
     this->stop();   // 关闭解析线程
 
     delete m_pReceiveFrameBuffer;
-    delete m_pDecoder;
 }
 
 void TransferSocket::slot_setConnected()
@@ -127,7 +122,7 @@ void TransferSocket::analysisReceiveFrameBuffer(const TransferFrameBuffer& buffe
     {
     case DATATYPE_RGB:
     {
-        m_pDecoder->pushBytes(buffer.data(), buffer.bodyLength());
+    
     }
     break;
     case DATATYPE_DEPTH:
@@ -150,28 +145,4 @@ void TransferSocket::slot_readDataFromServer()
     m_receiveBuffer.append(this->readAll());
     /* 通知解析线程解析数据 */
     notifyThreadToContinue();
-}
-
-cv::Mat TransferSocket::popMat()
-{
-    if (m_pDecoder)
-    {
-        return m_pDecoder->popMat();
-    }
-    else
-    {
-        return cv::Mat {};
-    }
-}
-
-int TransferSocket::matsSize()
-{
-    if (m_pDecoder)
-    {
-        return m_pDecoder->matsSize();
-    }
-    else
-    {
-        return 0;
-    }
 }

@@ -1,6 +1,7 @@
 #include "showwidget.h"
 
 #include "transfersocketthread.h"
+#include "imagetransfersocket.h"
 
 #include <QTimer>
 
@@ -101,17 +102,17 @@ void ShowWidget::slot_update()
 {
     if (m_bFirstTime )
     {
-        if (m_pTransferSocketThread->matsSize() > 0)
+        if (((ImageTransferSocket*) m_pTransferSocketThread->getTransferSocketPtr())->matsSize() > 0)
         {
-            cv::Mat mat = m_pTransferSocketThread->popMat();
+            cv::Mat mat = ((ImageTransferSocket*) m_pTransferSocketThread->getTransferSocketPtr())->popMat();
             m_fAspectRatio = (float) mat.cols / mat.rows;
             m_bFirstTime = false;
         }
     }
 
-    if (m_pImagePainter && m_pTransferSocketThread->matsSize() > 0)
+    if (m_pImagePainter && ((ImageTransferSocket*)m_pTransferSocketThread->getTransferSocketPtr())->matsSize() > 0)
     {
-        m_pImagePainter->loadTexture(m_pTransferSocketThread->popMat());
+        m_pImagePainter->loadTexture(((ImageTransferSocket*) m_pTransferSocketThread->getTransferSocketPtr())->popMat());
     }
     this->update();
 }

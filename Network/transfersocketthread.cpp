@@ -1,5 +1,6 @@
 #include "transfersocketthread.h"
 
+#include "imagetransfersocket.h"
 #include "transferinterface.h"
 
 TransferSocketThread::TransferSocketThread(unsigned int port, QString strIPAdress, 
@@ -21,34 +22,10 @@ TransferSocketThread::~TransferSocketThread()
 
 void TransferSocketThread::run()
 {
-    m_pTransferSocket = new TransferSocket { m_strIPAdress, m_uPort };
+    m_pTransferSocket = new ImageTransferSocket { m_strIPAdress, m_uPort };
     m_pTransferSocket->registerGUIClass(m_pTransferInterface);
-    connect(this, &TransferSocketThread::finished, m_pTransferSocket, &TransferSocket::deleteLater);
+    connect(this, &TransferSocketThread::finished, m_pTransferSocket, &ImageTransferSocket::deleteLater);
 
     exec();
-}
-
-cv::Mat TransferSocketThread::popMat()
-{
-    if (m_pTransferSocket)
-    {
-        return m_pTransferSocket->popMat();
-    }
-    else
-    {
-        return cv::Mat {};
-    }
-}
-
-int TransferSocketThread::matsSize()
-{
-    if (m_pTransferSocket)
-    {
-        return m_pTransferSocket->matsSize();
-    }
-    else
-    {
-        return 0;
-    }
 }
 
