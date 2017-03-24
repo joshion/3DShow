@@ -1,13 +1,15 @@
-#include "skeletonframewidget.h"
+#include "showwidget.h"
 
 #include "transfersocketthread.h"
 
 #include <QTimer>
 
-SkeletonFrameWidget::SkeletonFrameWidget(unsigned int port, QString title, QWidget *parent)
+ShowWidget::ShowWidget(QString title, unsigned int port, QWidget *parent)
     : QOpenGLWidget(parent),
-    m_uPort(port),
     m_strTitle(title),
+    m_uPort(port),
+    m_bFirstTime(true),
+    m_fAspectRatio(4.0 / 3.0),
     m_pFramePainter(nullptr),
     m_pImagePainter(nullptr),
     m_pTransferSocketThread(nullptr)
@@ -16,7 +18,7 @@ SkeletonFrameWidget::SkeletonFrameWidget(unsigned int port, QString title, QWidg
     this->setMinimumSize(320, 240);
 }
 
-SkeletonFrameWidget::~SkeletonFrameWidget()
+ShowWidget::~ShowWidget()
 {
     if (m_pTransferSocketThread)
     {
@@ -35,7 +37,12 @@ SkeletonFrameWidget::~SkeletonFrameWidget()
     }
 }
 
-void SkeletonFrameWidget::initializeGL()
+void ShowWidget::closeEvent(QCloseEvent * event)
+{
+    emit signal_closed(m_strTitle);
+}
+
+void ShowWidget::initializeGL()
 {
     /* 0. 初始化函数，使得函数可以使用 */
     initializeOpenGLFunctions();
@@ -51,13 +58,15 @@ void SkeletonFrameWidget::initializeGL()
 
     m_pTransferSocketThread = new TransferSocketThread;
     m_pTimer = new QTimer(this);
-    connect(m_pTimer, &QTimer::timeout, this, &SkeletonFrameWidget::slot_update);
+    connect(m_pTimer, &QTimer::timeout, this, &ShowWidget::slot_update);
     m_pTimer->start(40);
 }
 
-void SkeletonFrameWidget::paintGL()
+void ShowWidget::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT);
+
+    resizeGL(this->width(), this->height());
 
     if (m_pFramePainter)
     {
@@ -69,20 +78,37 @@ void SkeletonFrameWidget::paintGL()
     }
 }
 
-void SkeletonFrameWidget::resizeGL(int w, int h)
+void ShowWidget::resizeGL(int w, int h)
 {
-    if ((float) width() / height() > 640.0 / 480)
+    float fAspectRatio = (float) w / h;
+    if (fAspectRatio > m_fAspectRatio)  // 窗口的宽度比图片的宽度大
     {
-        glViewport(0, 0, height() * 640 / 480, height());
+        int x = (w - h * m_fAspectRatio) / 2;
+        glViewport(x, 0, h * m_fAspectRatio, h);
+    }
+    else if (fAspectRatio < m_fAspectRatio) // 窗口的宽度比图片的宽度小
+    {
+        int y = (h - w / m_fAspectRatio) / 2;
+        glViewport(0, y, w, w / m_fAspectRatio);
     }
     else
     {
-        glViewport(0, 0, width(), width() * 480.0 / 640);
+        glViewport(0, 0, w, h);
     }
 }
 
-void SkeletonFrameWidget::slot_update()
+void ShowWidget::slot_update()
 {
+    if (m_bFirstTime )
+    {
+        if (m_pTransferSocketThread->matsSize() > 0)
+        {
+            cv::Mat mat = m_pTransferSocketThread->popMat();
+            m_fAspectRatio = (float) mat.cols / mat.rows;
+            m_bFirstTime = false;
+        }
+    }
+
     if (m_pImagePainter && m_pTransferSocketThread->matsSize() > 0)
     {
         m_pImagePainter->loadTexture(m_pTransferSocketThread->popMat());

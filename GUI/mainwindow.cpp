@@ -1,7 +1,6 @@
 ﻿#include "mainwindow.hpp"
 #include <qdebug.h>
 #include "deviceswidget.h"
-#include "skeletonframewidget.h"
 
 MainWindow::MainWindow(QWidget * parent)
     : QWidget(parent)
@@ -21,7 +20,7 @@ MainWindow::MainWindow(QWidget * parent)
 
     /* 从 设备列表窗口 发送到 多窗口显示窗口 的消息 */
     connect(ui.m_DevicesWidget, &DevicesWidget::signal_createSkeletonFrameWidget,
-        ui.m_MultiShowArea, &MultiShowArea::slot_createSkeletonFrameWidget);
+        ui.m_MultiShowArea, &MultiShowArea::slot_showSubWidget);
 }
 
 MainWindow::~MainWindow()

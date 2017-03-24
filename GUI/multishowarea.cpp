@@ -1,5 +1,5 @@
 #include "multishowarea.h"
-#include "skeletonframewidget.h"
+#include "showwidget.h"
 
 #include <QMenu>
 #include <QAction>
@@ -24,12 +24,27 @@ MultiShowArea::~MultiShowArea()
 
 }
 
-void MultiShowArea::slot_createSkeletonFrameWidget(QString strWindowTile, unsigned int uPort)
+void MultiShowArea::slot_removeSubWidget(QString title)
 {
-    SkeletonFrameWidget *p = new SkeletonFrameWidget { 7893 };
-    p->setAttribute(Qt::WA_DeleteOnClose);
-    this->addSubWindow(p, Qt::Widget);
-    p->showMaximized();
+    m_Title_Widget.remove(title);
+}
+
+void MultiShowArea::slot_showSubWidget(QString strWindowTile, unsigned int uPort)
+{
+    if (m_Title_Widget.contains(strWindowTile))
+    {
+        m_Title_Widget[strWindowTile]->showMaximized();
+    }
+    else
+    {
+        ShowWidget *p = new ShowWidget { strWindowTile, uPort };
+        p->setAttribute(Qt::WA_DeleteOnClose);
+        this->addSubWindow(p, Qt::Widget);
+        p->showMaximized();
+        connect(p, &ShowWidget::signal_closed, this, &MultiShowArea::slot_removeSubWidget);
+        m_Title_Widget.insert(strWindowTile, p);
+        p = nullptr;
+    }
 }
 
 void MultiShowArea::slot_customContextMenuRequested(QPoint point)

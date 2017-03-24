@@ -6,8 +6,6 @@
 #include <QWidget>
 #include <QMap>
 
-class  SkeletonFrameWidget;
-
 class MainWindow : public QWidget ,public OrderInterface
 {
 	Q_OBJECT

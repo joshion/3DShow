@@ -11,17 +11,22 @@
 class QTimer;
 class TransferSocketThread;
 
-class SkeletonFrameWidget : public QOpenGLWidget, protected QOpenGLFunctions
+class ShowWidget : public QOpenGLWidget, protected QOpenGLFunctions
 {
     Q_OBJECT
 
 public:
-    SkeletonFrameWidget(unsigned int port = 0, QString title = "Kinect Show", QWidget *parent = 0);
-    ~SkeletonFrameWidget();
+    ShowWidget(QString title, unsigned int port = 0, QWidget *parent = 0);
+    ~ShowWidget();
+
+protected:
+    void closeEvent(QCloseEvent *event) override;
 
 private:
-    unsigned int m_uPort;
     QString m_strTitle;
+    unsigned int m_uPort;
+    bool m_bFirstTime;
+    float m_fAspectRatio;
     TransferSocketThread *m_pTransferSocketThread;
 
 /*******************************************************************************************/
@@ -38,6 +43,8 @@ private:
 
 /********************************************************************************************/
 
-public slots:
+signals:
+    void signal_closed(const QString &strWindowTitle);
+private slots:
     void slot_update();
 };
