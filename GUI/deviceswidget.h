@@ -15,8 +15,12 @@ private:
     QMenu *m_pMenu;
     QAction *m_pStartRequireData;
     QAction *m_pEndRequireData;
+signals:
+    void signal_createSkeletonFrameWidget(QString strWindowTile, unsigned int uPort);
 public slots:
     void slot_setDevices(const QStringList& devicesList);
 private slots:
     void slot_customContextMenuRequested(QPoint point);
+    void slot_startRequireData();
+    void slot_endRequireData();
 };

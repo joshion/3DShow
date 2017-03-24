@@ -11,14 +11,14 @@ DevicesWidget::DevicesWidget(QWidget *parent)
         deviceList << "aa";
     }
     this->addItems(deviceList);
-
-    m_pMenu = new QMenu(this);
     m_pStartRequireData = new QAction("Start Require", this);
     m_pEndRequireData = new QAction("End Require", this);
+    connect(m_pStartRequireData, &QAction::triggered, this, &DevicesWidget::slot_startRequireData);
+    connect(m_pEndRequireData, &QAction::triggered, this, &DevicesWidget::slot_endRequireData);
+
+    m_pMenu = new QMenu(this);
     m_pMenu->addAction(m_pStartRequireData);
     m_pMenu->addAction(m_pEndRequireData);
-
-
     setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this, &DevicesWidget::customContextMenuRequested, this, &DevicesWidget::slot_customContextMenuRequested);
 }
@@ -26,6 +26,15 @@ DevicesWidget::DevicesWidget(QWidget *parent)
 DevicesWidget::~DevicesWidget()
 {
 
+}
+
+void DevicesWidget::slot_startRequireData()
+{
+    emit signal_createSkeletonFrameWidget("hello", 7893);
+}
+
+void DevicesWidget::slot_endRequireData()
+{
 }
 
 void DevicesWidget::slot_customContextMenuRequested(QPoint point)

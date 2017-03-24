@@ -48,13 +48,6 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="m_ExitConnect">
-       <property name="text">
-        <string>exitConnect</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="QPushButton" name="m_ReqDevices">
        <property name="text">
         <string>reqDevices</string>
@@ -62,16 +55,9 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="m_StartConnect">
+      <widget class="QPushButton" name="m_ExitConnect">
        <property name="text">
-        <string>startConnect</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="m_EndConnect">
-       <property name="text">
-        <string>endConnect</string>
+        <string>exitConnect</string>
        </property>
       </widget>
      </item>
@@ -103,6 +89,12 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="minimumSize">
+        <size>
+         <width>200</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="frameShape">
         <enum>QFrame::StyledPanel</enum>
        </property>
@@ -128,6 +120,12 @@
      </item>
      <item>
       <widget class="MultiShowArea" name="m_MultiShowArea">
+       <property name="minimumSize">
+        <size>
+         <width>320</width>
+         <height>240</height>
+        </size>
+       </property>
        <property name="frameShape">
         <enum>QFrame::StyledPanel</enum>
        </property>

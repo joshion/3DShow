@@ -21,9 +21,6 @@ private:
 /***********************************************************************************/
 /*GUI内部的通信*/
 
-private slots:
-    void slot_buttonClicked();
-
 /***********************************************************************************/
 
 /***********************************************************************************/
@@ -35,7 +32,6 @@ signals: void signal_reqEndConnect() override;
 
 public slots:
     void slot_respConnect();
-    void slot_respDevices(const QStringList& devicesList);
     void slot_respStartRequire();
     void slot_reqEndConnect();
 /***********************************************************************************/
@@ -45,10 +41,6 @@ public slots:
 signals: void signal_requireConnect();
 signals: void signal_exitConnect();
 signals: void signal_requireDevices();
-signals: void signal_startRequire(QString deviceName, unsigned int dataType);
-signals: void signal_endConnect();
 
-private slots:
-    void slot_startConnect();
 /***********************************************************************************/
 };
