@@ -13,6 +13,9 @@ public:
 protected:
     void analysisReceiveFrameBuffer(const TransferFrameBuffer& buffer) override;
 
+protected slots:
+    inline void slot_connected() override;
+    inline void slot_disConnected() override;
 public:
     cv::Mat popMat();
     int matsSize();

@@ -13,15 +13,15 @@ ImageTransferSocket::ImageTransferSocket(QString strIPAdress, unsigned int port)
     : TransferSocket(strIPAdress, port),
     m_pDecoder(nullptr)
 {
-    m_pDecoder = new DecodeVideoStream;
-
 }
 
 ImageTransferSocket::~ImageTransferSocket()
 {
     if (m_pDecoder)
     {
+        m_pDecoder->stop();
         delete m_pDecoder;
+        m_pDecoder = nullptr;
     }
 }
 
@@ -31,21 +31,34 @@ void ImageTransferSocket::analysisReceiveFrameBuffer(const TransferFrameBuffer& 
     switch (buffer.dataType())
     {
     case DATATYPE_RGB:
+    case DATATYPE_DEPTH:
     {
         m_pDecoder->pushBytes(buffer.data(), buffer.bodyLength());
     }
     break;
-    case DATATYPE_DEPTH:
-    {
-
-    }
-    break;
-    case DATATYPE_SKELETON:
-    {
-
-    }
     default:
         break;
+    }
+}
+
+inline void ImageTransferSocket::slot_connected()
+{
+    TransferSocket::slot_connected();
+    if (nullptr == m_pDecoder)
+    {
+        m_pDecoder = new DecodeVideoStream;
+        m_pDecoder->start();
+    }
+}
+
+inline void ImageTransferSocket::slot_disConnected()
+{
+    TransferSocket::slot_disConnected();
+    if (m_pDecoder)
+    {
+        m_pDecoder->stop();
+        delete m_pDecoder;
+        m_pDecoder = nullptr;
     }
 }
 

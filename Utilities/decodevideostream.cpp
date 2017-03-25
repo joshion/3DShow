@@ -30,13 +30,13 @@ DecodeVideoStream::DecodeVideoStream()
     }
 
     this->initDecodec();
-    this->start();
+    // this->start();
 }
 
 
 DecodeVideoStream::~DecodeVideoStream()
 {
-    this->stop();
+    // this->stop();
     this->releaseDecodec();
 }
 

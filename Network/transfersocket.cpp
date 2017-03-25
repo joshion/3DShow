@@ -21,19 +21,13 @@ TransferSocket::TransferSocket(QString strIPAdress, unsigned int port)
     m_pReceiveFrameBuffer(nullptr)
 {
     m_receiveBuffer.clear();
-    m_pReceiveFrameBuffer = new TransferFrameBuffer;
 
     this->setSocketOption(QAbstractSocket::KeepAliveOption, 1);
     this->setSocketOption(QAbstractSocket::LowDelayOption, 1);
-    this->bind();
-    qDebug() << this->localPort();
-    this->connectToHost(m_strIPAdress, m_uPort, QIODevice::ReadWrite);
-    connect(this, &TransferSocket::connected, this, &TransferSocket::slot_setConnected, Qt::QueuedConnection);
-    connect(this, &TransferSocket::disconnected, this, &TransferSocket::slot_setDisConnected, Qt::QueuedConnection);
-    connect(this, &TransferSocket::readyRead, this, &TransferSocket::slot_readDataFromServer, Qt::QueuedConnection);
 
-    this->start();  // 启动解析线程
-    this->write(QByteArray(1, 'c'));
+    connect(this, &TransferSocket::connected, this, &TransferSocket::slot_connected, Qt::QueuedConnection);
+    connect(this, &TransferSocket::disconnected, this, &TransferSocket::slot_disConnected, Qt::QueuedConnection);
+    connect(this, &TransferSocket::readyRead, this, &TransferSocket::slot_readDataFromServer, Qt::QueuedConnection);
 }
 
 TransferSocket::~TransferSocket()
@@ -41,19 +35,39 @@ TransferSocket::~TransferSocket()
     this->close();
     this->stop();   // 关闭解析线程
 
-    delete m_pReceiveFrameBuffer;
+    if (m_pReceiveFrameBuffer)
+    {
+        delete m_pReceiveFrameBuffer;
+        m_pReceiveFrameBuffer = nullptr;
+    }
 }
 
-void TransferSocket::slot_setConnected()
+unsigned int TransferSocket::BindRandomPort()
 {
-    qDebug() << this->localAddress();
-    qDebug() << this->localPort();
-    m_bConnected = true;
+    bind();
+    return localPort();
 }
 
-void TransferSocket::slot_setDisConnected()
+void TransferSocket::connectToServer(unsigned int uPort)
+{
+    m_uPort = uPort;
+    connectToHost(m_strIPAdress, m_uPort, QIODevice::ReadOnly);
+}
+
+void TransferSocket::slot_connected()
+{
+    m_bConnected = true;
+    if (m_pReceiveFrameBuffer == nullptr)
+    {
+        m_pReceiveFrameBuffer = new TransferFrameBuffer;
+    }
+    this->start();  // 启动解析线程
+}
+
+void TransferSocket::slot_disConnected()
 {
     m_bConnected = false;
+    this->stop(); // 停止并关闭解析线程
 }
 
 void TransferSocket::run()
@@ -87,7 +101,8 @@ void TransferSocket::analysisReceiveBytesBuffer()
             若服务器发来的缓存少于12或者已经读取到了头部时跳过此部分,等待下次读取到更多缓存再
             进行判断
             */
-            if (m_bNotHasHead && m_receiveBuffer.length() >= m_pReceiveFrameBuffer->headLength())
+            if (m_bNotHasHead && m_pReceiveFrameBuffer != nullptr
+                && m_pReceiveFrameBuffer->headLength() <= m_receiveBuffer.length())
             {
                 m_pReceiveFrameBuffer->setHead(m_receiveBuffer);
                 m_receiveBuffer.remove(0, m_pReceiveFrameBuffer->headLength());
@@ -96,7 +111,8 @@ void TransferSocket::analysisReceiveBytesBuffer()
             /*
             若没有读取到头部或者缓存的长度比头部指定的protobuf的长度小时跳过此部分,等待下次读取到更多缓存时再进行判断
             */
-            if (!m_bNotHasHead && m_receiveBuffer.length() >= m_pReceiveFrameBuffer->bodyLength())
+            if (!m_bNotHasHead && m_pReceiveFrameBuffer != nullptr
+                && m_pReceiveFrameBuffer->bodyLength() <= m_receiveBuffer.length())
             {
                 m_pReceiveFrameBuffer->setData(m_receiveBuffer, m_pReceiveFrameBuffer->bodyLength());
                 m_receiveBuffer.remove(0, m_pReceiveFrameBuffer->bodyLength());
@@ -113,29 +129,6 @@ void TransferSocket::analysisReceiveBytesBuffer()
             std::lock_guard<std::mutex> lock_buffer(m_mutexReceiveBuffer);
             length = m_receiveBuffer.length();
         }
-    }
-}
-
-void TransferSocket::analysisReceiveFrameBuffer(const TransferFrameBuffer& buffer)
-{
-    switch (buffer.dataType())
-    {
-    case DATATYPE_RGB:
-    {
-    
-    }
-    break;
-    case DATATYPE_DEPTH:
-    {
-
-    }
-    break;
-    case DATATYPE_SKELETON:
-    {
-
-    }
-    default:
-        break;
     }
 }
 
