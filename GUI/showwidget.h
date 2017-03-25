@@ -1,8 +1,12 @@
 #pragma once
 
+#include "utilities.h"
+
 #include "framepainter.h"
 #include "imagepainter.h"
+#include "transferinterface.h"
 
+#include <QMap>
 #include <QOpenGLWidget>
 #include <QOpenGLContext>
 #include <QOpenGLFunctions>
@@ -11,23 +15,13 @@
 class QTimer;
 class TransferSocketThread;
 
-class ShowWidget : public QOpenGLWidget, protected QOpenGLFunctions
+class ShowWidget : public QOpenGLWidget, public TransferInterface , protected QOpenGLFunctions
 {
     Q_OBJECT
 
 public:
-    ShowWidget(QString title, unsigned int port = 0, QWidget *parent = 0);
+    ShowWidget(QString title, Utilities::ShowType type = Utilities::Color, QWidget *parent = 0);
     ~ShowWidget();
-
-protected:
-    void closeEvent(QCloseEvent *event) override;
-
-private:
-    QString m_strTitle;
-    unsigned int m_uPort;
-    bool m_bFirstTime;
-    float m_fAspectRatio;
-    TransferSocketThread *m_pTransferSocketThread;
 
 /*******************************************************************************************/
 /*openGLœ‡πÿ*/
@@ -42,6 +36,25 @@ private:
     QTimer* m_pTimer;
 
 /********************************************************************************************/
+
+signals: void signal_getLocalPort(unsigned int uPort) override;
+signals: void signal_connectedToServer() override;
+
+protected:
+    void closeEvent(QCloseEvent *event) override;
+
+private:
+    void createTransferSocketThreads();
+    void updateColor();
+    void updateDepth();
+    void updateSkele();
+private:
+    QString m_strTitle;
+    Utilities::ShowType m_eShowType;
+    bool m_bFirstTime;
+    float m_fAspectRatio;
+    QMap<Utilities::ShowType, TransferSocketThread* > m_Type_Socket;
+
 
 signals:
     void signal_closed(const QString &strWindowTitle);

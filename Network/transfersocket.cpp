@@ -1,5 +1,7 @@
 #include "transfersocket.h"
+#include "transferinterface.h"
 #include "transferframebuffer.h"
+
 #include <QByteArray>
 
 #include <qDebug>
@@ -42,9 +44,13 @@ TransferSocket::~TransferSocket()
     }
 }
 
-unsigned int TransferSocket::BindRandomPort()
+unsigned int TransferSocket::bindRandomPort()
 {
     bind();
+    if (m_pGUI)
+    {
+        m_pGUI->signal_getLocalPort(localPort());
+    }
     return localPort();
 }
 
@@ -52,6 +58,10 @@ void TransferSocket::connectToServer(unsigned int uPort)
 {
     m_uPort = uPort;
     connectToHost(m_strIPAdress, m_uPort, QIODevice::ReadOnly);
+    if (m_pGUI)
+    {
+        m_pGUI->signal_connectedToServer();
+    }
 }
 
 void TransferSocket::slot_connected()

@@ -1,5 +1,6 @@
 #include "multishowarea.h"
 #include "showwidget.h"
+#include "utilities.h"
 
 #include <QMenu>
 #include <QAction>
@@ -37,7 +38,7 @@ void MultiShowArea::slot_showSubWidget(QString strWindowTile, unsigned int uPort
     }
     else
     {
-        ShowWidget *p = new ShowWidget { strWindowTile, uPort };
+        ShowWidget *p = new ShowWidget { strWindowTile, Utilities::Color };
         p->setAttribute(Qt::WA_DeleteOnClose);
         this->addSubWindow(p, Qt::Widget);
         p->showMaximized();

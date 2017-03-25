@@ -21,19 +21,18 @@ public:
     TransferSocket(TransferSocket &) = delete;
     TransferSocket& operator= (const TransferSocket &other) = delete;
     ~TransferSocket();
-public:
-    unsigned int BindRandomPort();
+public slots:
+    unsigned int bindRandomPort();
     void connectToServer(unsigned int uPort);
-
-private:
-    QString m_strIPAdress;
-    unsigned int m_uPort;
-    bool m_bConnected;
 
 protected slots:
     inline virtual void slot_connected();
     inline virtual void slot_disConnected();
 
+private:
+    QString m_strIPAdress;
+    unsigned int m_uPort;
+    bool m_bConnected;
 /***********************************************************************************/
 /*与GUI通信所用接口*/
 private:

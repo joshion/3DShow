@@ -11,6 +11,16 @@ public:
     Utilities() = delete;
 
 public:
+    enum ShowType
+    {   
+        Color = 0x1,
+        Depth = 0x2,
+        Skele = 0x4,
+        Color_Depth = 0x3,
+        Color_Skele = 0x5,
+        Depth_Skele = 0x6,
+        Color_Depth_Color = 0x7
+    };
     static QString readStringFromFile(const QString &fileName);
 };
 
