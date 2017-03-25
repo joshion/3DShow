@@ -30,7 +30,7 @@ void MultiShowArea::slot_removeSubWidget(QString title)
     m_Title_Widget.remove(title);
 }
 
-void MultiShowArea::slot_showSubWidget(QString strWindowTile, unsigned int uPort)
+void MultiShowArea::slot_showSubWidget(QString strWindowTile, Utilities::ShowType type)
 {
     if (m_Title_Widget.contains(strWindowTile))
     {
@@ -38,7 +38,7 @@ void MultiShowArea::slot_showSubWidget(QString strWindowTile, unsigned int uPort
     }
     else
     {
-        ShowWidget *p = new ShowWidget { strWindowTile, Utilities::Color };
+        ShowWidget *p = new ShowWidget { strWindowTile, type };
         p->setAttribute(Qt::WA_DeleteOnClose);
         this->addSubWindow(p, Qt::Widget);
         p->showMaximized();

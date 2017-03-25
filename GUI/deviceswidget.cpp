@@ -22,6 +22,7 @@ DevicesWidget::DevicesWidget(QWidget *parent)
     m_pStartRequireDepth = new QAction("Show Depth", this);
     m_pStartRequireSkeleton = new QAction("Show Skeleton", this);
     m_pEndRequireData = new QAction("End Require", this);
+
     connect(m_pStartRequireRgb, &QAction::triggered, this, &DevicesWidget::slot_startRequireRgb);
     connect(m_pStartRequireDepth, &QAction::triggered, this, &DevicesWidget::slot_startRequireDepth);
     connect(m_pStartRequireSkeleton, &QAction::triggered, this, &DevicesWidget::slot_startRequireSkeleton);
@@ -49,7 +50,7 @@ void DevicesWidget::slot_startRequireRgb()
     if (m_pLastClickedItem)
     {
         QString strWindowTitle = m_pLastClickedItem->text();
-        emit signal_createSkeletonFrameWidget(strWindowTitle + "_RGB", 7893);
+        emit signal_createSkeletonFrameWidget(strWindowTitle + "_RGB", Utilities::Color);
     }
 }
 
@@ -58,7 +59,7 @@ void DevicesWidget::slot_startRequireDepth()
     if (m_pLastClickedItem)
     {
         QString strWindowTitle = m_pLastClickedItem->text();
-        emit signal_createSkeletonFrameWidget(strWindowTitle + "_Depth", 7893);
+        emit signal_createSkeletonFrameWidget(strWindowTitle + "_Depth", Utilities::Depth);
     }
 }
 
@@ -67,7 +68,7 @@ void DevicesWidget::slot_startRequireSkeleton()
     if (m_pLastClickedItem)
     {
         QString strWindowTitle = m_pLastClickedItem->text();
-        emit signal_createSkeletonFrameWidget(strWindowTitle + "_Skeleton", 7893);
+        emit signal_createSkeletonFrameWidget(strWindowTitle + "_Skeleton", Utilities::Skele);
     }
 }
 

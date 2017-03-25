@@ -1,4 +1,5 @@
 #pragma once
+#include "utilities.h"
 
 #include <QListWidget>
 
@@ -21,7 +22,7 @@ private:
     QListWidgetItem *m_pLastClickedItem;
 
 signals:
-    void signal_createSkeletonFrameWidget(QString strWindowTile, unsigned int uPort);
+    void signal_createSkeletonFrameWidget(QString strWindowTile, Utilities::ShowType type);
 public slots:
     void slot_setDevices(const QStringList& devicesList);
 private slots:
