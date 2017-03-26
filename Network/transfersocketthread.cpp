@@ -5,11 +5,10 @@
 #include "transferinterface.h"
 
 TransferSocketThread::TransferSocketThread(TransferInterface *pInterface, SocketType type, 
-    QString strIPAdress, unsigned int port, QObject *parent)
+    QString strIPAdress, QObject *parent)
     : QThread(parent),
     m_eSocketType(type),
     m_strIPAdress(strIPAdress),
-    m_uPort(port),
     m_pTransferInterface(pInterface),
     m_pTransferSocket(nullptr)
 {
@@ -33,6 +32,7 @@ void TransferSocketThread::createTransferSocket(SocketType type)
     {
         m_pTransferSocket = new ImageTransferSocket { m_strIPAdress };
         m_pTransferSocket->registerGUIClass(m_pTransferInterface);
+        m_pTransferSocket->bindRandomPort();
         connect(this, &TransferSocketThread::finished, m_pTransferSocket, &ImageTransferSocket::deleteLater);
         exec();
     }
@@ -40,6 +40,7 @@ void TransferSocketThread::createTransferSocket(SocketType type)
     {
         m_pTransferSocket = new ImageTransferSocket { m_strIPAdress };
         m_pTransferSocket->registerGUIClass(m_pTransferInterface);
+        m_pTransferSocket->bindRandomPort();
         connect(this, &TransferSocketThread::finished, m_pTransferSocket, &ImageTransferSocket::deleteLater);
         exec();
     }
@@ -47,6 +48,7 @@ void TransferSocketThread::createTransferSocket(SocketType type)
     {
         m_pTransferSocket = new FrameTransferSocket { m_strIPAdress };
         m_pTransferSocket->registerGUIClass(m_pTransferInterface);
+        m_pTransferSocket->bindRandomPort();
         connect(this, &TransferSocketThread::finished, m_pTransferSocket, &ImageTransferSocket::deleteLater);
         exec();
     }

@@ -4,6 +4,7 @@
 #include "imagetransfersocket.h"
 
 #include <QTimer>
+#include <QDebug>
 
 ShowWidget::ShowWidget(QString title, ShowType type, QWidget *parent)
     : QOpenGLWidget(parent),
@@ -12,10 +13,14 @@ ShowWidget::ShowWidget(QString title, ShowType type, QWidget *parent)
     m_bFirstTime(true),
     m_fAspectRatio(4.0 / 3.0),
     m_pFramePainter(nullptr),
-    m_pImagePainter(nullptr)
+    m_pImagePainter(nullptr),
+    m_pTimer(nullptr)
 {
     this->setWindowTitle(m_strTitle);
     this->setMinimumSize(320, 240);
+    createTransferSocketThreads();
+    connect(this, &ShowWidget::signal_getLocalPort, this, &ShowWidget::slot_getSocketLocalPort);
+    connect(this, &ShowWidget::signal_connectedToServer, this, &ShowWidget::slot_connectedToServer);
 }
 
 ShowWidget::~ShowWidget()
@@ -26,6 +31,11 @@ ShowWidget::~ShowWidget()
     }
     m_Type_Socket.clear();
 
+    if (m_pTimer)
+    {
+        delete m_pTimer;
+        m_pTimer = nullptr;
+    }
 
     if (m_pImagePainter)
     {
@@ -52,10 +62,6 @@ void ShowWidget::initializeGL()
     m_pImagePainter = new ImagePainter;
     m_pFramePainter->buildShaderProgram("frame.vert", "frame.frag");
     m_pImagePainter->buildShaderProgram("image.vert", "image.frag");
-
-    m_pTimer = new QTimer(this);
-    connect(m_pTimer, &QTimer::timeout, this, &ShowWidget::slot_update);
-    m_pTimer->start(40);
 }
 
 void ShowWidget::paintGL()
@@ -154,7 +160,21 @@ void ShowWidget::updateSkele()
 {
 }
 
+void ShowWidget::slot_getSocketLocalPort(unsigned int uPort)
+{
+    qDebug() << uPort;
+}
 
+void ShowWidget::slot_connectedToServer()
+{
+}
+
+void ShowWidget::slot_firstTimeShow()
+{
+    m_pTimer = new QTimer(this);
+    connect(m_pTimer, &QTimer::timeout, this, &ShowWidget::slot_update);
+    m_pTimer->start(40);
+}
 
 void ShowWidget::slot_update()
 {

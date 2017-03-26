@@ -22,7 +22,7 @@ public:
     TransferSocket& operator= (const TransferSocket &other) = delete;
     ~TransferSocket();
 public slots:
-    unsigned int bindRandomPort();
+    void bindRandomPort();
     void connectToServer(unsigned int uPort);
 
 protected slots:

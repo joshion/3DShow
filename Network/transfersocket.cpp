@@ -23,9 +23,6 @@ TransferSocket::TransferSocket(QString strIPAdress)
 {
     m_receiveBuffer.clear();
 
-    this->setSocketOption(QAbstractSocket::KeepAliveOption, 1);
-    this->setSocketOption(QAbstractSocket::LowDelayOption, 1);
-
     connect(this, &TransferSocket::connected, this, &TransferSocket::slot_connected, Qt::QueuedConnection);
     connect(this, &TransferSocket::disconnected, this, &TransferSocket::slot_disConnected, Qt::QueuedConnection);
     connect(this, &TransferSocket::readyRead, this, &TransferSocket::slot_readDataFromServer, Qt::QueuedConnection);
@@ -43,13 +40,13 @@ TransferSocket::~TransferSocket()
     }
 }
 
-unsigned int TransferSocket::bindRandomPort()
+void TransferSocket::bindRandomPort()
 {
+    setSocketOption(QAbstractSocket::KeepAliveOption, 1);
+    setSocketOption(QAbstractSocket::LowDelayOption, 1);
     bind();
 
     m_InterfaceManager.signal_getLocalPort(localPort());
-
-    return localPort();
 }
 
 void TransferSocket::connectToServer(unsigned int uPort)

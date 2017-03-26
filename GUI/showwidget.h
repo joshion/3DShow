@@ -48,6 +48,16 @@ private:
     void updateColor();
     void updateDepth();
     void updateSkele();
+signals:
+    void signal_closed(const QString &strWindowTitle);
+
+public slots:
+    void slot_firstTimeShow();
+private slots :
+    void slot_update();
+    void slot_getSocketLocalPort(unsigned int uPort);
+    void slot_connectedToServer();
+
 private:
     QString m_strTitle;
     ShowType m_eShowType;
@@ -55,9 +65,4 @@ private:
     float m_fAspectRatio;
     QMap<ShowType, TransferSocketThread* > m_Type_Socket;
 
-
-signals:
-    void signal_closed(const QString &strWindowTitle);
-private slots:
-    void slot_update();
 };
