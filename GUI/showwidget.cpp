@@ -12,13 +12,16 @@ ShowWidget::ShowWidget(QString title, ShowType type, QWidget *parent)
     m_eShowType(type),
     m_bFirstTime(true),
     m_fAspectRatio(4.0 / 3.0),
-    m_pFramePainter(nullptr),
-    m_pImagePainter(nullptr),
+    m_pColorPainter(nullptr),
+    m_pDepthPainter(nullptr),
+    m_pSkelePainter(nullptr),
     m_pTimer(nullptr)
 {
     this->setWindowTitle(m_strTitle);
     this->setMinimumSize(320, 240);
+
     createTransferSocketThreads();
+
     connect(this, &ShowWidget::signal_getLocalPort, this, &ShowWidget::slot_getSocketLocalPort);
     connect(this, &ShowWidget::signal_connectedToServer, this, &ShowWidget::slot_connectedToServer);
 }
@@ -37,15 +40,20 @@ ShowWidget::~ShowWidget()
         m_pTimer = nullptr;
     }
 
-    if (m_pImagePainter)
+    if (m_pColorPainter)
     {
-        delete m_pImagePainter;
-        m_pImagePainter = nullptr;
+        delete m_pColorPainter;
+        m_pColorPainter = nullptr;
     }
-    if (m_pFramePainter)
+    if (m_pDepthPainter)
     {
-        delete m_pFramePainter;
-        m_pFramePainter = nullptr;
+        delete m_pDepthPainter;
+        m_pDepthPainter = nullptr;
+    }
+    if (m_pSkelePainter)
+    {
+        delete m_pSkelePainter;
+        m_pSkelePainter = nullptr;
     }
 }
 
@@ -58,10 +66,12 @@ void ShowWidget::initializeGL()
     glEnable(GL_LINE_SMOOTH);
 
     /* 只有在第一次show之后才会调用initializeGL(), 所以画图对象在此处创建 */
-    m_pFramePainter = new FramePainter;
-    m_pImagePainter = new ImagePainter;
-    m_pFramePainter->buildShaderProgram("frame.vert", "frame.frag");
-    m_pImagePainter->buildShaderProgram("image.vert", "image.frag");
+    m_pColorPainter = new ImagePainter;
+    m_pDepthPainter = new ImagePainter;
+    m_pSkelePainter = new FramePainter;
+    m_pColorPainter->buildShaderProgram("image.vert", "image.frag");
+    m_pDepthPainter->buildShaderProgram("image.vert", "image.frag");
+    m_pSkelePainter->buildShaderProgram("frame.vert", "frame.frag");
 }
 
 void ShowWidget::paintGL()
@@ -70,13 +80,17 @@ void ShowWidget::paintGL()
 
     resizeGL(this->width(), this->height());
 
-    if (m_pFramePainter)
+    if (m_pColorPainter)
     {
-        m_pFramePainter->paint();
+        m_pColorPainter->paint();
     }
-    if (m_pImagePainter)
+    if (m_pDepthPainter)
     {
-        m_pImagePainter->paint();
+        m_pDepthPainter->paint();
+    }
+    if (m_pSkelePainter)
+    {
+        m_pSkelePainter->paint();
     }
 }
 
@@ -145,9 +159,9 @@ void ShowWidget::updateColor()
             }
         }
 
-        if (m_pImagePainter && m_pSocket->matsSize() > 0)
+        if (m_pColorPainter && m_pSocket->matsSize() > 0)
         {
-            m_pImagePainter->loadTexture(m_pSocket->popMat());
+            m_pColorPainter->loadTexture(m_pSocket->popMat());
         }
     }
 }
@@ -167,9 +181,10 @@ void ShowWidget::slot_getSocketLocalPort(unsigned int uPort)
 
 void ShowWidget::slot_connectedToServer()
 {
+    firstTimeShow();
 }
 
-void ShowWidget::slot_firstTimeShow()
+void ShowWidget::firstTimeShow()
 {
     m_pTimer = new QTimer(this);
     connect(m_pTimer, &QTimer::timeout, this, &ShowWidget::slot_update);

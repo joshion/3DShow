@@ -31,8 +31,9 @@ protected:
     void resizeGL(int  w, int h) override;
 
 private:
-    FramePainter *m_pFramePainter;
-    ImagePainter *m_pImagePainter;
+    ImagePainter *m_pColorPainter;
+    ImagePainter *m_pDepthPainter;
+    FramePainter *m_pSkelePainter;
     QTimer* m_pTimer;
 
 /********************************************************************************************/
@@ -48,11 +49,10 @@ private:
     void updateColor();
     void updateDepth();
     void updateSkele();
+    void firstTimeShow();
 signals:
     void signal_closed(const QString &strWindowTitle);
 
-public slots:
-    void slot_firstTimeShow();
 private slots :
     void slot_update();
     void slot_getSocketLocalPort(unsigned int uPort);

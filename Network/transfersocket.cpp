@@ -53,8 +53,6 @@ void TransferSocket::connectToServer(unsigned int uPort)
 {
     m_uPort = uPort;
     connectToHost(m_strIPAdress, m_uPort, QIODevice::ReadOnly);
-
-    m_InterfaceManager.signal_connectedToServer();
 }
 
 void TransferSocket::slot_connected()
@@ -65,6 +63,7 @@ void TransferSocket::slot_connected()
         m_pReceiveFrameBuffer = new TransferFrameBuffer;
     }
     this->start();  // 启动解析线程
+    m_InterfaceManager.signal_connectedToServer();
 }
 
 void TransferSocket::slot_disConnected()

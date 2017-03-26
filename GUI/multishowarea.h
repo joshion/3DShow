@@ -34,4 +34,5 @@ private slots:
     void slot_removeSubWidget(QString title);
 
 /***********************************************************************************/
+
 };
