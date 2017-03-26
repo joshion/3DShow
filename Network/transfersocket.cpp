@@ -14,11 +14,10 @@ namespace
     static const unsigned int DATATYPE_SKELETON = 3;
 }
 
-TransferSocket::TransferSocket(QString strIPAdress, unsigned int port)
+TransferSocket::TransferSocket(QString strIPAdress)
     : m_strIPAdress(strIPAdress),
-    m_uPort(port),
+    m_uPort(0),
     m_bConnected(false),
-    m_pGUI(nullptr),
     m_bNotHasHead(true), 
     m_pReceiveFrameBuffer(nullptr)
 {
@@ -47,10 +46,9 @@ TransferSocket::~TransferSocket()
 unsigned int TransferSocket::bindRandomPort()
 {
     bind();
-    if (m_pGUI)
-    {
-        m_pGUI->signal_getLocalPort(localPort());
-    }
+
+    m_InterfaceManager.signal_getLocalPort(localPort());
+
     return localPort();
 }
 
@@ -58,10 +56,8 @@ void TransferSocket::connectToServer(unsigned int uPort)
 {
     m_uPort = uPort;
     connectToHost(m_strIPAdress, m_uPort, QIODevice::ReadOnly);
-    if (m_pGUI)
-    {
-        m_pGUI->signal_connectedToServer();
-    }
+
+    m_InterfaceManager.signal_connectedToServer();
 }
 
 void TransferSocket::slot_connected()

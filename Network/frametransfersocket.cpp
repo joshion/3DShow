@@ -1,7 +1,7 @@
 #include "frametransfersocket.h"
 
-FrameTransferSocket::FrameTransferSocket(QString strIPAdress, unsigned int port)
-    : TransferSocket(strIPAdress, port)
+FrameTransferSocket::FrameTransferSocket(QString strIPAdress)
+    : TransferSocket(strIPAdress)
 {
 
 }

@@ -1,12 +1,12 @@
 #pragma once
 
 #include "thread.h"
+#include "transferinterface.h"
 
 #include <opencv2\opencv.hpp>
 
 #include <QTcpSocket>
 
-class TransferInterface;
 class TransferFrameBuffer;
 class DecodeVideoStream;
 
@@ -17,7 +17,7 @@ class TransferSocket : public QTcpSocket, public Thread
     Q_OBJECT
 
 public:
-    explicit TransferSocket(QString strIPAdress = "127.0.0.1", unsigned int port = 7892);
+    explicit TransferSocket(QString strIPAdress = "127.0.0.1");
     TransferSocket(TransferSocket &) = delete;
     TransferSocket& operator= (const TransferSocket &other) = delete;
     ~TransferSocket();
@@ -36,11 +36,11 @@ private:
 /***********************************************************************************/
 /*与GUI通信所用接口*/
 private:
-    TransferInterface *m_pGUI;
+    TransferInterfaceManager m_InterfaceManager;
 public:
     void registerGUIClass(TransferInterface*  gui)
     {
-        this->m_pGUI = gui;
+        m_InterfaceManager.registerInterface(gui);
     };
 /***********************************************************************************/
 

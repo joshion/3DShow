@@ -5,7 +5,7 @@
 
 #include <QTimer>
 
-ShowWidget::ShowWidget(QString title, Utilities::ShowType type, QWidget *parent)
+ShowWidget::ShowWidget(QString title, ShowType type, QWidget *parent)
     : QOpenGLWidget(parent),
     m_strTitle(title),
     m_eShowType(type),
@@ -100,35 +100,35 @@ void ShowWidget::closeEvent(QCloseEvent * event)
 
 void ShowWidget::createTransferSocketThreads()
 {
-    if (m_eShowType & Utilities::Color)
+    if (m_eShowType & ShowType::Color)
     {
-        TransferSocketThread *p = new TransferSocketThread(this, Utilities::Color);
-        m_Type_Socket.insert(Utilities::Color, p);
+        TransferSocketThread *p = new TransferSocketThread(this, SocketType::Color);
+        m_Type_Socket.insert(ShowType::Color, p);
     }
 
-    if (m_eShowType & Utilities::Depth)
+    if (m_eShowType & ShowType::Depth)
     {
-        TransferSocketThread *p = new TransferSocketThread(this, Utilities::Depth);
-        m_Type_Socket.insert(Utilities::Depth, p);
+        TransferSocketThread *p = new TransferSocketThread(this, SocketType::Depth);
+        m_Type_Socket.insert(ShowType::Depth, p);
     }
 
-    if (m_eShowType & Utilities::Skele)
+    if (m_eShowType & ShowType::Skele)
     {
-        TransferSocketThread *p = new TransferSocketThread(this, Utilities::Skele);
-        m_Type_Socket.insert(Utilities::Skele, p);
+        TransferSocketThread *p = new TransferSocketThread(this, SocketType::Skele);
+        m_Type_Socket.insert(ShowType::Skele, p);
     }
 }
 
 void ShowWidget::updateColor()
 {
-    if (false == m_Type_Socket.contains(Utilities::Color))
+    if (false == m_Type_Socket.contains(ShowType::Color))
     {
         return;
     }
 
-    if (m_Type_Socket[Utilities::Color] && m_Type_Socket[Utilities::Color]->getTransferSocketPtr())
+    if (m_Type_Socket[ShowType::Color] && m_Type_Socket[ShowType::Color]->getTransferSocketPtr())
     {
-        ImageTransferSocket* m_pSocket = (ImageTransferSocket*) m_Type_Socket[Utilities::Color]->getTransferSocketPtr();
+        ImageTransferSocket* m_pSocket = (ImageTransferSocket*) m_Type_Socket[ShowType::Color]->getTransferSocketPtr();
         if (m_bFirstTime)
         {
             if (m_pSocket->matsSize() > 0)
@@ -158,17 +158,17 @@ void ShowWidget::updateSkele()
 
 void ShowWidget::slot_update()
 {
-    if (m_eShowType & Utilities::Color)
+    if (m_eShowType & ShowType::Color)
     {
         updateColor();
     }
 
-    if (m_eShowType & Utilities::Depth)
+    if (m_eShowType & ShowType::Depth)
     {
 
     }
 
-    if (m_eShowType & Utilities::Skele)
+    if (m_eShowType & ShowType::Skele)
     {
 
     }

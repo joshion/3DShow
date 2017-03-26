@@ -20,7 +20,7 @@ class ShowWidget : public QOpenGLWidget, public TransferInterface , protected QO
     Q_OBJECT
 
 public:
-    ShowWidget(QString title, Utilities::ShowType type = Utilities::Color, QWidget *parent = 0);
+    ShowWidget(QString title, ShowType type = ShowType::Color, QWidget *parent = 0);
     ~ShowWidget();
 
 /*******************************************************************************************/
@@ -50,10 +50,10 @@ private:
     void updateSkele();
 private:
     QString m_strTitle;
-    Utilities::ShowType m_eShowType;
+    ShowType m_eShowType;
     bool m_bFirstTime;
     float m_fAspectRatio;
-    QMap<Utilities::ShowType, TransferSocketThread* > m_Type_Socket;
+    QMap<ShowType, TransferSocketThread* > m_Type_Socket;
 
 
 signals:

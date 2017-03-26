@@ -4,10 +4,10 @@
 #include "imagetransfersocket.h"
 #include "transferinterface.h"
 
-TransferSocketThread::TransferSocketThread(TransferInterface *pInterface, Utilities::ShowType type, 
+TransferSocketThread::TransferSocketThread(TransferInterface *pInterface, SocketType type, 
     QString strIPAdress, unsigned int port, QObject *parent)
     : QThread(parent),
-    m_eShowType(type),
+    m_eSocketType(type),
     m_strIPAdress(strIPAdress),
     m_uPort(port),
     m_pTransferInterface(pInterface),
@@ -24,24 +24,28 @@ TransferSocketThread::~TransferSocketThread()
 
 void TransferSocketThread::run()
 {
-    createTransferSocket(m_eShowType);
+    createTransferSocket(m_eSocketType);
 }
 
-void TransferSocketThread::createTransferSocket(Utilities::ShowType type)
+void TransferSocketThread::createTransferSocket(SocketType type)
 {
-    if (m_eShowType & Utilities::Color)
+    if (m_eSocketType == SocketType::Color)
     {
-        m_pTransferSocket = new ImageTransferSocket { m_strIPAdress, m_uPort };
+        m_pTransferSocket = new ImageTransferSocket { m_strIPAdress };
         m_pTransferSocket->registerGUIClass(m_pTransferInterface);
         connect(this, &TransferSocketThread::finished, m_pTransferSocket, &ImageTransferSocket::deleteLater);
         exec();
     }
-    else if (m_eShowType & Utilities::Depth)
+    else if (m_eSocketType == SocketType::Depth)
     {
+        m_pTransferSocket = new ImageTransferSocket { m_strIPAdress };
+        m_pTransferSocket->registerGUIClass(m_pTransferInterface);
+        connect(this, &TransferSocketThread::finished, m_pTransferSocket, &ImageTransferSocket::deleteLater);
+        exec();
     }
-    else if (m_eShowType & Utilities::Skele)
+    else if (m_eSocketType == SocketType::Skele)
     {
-        m_pTransferSocket = new FrameTransferSocket { m_strIPAdress, m_uPort };
+        m_pTransferSocket = new FrameTransferSocket { m_strIPAdress };
         m_pTransferSocket->registerGUIClass(m_pTransferInterface);
         connect(this, &TransferSocketThread::finished, m_pTransferSocket, &ImageTransferSocket::deleteLater);
         exec();

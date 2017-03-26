@@ -15,3 +15,4 @@ QString Utilities::readStringFromFile(const QString & fileName)
         return QString {};
     }
 }
+

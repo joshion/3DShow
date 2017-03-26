@@ -22,7 +22,7 @@ private:
     QListWidgetItem *m_pLastClickedItem;
 
 signals:
-    void signal_createSkeletonFrameWidget(QString strWindowTile, Utilities::ShowType type);
+    void signal_createSkeletonFrameWidget(QString strWindowTile, ShowType type);
 public slots:
     void slot_setDevices(const QStringList& devicesList);
 private slots:

@@ -9,8 +9,8 @@ namespace
     static const unsigned int DATATYPE_SKELETON = 3;
 }
 
-ImageTransferSocket::ImageTransferSocket(QString strIPAdress, unsigned int port)
-    : TransferSocket(strIPAdress, port),
+ImageTransferSocket::ImageTransferSocket(QString strIPAdress)
+    : TransferSocket(strIPAdress),
     m_pDecoder(nullptr)
 {
 }
