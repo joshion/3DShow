@@ -1,6 +1,7 @@
 #pragma once
 
 #include "thread.h"
+#include "utilities.h"
 #include "transferinterface.h"
 
 #include <opencv2\opencv.hpp>
@@ -17,7 +18,8 @@ class TransferSocket : public QTcpSocket, public Thread
     Q_OBJECT
 
 public:
-    explicit TransferSocket(QString strIPAdress = "127.0.0.1");
+    explicit TransferSocket(QString strIPAdress = "127.0.0.1",
+        Utilities::SocketType type = Utilities::SocketType::Color);
     TransferSocket(TransferSocket &) = delete;
     TransferSocket& operator= (const TransferSocket &other) = delete;
     ~TransferSocket();
@@ -31,6 +33,7 @@ protected slots:
 
 private:
     QString m_strIPAdress;
+    Utilities::SocketType m_eSocketType;
     unsigned int m_uPort;
     bool m_bConnected;
 /***********************************************************************************/

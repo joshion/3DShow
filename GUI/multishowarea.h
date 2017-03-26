@@ -27,7 +27,7 @@ private:
 /***********************************************************************************/
 /*GUI内部的通信*/
 public slots:
-    void slot_showSubWidget(QString strWindowTile, ShowType type);
+    void slot_showSubWidget(QString strWindowTile, Utilities::ShowType type);
 
 private slots:
     void slot_customContextMenuRequested(QPoint point);

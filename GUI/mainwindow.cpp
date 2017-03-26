@@ -19,7 +19,7 @@ MainWindow::MainWindow(QWidget * parent)
     connect(this, &MainWindow::signal_respDevices, ui.m_DevicesWidget, &DevicesWidget::slot_setDevices);
 
     /* 从 设备列表窗口 发送到 多窗口显示窗口 的消息 */
-    connect(ui.m_DevicesWidget, &DevicesWidget::signal_createSkeletonFrameWidget,
+    connect(ui.m_DevicesWidget, &DevicesWidget::signal_createShowWidget,
         ui.m_MultiShowArea, &MultiShowArea::slot_showSubWidget);
 }
 

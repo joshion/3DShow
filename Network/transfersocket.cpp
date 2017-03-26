@@ -14,8 +14,9 @@ namespace
     static const unsigned int DATATYPE_SKELETON = 3;
 }
 
-TransferSocket::TransferSocket(QString strIPAdress)
+TransferSocket::TransferSocket(QString strIPAdress, Utilities::SocketType type)
     : m_strIPAdress(strIPAdress),
+    m_eSocketType(type),
     m_uPort(0),
     m_bConnected(false),
     m_bNotHasHead(true), 
@@ -46,7 +47,7 @@ void TransferSocket::bindRandomPort()
     setSocketOption(QAbstractSocket::LowDelayOption, 1);
     bind();
 
-    m_InterfaceManager.signal_getLocalPort(localPort());
+    m_InterfaceManager.signal_getLocalPort(m_eSocketType, localPort());
 }
 
 void TransferSocket::connectToServer(unsigned int uPort)

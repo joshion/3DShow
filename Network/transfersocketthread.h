@@ -14,7 +14,7 @@ class TransferSocketThread : public QThread
     Q_OBJECT
 
 public:
-    TransferSocketThread(TransferInterface *pInterface = nullptr, SocketType type = SocketType::Color,
+    TransferSocketThread(TransferInterface *pInterface = nullptr, Utilities::SocketType type = Utilities::SocketType::Color,
         QString strIPAdress = "127.0.0.1", QObject *parent = nullptr);
     ~TransferSocketThread();
 public:
@@ -24,7 +24,7 @@ public:
     }
 private:
     TransferInterface *m_pTransferInterface;    // 上层GUI类的虚基类, 传递其到下层C++服务,用于上下层的通信
-    SocketType m_eSocketType;
+    Utilities::SocketType m_eSocketType;
     QString m_strIPAdress;
 
 /***********************************************************************************/
@@ -32,7 +32,7 @@ private:
 protected:
     void run() override;
 private:
-    void createTransferSocket(SocketType type);
+    void createTransferSocket(Utilities::SocketType type);
 private:
     TransferSocket *m_pTransferSocket;
 /***********************************************************************************/

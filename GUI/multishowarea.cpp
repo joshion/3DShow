@@ -30,7 +30,7 @@ void MultiShowArea::slot_removeSubWidget(QString title)
     m_Title_Widget.remove(title);
 }
 
-void MultiShowArea::slot_showSubWidget(QString strWindowTile, ShowType type)
+void MultiShowArea::slot_showSubWidget(QString strWindowTile, Utilities::ShowType type)
 {
     if (m_Title_Widget.contains(strWindowTile))
     {

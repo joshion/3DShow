@@ -4,7 +4,7 @@
 #include "imagetransfersocket.h"
 #include "transferinterface.h"
 
-TransferSocketThread::TransferSocketThread(TransferInterface *pInterface, SocketType type, 
+TransferSocketThread::TransferSocketThread(TransferInterface *pInterface, Utilities::SocketType type, 
     QString strIPAdress, QObject *parent)
     : QThread(parent),
     m_eSocketType(type),
@@ -26,9 +26,9 @@ void TransferSocketThread::run()
     createTransferSocket(m_eSocketType);
 }
 
-void TransferSocketThread::createTransferSocket(SocketType type)
+void TransferSocketThread::createTransferSocket(Utilities::SocketType type)
 {
-    if (m_eSocketType == SocketType::Color)
+    if (m_eSocketType == Utilities::SocketType::Color)
     {
         m_pTransferSocket = new ImageTransferSocket { m_strIPAdress };
         m_pTransferSocket->registerGUIClass(m_pTransferInterface);
@@ -36,7 +36,7 @@ void TransferSocketThread::createTransferSocket(SocketType type)
         connect(this, &TransferSocketThread::finished, m_pTransferSocket, &ImageTransferSocket::deleteLater);
         exec();
     }
-    else if (m_eSocketType == SocketType::Depth)
+    else if (m_eSocketType == Utilities::SocketType::Depth)
     {
         m_pTransferSocket = new ImageTransferSocket { m_strIPAdress };
         m_pTransferSocket->registerGUIClass(m_pTransferInterface);
@@ -44,7 +44,7 @@ void TransferSocketThread::createTransferSocket(SocketType type)
         connect(this, &TransferSocketThread::finished, m_pTransferSocket, &ImageTransferSocket::deleteLater);
         exec();
     }
-    else if (m_eSocketType == SocketType::Skele)
+    else if (m_eSocketType == Utilities::SocketType::Skele)
     {
         m_pTransferSocket = new FrameTransferSocket { m_strIPAdress };
         m_pTransferSocket->registerGUIClass(m_pTransferInterface);

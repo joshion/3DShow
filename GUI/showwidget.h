@@ -20,7 +20,7 @@ class ShowWidget : public QOpenGLWidget, public TransferInterface , protected QO
     Q_OBJECT
 
 public:
-    ShowWidget(QString title, ShowType type = ShowType::Color, QWidget *parent = 0);
+    ShowWidget(QString title, Utilities::ShowType type = Utilities::ShowType::Color, QWidget *parent = 0);
     ~ShowWidget();
 
 /*******************************************************************************************/
@@ -38,7 +38,7 @@ private:
 
 /********************************************************************************************/
 
-signals: void signal_getLocalPort(unsigned int uPort) override;
+signals: void signal_getLocalPort(Utilities::SocketType type,unsigned int uPort) override;
 signals: void signal_connectedToServer() override;
 
 protected:
@@ -55,14 +55,14 @@ signals:
 
 private slots :
     void slot_update();
-    void slot_getSocketLocalPort(unsigned int uPort);
+    void slot_getSocketLocalPort(Utilities::SocketType type, unsigned int uPort);
     void slot_connectedToServer();
 
 private:
     QString m_strTitle;
-    ShowType m_eShowType;
+    Utilities::ShowType m_eShowType;
     bool m_bFirstTime;
     float m_fAspectRatio;
-    QMap<ShowType, TransferSocketThread* > m_Type_Socket;
+    QMap<Utilities::ShowType, TransferSocketThread* > m_Type_Socket;
 
 };

@@ -21,12 +21,12 @@ TransferInterfaceManager::~TransferInterfaceManager()
 {
 }
 
-void TransferInterfaceManager::signal_getLocalPort(unsigned int uPort)
+void TransferInterfaceManager::signal_getLocalPort(Utilities::SocketType type, unsigned int uPort)
 {
     for (auto a : m_Interfaces)
     {
         assert(a);
-        a->signal_getLocalPort(uPort);
+        a->signal_getLocalPort(type, uPort);
     }
 }
 
