@@ -1,8 +1,10 @@
 #pragma once
 
 #include "utilities.h"
-#include <QMdiArea>
+#include "KinectDataProto.pb.h"
+
 #include <QMap>
+#include <QMdiArea>
 
 class QMenu;
 class ShowWidget;
@@ -23,6 +25,8 @@ private:
     * 此处要求程序保证每个窗口名字不同 
     */
     QMap<QString, ShowWidget*> m_Title_Widget;
+
+signals: void signal_sendPortsToOrderSocket(KinectDataProto::pbReqStart protoReqStart);
 
 /***********************************************************************************/
 /*GUI内部的通信*/

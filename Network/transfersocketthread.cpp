@@ -30,7 +30,7 @@ void TransferSocketThread::createTransferSocket(Utilities::SocketType type)
 {
     if (m_eSocketType == Utilities::SocketType::Color)
     {
-        m_pTransferSocket = new ImageTransferSocket { m_strIPAdress };
+        m_pTransferSocket = new ImageTransferSocket { m_strIPAdress, type };
         m_pTransferSocket->registerGUIClass(m_pTransferInterface);
         m_pTransferSocket->bindRandomPort();
         connect(this, &TransferSocketThread::finished, m_pTransferSocket, &ImageTransferSocket::deleteLater);
@@ -38,7 +38,7 @@ void TransferSocketThread::createTransferSocket(Utilities::SocketType type)
     }
     else if (m_eSocketType == Utilities::SocketType::Depth)
     {
-        m_pTransferSocket = new ImageTransferSocket { m_strIPAdress };
+        m_pTransferSocket = new ImageTransferSocket { m_strIPAdress, type };
         m_pTransferSocket->registerGUIClass(m_pTransferInterface);
         m_pTransferSocket->bindRandomPort();
         connect(this, &TransferSocketThread::finished, m_pTransferSocket, &ImageTransferSocket::deleteLater);
@@ -46,7 +46,7 @@ void TransferSocketThread::createTransferSocket(Utilities::SocketType type)
     }
     else if (m_eSocketType == Utilities::SocketType::Skele)
     {
-        m_pTransferSocket = new FrameTransferSocket { m_strIPAdress };
+        m_pTransferSocket = new FrameTransferSocket { m_strIPAdress, type };
         m_pTransferSocket->registerGUIClass(m_pTransferInterface);
         m_pTransferSocket->bindRandomPort();
         connect(this, &TransferSocketThread::finished, m_pTransferSocket, &ImageTransferSocket::deleteLater);

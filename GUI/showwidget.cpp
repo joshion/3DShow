@@ -15,15 +15,22 @@ ShowWidget::ShowWidget(QString title, Utilities::ShowType type, QWidget *parent)
     m_pColorPainter(nullptr),
     m_pDepthPainter(nullptr),
     m_pSkelePainter(nullptr),
-    m_pTimer(nullptr)
+    m_pTimer(nullptr),
+    m_UnCreatedPortsCount(0)
 {
     this->setWindowTitle(m_strTitle);
     this->setMinimumSize(320, 240);
 
     createTransferSocketThreads();
 
+    m_protoReqStart.set_devicename(m_strTitle.toStdString());
+    m_protoReqStart.set_colorport(-1);
+    m_protoReqStart.set_depthport(-1);
+    m_protoReqStart.set_skeleport(-1);
+
     connect(this, &ShowWidget::signal_getLocalPort, this, &ShowWidget::slot_getSocketLocalPort);
     connect(this, &ShowWidget::signal_connectedToServer, this, &ShowWidget::slot_connectedToServer);
+
 }
 
 ShowWidget::~ShowWidget()
@@ -124,18 +131,21 @@ void ShowWidget::createTransferSocketThreads()
     {
         TransferSocketThread *p = new TransferSocketThread(this, Utilities::SocketType::Color);
         m_Type_Socket.insert(Utilities::ShowType::Color, p);
+        ++m_UnCreatedPortsCount;
     }
 
     if (m_eShowType & Utilities::ShowType::Depth)
     {
         TransferSocketThread *p = new TransferSocketThread(this, Utilities::SocketType::Depth);
         m_Type_Socket.insert(Utilities::ShowType::Depth, p);
+        ++m_UnCreatedPortsCount;
     }
 
     if (m_eShowType & Utilities::ShowType::Skele)
     {
         TransferSocketThread *p = new TransferSocketThread(this, Utilities::SocketType::Skele);
         m_Type_Socket.insert(Utilities::ShowType::Skele, p);
+        ++m_UnCreatedPortsCount;
     }
 }
 
@@ -176,6 +186,24 @@ void ShowWidget::updateSkele()
 
 void ShowWidget::slot_getSocketLocalPort(Utilities::SocketType type, unsigned int uPort)
 {
+    if (Utilities::SocketType::Color == type)
+    {
+        m_protoReqStart.set_colorport(uPort);
+    }
+    else if (Utilities::SocketType::Depth == type)
+    {
+        m_protoReqStart.set_depthport(uPort);
+    }
+    else if (Utilities::SocketType::Skele == type)
+    {
+        m_protoReqStart.set_skeleport(uPort);
+    }
+    --m_UnCreatedPortsCount;
+
+    if (m_UnCreatedPortsCount <= 0)
+    {
+        emit signal_sendPortsToOrderSocket(m_protoReqStart);
+    }
     qDebug() << uPort;
 }
 

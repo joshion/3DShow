@@ -6,6 +6,8 @@
 #include "imagepainter.h"
 #include "transferinterface.h"
 
+#include "KinectDataProto.pb.h"
+
 #include <QMap>
 #include <QOpenGLWidget>
 #include <QOpenGLContext>
@@ -50,8 +52,9 @@ private:
     void updateDepth();
     void updateSkele();
     void firstTimeShow();
-signals:
-    void signal_closed(const QString &strWindowTitle);
+
+signals: void signal_closed(const QString &strWindowTitle);
+signals: void signal_sendPortsToOrderSocket(KinectDataProto::pbReqStart protoReqStart);
 
 private slots :
     void slot_update();
@@ -65,4 +68,6 @@ private:
     float m_fAspectRatio;
     QMap<Utilities::ShowType, TransferSocketThread* > m_Type_Socket;
 
+    int m_UnCreatedPortsCount;
+    KinectDataProto::pbReqStart m_protoReqStart;
 };

@@ -7,7 +7,7 @@ class ImageTransferSocket : public TransferSocket
     Q_OBJECT
 
 public:
-    ImageTransferSocket(QString strIPAdress = "127.0.0.1");
+    ImageTransferSocket(QString strIPAdress, Utilities::SocketType type);
     ~ImageTransferSocket();
 
 protected:

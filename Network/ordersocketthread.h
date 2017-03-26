@@ -1,5 +1,6 @@
 #pragma once
 
+#include "KinectDataProto.pb.h"
 #include "singleton.h"
 #include <QThread>
 
@@ -38,5 +39,7 @@ signals: void signal_exitConnect();
 signals: void signal_requireDevices();
 signals: void signal_startRequire(QString deviceName, unsigned int dataType);
 signals: void signal_endConnect();
+
+signals: void signal_sendPortsToOrderSocket(KinectDataProto::pbReqStart protoReqStart);
 /***********************************************************************************/
 };

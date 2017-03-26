@@ -50,7 +50,7 @@ void DevicesWidget::slot_startRequireRgb()
     if (m_pLastClickedItem)
     {
         QString strWindowTitle = m_pLastClickedItem->text();
-        emit signal_createShowWidget(strWindowTitle + "_RGB", Utilities::ShowType::Color_Depth_Color);
+        emit signal_createShowWidget(strWindowTitle, Utilities::ShowType::Color_Depth_Color);
     }
 }
 
@@ -59,7 +59,7 @@ void DevicesWidget::slot_startRequireDepth()
     if (m_pLastClickedItem)
     {
         QString strWindowTitle = m_pLastClickedItem->text();
-        emit signal_createShowWidget(strWindowTitle + "_Depth", Utilities::ShowType::Depth);
+        emit signal_createShowWidget(strWindowTitle, Utilities::ShowType::Depth);
     }
 }
 
@@ -68,7 +68,7 @@ void DevicesWidget::slot_startRequireSkeleton()
     if (m_pLastClickedItem)
     {
         QString strWindowTitle = m_pLastClickedItem->text();
-        emit signal_createShowWidget(strWindowTitle + "_Skeleton", Utilities::ShowType::Skele);
+        emit signal_createShowWidget(strWindowTitle, Utilities::ShowType::Skele);
     }
 }
 

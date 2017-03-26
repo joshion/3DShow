@@ -2,7 +2,6 @@
 #define UTILITIES_H
 
 #pragma once
-#include <QMetaType>
 
 class QString;
 

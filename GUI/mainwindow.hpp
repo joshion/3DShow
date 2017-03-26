@@ -2,9 +2,10 @@
 
 #include "orderinterface.hpp"
 
+#include "KinectDataProto.pb.h"
+
 #include "ui_mainwindow.h"
 #include <QWidget>
-#include <QMap>
 
 class MainWindow : public QWidget ,public OrderInterface
 {
@@ -18,6 +19,7 @@ private:
 
 /***********************************************************************************/
 /*GUI内部的通信*/
+signals: void signal_sendPortsToOrderSocket(KinectDataProto::pbReqStart protoReqStart);
 
 /***********************************************************************************/
 

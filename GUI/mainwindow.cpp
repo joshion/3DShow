@@ -21,6 +21,9 @@ MainWindow::MainWindow(QWidget * parent)
     /* 从 设备列表窗口 发送到 多窗口显示窗口 的消息 */
     connect(ui.m_DevicesWidget, &DevicesWidget::signal_createShowWidget,
         ui.m_MultiShowArea, &MultiShowArea::slot_showSubWidget);
+
+    connect(ui.m_MultiShowArea, &MultiShowArea::signal_sendPortsToOrderSocket,
+        this, &MainWindow::signal_sendPortsToOrderSocket);
 }
 
 MainWindow::~MainWindow()

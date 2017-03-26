@@ -9,6 +9,7 @@ c.断开链接
 需要先调用registerGUIClass()后才可以调用start()以开启线程读取缓存
 */
 
+#include "KinectDataProto.pb.h"
 #include <QTcpSocket>
 class OrderInterface;
 class OrderFrameBuffer;
@@ -59,6 +60,7 @@ public slots:
     bool slot_requireDevices();
     bool slot_startRequire(QString deviceName, unsigned int dataType);
     bool slot_endConnect();
+    bool slot_getPortsFromGUI(KinectDataProto::pbReqStart protoReqStart);
 /***********************************************************************************/
 
 /***********************************************************************************/

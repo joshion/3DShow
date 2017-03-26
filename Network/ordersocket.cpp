@@ -154,6 +154,16 @@ bool OrderSocket::slot_endConnect()
     return this->writeBufferToServer();
 }
 
+bool OrderSocket::slot_getPortsFromGUI(KinectDataProto::pbReqStart protoReqStart)
+{
+    m_pSendFrameBuffer->setCmdType(KINECT_PROTOCOL);
+    m_pSendFrameBuffer->setCmdNum(START_REQUIRE);
+
+    m_pSendFrameBuffer->setData(protoReqStart);
+    qDebug() << "enter start require";
+    return this->writeBufferToServer();
+}
+
 void OrderSocket::analysisReceiveByteArrayBuffer()
 {
     /*
