@@ -44,7 +44,7 @@ void MultiShowArea::slot_showSubWidget(QString strWindowTile, Utilities::ShowTyp
         p->showMaximized();
         connect(p, &ShowWidget::signal_closed, this, &MultiShowArea::slot_removeSubWidget);
 
-        connect(p, &ShowWidget::signal_sendPortsToOrderSocket, this, &MultiShowArea::signal_sendPortsToOrderSocket);
+        connect(p, &ShowWidget::signal_sendBoundPortsToOrderSocket, this, &MultiShowArea::signal_sendBoundPortsToOrderSocket);
 
         m_Title_Widget.insert(strWindowTile, p);
         p = nullptr;

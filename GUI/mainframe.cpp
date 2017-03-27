@@ -17,8 +17,8 @@ MainFrame::MainFrame(QObject * parent)
     connect(m_pMainWindow, &MainWindow::signal_requireDevices,
         m_pOrderSocketThread, &OrderSocketThread::signal_requireDevices, Qt::QueuedConnection);
 
-    connect(m_pMainWindow, &MainWindow::signal_sendPortsToOrderSocket,
-        m_pOrderSocketThread, &OrderSocketThread::signal_sendPortsToOrderSocket, Qt::QueuedConnection);
+    connect(m_pMainWindow, &MainWindow::signal_sendBoundPortsToOrderSocket,
+        m_pOrderSocketThread, &OrderSocketThread::signal_sendBoundPortsToOrderSocket, Qt::QueuedConnection);
     //connect(m_pMainWindow, &MainWindow::signal_startRequire,
     //    m_pOrderSocketThread, &OrderSocketThread::signal_startRequire, Qt::QueuedConnection);
     //connect(m_pMainWindow, &MainWindow::signal_endConnect,

@@ -60,7 +60,7 @@ public slots:
     bool slot_requireDevices();
     bool slot_startRequire(QString deviceName, unsigned int dataType);
     bool slot_endConnect();
-    bool slot_getPortsFromGUI(KinectDataProto::pbReqStart protoReqStart);
+    bool slot_sendReqStartDataToServer(KinectDataProto::pbReqStart protoReqStart);
 /***********************************************************************************/
 
 /***********************************************************************************/

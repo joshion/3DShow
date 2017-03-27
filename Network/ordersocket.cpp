@@ -154,7 +154,7 @@ bool OrderSocket::slot_endConnect()
     return this->writeBufferToServer();
 }
 
-bool OrderSocket::slot_getPortsFromGUI(KinectDataProto::pbReqStart protoReqStart)
+bool OrderSocket::slot_sendReqStartDataToServer(KinectDataProto::pbReqStart protoReqStart)
 {
     m_pSendFrameBuffer->setCmdType(KINECT_PROTOCOL);
     m_pSendFrameBuffer->setCmdNum(START_REQUIRE);
@@ -251,24 +251,19 @@ void OrderSocket::analysisReceiveFrameBuffer(const OrderFrameBuffer & buffer)
         {
         case RESP_START_REQUIRE:
         {
-            KinectDataProto::pbReqStart req;
-            req.ParseFromArray(buffer.data(), buffer.length());
-            req.PrintDebugString();
-            if (m_pGUI)
-            {
-                m_pGUI->signal_respStartRequire();
-            }
-        }
-        break;
-        case SERVER_REQUIRE_END_CONNECT:
-        {
             KinectDataProto::pbRespStart resp;
             resp.ParseFromArray(buffer.data(), buffer.length());
             resp.PrintDebugString();
             if (m_pGUI)
             {
-                m_pGUI->signal_reqEndConnect();
+                m_pGUI->signal_respStartRequire(resp);
             }
+
+        }
+        break;
+        case SERVER_REQUIRE_END_CONNECT:
+        {
+
         }
         break;
         default:

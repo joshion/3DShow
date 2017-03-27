@@ -19,7 +19,7 @@ private:
 
 /***********************************************************************************/
 /*GUI内部的通信*/
-signals: void signal_sendPortsToOrderSocket(KinectDataProto::pbReqStart protoReqStart);
+signals: void signal_sendBoundPortsToOrderSocket(KinectDataProto::pbReqStart protoReqStart);
 
 /***********************************************************************************/
 
@@ -27,7 +27,7 @@ signals: void signal_sendPortsToOrderSocket(KinectDataProto::pbReqStart protoReq
 /*底层C++与本GUI类通信所用接口*/
 signals: void signal_respConnect() override;
 signals: void signal_respDevices(const QStringList& devicesList) override;
-signals: void signal_respStartRequire() override;
+signals: void signal_respStartRequire(KinectDataProto::pbRespStart protoRespStart) override;
 signals: void signal_reqEndConnect() override;
 
 public slots:

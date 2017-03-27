@@ -37,8 +37,8 @@ void OrderSocketThread::run()
     connect(this, &OrderSocketThread::signal_endConnect,
         m_pOrderSocket, &OrderSocket::slot_endConnect, Qt::QueuedConnection);
 
-    connect(this, &OrderSocketThread::signal_sendPortsToOrderSocket,
-        m_pOrderSocket, &OrderSocket::slot_getPortsFromGUI, Qt::QueuedConnection);
+    connect(this, &OrderSocketThread::signal_sendBoundPortsToOrderSocket,
+        m_pOrderSocket, &OrderSocket::slot_sendReqStartDataToServer, Qt::QueuedConnection);
 
     exec();
 }

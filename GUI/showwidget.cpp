@@ -202,7 +202,7 @@ void ShowWidget::slot_getSocketLocalPort(Utilities::SocketType type, unsigned in
 
     if (m_UnCreatedPortsCount <= 0)
     {
-        emit signal_sendPortsToOrderSocket(m_protoReqStart);
+        emit signal_sendBoundPortsToOrderSocket(m_protoReqStart);
     }
     qDebug() << uPort;
 }

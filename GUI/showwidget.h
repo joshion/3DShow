@@ -54,7 +54,7 @@ private:
     void firstTimeShow();
 
 signals: void signal_closed(const QString &strWindowTitle);
-signals: void signal_sendPortsToOrderSocket(KinectDataProto::pbReqStart protoReqStart);
+signals: void signal_sendBoundPortsToOrderSocket(KinectDataProto::pbReqStart protoReqStart);
 
 private slots :
     void slot_update();

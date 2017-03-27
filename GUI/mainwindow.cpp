@@ -14,7 +14,7 @@ MainWindow::MainWindow(QWidget * parent)
 
     /* 从 底层服务orderSocket 发回到 主窗口 的消息 */
     connect(this, &MainWindow::signal_respConnect, this, &MainWindow::slot_respConnect);
-    connect(this, &MainWindow::signal_respStartRequire, this, &MainWindow::slot_respStartRequire);
+    connect(this, &MainWindow::signal_respStartRequire, ui.m_MultiShowArea, &MultiShowArea::signal_respStartRequire);
     connect(this, &MainWindow::signal_reqEndConnect, this, &MainWindow::slot_reqEndConnect);
     connect(this, &MainWindow::signal_respDevices, ui.m_DevicesWidget, &DevicesWidget::slot_setDevices);
 
@@ -22,8 +22,8 @@ MainWindow::MainWindow(QWidget * parent)
     connect(ui.m_DevicesWidget, &DevicesWidget::signal_createShowWidget,
         ui.m_MultiShowArea, &MultiShowArea::slot_showSubWidget);
 
-    connect(ui.m_MultiShowArea, &MultiShowArea::signal_sendPortsToOrderSocket,
-        this, &MainWindow::signal_sendPortsToOrderSocket);
+    connect(ui.m_MultiShowArea, &MultiShowArea::signal_sendBoundPortsToOrderSocket,
+        this, &MainWindow::signal_sendBoundPortsToOrderSocket);
 }
 
 MainWindow::~MainWindow()
