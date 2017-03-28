@@ -37,7 +37,6 @@ private:
 signals: void signal_requireConnect();
 signals: void signal_exitConnect();
 signals: void signal_requireDevices();
-signals: void signal_startRequire(QString deviceName, unsigned int dataType);
 signals: void signal_endConnect();
 
 signals: void signal_sendBoundPortsToOrderSocket(KinectDataProto::pbReqStart protoReqStart);

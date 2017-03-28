@@ -58,9 +58,8 @@ public slots:
     bool slot_requireConnect();
     bool slot_exitConnect();
     bool slot_requireDevices();
-    bool slot_startRequire(QString deviceName, unsigned int dataType);
+    bool slot_startRequire(KinectDataProto::pbReqStart protoReqStart);
     bool slot_endConnect();
-    bool slot_sendReqStartDataToServer(KinectDataProto::pbReqStart protoReqStart);
 /***********************************************************************************/
 
 /***********************************************************************************/

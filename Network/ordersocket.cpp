@@ -130,21 +130,6 @@ bool OrderSocket::slot_requireDevices()
     return this->writeBufferToServer();
 }
 
-bool OrderSocket::slot_startRequire(QString deviceName, unsigned int dataType)
-{
-    m_pSendFrameBuffer->setCmdType(2);
-    m_pSendFrameBuffer->setCmdNum(1);
-    KinectDataProto::pbReqStart req {};
-    req.set_devicename(deviceName.toStdString());
-    req.set_colorport(-1);
-    req.set_depthport(-1);
-    req.set_skeleport(-1);
-
-    m_pSendFrameBuffer->setData(req);
-    qDebug() << "enter start require";
-    return this->writeBufferToServer();
-}
-
 bool OrderSocket::slot_endConnect()
 {
     m_pSendFrameBuffer->setCmdType(2);
@@ -154,7 +139,7 @@ bool OrderSocket::slot_endConnect()
     return this->writeBufferToServer();
 }
 
-bool OrderSocket::slot_sendReqStartDataToServer(KinectDataProto::pbReqStart protoReqStart)
+bool OrderSocket::slot_startRequire(KinectDataProto::pbReqStart protoReqStart)
 {
     m_pSendFrameBuffer->setCmdType(KINECT_PROTOCOL);
     m_pSendFrameBuffer->setCmdNum(START_REQUIRE);
