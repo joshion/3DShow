@@ -13,6 +13,7 @@ mat4 genRotateMatrix(float degree, vec4 axis);
 void main(void)
 {
     gl_Position = projection_matrix * vertex * view_matrix;
+	gl_PointSize = 20.0;
     v_Color = color;
 }
 

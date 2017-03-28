@@ -69,8 +69,18 @@ void ShowWidget::initializeGL()
     /* 0. 初始化函数，使得函数可以使用 */
     initializeOpenGLFunctions();
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+
     glEnable(GL_BLEND);
+    // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
     glEnable(GL_LINE_SMOOTH);
+    glHint(GL_LINE_SMOOTH, GL_NICEST);
+    glEnable(GL_POINT_SMOOTH);
+    glHint(GL_POINT_SMOOTH, GL_NICEST);
+
+    //glEnable(GL_MULTISAMPLE);
+
+    glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
 
     /* 只有在第一次show之后才会调用initializeGL(), 所以画图对象在此处创建 */
     m_pColorPainter = new ImagePainter;

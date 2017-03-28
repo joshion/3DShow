@@ -11,6 +11,10 @@ public:
     bool buildShaderProgram(const QString &strVertFile, const QString& strFragFile) override;
     void paint() override;
 
+public:
+    void loadFrame();
+
 private:
-    
+    GLuint m_VertexArraysObject[1];
+    GLuint m_PointsBuffer[1];
 };
