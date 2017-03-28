@@ -12,6 +12,8 @@ namespace
 
 FramePainter::FramePainter()
 {
+    m_pTriangleVertices = new QVector4D[6];
+    m_pColor = new QVector4D[6];
 }
 
 FramePainter::~FramePainter()
@@ -19,6 +21,9 @@ FramePainter::~FramePainter()
     m_Program.bind();
     m_Program.disableAttributeArray(VERTEX_LOCATION);
     m_Program.disableAttributeArray(COLOR_LOCATION);
+
+    delete[] m_pTriangleVertices;
+    delete[] m_pColor;
 }
 
 bool FramePainter::buildShaderProgram(const QString & strVertFile, const QString & strFragFile)
@@ -72,36 +77,31 @@ void FramePainter::loadFrame()
     glBindVertexArray(m_VertexArraysObject[0]);
     glBindBuffer(GL_ARRAY_BUFFER, m_PointsBuffer[0]);
 
-    GLfloat *triangleVertices = new GLfloat[12];
-    GLfloat *color = new GLfloat[12];
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_real_distribution<double> dis(-1.0, 1.0);
-    for (int i = 0; i < 3; ++i)
+    for (int i = 0; i < 2; ++i)
     {
-        triangleVertices[i * 4 + 0] = dis(gen);
-        triangleVertices[i * 4 + 1] = dis(gen);
-        triangleVertices[i * 4 + 2] = -0.31;
-        triangleVertices[i * 4 + 3] = 1.0;
+        m_pTriangleVertices[i * 3 + 0] = QVector4D(dis(gen), dis(gen), -0.31, 1.0);
+        m_pTriangleVertices[i * 3 + 1] = QVector4D(dis(gen), dis(gen), -0.31, 1.0);
+        m_pTriangleVertices[i * 3 + 2] = QVector4D(dis(gen), dis(gen), -0.31, 1.0);
     }
 
-    for (int i = 0; i < 3; ++i)
+    for (int i = 0; i < 2; ++i)
     {
-        color[i * 4 + 0] = 0.0f;
-        color[i * 4 + 1] = 0.8f;
-        color[i * 4 + 2] = 0.8f;
-        color[i * 4 + 3] = 0.0f;
+        m_pColor[i * 3 + 0] = QVector4D(0.8, 0.0, 0.0, 1.0);
+        m_pColor[i * 3 + 1] = QVector4D(0.8, 0.0, 0.0, 1.0);
+        m_pColor[i * 3 + 2] = QVector4D(0.8, 0.0, 0.0, 1.0);
     }
 
-    int i = sizeof(triangleVertices) + sizeof(color);
-    glBufferData(GL_ARRAY_BUFFER, 12 * (sizeof(triangleVertices) + sizeof(color)), nullptr, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, 12 * sizeof(QVector4D), nullptr, GL_STATIC_DRAW);
 
-    glBufferSubData(GL_ARRAY_BUFFER, 0, 12 * sizeof(triangleVertices), triangleVertices);
-    glBufferSubData(GL_ARRAY_BUFFER, 12 * sizeof(triangleVertices), 12 * sizeof(color), color);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, 6 * sizeof(QVector4D), m_pTriangleVertices);
+    glBufferSubData(GL_ARRAY_BUFFER, 6 * sizeof(QVector4D), 6 * sizeof(QVector4D), m_pColor);
 
     glVertexAttribPointer(VERTEX_LOCATION, 4, GL_FLOAT, GL_FALSE, 0, nullptr);
     glVertexAttribPointer(COLOR_LOCATION, 4, GL_FLOAT, GL_FALSE,
-        sizeof(triangleVertices), (const GLvoid *) (12 * sizeof(triangleVertices)));
+        sizeof(m_pTriangleVertices), (const GLvoid *) (6 * sizeof(QVector4D)));
 
     // glBindBuffer(GL_ARRAY_BUFFER, 0);
     // glBindVertexArray(0);

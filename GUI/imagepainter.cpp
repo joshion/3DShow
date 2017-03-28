@@ -10,7 +10,21 @@ namespace
 
 ImagePainter::ImagePainter()
 {
+    m_pTriangleVertices = new QVector4D[4];
+    {
+        m_pTriangleVertices[0] = QVector4D(-1.0, -1.0, -0.31, 1.0);
+        m_pTriangleVertices[1] = QVector4D(1.0, -1.0, -0.31, 1.0);
+        m_pTriangleVertices[2] = QVector4D(1.0, 1.0, -0.31, 1.0);
+        m_pTriangleVertices[3] = QVector4D(-1.0, 1.0, -0.31, 1.0);
+    }
 
+    m_pCoord = new QVector2D[4];
+    {
+        m_pCoord[0] = QVector2D(0.0, 1.0);
+        m_pCoord[1] = QVector2D(1.0, 1.0);
+        m_pCoord[2] = QVector2D(1.0, 0.0);
+        m_pCoord[3] = QVector2D(0.0, 0.0);
+    }
 }
 
 ImagePainter::~ImagePainter()
@@ -20,6 +34,9 @@ ImagePainter::~ImagePainter()
     m_Program.disableAttributeArray(COORD_LOCATION);
     glBindTexture(GL_TEXTURE_2D, 0);
     glDeleteTextures(1, m_Textures);
+
+    delete[] m_pTriangleVertices;
+    delete[] m_pCoord;
 }
 
 bool ImagePainter::buildShaderProgram(const QString & strVertFile, const QString & strFragFile)
@@ -46,31 +63,11 @@ void ImagePainter::paint()
 {
     m_Program.bind();
 
-    QVector4D *triangleVertices;
-    QVector4D *color;
-    triangleVertices = new QVector4D[4];
-    color = new QVector4D[4];
-
-    {
-        triangleVertices[0] = QVector4D(-1.0, -1.0, -0.31, 1.0);
-        triangleVertices[1] = QVector4D(1.0, -1.0, -0.31, 1.0);
-        triangleVertices[2] = QVector4D(1.0, 1.0, -0.31, 1.0);
-        triangleVertices[3] = QVector4D(-1.0, 1.0, -0.31, 1.0);
-    }
-
-    QVector2D *coord = new QVector2D[4];
-    {
-        coord[0] = QVector2D(0.0, 1.0);
-        coord[1] = QVector2D(1.0, 1.0);
-        coord[2] = QVector2D(1.0, 0.0);
-        coord[3] = QVector2D(0.0, 0.0);
-    }
-
     m_Program.enableAttributeArray(VERTEX_LOCATION);
-    m_Program.setAttributeArray(VERTEX_LOCATION, triangleVertices);
+    m_Program.setAttributeArray(VERTEX_LOCATION, m_pTriangleVertices);
 
     m_Program.enableAttributeArray(COORD_LOCATION);
-    m_Program.setAttributeArray(COORD_LOCATION, coord);
+    m_Program.setAttributeArray(COORD_LOCATION, m_pCoord);
 
     glBindTexture(GL_TEXTURE_2D, m_Textures[0]);
     // glClear(GL_COLOR_BUFFER_BIT);

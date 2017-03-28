@@ -19,6 +19,7 @@ public:
     void loadTexture(cv::Mat &mat);
 
 private:
+    QVector4D *m_pTriangleVertices;
+    QVector2D *m_pCoord;
     GLuint m_Textures[1];
-    
 };

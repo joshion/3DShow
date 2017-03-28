@@ -17,4 +17,7 @@ public:
 private:
     GLuint m_VertexArraysObject[1];
     GLuint m_PointsBuffer[1];
+
+    QVector4D *m_pTriangleVertices;
+    QVector4D *m_pColor;
 };
