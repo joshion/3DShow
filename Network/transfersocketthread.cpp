@@ -4,10 +4,13 @@
 #include "imagetransfersocket.h"
 #include "transferinterface.h"
 
-TransferSocketThread::TransferSocketThread(TransferInterface *pInterface, Utilities::SocketType type, 
-    QString strIPAdress, QObject *parent)
+TransferSocketThread::TransferSocketThread(QString deviceName, QString guid, Utilities::SocketType type,
+    unsigned int port, QString strIPAdress, TransferInterface *pInterface, QObject *parent)
     : QThread(parent),
+    m_strDeviceName(deviceName),
+    m_strGuid(guid),
     m_eSocketType(type),
+    m_uPort(port),
     m_strIPAdress(strIPAdress),
     m_pTransferInterface(pInterface),
     m_pTransferSocket(nullptr)
@@ -28,26 +31,21 @@ void TransferSocketThread::run()
 
 void TransferSocketThread::createTransferSocket(Utilities::SocketType type)
 {
-    if (m_eSocketType == Utilities::SocketType::Color)
+    if (type == Utilities::SocketType::Color)
     {
-        m_pTransferSocket = new ImageTransferSocket { m_strIPAdress, type };
-        m_pTransferSocket->registerGUIClass(m_pTransferInterface);
-        connect(this, &TransferSocketThread::finished, m_pTransferSocket, &ImageTransferSocket::deleteLater);
-        exec();
+        m_pTransferSocket = new ImageTransferSocket { m_strDeviceName, m_strGuid, type };
     }
-    else if (m_eSocketType == Utilities::SocketType::Depth)
+    else if (type == Utilities::SocketType::Depth)
     {
-        m_pTransferSocket = new ImageTransferSocket { m_strIPAdress, type };
-        m_pTransferSocket->registerGUIClass(m_pTransferInterface);
-        connect(this, &TransferSocketThread::finished, m_pTransferSocket, &ImageTransferSocket::deleteLater);
-        exec();
+        m_pTransferSocket = new ImageTransferSocket { m_strDeviceName, m_strGuid, type };
     }
-    else if (m_eSocketType == Utilities::SocketType::Skele)
+    else if (type == Utilities::SocketType::Skele)
     {
-        m_pTransferSocket = new FrameTransferSocket { m_strIPAdress, type };
-        m_pTransferSocket->registerGUIClass(m_pTransferInterface);
-        connect(this, &TransferSocketThread::finished, m_pTransferSocket, &ImageTransferSocket::deleteLater);
-        exec();
+        m_pTransferSocket = new FrameTransferSocket { m_strDeviceName, m_strGuid, type };
     }
+    m_pTransferSocket->registerGUIClass(m_pTransferInterface);
+    m_pTransferSocket->connectToServer(m_uPort);
+    connect(this, &TransferSocketThread::finished, m_pTransferSocket, &ImageTransferSocket::deleteLater);
+    exec();
 }
 

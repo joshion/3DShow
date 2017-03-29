@@ -105,15 +105,15 @@ bool OrderSocket::slot_requireConnect()
     if (!m_bConnected)
     {
         connectToHost(m_strIPAdress, m_uPort);
-        m_pSendFrameBuffer->setCmdType(CONNECT_PROTOCOL);
-        m_pSendFrameBuffer->setCmdNum(REQUIRE_CONNECT);
-        m_pSendFrameBuffer->setData(nullptr, 0);
 
         /*
         * 给予socket一定时间进行建立连接
         * 等待一秒后,再向服务器发送申请连接信息
         */
         QTimer::singleShot(1000, [&] {
+            m_pSendFrameBuffer->setCmdType(CONNECT_PROTOCOL);
+            m_pSendFrameBuffer->setCmdNum(REQUIRE_CONNECT);
+            m_pSendFrameBuffer->setData(nullptr, 0);
             writeBufferToServer();
         });
     }
@@ -269,7 +269,7 @@ void OrderSocket::analysisReceiveFrameBuffer(const OrderFrameBuffer & buffer)
             resp.PrintDebugString();
             if (m_pGUI)
             {
-                m_pGUI->signal_respStartRequire(resp);
+                m_pGUI->signal_respStart(resp);
             }
 
         }

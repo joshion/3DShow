@@ -29,22 +29,25 @@ private:
 private:
     KinectDataProto::pbReqStart m_ReqStart;
 private:
-    void informServerToStartTransfer(const QString &strWindowTile, Utilities::ShowType type);
+    void informServerToReturnTransferPorts(const QString &strWindowTile, Utilities::ShowType type);
 
-signals:
-    void signal_reqStart(KinectDataProto::pbReqStart reqStart);
-/*  从orderSocket返回的信号 */
-signals: void signal_respStartRequire(KinectDataProto::pbRespStart protoRespStart);
+/* 发送到orderSocket的信号 */
+signals: void signal_reqStart(KinectDataProto::pbReqStart reqStart);
 
 /***********************************************************************************/
 /*GUI内部的通信*/
 public slots:
     void slot_showSubWidget(QString strWindowTile, Utilities::ShowType type);
+    /*
+    * 处理从orderSocket返回的端口信息
+    * 通知对应的子窗口创建数据socket
+    * 并连接到服务器返回的端口,接收数据
+    */
+    void slot_startTransfer(KinectDataProto::pbRespStart respStart);
 
 private slots:
     void slot_customContextMenuRequested(QPoint point);
     void slot_removeSubWidget(QString title);
-
 /***********************************************************************************/
 
 };

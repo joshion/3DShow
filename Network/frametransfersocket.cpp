@@ -1,7 +1,7 @@
 #include "frametransfersocket.h"
 
-FrameTransferSocket::FrameTransferSocket(QString strIPAdress, Utilities::SocketType type)
-    : TransferSocket(strIPAdress, type)
+FrameTransferSocket::FrameTransferSocket(QString deviceName, QString guid, Utilities::SocketType type, QString strIPAdress)
+    : TransferSocket(deviceName, guid, type, strIPAdress)
 {
 
 }

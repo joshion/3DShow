@@ -1,4 +1,4 @@
-﻿#include "mainwindow.hpp"
+#include "mainwindow.hpp"
 
 #include "ordersocketthread.h"
 
@@ -28,7 +28,7 @@ MainWindow::MainWindow(QWidget * parent)
     connect(this, &MainWindow::signal_respConnect, this, &MainWindow::slot_respConnect);
     connect(this, &MainWindow::signal_respDevices, ui.m_DevicesWidget, &DevicesWidget::slot_setDevices);
     connect(this, &MainWindow::signal_reqEndConnect, this, &MainWindow::slot_reqEndConnect);    // 服务器端主动断开连接
-    connect(this, &MainWindow::signal_respStartRequire, ui.m_MultiShowArea, &MultiShowArea::signal_respStartRequire);
+    connect(this, &MainWindow::signal_respStart, ui.m_MultiShowArea, &MultiShowArea::slot_startTransfer);   // 服务器返回端口号
     connect(this, &MainWindow::signal_hasBeenConnected, this, &MainWindow::slot_hasBeenConnected);  // 控制socket已经连接
 
     /* 从 设备列表窗口 发送到 多窗口显示窗口 的消息 */

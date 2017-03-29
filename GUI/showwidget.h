@@ -43,22 +43,26 @@ private:
 
 /********************************************************************************************/
 
-signals: void signal_connectedToServer() override;
-
 protected:
     void closeEvent(QCloseEvent *event) override;
 
 private:
-    void createTransferSocketThreads();
     void updateColor();
     void updateDepth();
     void updateSkele();
     void firstTimeShow();
 
 signals: void signal_closed(const QString &strWindowTitle);
+signals: void signal_connectedToServer() override;
 
+public:
+    void createTransferSocketThreads(KinectDataProto::pbRespStart respStart);
 private slots :
     void slot_update();
+    /*
+    * 成功连接到服务器的数据传输端口
+    * 开始传输数据
+    */
     void slot_connectedToServer();
 
 private:

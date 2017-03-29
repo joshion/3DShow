@@ -2,6 +2,9 @@
 #include "transferinterface.h"
 #include "transferframebuffer.h"
 
+#include "orderframebuffer.h"
+#include "DataChannelProto.pb.h"
+
 #include <QByteArray>
 
 #include <qDebug>
@@ -9,22 +12,26 @@
 
 namespace
 {
-    static const unsigned int DATATYPE_RGB = 1;
-    static const unsigned int DATATYPE_DEPTH = 2;
-    static const unsigned int DATATYPE_SKELETON = 3;
+    static const unsigned int DATA_CHANNEL_PROTOCOL = 3;
+    static const unsigned int VALIDATE_PORT = 1;
 }
 
-TransferSocket::TransferSocket(QString strIPAdress, Utilities::SocketType type)
-    : m_strIPAdress(strIPAdress),
+TransferSocket::TransferSocket(QString deviceName, QString guid, Utilities::SocketType type,
+    QString strIPAdress)
+    : m_strDeviceName(deviceName),
+    m_strGuid(guid),
     m_eSocketType(type),
     m_uPort(0),
+    m_strIPAdress(strIPAdress),
     m_bConnected(false),
     m_bNotHasHead(true), 
     m_pReceiveFrameBuffer(nullptr)
 {
     m_receiveBuffer.clear();
+
     setSocketOption(QAbstractSocket::KeepAliveOption, 1);
     setSocketOption(QAbstractSocket::LowDelayOption, 1);
+
     connect(this, &TransferSocket::connected, this, &TransferSocket::slot_connected, Qt::QueuedConnection);
     connect(this, &TransferSocket::disconnected, this, &TransferSocket::slot_disConnected, Qt::QueuedConnection);
     connect(this, &TransferSocket::readyRead, this, &TransferSocket::slot_readDataFromServer, Qt::QueuedConnection);
@@ -42,14 +49,11 @@ TransferSocket::~TransferSocket()
     }
 }
 
-void TransferSocket::connectToServer(unsigned int uPort)
-{
-    m_uPort = uPort;
-    connectToHost(m_strIPAdress, m_uPort, QIODevice::ReadWrite);
-}
-
 void TransferSocket::slot_connected()
 {
+    /* 与服务器建立连接后, 发送设备名和GUID到服务器进行验证 */
+    validatePort();
+
     m_bConnected = true;
     if (m_pReceiveFrameBuffer == nullptr)
     {
@@ -63,6 +67,27 @@ void TransferSocket::slot_disConnected()
 {
     m_bConnected = false;
     this->stop(); // 停止并关闭解析线程
+}
+
+void TransferSocket::connectToServer(unsigned int port)
+{
+    m_uPort = port;
+    connectToHost(m_strIPAdress, m_uPort, QIODevice::ReadWrite);
+}
+
+void TransferSocket::validatePort()
+{
+    DataChannelProto::pbValidatePort pbValidatePort;
+    pbValidatePort.set_devicename(m_strDeviceName.toStdString());
+    pbValidatePort.set_guid(m_strGuid.toStdString());
+
+    OrderFrameBuffer orderBuffer;
+    orderBuffer.setCmdType(DATA_CHANNEL_PROTOCOL);
+    orderBuffer.setCmdNum(VALIDATE_PORT);
+    orderBuffer.setData(pbValidatePort);
+
+    QByteArray bytes = OrderFrameBuffer::toBytes(orderBuffer);
+    write(bytes);
 }
 
 void TransferSocket::run()

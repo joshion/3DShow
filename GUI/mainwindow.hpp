@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "KinectDataProto.pb.h"
 
@@ -29,7 +29,7 @@ signals: void signal_respConnect() override;
 signals: void signal_respDevices(const QStringList& devicesList) override;
 signals: void signal_reqEndConnect() override;
 
-signals: void signal_respStartRequire(KinectDataProto::pbRespStart protoRespStart) override;
+signals: void signal_respStart(KinectDataProto::pbRespStart protoRespStart) override;
 
 signals: void signal_hasBeenConnected() override;
 

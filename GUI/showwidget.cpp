@@ -6,6 +6,11 @@
 #include <QTimer>
 #include <QDebug>
 
+namespace
+{
+    static const QString IP_ADRESS = "127.0.0.1";
+}
+
 ShowWidget::ShowWidget(QString title, Utilities::ShowType type, QWidget *parent)
     : QOpenGLWidget(parent),
     m_strTitle(title),
@@ -19,8 +24,6 @@ ShowWidget::ShowWidget(QString title, Utilities::ShowType type, QWidget *parent)
 {
     this->setWindowTitle(m_strTitle);
     this->setMinimumSize(320, 240);
-
-    createTransferSocketThreads();
 
     connect(this, &ShowWidget::signal_connectedToServer, this, &ShowWidget::slot_connectedToServer);
 
@@ -139,24 +142,29 @@ void ShowWidget::closeEvent(QCloseEvent * event)
     emit signal_closed(m_strTitle);
 }
 
-void ShowWidget::createTransferSocketThreads()
+void ShowWidget::createTransferSocketThreads(KinectDataProto::pbRespStart respStart)
 {
+    QString strGuid = QString::fromStdString(respStart.guid());
+
     TransferSocketThread *pSocketThread = nullptr;
     if (m_eShowType & Utilities::ShowType::Color)
     {
-        pSocketThread = new TransferSocketThread(this, Utilities::SocketType::Color);
+        pSocketThread = new TransferSocketThread { m_strTitle, strGuid, Utilities::SocketType::Color,
+            static_cast<unsigned int>(respStart.colorport()), IP_ADRESS, this };
         m_Type_Socket.insert(Utilities::ShowType::Color, pSocketThread);
     }
 
     if (m_eShowType & Utilities::ShowType::Depth)
     {
-        pSocketThread = new TransferSocketThread(this, Utilities::SocketType::Depth);
+        pSocketThread = new TransferSocketThread { m_strTitle, strGuid, Utilities::SocketType::Depth,
+            static_cast<unsigned int>(respStart.depthport()), IP_ADRESS, this };
         m_Type_Socket.insert(Utilities::ShowType::Depth, pSocketThread);
     }
 
     if (m_eShowType & Utilities::ShowType::Skele)
     {
-        pSocketThread = new TransferSocketThread(this, Utilities::SocketType::Skele);
+        pSocketThread = new TransferSocketThread { m_strTitle, strGuid, Utilities::SocketType::Skele,
+            static_cast<unsigned int>(respStart.skeleport()), IP_ADRESS, this };
         m_Type_Socket.insert(Utilities::ShowType::Skele, pSocketThread);
     }
     pSocketThread = nullptr;
