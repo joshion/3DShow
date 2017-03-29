@@ -38,5 +38,7 @@ signals: void signal_requireConnect();
 signals: void signal_exitConnect();
 signals: void signal_requireDevices();
 signals: void signal_endRequire();
+
+signals: void signal_reqStart(KinectDataProto::pbReqStart reqStart);
 /***********************************************************************************/
 };

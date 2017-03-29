@@ -26,7 +26,13 @@ private:
     */
     QMap<QString, ShowWidget*> m_Title_Widget;
 
+private:
+    KinectDataProto::pbReqStart m_ReqStart;
+private:
+    void informServerToStartTransfer(const QString &strWindowTile, Utilities::ShowType type);
 
+signals:
+    void signal_reqStart(KinectDataProto::pbReqStart reqStart);
 /*  从orderSocket返回的信号 */
 signals: void signal_respStartRequire(KinectDataProto::pbRespStart protoRespStart);
 

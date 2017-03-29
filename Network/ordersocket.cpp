@@ -84,8 +84,7 @@ bool OrderSocket::writeBufferToServer()
     
     if (m_bConnected)
     {
-        int writeLength = write(bytes);
-        return writeLength == bytes.length();
+        return write(bytes) == bytes.length();
     }
     else
     {
@@ -96,8 +95,7 @@ bool OrderSocket::writeBufferToServer()
 bool OrderSocket::writeBufferToServer(const OrderFrameBuffer & buffer)
 {
     QByteArray bytes = OrderFrameBuffer::toBytes(buffer);
-    int writeLength = this->write(bytes);
-    return writeLength == bytes.length();
+    return write(bytes) == bytes.length();
 }
 
 bool OrderSocket::slot_requireConnect()

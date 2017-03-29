@@ -1,6 +1,5 @@
 #pragma once
 #include "utilities.h"
-
 #include <QListWidget>
 
 class QMenu;
@@ -12,6 +11,7 @@ class DevicesWidget : public QListWidget
 public:
     DevicesWidget(QWidget *parent = 0);
     ~DevicesWidget();
+
 private:
     QMenu *m_pMenu;
     QAction *m_pStartRequireRgb;
