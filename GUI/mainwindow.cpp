@@ -1,16 +1,26 @@
 ﻿#include "mainwindow.hpp"
+
+//#include "deviceswidget.h"
+#include "ordersocketthread.h"
+
 #include <qdebug.h>
-#include "deviceswidget.h"
 
 MainWindow::MainWindow(QWidget * parent)
     : QWidget(parent)
 {
     ui.setupUi(this);
 
+    m_pOrderSocketThread = OrderSocketThread::GetInstance("127.0.0.1", 7892, this);
+
     /* 从 主窗口 经过 orderSocketThread 发送到 orderSocket 的消息*/
-    connect(ui.m_ReqConnect, &QPushButton::clicked, this, &MainWindow::signal_requireConnect);
-    connect(ui.m_ExitConnect, &QPushButton::clicked, this, &MainWindow::signal_exitConnect);
-    connect(ui.m_ReqDevices, &QPushButton::clicked, this, &MainWindow::signal_requireDevices);
+    connect(ui.m_ReqConnect, &QPushButton::clicked,
+        m_pOrderSocketThread, &OrderSocketThread::signal_requireConnect, Qt::QueuedConnection);
+    connect(ui.m_ExitConnect, &QPushButton::clicked,
+        m_pOrderSocketThread, &OrderSocketThread::signal_exitConnect, Qt::QueuedConnection);
+    connect(ui.m_ReqDevices, &QPushButton::clicked,
+        m_pOrderSocketThread, &OrderSocketThread::signal_requireDevices, Qt::QueuedConnection);
+    connect(ui.m_MultiShowArea, &MultiShowArea::signal_sendBoundPortsToOrderSocket,
+        m_pOrderSocketThread, &OrderSocketThread::signal_sendBoundPortsToOrderSocket, Qt::QueuedConnection);
 
     /* 从 底层服务orderSocket 发回到 主窗口 的消息 */
     connect(this, &MainWindow::signal_respConnect, this, &MainWindow::slot_respConnect);
@@ -21,14 +31,15 @@ MainWindow::MainWindow(QWidget * parent)
     /* 从 设备列表窗口 发送到 多窗口显示窗口 的消息 */
     connect(ui.m_DevicesWidget, &DevicesWidget::signal_createShowWidget,
         ui.m_MultiShowArea, &MultiShowArea::slot_showSubWidget);
-
-    connect(ui.m_MultiShowArea, &MultiShowArea::signal_sendBoundPortsToOrderSocket,
-        this, &MainWindow::signal_sendBoundPortsToOrderSocket);
 }
 
 MainWindow::~MainWindow()
 {
-	
+    if (m_pOrderSocketThread)
+    {
+        OrderSocketThread::ReleaseInstance();
+        m_pOrderSocketThread = nullptr;
+    }
 }
 
 void MainWindow::slot_respConnect()

@@ -7,6 +7,8 @@
 #include "ui_mainwindow.h"
 #include <QWidget>
 
+class OrderSocketThread;
+
 class MainWindow : public QWidget ,public OrderInterface
 {
 	Q_OBJECT
@@ -17,6 +19,8 @@ public:
 private:
 	Ui::MainWindow ui;
 
+private:
+    OrderSocketThread *m_pOrderSocketThread;
 /***********************************************************************************/
 /*GUI内部的通信*/
 signals: void signal_sendBoundPortsToOrderSocket(KinectDataProto::pbReqStart protoReqStart);

@@ -1,4 +1,4 @@
-#include "mainframe.hpp"
+#include "mainwindow.hpp"
 
 #include "utilities.h"
 #include "singleapplication.h"
@@ -15,8 +15,9 @@ int main(int argc, char *argv[])
     SingleApplication a(argc, argv);
     if (!a.isRunning())
     {
-        MainFrame mainframe;
-        a.w = (QWidget*) mainframe.getMainWindowPtr();
+        MainWindow mainwindow;
+        a.w = &mainwindow;
+        mainwindow.show();
         return a.exec();
     }
     else

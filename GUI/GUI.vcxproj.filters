@@ -41,15 +41,6 @@
     <ClCompile Include="GeneratedFiles\qrc_gui.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
-    <ClCompile Include="mainframe.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_mainframe.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_mainframe.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
     <ClCompile Include="mainwindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -108,9 +99,6 @@
   <ItemGroup>
     <CustomBuild Include="gui.qrc">
       <Filter>Resource Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="mainframe.hpp">
-      <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="mainwindow.hpp">
       <Filter>Header Files</Filter>
