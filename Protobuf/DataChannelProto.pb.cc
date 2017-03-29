@@ -36,10 +36,9 @@ void protobuf_AssignDesc_DataChannelProto_2eproto() {
       "DataChannelProto.proto");
   GOOGLE_CHECK(file != NULL);
   pbValidatePort_descriptor_ = file->message_type(0);
-  static const int pbValidatePort_offsets_[3] = {
+  static const int pbValidatePort_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(pbValidatePort, devicename_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(pbValidatePort, guid_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(pbValidatePort, datatype_),
   };
   pbValidatePort_reflection_ =
     ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
@@ -85,8 +84,8 @@ void protobuf_AddDesc_DataChannelProto_2eproto() {
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\026DataChannelProto.proto\022\020DataChannelPro"
-    "to\"D\n\016pbValidatePort\022\022\n\ndeviceName\030\001 \001(\t"
-    "\022\014\n\004guid\030\002 \001(\t\022\020\n\010dataType\030\003 \001(\005b\006proto3", 120);
+    "to\"2\n\016pbValidatePort\022\022\n\ndeviceName\030\001 \001(\t"
+    "\022\014\n\004guid\030\002 \001(\tb\006proto3", 102);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "DataChannelProto.proto", &protobuf_RegisterTypes);
   pbValidatePort::default_instance_ = new pbValidatePort();
@@ -106,7 +105,6 @@ struct StaticDescriptorInitializer_DataChannelProto_2eproto {
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int pbValidatePort::kDeviceNameFieldNumber;
 const int pbValidatePort::kGuidFieldNumber;
-const int pbValidatePort::kDataTypeFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 pbValidatePort::pbValidatePort()
@@ -133,7 +131,6 @@ void pbValidatePort::SharedCtor() {
   _cached_size_ = 0;
   devicename_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   guid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  datatype_ = 0;
 }
 
 pbValidatePort::~pbValidatePort() {
@@ -177,7 +174,6 @@ void pbValidatePort::Clear() {
 // @@protoc_insertion_point(message_clear_start:DataChannelProto.pbValidatePort)
   devicename_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   guid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  datatype_ = 0;
 }
 
 bool pbValidatePort::MergePartialFromCodedStream(
@@ -216,21 +212,6 @@ bool pbValidatePort::MergePartialFromCodedStream(
             this->guid().data(), this->guid().length(),
             ::google::protobuf::internal::WireFormatLite::PARSE,
             "DataChannelProto.pbValidatePort.guid"));
-        } else {
-          goto handle_unusual;
-        }
-        if (input->ExpectTag(24)) goto parse_dataType;
-        break;
-      }
-
-      // optional int32 dataType = 3;
-      case 3: {
-        if (tag == 24) {
-         parse_dataType:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &datatype_)));
-
         } else {
           goto handle_unusual;
         }
@@ -282,11 +263,6 @@ void pbValidatePort::SerializeWithCachedSizes(
       2, this->guid(), output);
   }
 
-  // optional int32 dataType = 3;
-  if (this->datatype() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->datatype(), output);
-  }
-
   // @@protoc_insertion_point(serialize_end:DataChannelProto.pbValidatePort)
 }
 
@@ -315,11 +291,6 @@ void pbValidatePort::SerializeWithCachedSizes(
         2, this->guid(), target);
   }
 
-  // optional int32 dataType = 3;
-  if (this->datatype() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->datatype(), target);
-  }
-
   // @@protoc_insertion_point(serialize_to_array_end:DataChannelProto.pbValidatePort)
   return target;
 }
@@ -340,13 +311,6 @@ int pbValidatePort::ByteSize() const {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->guid());
-  }
-
-  // optional int32 dataType = 3;
-  if (this->datatype() != 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int32Size(
-        this->datatype());
   }
 
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
@@ -385,9 +349,6 @@ void pbValidatePort::MergeFrom(const pbValidatePort& from) {
 
     guid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.guid_);
   }
-  if (from.datatype() != 0) {
-    set_datatype(from.datatype());
-  }
 }
 
 void pbValidatePort::CopyFrom(const ::google::protobuf::Message& from) {
@@ -416,7 +377,6 @@ void pbValidatePort::Swap(pbValidatePort* other) {
 void pbValidatePort::InternalSwap(pbValidatePort* other) {
   devicename_.Swap(&other->devicename_);
   guid_.Swap(&other->guid_);
-  std::swap(datatype_, other->datatype_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   std::swap(_cached_size_, other->_cached_size_);
 }
@@ -518,20 +478,6 @@ void pbValidatePort::clear_guid() {
   }
   guid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), guid);
   // @@protoc_insertion_point(field_set_allocated:DataChannelProto.pbValidatePort.guid)
-}
-
-// optional int32 dataType = 3;
-void pbValidatePort::clear_datatype() {
-  datatype_ = 0;
-}
- ::google::protobuf::int32 pbValidatePort::datatype() const {
-  // @@protoc_insertion_point(field_get:DataChannelProto.pbValidatePort.dataType)
-  return datatype_;
-}
- void pbValidatePort::set_datatype(::google::protobuf::int32 value) {
-  
-  datatype_ = value;
-  // @@protoc_insertion_point(field_set:DataChannelProto.pbValidatePort.dataType)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS

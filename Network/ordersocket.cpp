@@ -26,7 +26,7 @@ namespace
     const static unsigned int START_REQUIRE = 1;
     const static unsigned int END_REQUIRE = 2;
     const static unsigned int RESP_START_REQUIRE = 100;
-    const static unsigned int SERVER_REQUIRE_END_CONNECT = 102;
+    const static unsigned int SERVER_END_TRANSFER = 101;
 }
 
 OrderSocket::OrderSocket(QString adress, unsigned int port, QObject *parent)
@@ -276,7 +276,7 @@ void OrderSocket::analysisReceiveFrameBuffer(const OrderFrameBuffer & buffer)
 
         }
         break;
-        case SERVER_REQUIRE_END_CONNECT:
+        case SERVER_END_TRANSFER:
         {
 
         }

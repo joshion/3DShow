@@ -8,5 +8,4 @@ message pbValidatePort
 {
     string deviceName = 1;
     string guid = 2;
-    int32 dataType = 3;
 }

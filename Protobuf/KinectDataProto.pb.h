@@ -361,16 +361,16 @@ class pbEndTransfer : public ::google::protobuf::Message /* @@protoc_insertion_p
   ::std::string* release_devicename();
   void set_allocated_devicename(::std::string* devicename);
 
-  // optional string extension = 2;
-  void clear_extension();
-  static const int kExtensionFieldNumber = 2;
-  const ::std::string& extension() const;
-  void set_extension(const ::std::string& value);
-  void set_extension(const char* value);
-  void set_extension(const char* value, size_t size);
-  ::std::string* mutable_extension();
-  ::std::string* release_extension();
-  void set_allocated_extension(::std::string* extension);
+  // optional string reason = 2;
+  void clear_reason();
+  static const int kReasonFieldNumber = 2;
+  const ::std::string& reason() const;
+  void set_reason(const ::std::string& value);
+  void set_reason(const char* value);
+  void set_reason(const char* value, size_t size);
+  ::std::string* mutable_reason();
+  ::std::string* release_reason();
+  void set_allocated_reason(::std::string* reason);
 
   // @@protoc_insertion_point(class_scope:KinectDataProto.pbEndTransfer)
  private:
@@ -378,7 +378,7 @@ class pbEndTransfer : public ::google::protobuf::Message /* @@protoc_insertion_p
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   bool _is_default_instance_;
   ::google::protobuf::internal::ArenaStringPtr devicename_;
-  ::google::protobuf::internal::ArenaStringPtr extension_;
+  ::google::protobuf::internal::ArenaStringPtr reason_;
   mutable int _cached_size_;
   friend void  protobuf_AddDesc_KinectDataProto_2eproto();
   friend void protobuf_AssignDesc_KinectDataProto_2eproto();
@@ -460,16 +460,16 @@ class pbReqEnd : public ::google::protobuf::Message /* @@protoc_insertion_point(
   ::std::string* release_devicename();
   void set_allocated_devicename(::std::string* devicename);
 
-  // optional string extension = 2;
-  void clear_extension();
-  static const int kExtensionFieldNumber = 2;
-  const ::std::string& extension() const;
-  void set_extension(const ::std::string& value);
-  void set_extension(const char* value);
-  void set_extension(const char* value, size_t size);
-  ::std::string* mutable_extension();
-  ::std::string* release_extension();
-  void set_allocated_extension(::std::string* extension);
+  // optional string reason = 2;
+  void clear_reason();
+  static const int kReasonFieldNumber = 2;
+  const ::std::string& reason() const;
+  void set_reason(const ::std::string& value);
+  void set_reason(const char* value);
+  void set_reason(const char* value, size_t size);
+  ::std::string* mutable_reason();
+  ::std::string* release_reason();
+  void set_allocated_reason(::std::string* reason);
 
   // @@protoc_insertion_point(class_scope:KinectDataProto.pbReqEnd)
  private:
@@ -477,7 +477,7 @@ class pbReqEnd : public ::google::protobuf::Message /* @@protoc_insertion_point(
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   bool _is_default_instance_;
   ::google::protobuf::internal::ArenaStringPtr devicename_;
-  ::google::protobuf::internal::ArenaStringPtr extension_;
+  ::google::protobuf::internal::ArenaStringPtr reason_;
   mutable int _cached_size_;
   friend void  protobuf_AddDesc_KinectDataProto_2eproto();
   friend void protobuf_AssignDesc_KinectDataProto_2eproto();
@@ -820,48 +820,48 @@ inline void pbEndTransfer::set_allocated_devicename(::std::string* devicename) {
   // @@protoc_insertion_point(field_set_allocated:KinectDataProto.pbEndTransfer.deviceName)
 }
 
-// optional string extension = 2;
-inline void pbEndTransfer::clear_extension() {
-  extension_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+// optional string reason = 2;
+inline void pbEndTransfer::clear_reason() {
+  reason_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline const ::std::string& pbEndTransfer::extension() const {
-  // @@protoc_insertion_point(field_get:KinectDataProto.pbEndTransfer.extension)
-  return extension_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+inline const ::std::string& pbEndTransfer::reason() const {
+  // @@protoc_insertion_point(field_get:KinectDataProto.pbEndTransfer.reason)
+  return reason_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline void pbEndTransfer::set_extension(const ::std::string& value) {
+inline void pbEndTransfer::set_reason(const ::std::string& value) {
   
-  extension_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:KinectDataProto.pbEndTransfer.extension)
+  reason_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:KinectDataProto.pbEndTransfer.reason)
 }
-inline void pbEndTransfer::set_extension(const char* value) {
+inline void pbEndTransfer::set_reason(const char* value) {
   
-  extension_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:KinectDataProto.pbEndTransfer.extension)
+  reason_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:KinectDataProto.pbEndTransfer.reason)
 }
-inline void pbEndTransfer::set_extension(const char* value, size_t size) {
+inline void pbEndTransfer::set_reason(const char* value, size_t size) {
   
-  extension_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+  reason_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:KinectDataProto.pbEndTransfer.extension)
+  // @@protoc_insertion_point(field_set_pointer:KinectDataProto.pbEndTransfer.reason)
 }
-inline ::std::string* pbEndTransfer::mutable_extension() {
+inline ::std::string* pbEndTransfer::mutable_reason() {
   
-  // @@protoc_insertion_point(field_mutable:KinectDataProto.pbEndTransfer.extension)
-  return extension_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  // @@protoc_insertion_point(field_mutable:KinectDataProto.pbEndTransfer.reason)
+  return reason_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline ::std::string* pbEndTransfer::release_extension() {
-  // @@protoc_insertion_point(field_release:KinectDataProto.pbEndTransfer.extension)
+inline ::std::string* pbEndTransfer::release_reason() {
+  // @@protoc_insertion_point(field_release:KinectDataProto.pbEndTransfer.reason)
   
-  return extension_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  return reason_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline void pbEndTransfer::set_allocated_extension(::std::string* extension) {
-  if (extension != NULL) {
+inline void pbEndTransfer::set_allocated_reason(::std::string* reason) {
+  if (reason != NULL) {
     
   } else {
     
   }
-  extension_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), extension);
-  // @@protoc_insertion_point(field_set_allocated:KinectDataProto.pbEndTransfer.extension)
+  reason_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), reason);
+  // @@protoc_insertion_point(field_set_allocated:KinectDataProto.pbEndTransfer.reason)
 }
 
 // -------------------------------------------------------------------
@@ -912,48 +912,48 @@ inline void pbReqEnd::set_allocated_devicename(::std::string* devicename) {
   // @@protoc_insertion_point(field_set_allocated:KinectDataProto.pbReqEnd.deviceName)
 }
 
-// optional string extension = 2;
-inline void pbReqEnd::clear_extension() {
-  extension_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+// optional string reason = 2;
+inline void pbReqEnd::clear_reason() {
+  reason_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline const ::std::string& pbReqEnd::extension() const {
-  // @@protoc_insertion_point(field_get:KinectDataProto.pbReqEnd.extension)
-  return extension_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+inline const ::std::string& pbReqEnd::reason() const {
+  // @@protoc_insertion_point(field_get:KinectDataProto.pbReqEnd.reason)
+  return reason_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline void pbReqEnd::set_extension(const ::std::string& value) {
+inline void pbReqEnd::set_reason(const ::std::string& value) {
   
-  extension_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:KinectDataProto.pbReqEnd.extension)
+  reason_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:KinectDataProto.pbReqEnd.reason)
 }
-inline void pbReqEnd::set_extension(const char* value) {
+inline void pbReqEnd::set_reason(const char* value) {
   
-  extension_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:KinectDataProto.pbReqEnd.extension)
+  reason_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:KinectDataProto.pbReqEnd.reason)
 }
-inline void pbReqEnd::set_extension(const char* value, size_t size) {
+inline void pbReqEnd::set_reason(const char* value, size_t size) {
   
-  extension_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+  reason_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:KinectDataProto.pbReqEnd.extension)
+  // @@protoc_insertion_point(field_set_pointer:KinectDataProto.pbReqEnd.reason)
 }
-inline ::std::string* pbReqEnd::mutable_extension() {
+inline ::std::string* pbReqEnd::mutable_reason() {
   
-  // @@protoc_insertion_point(field_mutable:KinectDataProto.pbReqEnd.extension)
-  return extension_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  // @@protoc_insertion_point(field_mutable:KinectDataProto.pbReqEnd.reason)
+  return reason_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline ::std::string* pbReqEnd::release_extension() {
-  // @@protoc_insertion_point(field_release:KinectDataProto.pbReqEnd.extension)
+inline ::std::string* pbReqEnd::release_reason() {
+  // @@protoc_insertion_point(field_release:KinectDataProto.pbReqEnd.reason)
   
-  return extension_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  return reason_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline void pbReqEnd::set_allocated_extension(::std::string* extension) {
-  if (extension != NULL) {
+inline void pbReqEnd::set_allocated_reason(::std::string* reason) {
+  if (reason != NULL) {
     
   } else {
     
   }
-  extension_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), extension);
-  // @@protoc_insertion_point(field_set_allocated:KinectDataProto.pbReqEnd.extension)
+  reason_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), reason);
+  // @@protoc_insertion_point(field_set_allocated:KinectDataProto.pbReqEnd.reason)
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
