@@ -32,7 +32,6 @@ void TransferSocketThread::createTransferSocket(Utilities::SocketType type)
     {
         m_pTransferSocket = new ImageTransferSocket { m_strIPAdress, type };
         m_pTransferSocket->registerGUIClass(m_pTransferInterface);
-        m_pTransferSocket->bindRandomPort();
         connect(this, &TransferSocketThread::finished, m_pTransferSocket, &ImageTransferSocket::deleteLater);
         exec();
     }
@@ -40,7 +39,6 @@ void TransferSocketThread::createTransferSocket(Utilities::SocketType type)
     {
         m_pTransferSocket = new ImageTransferSocket { m_strIPAdress, type };
         m_pTransferSocket->registerGUIClass(m_pTransferInterface);
-        m_pTransferSocket->bindRandomPort();
         connect(this, &TransferSocketThread::finished, m_pTransferSocket, &ImageTransferSocket::deleteLater);
         exec();
     }
@@ -48,7 +46,6 @@ void TransferSocketThread::createTransferSocket(Utilities::SocketType type)
     {
         m_pTransferSocket = new FrameTransferSocket { m_strIPAdress, type };
         m_pTransferSocket->registerGUIClass(m_pTransferInterface);
-        m_pTransferSocket->bindRandomPort();
         connect(this, &TransferSocketThread::finished, m_pTransferSocket, &ImageTransferSocket::deleteLater);
         exec();
     }

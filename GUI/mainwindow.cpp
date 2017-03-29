@@ -22,9 +22,6 @@ MainWindow::MainWindow(QWidget * parent)
     connect(ui.m_ExitConnect, &QPushButton::clicked, m_pOrderSocketThread, &OrderSocketThread::signal_exitConnect);  
     connect(ui.m_ExitConnect, &QPushButton::clicked, this, &MainWindow::slot_exitConnect);
 
-    connect(ui.m_MultiShowArea, &MultiShowArea::signal_sendBoundPortsToOrderSocket,
-        m_pOrderSocketThread, &OrderSocketThread::signal_sendBoundPortsToOrderSocket);
-
 
     /* 从 底层服务orderSocket 发回到 主窗口 的消息 */
     connect(this, &MainWindow::signal_respConnect, this, &MainWindow::slot_respConnect);

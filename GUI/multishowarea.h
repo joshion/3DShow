@@ -26,8 +26,6 @@ private:
     */
     QMap<QString, ShowWidget*> m_Title_Widget;
 
-/* 发送到orderSocket的信号 */
-signals: void signal_sendBoundPortsToOrderSocket(KinectDataProto::pbReqStart protoReqStart);
 
 /*  从orderSocket返回的信号 */
 signals: void signal_respStartRequire(KinectDataProto::pbRespStart protoRespStart);

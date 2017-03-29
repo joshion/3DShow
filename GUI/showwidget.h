@@ -43,7 +43,6 @@ private:
 
 /********************************************************************************************/
 
-signals: void signal_getLocalPort(Utilities::SocketType type,unsigned int uPort) override;
 signals: void signal_connectedToServer() override;
 
 protected:
@@ -57,11 +56,9 @@ private:
     void firstTimeShow();
 
 signals: void signal_closed(const QString &strWindowTitle);
-signals: void signal_sendBoundPortsToOrderSocket(KinectDataProto::pbReqStart protoReqStart);
 
 private slots :
     void slot_update();
-    void slot_getSocketLocalPort(Utilities::SocketType type, unsigned int uPort);
     void slot_connectedToServer();
 
 private:
@@ -71,6 +68,5 @@ private:
     float m_fAspectRatio;
     QMap<Utilities::ShowType, TransferSocketThread* > m_Type_Socket;
 
-    int m_UnCreatedPortsCount;
     KinectDataProto::pbReqStart m_protoReqStart;
 };

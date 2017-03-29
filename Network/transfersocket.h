@@ -24,8 +24,6 @@ public:
     TransferSocket& operator= (const TransferSocket &other) = delete;
     ~TransferSocket();
 
-public:
-    void bindRandomPort();
 public slots:
     void connectToServer(unsigned int uPort);
 
