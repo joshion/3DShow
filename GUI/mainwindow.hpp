@@ -31,9 +31,12 @@ signals: void signal_reqEndConnect() override;
 
 signals: void signal_respStartRequire(KinectDataProto::pbRespStart protoRespStart) override;
 
-public slots:
+signals: void signal_hasBeenConnected() override;
+
+private slots:
     void slot_respConnect();
     void slot_reqEndConnect();
+    void slot_hasBeenConnected();
 /***********************************************************************************/
 private slots:
     void slot_exitConnect();

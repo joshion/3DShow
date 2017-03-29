@@ -59,7 +59,7 @@ public slots:
     bool slot_exitConnect();
     bool slot_requireDevices();
     bool slot_startRequire(KinectDataProto::pbReqStart protoReqStart);
-    bool slot_endConnect();
+    bool slot_endRequire();
 /***********************************************************************************/
 
 /***********************************************************************************/

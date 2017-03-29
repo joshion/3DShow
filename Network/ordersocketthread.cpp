@@ -33,12 +33,11 @@ void OrderSocketThread::run()
     connect(this, &OrderSocketThread::signal_requireDevices,
         m_pOrderSocket, &OrderSocket::slot_requireDevices, Qt::QueuedConnection);
 
-
-    connect(this, &OrderSocketThread::signal_endConnect,
-        m_pOrderSocket, &OrderSocket::slot_endConnect, Qt::QueuedConnection);
-
     connect(this, &OrderSocketThread::signal_sendBoundPortsToOrderSocket,
         m_pOrderSocket, &OrderSocket::slot_startRequire, Qt::QueuedConnection);
+    connect(this, &OrderSocketThread::signal_endRequire,
+        m_pOrderSocket, &OrderSocket::slot_endRequire, Qt::QueuedConnection);
+
 
     exec();
 }

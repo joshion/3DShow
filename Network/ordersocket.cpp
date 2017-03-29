@@ -9,6 +9,8 @@
 #include <QString>
 #include <QStringList>
 
+#include <QTimer>
+
 namespace
 {
     const static unsigned int CONNECT_PROTOCOL = 1;
@@ -44,7 +46,7 @@ OrderSocket::OrderSocket(QString adress, unsigned int port, QObject *parent)
 
     setSocketOption(QAbstractSocket::KeepAliveOption, 1);
     setSocketOption(QAbstractSocket::LowDelayOption, 1);
-    connectToHost(m_strIPAdress, m_uPort);
+    // connectToHost(m_strIPAdress, m_uPort);
     connect(this, &OrderSocket::connected, this, &OrderSocket::slot_setConnected, Qt::QueuedConnection);
     connect(this, &OrderSocket::disconnected, this, &OrderSocket::slot_setDisConnected, Qt::QueuedConnection);
     connect(this, &OrderSocket::readyRead, this, &OrderSocket::slot_readDataFromServer, Qt::QueuedConnection);
@@ -80,10 +82,6 @@ bool OrderSocket::writeBufferToServer()
 {
     QByteArray bytes = OrderFrameBuffer::toBytes(*m_pSendFrameBuffer);
     
-    /*
-    若服务器已经链接上,则发送数据,并返回true
-    没有链接上则重新请求链接,并返回false
-    */
     if (m_bConnected)
     {
         int writeLength = write(bytes);
@@ -91,7 +89,6 @@ bool OrderSocket::writeBufferToServer()
     }
     else
     {
-        connectToHost(m_strIPAdress, m_uPort);
         return false;
     }
 }
@@ -105,47 +102,80 @@ bool OrderSocket::writeBufferToServer(const OrderFrameBuffer & buffer)
 
 bool OrderSocket::slot_requireConnect()
 {
-    m_pSendFrameBuffer->setCmdType(1);
-    m_pSendFrameBuffer->setCmdNum(1);
-    m_pSendFrameBuffer->setData(nullptr, 0);
     qDebug() << "enter require connect";
-    return this->writeBufferToServer();
+
+    if (!m_bConnected)
+    {
+        connectToHost(m_strIPAdress, m_uPort);
+        m_pSendFrameBuffer->setCmdType(CONNECT_PROTOCOL);
+        m_pSendFrameBuffer->setCmdNum(REQUIRE_CONNECT);
+        m_pSendFrameBuffer->setData(nullptr, 0);
+
+        /*
+        * 给予socket一定时间进行建立连接
+        * 等待一秒后,再向服务器发送申请连接信息
+        */
+        QTimer::singleShot(1000, [&] {
+            writeBufferToServer();
+        });
+    }
+    else
+    {
+        m_pGUI->signal_hasBeenConnected();
+        return false;
+    }
 }
 
 bool OrderSocket::slot_exitConnect()
 {
-    m_pSendFrameBuffer->setCmdType(1);
-    m_pSendFrameBuffer->setCmdNum(2);
-    m_pSendFrameBuffer->setData(nullptr, 0);
     qDebug() << "enter exit connect";
-    return this->writeBufferToServer();
+
+    m_pSendFrameBuffer->setCmdType(CONNECT_PROTOCOL);
+    m_pSendFrameBuffer->setCmdNum(EXIT_CONNECT);
+    m_pSendFrameBuffer->setData(nullptr, 0);
+    bool flag = this->writeBufferToServer();
+
+    /*
+    * 给予socket一定时间发送信息
+    * 等待一秒后断开与服务器的连接
+    */
+    QTimer::singleShot(1000, [&] {
+        disconnectFromHost();
+    });
+
+    return flag;
 }
 
 bool OrderSocket::slot_requireDevices()
 {
-    m_pSendFrameBuffer->setCmdType(1);
-    m_pSendFrameBuffer->setCmdNum(3);
-    m_pSendFrameBuffer->setData(nullptr, 0);
     qDebug() << "enter require devices";
+
+    m_pSendFrameBuffer->setCmdType(CONNECT_PROTOCOL);
+    m_pSendFrameBuffer->setCmdNum(REQUIRE_DEVICES);
+    m_pSendFrameBuffer->setData(nullptr, 0);
+
     return this->writeBufferToServer();
 }
 
-bool OrderSocket::slot_endConnect()
+bool OrderSocket::slot_endRequire()
 {
-    m_pSendFrameBuffer->setCmdType(2);
-    m_pSendFrameBuffer->setCmdNum(2);
-    m_pSendFrameBuffer->setData(nullptr, 0);
     qDebug() << "enter end connect";
+
+    m_pSendFrameBuffer->setCmdType(KINECT_PROTOCOL);
+    m_pSendFrameBuffer->setCmdNum(END_REQUIRE);
+    m_pSendFrameBuffer->setData(nullptr, 0);
+
     return this->writeBufferToServer();
 }
 
 bool OrderSocket::slot_startRequire(KinectDataProto::pbReqStart protoReqStart)
 {
+    qDebug() << "enter start require";
+
     m_pSendFrameBuffer->setCmdType(KINECT_PROTOCOL);
     m_pSendFrameBuffer->setCmdNum(START_REQUIRE);
-
     m_pSendFrameBuffer->setData(protoReqStart);
-    qDebug() << "enter start require";
+
     return this->writeBufferToServer();
 }
 
