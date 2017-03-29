@@ -1,10 +1,9 @@
 ﻿#pragma once
 
-#include "orderinterface.hpp"
-
 #include "KinectDataProto.pb.h"
 
 #include "ui_mainwindow.h"
+#include "orderinterface.hpp"
 #include <QWidget>
 
 class OrderSocketThread;
@@ -17,34 +16,25 @@ public:
 	MainWindow(QWidget * parent = Q_NULLPTR);
 	~MainWindow();
 private:
+    void disconnectFromServer();
+private:
 	Ui::MainWindow ui;
 
 private:
     OrderSocketThread *m_pOrderSocketThread;
-/***********************************************************************************/
-/*GUI内部的通信*/
-signals: void signal_sendBoundPortsToOrderSocket(KinectDataProto::pbReqStart protoReqStart);
-
-/***********************************************************************************/
 
 /***********************************************************************************/
 /*底层C++与本GUI类通信所用接口*/
 signals: void signal_respConnect() override;
 signals: void signal_respDevices(const QStringList& devicesList) override;
-signals: void signal_respStartRequire(KinectDataProto::pbRespStart protoRespStart) override;
 signals: void signal_reqEndConnect() override;
+
+signals: void signal_respStartRequire(KinectDataProto::pbRespStart protoRespStart) override;
 
 public slots:
     void slot_respConnect();
-    void slot_respStartRequire();
     void slot_reqEndConnect();
 /***********************************************************************************/
-
-/***********************************************************************************/
-/*本GUI类发送消息到底层C++所用接口*/
-signals: void signal_requireConnect();
-signals: void signal_exitConnect();
-signals: void signal_requireDevices();
-
-/***********************************************************************************/
+private slots:
+    void slot_exitConnect();
 };

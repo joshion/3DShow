@@ -23,8 +23,10 @@ public:
     TransferSocket(TransferSocket &) = delete;
     TransferSocket& operator= (const TransferSocket &other) = delete;
     ~TransferSocket();
-public slots:
+
+public:
     void bindRandomPort();
+public slots:
     void connectToServer(unsigned int uPort);
 
 protected slots:
@@ -41,6 +43,11 @@ private:
 private:
     TransferInterfaceManager m_InterfaceManager;
 public:
+    /*
+    创建类的实例后,应立刻注册上层GUI的指针,
+    且类的构造函数中不能有信号的发出
+    不然该实例发出的信号,上层GUI无法接收到
+    */
     void registerGUIClass(TransferInterface*  gui)
     {
         m_InterfaceManager.registerInterface(gui);
