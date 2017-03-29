@@ -27,6 +27,12 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* pbRespStart_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   pbRespStart_reflection_ = NULL;
+const ::google::protobuf::Descriptor* pbEndTransfer_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  pbEndTransfer_reflection_ = NULL;
+const ::google::protobuf::Descriptor* pbReqEnd_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  pbReqEnd_reflection_ = NULL;
 
 }  // namespace
 
@@ -41,9 +47,9 @@ void protobuf_AssignDesc_KinectDataProto_2eproto() {
   pbReqStart_descriptor_ = file->message_type(0);
   static const int pbReqStart_offsets_[4] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(pbReqStart, devicename_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(pbReqStart, colorport_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(pbReqStart, depthport_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(pbReqStart, skeleport_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(pbReqStart, color_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(pbReqStart, depth_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(pbReqStart, skele_),
   };
   pbReqStart_reflection_ =
     ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
@@ -57,7 +63,9 @@ void protobuf_AssignDesc_KinectDataProto_2eproto() {
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(pbReqStart, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(pbReqStart, _is_default_instance_));
   pbRespStart_descriptor_ = file->message_type(1);
-  static const int pbRespStart_offsets_[5] = {
+  static const int pbRespStart_offsets_[7] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(pbRespStart, devicename_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(pbRespStart, guid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(pbRespStart, resulttype_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(pbRespStart, failreason_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(pbRespStart, colorport_),
@@ -75,6 +83,38 @@ void protobuf_AssignDesc_KinectDataProto_2eproto() {
       sizeof(pbRespStart),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(pbRespStart, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(pbRespStart, _is_default_instance_));
+  pbEndTransfer_descriptor_ = file->message_type(2);
+  static const int pbEndTransfer_offsets_[2] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(pbEndTransfer, devicename_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(pbEndTransfer, extension_),
+  };
+  pbEndTransfer_reflection_ =
+    ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
+      pbEndTransfer_descriptor_,
+      pbEndTransfer::default_instance_,
+      pbEndTransfer_offsets_,
+      -1,
+      -1,
+      -1,
+      sizeof(pbEndTransfer),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(pbEndTransfer, _internal_metadata_),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(pbEndTransfer, _is_default_instance_));
+  pbReqEnd_descriptor_ = file->message_type(3);
+  static const int pbReqEnd_offsets_[2] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(pbReqEnd, devicename_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(pbReqEnd, extension_),
+  };
+  pbReqEnd_reflection_ =
+    ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
+      pbReqEnd_descriptor_,
+      pbReqEnd::default_instance_,
+      pbReqEnd_offsets_,
+      -1,
+      -1,
+      -1,
+      sizeof(pbReqEnd),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(pbReqEnd, _internal_metadata_),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(pbReqEnd, _is_default_instance_));
 }
 
 namespace {
@@ -92,6 +132,10 @@ void protobuf_RegisterTypes(const ::std::string&) {
       pbReqStart_descriptor_, &pbReqStart::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
       pbRespStart_descriptor_, &pbRespStart::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+      pbEndTransfer_descriptor_, &pbEndTransfer::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+      pbReqEnd_descriptor_, &pbReqEnd::default_instance());
 }
 
 }  // namespace
@@ -101,6 +145,10 @@ void protobuf_ShutdownFile_KinectDataProto_2eproto() {
   delete pbReqStart_reflection_;
   delete pbRespStart::default_instance_;
   delete pbRespStart_reflection_;
+  delete pbEndTransfer::default_instance_;
+  delete pbEndTransfer_reflection_;
+  delete pbReqEnd::default_instance_;
+  delete pbReqEnd_reflection_;
 }
 
 void protobuf_AddDesc_KinectDataProto_2eproto() GOOGLE_ATTRIBUTE_COLD;
@@ -112,18 +160,25 @@ void protobuf_AddDesc_KinectDataProto_2eproto() {
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\025KinectDataProto.proto\022\017KinectDataProto"
-    "\"Y\n\npbReqStart\022\022\n\ndeviceName\030\001 \001(\t\022\021\n\tco"
-    "lorPort\030\002 \001(\005\022\021\n\tdepthPort\030\003 \001(\005\022\021\n\tskel"
-    "ePort\030\004 \001(\005\"n\n\013pbRespStart\022\022\n\nresultType"
-    "\030\001 \001(\005\022\022\n\nfailReason\030\002 \001(\t\022\021\n\tcolorPort\030"
-    "\003 \001(\005\022\021\n\tdepthPort\030\004 \001(\005\022\021\n\tskelePort\030\005 "
-    "\001(\005b\006proto3", 251);
+    "\"M\n\npbReqStart\022\022\n\ndeviceName\030\001 \001(\t\022\r\n\005co"
+    "lor\030\002 \001(\005\022\r\n\005depth\030\003 \001(\005\022\r\n\005skele\030\004 \001(\005\""
+    "\220\001\n\013pbRespStart\022\022\n\ndeviceName\030\001 \001(\t\022\014\n\004g"
+    "uid\030\002 \001(\t\022\022\n\nresultType\030\003 \001(\005\022\022\n\nfailRea"
+    "son\030\004 \001(\t\022\021\n\tcolorPort\030\005 \001(\005\022\021\n\tdepthPor"
+    "t\030\006 \001(\005\022\021\n\tskelePort\030\007 \001(\005\"6\n\rpbEndTrans"
+    "fer\022\022\n\ndeviceName\030\001 \001(\t\022\021\n\textension\030\002 \001"
+    "(\t\"1\n\010pbReqEnd\022\022\n\ndeviceName\030\001 \001(\t\022\021\n\tex"
+    "tension\030\002 \001(\tb\006proto3", 381);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "KinectDataProto.proto", &protobuf_RegisterTypes);
   pbReqStart::default_instance_ = new pbReqStart();
   pbRespStart::default_instance_ = new pbRespStart();
+  pbEndTransfer::default_instance_ = new pbEndTransfer();
+  pbReqEnd::default_instance_ = new pbReqEnd();
   pbReqStart::default_instance_->InitAsDefaultInstance();
   pbRespStart::default_instance_->InitAsDefaultInstance();
+  pbEndTransfer::default_instance_->InitAsDefaultInstance();
+  pbReqEnd::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_KinectDataProto_2eproto);
 }
 
@@ -138,9 +193,9 @@ struct StaticDescriptorInitializer_KinectDataProto_2eproto {
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int pbReqStart::kDeviceNameFieldNumber;
-const int pbReqStart::kColorPortFieldNumber;
-const int pbReqStart::kDepthPortFieldNumber;
-const int pbReqStart::kSkelePortFieldNumber;
+const int pbReqStart::kColorFieldNumber;
+const int pbReqStart::kDepthFieldNumber;
+const int pbReqStart::kSkeleFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 pbReqStart::pbReqStart()
@@ -166,9 +221,9 @@ void pbReqStart::SharedCtor() {
   ::google::protobuf::internal::GetEmptyString();
   _cached_size_ = 0;
   devicename_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  colorport_ = 0;
-  depthport_ = 0;
-  skeleport_ = 0;
+  color_ = 0;
+  depth_ = 0;
+  skele_ = 0;
 }
 
 pbReqStart::~pbReqStart() {
@@ -225,7 +280,7 @@ void pbReqStart::Clear() {
            ZR_HELPER_(last) - ZR_HELPER_(first) + sizeof(last));\
 } while (0)
 
-  ZR_(colorport_, skeleport_);
+  ZR_(color_, skele_);
   devicename_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 
 #undef ZR_HELPER_
@@ -255,47 +310,47 @@ bool pbReqStart::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(16)) goto parse_colorPort;
+        if (input->ExpectTag(16)) goto parse_color;
         break;
       }
 
-      // optional int32 colorPort = 2;
+      // optional int32 color = 2;
       case 2: {
         if (tag == 16) {
-         parse_colorPort:
+         parse_color:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &colorport_)));
+                 input, &color_)));
 
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(24)) goto parse_depthPort;
+        if (input->ExpectTag(24)) goto parse_depth;
         break;
       }
 
-      // optional int32 depthPort = 3;
+      // optional int32 depth = 3;
       case 3: {
         if (tag == 24) {
-         parse_depthPort:
+         parse_depth:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &depthport_)));
+                 input, &depth_)));
 
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(32)) goto parse_skelePort;
+        if (input->ExpectTag(32)) goto parse_skele;
         break;
       }
 
-      // optional int32 skelePort = 4;
+      // optional int32 skele = 4;
       case 4: {
         if (tag == 32) {
-         parse_skelePort:
+         parse_skele:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &skeleport_)));
+                 input, &skele_)));
 
         } else {
           goto handle_unusual;
@@ -338,19 +393,19 @@ void pbReqStart::SerializeWithCachedSizes(
       1, this->devicename(), output);
   }
 
-  // optional int32 colorPort = 2;
-  if (this->colorport() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->colorport(), output);
+  // optional int32 color = 2;
+  if (this->color() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->color(), output);
   }
 
-  // optional int32 depthPort = 3;
-  if (this->depthport() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->depthport(), output);
+  // optional int32 depth = 3;
+  if (this->depth() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->depth(), output);
   }
 
-  // optional int32 skelePort = 4;
-  if (this->skeleport() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(4, this->skeleport(), output);
+  // optional int32 skele = 4;
+  if (this->skele() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(4, this->skele(), output);
   }
 
   // @@protoc_insertion_point(serialize_end:KinectDataProto.pbReqStart)
@@ -370,19 +425,19 @@ void pbReqStart::SerializeWithCachedSizes(
         1, this->devicename(), target);
   }
 
-  // optional int32 colorPort = 2;
-  if (this->colorport() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->colorport(), target);
+  // optional int32 color = 2;
+  if (this->color() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->color(), target);
   }
 
-  // optional int32 depthPort = 3;
-  if (this->depthport() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->depthport(), target);
+  // optional int32 depth = 3;
+  if (this->depth() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->depth(), target);
   }
 
-  // optional int32 skelePort = 4;
-  if (this->skeleport() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(4, this->skeleport(), target);
+  // optional int32 skele = 4;
+  if (this->skele() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(4, this->skele(), target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:KinectDataProto.pbReqStart)
@@ -400,25 +455,25 @@ int pbReqStart::ByteSize() const {
         this->devicename());
   }
 
-  // optional int32 colorPort = 2;
-  if (this->colorport() != 0) {
+  // optional int32 color = 2;
+  if (this->color() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
-        this->colorport());
+        this->color());
   }
 
-  // optional int32 depthPort = 3;
-  if (this->depthport() != 0) {
+  // optional int32 depth = 3;
+  if (this->depth() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
-        this->depthport());
+        this->depth());
   }
 
-  // optional int32 skelePort = 4;
-  if (this->skeleport() != 0) {
+  // optional int32 skele = 4;
+  if (this->skele() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
-        this->skeleport());
+        this->skele());
   }
 
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
@@ -453,14 +508,14 @@ void pbReqStart::MergeFrom(const pbReqStart& from) {
 
     devicename_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.devicename_);
   }
-  if (from.colorport() != 0) {
-    set_colorport(from.colorport());
+  if (from.color() != 0) {
+    set_color(from.color());
   }
-  if (from.depthport() != 0) {
-    set_depthport(from.depthport());
+  if (from.depth() != 0) {
+    set_depth(from.depth());
   }
-  if (from.skeleport() != 0) {
-    set_skeleport(from.skeleport());
+  if (from.skele() != 0) {
+    set_skele(from.skele());
   }
 }
 
@@ -489,9 +544,9 @@ void pbReqStart::Swap(pbReqStart* other) {
 }
 void pbReqStart::InternalSwap(pbReqStart* other) {
   devicename_.Swap(&other->devicename_);
-  std::swap(colorport_, other->colorport_);
-  std::swap(depthport_, other->depthport_);
-  std::swap(skeleport_, other->skeleport_);
+  std::swap(color_, other->color_);
+  std::swap(depth_, other->depth_);
+  std::swap(skele_, other->skele_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   std::swap(_cached_size_, other->_cached_size_);
 }
@@ -551,46 +606,46 @@ void pbReqStart::clear_devicename() {
   // @@protoc_insertion_point(field_set_allocated:KinectDataProto.pbReqStart.deviceName)
 }
 
-// optional int32 colorPort = 2;
-void pbReqStart::clear_colorport() {
-  colorport_ = 0;
+// optional int32 color = 2;
+void pbReqStart::clear_color() {
+  color_ = 0;
 }
- ::google::protobuf::int32 pbReqStart::colorport() const {
-  // @@protoc_insertion_point(field_get:KinectDataProto.pbReqStart.colorPort)
-  return colorport_;
+ ::google::protobuf::int32 pbReqStart::color() const {
+  // @@protoc_insertion_point(field_get:KinectDataProto.pbReqStart.color)
+  return color_;
 }
- void pbReqStart::set_colorport(::google::protobuf::int32 value) {
+ void pbReqStart::set_color(::google::protobuf::int32 value) {
   
-  colorport_ = value;
-  // @@protoc_insertion_point(field_set:KinectDataProto.pbReqStart.colorPort)
+  color_ = value;
+  // @@protoc_insertion_point(field_set:KinectDataProto.pbReqStart.color)
 }
 
-// optional int32 depthPort = 3;
-void pbReqStart::clear_depthport() {
-  depthport_ = 0;
+// optional int32 depth = 3;
+void pbReqStart::clear_depth() {
+  depth_ = 0;
 }
- ::google::protobuf::int32 pbReqStart::depthport() const {
-  // @@protoc_insertion_point(field_get:KinectDataProto.pbReqStart.depthPort)
-  return depthport_;
+ ::google::protobuf::int32 pbReqStart::depth() const {
+  // @@protoc_insertion_point(field_get:KinectDataProto.pbReqStart.depth)
+  return depth_;
 }
- void pbReqStart::set_depthport(::google::protobuf::int32 value) {
+ void pbReqStart::set_depth(::google::protobuf::int32 value) {
   
-  depthport_ = value;
-  // @@protoc_insertion_point(field_set:KinectDataProto.pbReqStart.depthPort)
+  depth_ = value;
+  // @@protoc_insertion_point(field_set:KinectDataProto.pbReqStart.depth)
 }
 
-// optional int32 skelePort = 4;
-void pbReqStart::clear_skeleport() {
-  skeleport_ = 0;
+// optional int32 skele = 4;
+void pbReqStart::clear_skele() {
+  skele_ = 0;
 }
- ::google::protobuf::int32 pbReqStart::skeleport() const {
-  // @@protoc_insertion_point(field_get:KinectDataProto.pbReqStart.skelePort)
-  return skeleport_;
+ ::google::protobuf::int32 pbReqStart::skele() const {
+  // @@protoc_insertion_point(field_get:KinectDataProto.pbReqStart.skele)
+  return skele_;
 }
- void pbReqStart::set_skeleport(::google::protobuf::int32 value) {
+ void pbReqStart::set_skele(::google::protobuf::int32 value) {
   
-  skeleport_ = value;
-  // @@protoc_insertion_point(field_set:KinectDataProto.pbReqStart.skelePort)
+  skele_ = value;
+  // @@protoc_insertion_point(field_set:KinectDataProto.pbReqStart.skele)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -598,6 +653,8 @@ void pbReqStart::clear_skeleport() {
 // ===================================================================
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int pbRespStart::kDeviceNameFieldNumber;
+const int pbRespStart::kGuidFieldNumber;
 const int pbRespStart::kResultTypeFieldNumber;
 const int pbRespStart::kFailReasonFieldNumber;
 const int pbRespStart::kColorPortFieldNumber;
@@ -627,6 +684,8 @@ void pbRespStart::SharedCtor() {
     _is_default_instance_ = false;
   ::google::protobuf::internal::GetEmptyString();
   _cached_size_ = 0;
+  devicename_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  guid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   resulttype_ = 0;
   failreason_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   colorport_ = 0;
@@ -640,6 +699,8 @@ pbRespStart::~pbRespStart() {
 }
 
 void pbRespStart::SharedDtor() {
+  devicename_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  guid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   failreason_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (this != default_instance_) {
   }
@@ -689,6 +750,8 @@ void pbRespStart::Clear() {
 } while (0)
 
   ZR_(resulttype_, skeleport_);
+  devicename_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  guid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   failreason_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 
 #undef ZR_HELPER_
@@ -706,9 +769,43 @@ bool pbRespStart::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional int32 resultType = 1;
+      // optional string deviceName = 1;
       case 1: {
-        if (tag == 8) {
+        if (tag == 10) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_devicename()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->devicename().data(), this->devicename().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "KinectDataProto.pbRespStart.deviceName"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(18)) goto parse_guid;
+        break;
+      }
+
+      // optional string guid = 2;
+      case 2: {
+        if (tag == 18) {
+         parse_guid:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_guid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->guid().data(), this->guid().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "KinectDataProto.pbRespStart.guid"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(24)) goto parse_resultType;
+        break;
+      }
+
+      // optional int32 resultType = 3;
+      case 3: {
+        if (tag == 24) {
+         parse_resultType:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, &resulttype_)));
@@ -716,13 +813,13 @@ bool pbRespStart::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(18)) goto parse_failReason;
+        if (input->ExpectTag(34)) goto parse_failReason;
         break;
       }
 
-      // optional string failReason = 2;
-      case 2: {
-        if (tag == 18) {
+      // optional string failReason = 4;
+      case 4: {
+        if (tag == 34) {
          parse_failReason:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_failreason()));
@@ -733,13 +830,13 @@ bool pbRespStart::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(24)) goto parse_colorPort;
+        if (input->ExpectTag(40)) goto parse_colorPort;
         break;
       }
 
-      // optional int32 colorPort = 3;
-      case 3: {
-        if (tag == 24) {
+      // optional int32 colorPort = 5;
+      case 5: {
+        if (tag == 40) {
          parse_colorPort:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
@@ -748,13 +845,13 @@ bool pbRespStart::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(32)) goto parse_depthPort;
+        if (input->ExpectTag(48)) goto parse_depthPort;
         break;
       }
 
-      // optional int32 depthPort = 4;
-      case 4: {
-        if (tag == 32) {
+      // optional int32 depthPort = 6;
+      case 6: {
+        if (tag == 48) {
          parse_depthPort:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
@@ -763,13 +860,13 @@ bool pbRespStart::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(40)) goto parse_skelePort;
+        if (input->ExpectTag(56)) goto parse_skelePort;
         break;
       }
 
-      // optional int32 skelePort = 5;
-      case 5: {
-        if (tag == 40) {
+      // optional int32 skelePort = 7;
+      case 7: {
+        if (tag == 56) {
          parse_skelePort:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
@@ -806,34 +903,54 @@ failure:
 void pbRespStart::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:KinectDataProto.pbRespStart)
-  // optional int32 resultType = 1;
-  if (this->resulttype() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->resulttype(), output);
+  // optional string deviceName = 1;
+  if (this->devicename().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->devicename().data(), this->devicename().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "KinectDataProto.pbRespStart.deviceName");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      1, this->devicename(), output);
   }
 
-  // optional string failReason = 2;
+  // optional string guid = 2;
+  if (this->guid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->guid().data(), this->guid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "KinectDataProto.pbRespStart.guid");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      2, this->guid(), output);
+  }
+
+  // optional int32 resultType = 3;
+  if (this->resulttype() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->resulttype(), output);
+  }
+
+  // optional string failReason = 4;
   if (this->failreason().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->failreason().data(), this->failreason().length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "KinectDataProto.pbRespStart.failReason");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      2, this->failreason(), output);
+      4, this->failreason(), output);
   }
 
-  // optional int32 colorPort = 3;
+  // optional int32 colorPort = 5;
   if (this->colorport() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->colorport(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(5, this->colorport(), output);
   }
 
-  // optional int32 depthPort = 4;
+  // optional int32 depthPort = 6;
   if (this->depthport() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(4, this->depthport(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(6, this->depthport(), output);
   }
 
-  // optional int32 skelePort = 5;
+  // optional int32 skelePort = 7;
   if (this->skeleport() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(5, this->skeleport(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(7, this->skeleport(), output);
   }
 
   // @@protoc_insertion_point(serialize_end:KinectDataProto.pbRespStart)
@@ -842,12 +959,34 @@ void pbRespStart::SerializeWithCachedSizes(
 ::google::protobuf::uint8* pbRespStart::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
   // @@protoc_insertion_point(serialize_to_array_start:KinectDataProto.pbRespStart)
-  // optional int32 resultType = 1;
-  if (this->resulttype() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->resulttype(), target);
+  // optional string deviceName = 1;
+  if (this->devicename().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->devicename().data(), this->devicename().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "KinectDataProto.pbRespStart.deviceName");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->devicename(), target);
   }
 
-  // optional string failReason = 2;
+  // optional string guid = 2;
+  if (this->guid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->guid().data(), this->guid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "KinectDataProto.pbRespStart.guid");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->guid(), target);
+  }
+
+  // optional int32 resultType = 3;
+  if (this->resulttype() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->resulttype(), target);
+  }
+
+  // optional string failReason = 4;
   if (this->failreason().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->failreason().data(), this->failreason().length(),
@@ -855,22 +994,22 @@ void pbRespStart::SerializeWithCachedSizes(
       "KinectDataProto.pbRespStart.failReason");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        2, this->failreason(), target);
+        4, this->failreason(), target);
   }
 
-  // optional int32 colorPort = 3;
+  // optional int32 colorPort = 5;
   if (this->colorport() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->colorport(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(5, this->colorport(), target);
   }
 
-  // optional int32 depthPort = 4;
+  // optional int32 depthPort = 6;
   if (this->depthport() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(4, this->depthport(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(6, this->depthport(), target);
   }
 
-  // optional int32 skelePort = 5;
+  // optional int32 skelePort = 7;
   if (this->skeleport() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(5, this->skeleport(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(7, this->skeleport(), target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:KinectDataProto.pbRespStart)
@@ -881,35 +1020,49 @@ int pbRespStart::ByteSize() const {
 // @@protoc_insertion_point(message_byte_size_start:KinectDataProto.pbRespStart)
   int total_size = 0;
 
-  // optional int32 resultType = 1;
+  // optional string deviceName = 1;
+  if (this->devicename().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->devicename());
+  }
+
+  // optional string guid = 2;
+  if (this->guid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->guid());
+  }
+
+  // optional int32 resultType = 3;
   if (this->resulttype() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
         this->resulttype());
   }
 
-  // optional string failReason = 2;
+  // optional string failReason = 4;
   if (this->failreason().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->failreason());
   }
 
-  // optional int32 colorPort = 3;
+  // optional int32 colorPort = 5;
   if (this->colorport() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
         this->colorport());
   }
 
-  // optional int32 depthPort = 4;
+  // optional int32 depthPort = 6;
   if (this->depthport() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
         this->depthport());
   }
 
-  // optional int32 skelePort = 5;
+  // optional int32 skelePort = 7;
   if (this->skeleport() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
@@ -943,6 +1096,14 @@ void pbRespStart::MergeFrom(const pbRespStart& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:KinectDataProto.pbRespStart)
   if (GOOGLE_PREDICT_FALSE(&from == this)) {
     ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
+  if (from.devicename().size() > 0) {
+
+    devicename_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.devicename_);
+  }
+  if (from.guid().size() > 0) {
+
+    guid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.guid_);
   }
   if (from.resulttype() != 0) {
     set_resulttype(from.resulttype());
@@ -986,6 +1147,8 @@ void pbRespStart::Swap(pbRespStart* other) {
   InternalSwap(other);
 }
 void pbRespStart::InternalSwap(pbRespStart* other) {
+  devicename_.Swap(&other->devicename_);
+  guid_.Swap(&other->guid_);
   std::swap(resulttype_, other->resulttype_);
   failreason_.Swap(&other->failreason_);
   std::swap(colorport_, other->colorport_);
@@ -1006,7 +1169,95 @@ void pbRespStart::InternalSwap(pbRespStart* other) {
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
 // pbRespStart
 
-// optional int32 resultType = 1;
+// optional string deviceName = 1;
+void pbRespStart::clear_devicename() {
+  devicename_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& pbRespStart::devicename() const {
+  // @@protoc_insertion_point(field_get:KinectDataProto.pbRespStart.deviceName)
+  return devicename_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void pbRespStart::set_devicename(const ::std::string& value) {
+  
+  devicename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:KinectDataProto.pbRespStart.deviceName)
+}
+ void pbRespStart::set_devicename(const char* value) {
+  
+  devicename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:KinectDataProto.pbRespStart.deviceName)
+}
+ void pbRespStart::set_devicename(const char* value, size_t size) {
+  
+  devicename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:KinectDataProto.pbRespStart.deviceName)
+}
+ ::std::string* pbRespStart::mutable_devicename() {
+  
+  // @@protoc_insertion_point(field_mutable:KinectDataProto.pbRespStart.deviceName)
+  return devicename_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* pbRespStart::release_devicename() {
+  // @@protoc_insertion_point(field_release:KinectDataProto.pbRespStart.deviceName)
+  
+  return devicename_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void pbRespStart::set_allocated_devicename(::std::string* devicename) {
+  if (devicename != NULL) {
+    
+  } else {
+    
+  }
+  devicename_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), devicename);
+  // @@protoc_insertion_point(field_set_allocated:KinectDataProto.pbRespStart.deviceName)
+}
+
+// optional string guid = 2;
+void pbRespStart::clear_guid() {
+  guid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& pbRespStart::guid() const {
+  // @@protoc_insertion_point(field_get:KinectDataProto.pbRespStart.guid)
+  return guid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void pbRespStart::set_guid(const ::std::string& value) {
+  
+  guid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:KinectDataProto.pbRespStart.guid)
+}
+ void pbRespStart::set_guid(const char* value) {
+  
+  guid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:KinectDataProto.pbRespStart.guid)
+}
+ void pbRespStart::set_guid(const char* value, size_t size) {
+  
+  guid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:KinectDataProto.pbRespStart.guid)
+}
+ ::std::string* pbRespStart::mutable_guid() {
+  
+  // @@protoc_insertion_point(field_mutable:KinectDataProto.pbRespStart.guid)
+  return guid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* pbRespStart::release_guid() {
+  // @@protoc_insertion_point(field_release:KinectDataProto.pbRespStart.guid)
+  
+  return guid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void pbRespStart::set_allocated_guid(::std::string* guid) {
+  if (guid != NULL) {
+    
+  } else {
+    
+  }
+  guid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), guid);
+  // @@protoc_insertion_point(field_set_allocated:KinectDataProto.pbRespStart.guid)
+}
+
+// optional int32 resultType = 3;
 void pbRespStart::clear_resulttype() {
   resulttype_ = 0;
 }
@@ -1020,7 +1271,7 @@ void pbRespStart::clear_resulttype() {
   // @@protoc_insertion_point(field_set:KinectDataProto.pbRespStart.resultType)
 }
 
-// optional string failReason = 2;
+// optional string failReason = 4;
 void pbRespStart::clear_failreason() {
   failreason_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -1064,7 +1315,7 @@ void pbRespStart::clear_failreason() {
   // @@protoc_insertion_point(field_set_allocated:KinectDataProto.pbRespStart.failReason)
 }
 
-// optional int32 colorPort = 3;
+// optional int32 colorPort = 5;
 void pbRespStart::clear_colorport() {
   colorport_ = 0;
 }
@@ -1078,7 +1329,7 @@ void pbRespStart::clear_colorport() {
   // @@protoc_insertion_point(field_set:KinectDataProto.pbRespStart.colorPort)
 }
 
-// optional int32 depthPort = 4;
+// optional int32 depthPort = 6;
 void pbRespStart::clear_depthport() {
   depthport_ = 0;
 }
@@ -1092,7 +1343,7 @@ void pbRespStart::clear_depthport() {
   // @@protoc_insertion_point(field_set:KinectDataProto.pbRespStart.depthPort)
 }
 
-// optional int32 skelePort = 5;
+// optional int32 skelePort = 7;
 void pbRespStart::clear_skeleport() {
   skeleport_ = 0;
 }
@@ -1104,6 +1355,770 @@ void pbRespStart::clear_skeleport() {
   
   skeleport_ = value;
   // @@protoc_insertion_point(field_set:KinectDataProto.pbRespStart.skelePort)
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int pbEndTransfer::kDeviceNameFieldNumber;
+const int pbEndTransfer::kExtensionFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+pbEndTransfer::pbEndTransfer()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:KinectDataProto.pbEndTransfer)
+}
+
+void pbEndTransfer::InitAsDefaultInstance() {
+  _is_default_instance_ = true;
+}
+
+pbEndTransfer::pbEndTransfer(const pbEndTransfer& from)
+  : ::google::protobuf::Message(),
+    _internal_metadata_(NULL) {
+  SharedCtor();
+  MergeFrom(from);
+  // @@protoc_insertion_point(copy_constructor:KinectDataProto.pbEndTransfer)
+}
+
+void pbEndTransfer::SharedCtor() {
+    _is_default_instance_ = false;
+  ::google::protobuf::internal::GetEmptyString();
+  _cached_size_ = 0;
+  devicename_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  extension_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+pbEndTransfer::~pbEndTransfer() {
+  // @@protoc_insertion_point(destructor:KinectDataProto.pbEndTransfer)
+  SharedDtor();
+}
+
+void pbEndTransfer::SharedDtor() {
+  devicename_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  extension_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (this != default_instance_) {
+  }
+}
+
+void pbEndTransfer::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* pbEndTransfer::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return pbEndTransfer_descriptor_;
+}
+
+const pbEndTransfer& pbEndTransfer::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_KinectDataProto_2eproto();
+  return *default_instance_;
+}
+
+pbEndTransfer* pbEndTransfer::default_instance_ = NULL;
+
+pbEndTransfer* pbEndTransfer::New(::google::protobuf::Arena* arena) const {
+  pbEndTransfer* n = new pbEndTransfer;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void pbEndTransfer::Clear() {
+// @@protoc_insertion_point(message_clear_start:KinectDataProto.pbEndTransfer)
+  devicename_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  extension_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+bool pbEndTransfer::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:KinectDataProto.pbEndTransfer)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional string deviceName = 1;
+      case 1: {
+        if (tag == 10) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_devicename()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->devicename().data(), this->devicename().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "KinectDataProto.pbEndTransfer.deviceName"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(18)) goto parse_extension;
+        break;
+      }
+
+      // optional string extension = 2;
+      case 2: {
+        if (tag == 18) {
+         parse_extension:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_extension()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->extension().data(), this->extension().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "KinectDataProto.pbEndTransfer.extension"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectAtEnd()) goto success;
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:KinectDataProto.pbEndTransfer)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:KinectDataProto.pbEndTransfer)
+  return false;
+#undef DO_
+}
+
+void pbEndTransfer::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:KinectDataProto.pbEndTransfer)
+  // optional string deviceName = 1;
+  if (this->devicename().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->devicename().data(), this->devicename().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "KinectDataProto.pbEndTransfer.deviceName");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      1, this->devicename(), output);
+  }
+
+  // optional string extension = 2;
+  if (this->extension().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->extension().data(), this->extension().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "KinectDataProto.pbEndTransfer.extension");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      2, this->extension(), output);
+  }
+
+  // @@protoc_insertion_point(serialize_end:KinectDataProto.pbEndTransfer)
+}
+
+::google::protobuf::uint8* pbEndTransfer::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  // @@protoc_insertion_point(serialize_to_array_start:KinectDataProto.pbEndTransfer)
+  // optional string deviceName = 1;
+  if (this->devicename().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->devicename().data(), this->devicename().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "KinectDataProto.pbEndTransfer.deviceName");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->devicename(), target);
+  }
+
+  // optional string extension = 2;
+  if (this->extension().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->extension().data(), this->extension().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "KinectDataProto.pbEndTransfer.extension");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->extension(), target);
+  }
+
+  // @@protoc_insertion_point(serialize_to_array_end:KinectDataProto.pbEndTransfer)
+  return target;
+}
+
+int pbEndTransfer::ByteSize() const {
+// @@protoc_insertion_point(message_byte_size_start:KinectDataProto.pbEndTransfer)
+  int total_size = 0;
+
+  // optional string deviceName = 1;
+  if (this->devicename().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->devicename());
+  }
+
+  // optional string extension = 2;
+  if (this->extension().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->extension());
+  }
+
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void pbEndTransfer::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:KinectDataProto.pbEndTransfer)
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
+  const pbEndTransfer* source = 
+      ::google::protobuf::internal::DynamicCastToGenerated<const pbEndTransfer>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:KinectDataProto.pbEndTransfer)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:KinectDataProto.pbEndTransfer)
+    MergeFrom(*source);
+  }
+}
+
+void pbEndTransfer::MergeFrom(const pbEndTransfer& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:KinectDataProto.pbEndTransfer)
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
+  if (from.devicename().size() > 0) {
+
+    devicename_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.devicename_);
+  }
+  if (from.extension().size() > 0) {
+
+    extension_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.extension_);
+  }
+}
+
+void pbEndTransfer::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:KinectDataProto.pbEndTransfer)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void pbEndTransfer::CopyFrom(const pbEndTransfer& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:KinectDataProto.pbEndTransfer)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool pbEndTransfer::IsInitialized() const {
+
+  return true;
+}
+
+void pbEndTransfer::Swap(pbEndTransfer* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void pbEndTransfer::InternalSwap(pbEndTransfer* other) {
+  devicename_.Swap(&other->devicename_);
+  extension_.Swap(&other->extension_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata pbEndTransfer::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = pbEndTransfer_descriptor_;
+  metadata.reflection = pbEndTransfer_reflection_;
+  return metadata;
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// pbEndTransfer
+
+// optional string deviceName = 1;
+void pbEndTransfer::clear_devicename() {
+  devicename_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& pbEndTransfer::devicename() const {
+  // @@protoc_insertion_point(field_get:KinectDataProto.pbEndTransfer.deviceName)
+  return devicename_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void pbEndTransfer::set_devicename(const ::std::string& value) {
+  
+  devicename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:KinectDataProto.pbEndTransfer.deviceName)
+}
+ void pbEndTransfer::set_devicename(const char* value) {
+  
+  devicename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:KinectDataProto.pbEndTransfer.deviceName)
+}
+ void pbEndTransfer::set_devicename(const char* value, size_t size) {
+  
+  devicename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:KinectDataProto.pbEndTransfer.deviceName)
+}
+ ::std::string* pbEndTransfer::mutable_devicename() {
+  
+  // @@protoc_insertion_point(field_mutable:KinectDataProto.pbEndTransfer.deviceName)
+  return devicename_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* pbEndTransfer::release_devicename() {
+  // @@protoc_insertion_point(field_release:KinectDataProto.pbEndTransfer.deviceName)
+  
+  return devicename_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void pbEndTransfer::set_allocated_devicename(::std::string* devicename) {
+  if (devicename != NULL) {
+    
+  } else {
+    
+  }
+  devicename_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), devicename);
+  // @@protoc_insertion_point(field_set_allocated:KinectDataProto.pbEndTransfer.deviceName)
+}
+
+// optional string extension = 2;
+void pbEndTransfer::clear_extension() {
+  extension_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& pbEndTransfer::extension() const {
+  // @@protoc_insertion_point(field_get:KinectDataProto.pbEndTransfer.extension)
+  return extension_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void pbEndTransfer::set_extension(const ::std::string& value) {
+  
+  extension_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:KinectDataProto.pbEndTransfer.extension)
+}
+ void pbEndTransfer::set_extension(const char* value) {
+  
+  extension_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:KinectDataProto.pbEndTransfer.extension)
+}
+ void pbEndTransfer::set_extension(const char* value, size_t size) {
+  
+  extension_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:KinectDataProto.pbEndTransfer.extension)
+}
+ ::std::string* pbEndTransfer::mutable_extension() {
+  
+  // @@protoc_insertion_point(field_mutable:KinectDataProto.pbEndTransfer.extension)
+  return extension_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* pbEndTransfer::release_extension() {
+  // @@protoc_insertion_point(field_release:KinectDataProto.pbEndTransfer.extension)
+  
+  return extension_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void pbEndTransfer::set_allocated_extension(::std::string* extension) {
+  if (extension != NULL) {
+    
+  } else {
+    
+  }
+  extension_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), extension);
+  // @@protoc_insertion_point(field_set_allocated:KinectDataProto.pbEndTransfer.extension)
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int pbReqEnd::kDeviceNameFieldNumber;
+const int pbReqEnd::kExtensionFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+pbReqEnd::pbReqEnd()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:KinectDataProto.pbReqEnd)
+}
+
+void pbReqEnd::InitAsDefaultInstance() {
+  _is_default_instance_ = true;
+}
+
+pbReqEnd::pbReqEnd(const pbReqEnd& from)
+  : ::google::protobuf::Message(),
+    _internal_metadata_(NULL) {
+  SharedCtor();
+  MergeFrom(from);
+  // @@protoc_insertion_point(copy_constructor:KinectDataProto.pbReqEnd)
+}
+
+void pbReqEnd::SharedCtor() {
+    _is_default_instance_ = false;
+  ::google::protobuf::internal::GetEmptyString();
+  _cached_size_ = 0;
+  devicename_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  extension_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+pbReqEnd::~pbReqEnd() {
+  // @@protoc_insertion_point(destructor:KinectDataProto.pbReqEnd)
+  SharedDtor();
+}
+
+void pbReqEnd::SharedDtor() {
+  devicename_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  extension_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (this != default_instance_) {
+  }
+}
+
+void pbReqEnd::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* pbReqEnd::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return pbReqEnd_descriptor_;
+}
+
+const pbReqEnd& pbReqEnd::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_KinectDataProto_2eproto();
+  return *default_instance_;
+}
+
+pbReqEnd* pbReqEnd::default_instance_ = NULL;
+
+pbReqEnd* pbReqEnd::New(::google::protobuf::Arena* arena) const {
+  pbReqEnd* n = new pbReqEnd;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void pbReqEnd::Clear() {
+// @@protoc_insertion_point(message_clear_start:KinectDataProto.pbReqEnd)
+  devicename_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  extension_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+bool pbReqEnd::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:KinectDataProto.pbReqEnd)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional string deviceName = 1;
+      case 1: {
+        if (tag == 10) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_devicename()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->devicename().data(), this->devicename().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "KinectDataProto.pbReqEnd.deviceName"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(18)) goto parse_extension;
+        break;
+      }
+
+      // optional string extension = 2;
+      case 2: {
+        if (tag == 18) {
+         parse_extension:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_extension()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->extension().data(), this->extension().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "KinectDataProto.pbReqEnd.extension"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectAtEnd()) goto success;
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:KinectDataProto.pbReqEnd)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:KinectDataProto.pbReqEnd)
+  return false;
+#undef DO_
+}
+
+void pbReqEnd::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:KinectDataProto.pbReqEnd)
+  // optional string deviceName = 1;
+  if (this->devicename().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->devicename().data(), this->devicename().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "KinectDataProto.pbReqEnd.deviceName");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      1, this->devicename(), output);
+  }
+
+  // optional string extension = 2;
+  if (this->extension().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->extension().data(), this->extension().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "KinectDataProto.pbReqEnd.extension");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      2, this->extension(), output);
+  }
+
+  // @@protoc_insertion_point(serialize_end:KinectDataProto.pbReqEnd)
+}
+
+::google::protobuf::uint8* pbReqEnd::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  // @@protoc_insertion_point(serialize_to_array_start:KinectDataProto.pbReqEnd)
+  // optional string deviceName = 1;
+  if (this->devicename().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->devicename().data(), this->devicename().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "KinectDataProto.pbReqEnd.deviceName");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->devicename(), target);
+  }
+
+  // optional string extension = 2;
+  if (this->extension().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->extension().data(), this->extension().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "KinectDataProto.pbReqEnd.extension");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->extension(), target);
+  }
+
+  // @@protoc_insertion_point(serialize_to_array_end:KinectDataProto.pbReqEnd)
+  return target;
+}
+
+int pbReqEnd::ByteSize() const {
+// @@protoc_insertion_point(message_byte_size_start:KinectDataProto.pbReqEnd)
+  int total_size = 0;
+
+  // optional string deviceName = 1;
+  if (this->devicename().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->devicename());
+  }
+
+  // optional string extension = 2;
+  if (this->extension().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->extension());
+  }
+
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void pbReqEnd::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:KinectDataProto.pbReqEnd)
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
+  const pbReqEnd* source = 
+      ::google::protobuf::internal::DynamicCastToGenerated<const pbReqEnd>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:KinectDataProto.pbReqEnd)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:KinectDataProto.pbReqEnd)
+    MergeFrom(*source);
+  }
+}
+
+void pbReqEnd::MergeFrom(const pbReqEnd& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:KinectDataProto.pbReqEnd)
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
+  if (from.devicename().size() > 0) {
+
+    devicename_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.devicename_);
+  }
+  if (from.extension().size() > 0) {
+
+    extension_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.extension_);
+  }
+}
+
+void pbReqEnd::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:KinectDataProto.pbReqEnd)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void pbReqEnd::CopyFrom(const pbReqEnd& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:KinectDataProto.pbReqEnd)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool pbReqEnd::IsInitialized() const {
+
+  return true;
+}
+
+void pbReqEnd::Swap(pbReqEnd* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void pbReqEnd::InternalSwap(pbReqEnd* other) {
+  devicename_.Swap(&other->devicename_);
+  extension_.Swap(&other->extension_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata pbReqEnd::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = pbReqEnd_descriptor_;
+  metadata.reflection = pbReqEnd_reflection_;
+  return metadata;
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// pbReqEnd
+
+// optional string deviceName = 1;
+void pbReqEnd::clear_devicename() {
+  devicename_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& pbReqEnd::devicename() const {
+  // @@protoc_insertion_point(field_get:KinectDataProto.pbReqEnd.deviceName)
+  return devicename_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void pbReqEnd::set_devicename(const ::std::string& value) {
+  
+  devicename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:KinectDataProto.pbReqEnd.deviceName)
+}
+ void pbReqEnd::set_devicename(const char* value) {
+  
+  devicename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:KinectDataProto.pbReqEnd.deviceName)
+}
+ void pbReqEnd::set_devicename(const char* value, size_t size) {
+  
+  devicename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:KinectDataProto.pbReqEnd.deviceName)
+}
+ ::std::string* pbReqEnd::mutable_devicename() {
+  
+  // @@protoc_insertion_point(field_mutable:KinectDataProto.pbReqEnd.deviceName)
+  return devicename_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* pbReqEnd::release_devicename() {
+  // @@protoc_insertion_point(field_release:KinectDataProto.pbReqEnd.deviceName)
+  
+  return devicename_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void pbReqEnd::set_allocated_devicename(::std::string* devicename) {
+  if (devicename != NULL) {
+    
+  } else {
+    
+  }
+  devicename_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), devicename);
+  // @@protoc_insertion_point(field_set_allocated:KinectDataProto.pbReqEnd.deviceName)
+}
+
+// optional string extension = 2;
+void pbReqEnd::clear_extension() {
+  extension_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& pbReqEnd::extension() const {
+  // @@protoc_insertion_point(field_get:KinectDataProto.pbReqEnd.extension)
+  return extension_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void pbReqEnd::set_extension(const ::std::string& value) {
+  
+  extension_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:KinectDataProto.pbReqEnd.extension)
+}
+ void pbReqEnd::set_extension(const char* value) {
+  
+  extension_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:KinectDataProto.pbReqEnd.extension)
+}
+ void pbReqEnd::set_extension(const char* value, size_t size) {
+  
+  extension_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:KinectDataProto.pbReqEnd.extension)
+}
+ ::std::string* pbReqEnd::mutable_extension() {
+  
+  // @@protoc_insertion_point(field_mutable:KinectDataProto.pbReqEnd.extension)
+  return extension_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* pbReqEnd::release_extension() {
+  // @@protoc_insertion_point(field_release:KinectDataProto.pbReqEnd.extension)
+  
+  return extension_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void pbReqEnd::set_allocated_extension(::std::string* extension) {
+  if (extension != NULL) {
+    
+  } else {
+    
+  }
+  extension_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), extension);
+  // @@protoc_insertion_point(field_set_allocated:KinectDataProto.pbReqEnd.extension)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS

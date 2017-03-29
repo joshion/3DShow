@@ -20,14 +20,17 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ConnectProto.pb.cc" />
+    <ClCompile Include="DataChannelProto.pb.cc" />
     <ClCompile Include="KinectDataProto.pb.cc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConnectProto.pb.h" />
+    <ClInclude Include="DataChannelProto.pb.h" />
     <ClInclude Include="KinectDataProto.pb.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ConnectProto.proto" />
+    <None Include="DataChannelProto.proto" />
     <None Include="KinectDataProto.proto" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
