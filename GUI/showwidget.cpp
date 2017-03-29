@@ -31,6 +31,9 @@ ShowWidget::ShowWidget(QString title, Utilities::ShowType type, QWidget *parent)
     connect(this, &ShowWidget::signal_getLocalPort, this, &ShowWidget::slot_getSocketLocalPort);
     connect(this, &ShowWidget::signal_connectedToServer, this, &ShowWidget::slot_connectedToServer);
 
+    m_pTimer = new QTimer(this);
+    connect(m_pTimer, &QTimer::timeout, this, &ShowWidget::slot_update);
+    m_pTimer->start(40);
 }
 
 ShowWidget::~ShowWidget()
@@ -93,10 +96,8 @@ void ShowWidget::initializeGL()
 
 void ShowWidget::paintGL()
 {
+    resizeViewPort();
     glClear(GL_COLOR_BUFFER_BIT);
-
-    resizeGL(this->width(), this->height());
-
     if (m_pColorPainter)
     {
         m_pColorPainter->paint();
@@ -113,6 +114,16 @@ void ShowWidget::paintGL()
 
 void ShowWidget::resizeGL(int w, int h)
 {
+}
+
+/*
+* 自定义调整视口大小
+* 让图像按照原比例显示中窗口中间
+*/
+void ShowWidget::resizeViewPort()
+{
+    float w = this->width();
+    float h = this->height();
     float fAspectRatio = (float) w / h;
     if (fAspectRatio > m_fAspectRatio)  // 窗口的宽度比图片的宽度大
     {
@@ -137,26 +148,28 @@ void ShowWidget::closeEvent(QCloseEvent * event)
 
 void ShowWidget::createTransferSocketThreads()
 {
+    TransferSocketThread *pSocketThread = nullptr;
     if (m_eShowType & Utilities::ShowType::Color)
     {
-        TransferSocketThread *p = new TransferSocketThread(this, Utilities::SocketType::Color);
-        m_Type_Socket.insert(Utilities::ShowType::Color, p);
+        pSocketThread = new TransferSocketThread(this, Utilities::SocketType::Color);
+        m_Type_Socket.insert(Utilities::ShowType::Color, pSocketThread);
         ++m_UnCreatedPortsCount;
     }
 
     if (m_eShowType & Utilities::ShowType::Depth)
     {
-        TransferSocketThread *p = new TransferSocketThread(this, Utilities::SocketType::Depth);
-        m_Type_Socket.insert(Utilities::ShowType::Depth, p);
+        pSocketThread = new TransferSocketThread(this, Utilities::SocketType::Depth);
+        m_Type_Socket.insert(Utilities::ShowType::Depth, pSocketThread);
         ++m_UnCreatedPortsCount;
     }
 
     if (m_eShowType & Utilities::ShowType::Skele)
     {
-        TransferSocketThread *p = new TransferSocketThread(this, Utilities::SocketType::Skele);
-        m_Type_Socket.insert(Utilities::ShowType::Skele, p);
+        pSocketThread = new TransferSocketThread(this, Utilities::SocketType::Skele);
+        m_Type_Socket.insert(Utilities::ShowType::Skele, pSocketThread);
         ++m_UnCreatedPortsCount;
     }
+    pSocketThread = nullptr;
 }
 
 void ShowWidget::updateColor()
@@ -171,7 +184,7 @@ void ShowWidget::updateColor()
         ImageTransferSocket* m_pSocket = (ImageTransferSocket*) m_Type_Socket[Utilities::ShowType::Color]->getTransferSocketPtr();
         if (m_bFirstTime)
         {
-            if (m_pSocket->matsSize() > 0)
+            if (m_pSocket && m_pSocket->matsSize() > 0)
             {
                 cv::Mat mat = m_pSocket->popMat();
                 m_fAspectRatio = (float) mat.cols / mat.rows;
@@ -179,10 +192,12 @@ void ShowWidget::updateColor()
             }
         }
 
-        if (m_pColorPainter && m_pSocket->matsSize() > 0)
+        if (m_pColorPainter && m_pSocket && m_pSocket->matsSize() > 0)
         {
             m_pColorPainter->loadTexture(m_pSocket->popMat());
         }
+
+        m_pSocket = nullptr;
     }
 }
 
@@ -192,6 +207,10 @@ void ShowWidget::updateDepth()
 
 void ShowWidget::updateSkele()
 {
+    if (m_pSkelePainter)
+    {
+        m_pSkelePainter->loadFrame();
+    }
 }
 
 void ShowWidget::slot_getSocketLocalPort(Utilities::SocketType type, unsigned int uPort)
@@ -224,15 +243,16 @@ void ShowWidget::slot_connectedToServer()
 
 void ShowWidget::firstTimeShow()
 {
-    m_pTimer = new QTimer(this);
-    connect(m_pTimer, &QTimer::timeout, this, &ShowWidget::slot_update);
-    m_pTimer->start(40);
+    //m_pTimer = new QTimer(this);
+    //connect(m_pTimer, &QTimer::timeout, this, &ShowWidget::slot_update);
+    //m_pTimer->start(40);
 }
 
 void ShowWidget::slot_update()
 {
     if (m_eShowType & Utilities::ShowType::Color)
     {
+        makeCurrent();
         updateColor();
     }
 
@@ -243,8 +263,9 @@ void ShowWidget::slot_update()
 
     if (m_eShowType & Utilities::ShowType::Skele)
     {
-
+        makeCurrent();
+        updateSkele();
     }
-    this->update();
+    update();
 }
 

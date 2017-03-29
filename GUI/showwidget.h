@@ -33,6 +33,9 @@ protected:
     void resizeGL(int  w, int h) override;
 
 private:
+    void resizeViewPort();
+
+private:
     ImagePainter *m_pColorPainter;
     ImagePainter *m_pDepthPainter;
     FramePainter *m_pSkelePainter;

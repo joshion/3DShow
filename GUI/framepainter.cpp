@@ -56,21 +56,21 @@ bool FramePainter::buildShaderProgram(const QString & strVertFile, const QString
 void FramePainter::paint()
 {
     m_Program.bind();
-    loadFrame();
 
     glBindVertexArray(m_VertexArraysObject[0]);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ElementBuffer[0]);
-    glEnableVertexAttribArray(VERTEX_LOCATION);
-    glEnableVertexAttribArray(COLOR_LOCATION);
 
+    m_Program.enableAttributeArray(VERTEX_LOCATION);
+    m_Program.enableAttributeArray(COLOR_LOCATION);
 
     glDrawArrays(GL_POINTS, 0, 6);
     glLineWidth(3.0);
     glDrawElements(GL_LINE_STRIP, 8, GL_UNSIGNED_SHORT, nullptr);
     glFlush();
 
-    glDisableVertexAttribArray(VERTEX_LOCATION);
-    glDisableVertexAttribArray(COLOR_LOCATION);
+    m_Program.disableAttributeArray(VERTEX_LOCATION);
+    m_Program.disableAttributeArray(COLOR_LOCATION);
+
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 }
@@ -91,7 +91,7 @@ void FramePainter::loadFrame()
     {
         m_pColor[i * 3 + 0] = QVector4D(0.8, 0.0, 0.0, 1.0);
         m_pColor[i * 3 + 1] = QVector4D(0.8, 0.0, 0.0, 1.0);
-        m_pColor[i * 3 + 2] = QVector4D(0.0, 0.0, 0.8, 1.0);
+        m_pColor[i * 3 + 2] = QVector4D(0.8, 0.0, 0.0, 1.0);
     }
 
     {
@@ -111,6 +111,8 @@ void FramePainter::loadFrame()
 void FramePainter::loadFrame(QVector4D* pVertices, QVector4D* pColors, unsigned int verticesSize,
     unsigned short* pElement, unsigned int elementSize)
 {
+    m_Program.bind();
+
     /*
     传输绘制索引到 opengl 服务器上的缓存上
     */
@@ -128,11 +130,8 @@ void FramePainter::loadFrame(QVector4D* pVertices, QVector4D* pColors, unsigned 
     glBufferSubData(GL_ARRAY_BUFFER, 0, verticesSize * sizeof(QVector4D), pVertices);
     glBufferSubData(GL_ARRAY_BUFFER, verticesSize * sizeof(QVector4D), verticesSize * sizeof(QVector4D), pColors);
 
-    glVertexAttribPointer(VERTEX_LOCATION, 4, GL_FLOAT, GL_FALSE, 0, nullptr);
-    glVertexAttribPointer(COLOR_LOCATION, 4, GL_FLOAT, GL_FALSE, 0, (const GLvoid *) (verticesSize * sizeof(QVector4D)));
-
-    glDisableVertexAttribArray(VERTEX_LOCATION);
-    glDisableVertexAttribArray(COLOR_LOCATION);
+    m_Program.setAttributeBuffer(VERTEX_LOCATION, GL_FLOAT, 0, 4, 0);
+    m_Program.setAttributeBuffer(COLOR_LOCATION, GL_FLOAT, verticesSize * sizeof(QVector4D), 4, 0);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
