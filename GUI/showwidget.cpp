@@ -6,6 +6,8 @@
 #include "config.h"
 
 #include <QTimer>
+#include <QMenu>
+#include <QAction>
 #include <QDebug>
 
 namespace
@@ -22,12 +24,19 @@ ShowWidget::ShowWidget(QString title, Utilities::ShowType type, QWidget *parent)
     m_pColorPainter(nullptr),
     m_pDepthPainter(nullptr),
     m_pSkelePainter(nullptr),
-    m_pTimer(nullptr)
+    m_pTimer(nullptr),
+    m_pMenu(nullptr),
+    m_bShowColor(false),
+    m_bShowDepth(false),
+    m_bShowSkele(false)
 {
-    this->setWindowTitle(m_strTitle);
-    this->setMinimumSize(320, 240);
+    setWindowTitle(m_strTitle);
+    setMinimumSize(320, 240);
+    setContextMenuPolicy(Qt::CustomContextMenu);
+    createMenu();
 
     connect(this, &ShowWidget::signal_connectedToServer, this, &ShowWidget::slot_connectedToServer);
+    connect(this, &ShowWidget::customContextMenuRequested, this, &ShowWidget::slot_customContextMenuRequested);
 
     m_pTimer = new QTimer(this);
     connect(m_pTimer, &QTimer::timeout, this, &ShowWidget::slot_update);
@@ -96,15 +105,15 @@ void ShowWidget::paintGL()
 {
     resizeViewPort();
     glClear(GL_COLOR_BUFFER_BIT);
-    if (m_pColorPainter)
+    if (m_pColorPainter && m_bShowColor)
     {
         m_pColorPainter->paint();
     }
-    if (m_pDepthPainter)
+    if (m_pDepthPainter && m_bShowDepth)
     {
         m_pDepthPainter->paint();
     }
-    if (m_pSkelePainter)
+    if (m_pSkelePainter && m_bShowSkele)
     {
         m_pSkelePainter->paint();
     }
@@ -139,6 +148,53 @@ void ShowWidget::resizeViewPort()
     }
 }
 
+void ShowWidget::createMenu()
+{
+    if (nullptr == m_pMenu)
+    {
+        m_pMenu = new QMenu(this);
+    }
+    m_pMenu->clear();
+    if (m_eShowType & Utilities::ShowType::Color)
+    {
+        QAction *p = new QAction("Show Color", this);
+        m_bShowColor = true;
+        p->setCheckable(true);
+        p->setChecked(true);
+        connect(p, &QAction::toggled, [&](bool flag) {
+            m_bShowColor = flag;
+        });
+        m_pMenu->addAction(p);
+        p = nullptr;
+    }
+
+    if (m_eShowType & Utilities::ShowType::Depth)
+    {
+        QAction *p = new QAction("Show Depth", this);
+        m_bShowDepth = true;
+        p->setCheckable(true);
+        p->setChecked(true);
+        connect(p, &QAction::toggled, [&](bool flag) {
+            m_bShowDepth = flag;
+        });
+        m_pMenu->addAction(p);
+        p = nullptr;
+    }
+
+    if (m_eShowType & Utilities::ShowType::Skele)
+    {
+        QAction *p = new QAction("Show Skele", this);
+        m_bShowSkele = true;
+        p->setCheckable(true);
+        p->setChecked(true);
+        connect(p, &QAction::toggled, [&](bool flag) {
+            m_bShowSkele = flag;
+        });
+        m_pMenu->addAction(p);
+        p = nullptr;
+    }
+}
+
 void ShowWidget::closeEvent(QCloseEvent * event)
 {
     emit signal_closed(m_strTitle);
@@ -168,6 +224,14 @@ void ShowWidget::createTransferSocketThreads()
         m_Type_Socket.insert(Utilities::ShowType::Skele, pSocketThread);
     }
     pSocketThread = nullptr;
+}
+
+void ShowWidget::slot_customContextMenuRequested(QPoint point)
+{
+    if (m_pMenu)
+    {
+        m_pMenu->exec(QCursor::pos());
+    }
 }
 
 void ShowWidget::updateColor()

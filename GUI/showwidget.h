@@ -12,6 +12,7 @@
 #include <QOpenGLFunctions>
 
 class QTimer;
+class QMenu;
 class TransferSocketThread;
 
 class ShowWidget : public QOpenGLWidget, public TransferInterface, protected QOpenGLFunctions
@@ -31,12 +32,17 @@ protected:
 
 private:
     void resizeViewPort();
-
+    void createMenu();
 private:
     ImagePainter *m_pColorPainter;
     ImagePainter *m_pDepthPainter;
     FramePainter *m_pSkelePainter;
     QTimer* m_pTimer;
+    QMenu *m_pMenu;
+
+    bool m_bShowColor;
+    bool m_bShowDepth;
+    bool m_bShowSkele;
 
     /********************************************************************************************/
 
@@ -56,6 +62,7 @@ public:
     void createTransferSocketThreads();
 private slots :
     void slot_update();
+    void slot_customContextMenuRequested(QPoint point);
     /*
     * 成功连接到服务器的数据传输端口
     * 开始传输数据
