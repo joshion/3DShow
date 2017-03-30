@@ -1,4 +1,4 @@
-#include "mainwindow.hpp"
+#include "mainwindow.h"
 
 #include "ordersocketthread.h"
 
@@ -12,26 +12,26 @@ MainWindow::MainWindow(QWidget * parent)
 
     m_pOrderSocketThread = OrderSocketThread::GetInstance("127.0.0.1", 7892, this);
 
-    /* å®¢æˆ·ç«¯å‘æœåŠ¡ç«¯è¯·æ±‚è¿æ¥ */
+    /* ¿Í»§¶ËÏò·şÎñ¶ËÇëÇóÁ¬½Ó */
     connect(ui.m_ReqConnect, &QPushButton::clicked, m_pOrderSocketThread, &OrderSocketThread::signal_requireConnect);
     /*
-    * å®¢æˆ·ç«¯ç”³è¯·æ–­å¼€è¿æ¥
-    * æ–­å¼€è¿æ¥æ—¶ é€šè¿‡æ§åˆ¶socketé€šçŸ¥æœåŠ¡å™¨å¤–
-    * ä¹Ÿéœ€è¦åœ¨å®¢æˆ·ç«¯å†…åšå‡ºæ–­å¼€æ‰€æœ‰ æ•°æ®ä¼ è¾“socket
+    * ¿Í»§¶ËÉêÇë¶Ï¿ªÁ¬½Ó
+    * ¶Ï¿ªÁ¬½ÓÊ± Í¨¹ı¿ØÖÆsocketÍ¨Öª·şÎñÆ÷Íâ
+    * Ò²ĞèÒªÔÚ¿Í»§¶ËÄÚ×ö³ö¶Ï¿ªËùÓĞ Êı¾İ´«Êäsocket
     */
-    connect(ui.m_ExitConnect, &QPushButton::clicked, m_pOrderSocketThread, &OrderSocketThread::signal_exitConnect);  
+    connect(ui.m_ExitConnect, &QPushButton::clicked, m_pOrderSocketThread, &OrderSocketThread::signal_exitConnect);
     connect(ui.m_ExitConnect, &QPushButton::clicked, this, &MainWindow::slot_exitConnect);
 
     connect(ui.m_MultiShowArea, &MultiShowArea::signal_reqStart, m_pOrderSocketThread, &OrderSocketThread::signal_reqStart);
 
-    /* ä» åº•å±‚æœåŠ¡orderSocket å‘å›åˆ° ä¸»çª—å£ çš„æ¶ˆæ¯ */
+    /* ´Ó µ×²ã·şÎñorderSocket ·¢»Øµ½ Ö÷´°¿Ú µÄÏûÏ¢ */
     connect(this, &MainWindow::signal_respConnect, this, &MainWindow::slot_respConnect);
     connect(this, &MainWindow::signal_respDevices, ui.m_DevicesWidget, &DevicesWidget::slot_setDevices);
-    connect(this, &MainWindow::signal_reqEndConnect, this, &MainWindow::slot_reqEndConnect);    // æœåŠ¡å™¨ç«¯ä¸»åŠ¨æ–­å¼€è¿æ¥
-    connect(this, &MainWindow::signal_respStart, ui.m_MultiShowArea, &MultiShowArea::slot_startTransfer);   // æœåŠ¡å™¨è¿”å›ç«¯å£å·
-    connect(this, &MainWindow::signal_hasBeenConnected, this, &MainWindow::slot_hasBeenConnected);  // æ§åˆ¶socketå·²ç»è¿æ¥
+    connect(this, &MainWindow::signal_reqEndConnect, this, &MainWindow::slot_reqEndConnect);    // ·şÎñÆ÷¶ËÖ÷¶¯¶Ï¿ªÁ¬½Ó
+    connect(this, &MainWindow::signal_respStart, ui.m_MultiShowArea, &MultiShowArea::slot_startTransfer);   // ·şÎñÆ÷·µ»Ø¶Ë¿ÚºÅ
+    connect(this, &MainWindow::signal_hasBeenConnected, this, &MainWindow::slot_hasBeenConnected);  // ¿ØÖÆsocketÒÑ¾­Á¬½Ó
 
-    /* ä» è®¾å¤‡åˆ—è¡¨çª—å£ å‘é€åˆ° å¤šçª—å£æ˜¾ç¤ºçª—å£ çš„æ¶ˆæ¯ */
+    /* ´Ó Éè±¸ÁĞ±í´°¿Ú ·¢ËÍµ½ ¶à´°¿ÚÏÔÊ¾´°¿Ú µÄÏûÏ¢ */
     connect(ui.m_DevicesWidget, &DevicesWidget::signal_createShowWidget,
         ui.m_MultiShowArea, &MultiShowArea::slot_showSubWidget);
 }
@@ -48,39 +48,39 @@ MainWindow::~MainWindow()
 void MainWindow::disconnectFromServer()
 {
     /*
-    * æ–­å¼€è¿æ¥å,
-    * é€šçŸ¥è®¾å¤‡åˆ—è¡¨çª—å£æ¸…ç©ºè®¾å¤‡åˆ—è¡¨,
-    * å¹¶ä¸å†å…è®¸å‘æœåŠ¡å™¨ç«¯è¯·æ±‚è®¾å¤‡åˆ—è¡¨
+    * ¶Ï¿ªÁ¬½Óºó,
+    * Í¨ÖªÉè±¸ÁĞ±í´°¿ÚÇå¿ÕÉè±¸ÁĞ±í,
+    * ²¢²»ÔÙÔÊĞíÏò·şÎñÆ÷¶ËÇëÇóÉè±¸ÁĞ±í
     */
     disconnect(ui.m_ReqDevices, &QPushButton::clicked, m_pOrderSocketThread, &OrderSocketThread::signal_requireDevices);
 
-    // æ·»åŠ ä»£ç , è®©è®¾å¤‡åˆ—è¡¨æ¸…ç©ºåˆ—è¡¨, å·²ç»æ‰“å¼€çš„æ˜¾ç¤ºçª—å£å…¨éƒ¨å…³é—­
+    // Ìí¼Ó´úÂë, ÈÃÉè±¸ÁĞ±íÇå¿ÕÁĞ±í, ÒÑ¾­´ò¿ªµÄÏÔÊ¾´°¿ÚÈ«²¿¹Ø±Õ
 }
 
 void MainWindow::slot_respConnect()
 {
-    /* æœåŠ¡å™¨ç«¯å›åº”è¿æ¥æˆåŠŸå, å…è®¸å‘æœåŠ¡å™¨ç«¯è¯·æ±‚è®¾å¤‡åˆ—è¡¨ */
+    /* ·şÎñÆ÷¶Ë»ØÓ¦Á¬½Ó³É¹¦ºó, ÔÊĞíÏò·şÎñÆ÷¶ËÇëÇóÉè±¸ÁĞ±í */
     connect(ui.m_ReqDevices, &QPushButton::clicked, m_pOrderSocketThread, &OrderSocketThread::signal_requireDevices);
 
-    QToolTip::showText(QPoint(x() + 250, y()), "connected to server successed!" ,this, QRect(), 2000);
+    QToolTip::showText(QPoint(x() + 250, y()), "connected to server successed!", this, QRect(), 2000);
     qDebug() << "enter" << __FILE__ << __LINE__ << "slot_respConnect";
 }
 
-/* æœåŠ¡å™¨ä¸»åŠ¨æ–­å¼€è¿æ¥ è§¦å‘äº‹ä»¶ */
+/* ·şÎñÆ÷Ö÷¶¯¶Ï¿ªÁ¬½Ó ´¥·¢ÊÂ¼ş */
 void MainWindow::slot_reqEndConnect()
 {
     disconnectFromServer();
     qDebug() << "enter" << __FILE__ << __LINE__ << "slot_reqEndConnect";
 }
 
-/* æ§åˆ¶socketå·²ç»æˆåŠŸè¿æ¥åˆ°æœåŠ¡å™¨å å†ç‚¹å‡»ç”³è¯·è¿æ¥æ—¶ ä¼šè§¦å‘è¯¥äº‹ä»¶ */
+/* ¿ØÖÆsocketÒÑ¾­³É¹¦Á¬½Óµ½·şÎñÆ÷ºó ÔÙµã»÷ÉêÇëÁ¬½ÓÊ± »á´¥·¢¸ÃÊÂ¼ş */
 void MainWindow::slot_hasBeenConnected()
 {
     QToolTip::showText(QPoint(x() + 250, y()),
         "Has been connected to server,\n no need to require connect!", this, QRect(), 2000);
 }
 
-/* é€€å‡ºæ‰€æœ‰è¿æ¥æ—¶ è§¦å‘çš„äº‹ä»¶ */
+/* ÍË³öËùÓĞÁ¬½ÓÊ± ´¥·¢µÄÊÂ¼ş */
 void MainWindow::slot_exitConnect()
 {
     disconnectFromServer();

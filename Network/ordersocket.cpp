@@ -1,5 +1,5 @@
 #include "ordersocket.h"
-#include "orderinterface.hpp"
+#include "orderinterface.h"
 #include "orderframebuffer.h"
 
 #include "ConnectProto.pb.h"
@@ -116,6 +116,8 @@ bool OrderSocket::slot_requireConnect()
             m_pSendFrameBuffer->setData(nullptr, 0);
             writeBufferToServer();
         });
+
+        return true;
     }
     else
     {

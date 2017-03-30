@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "KinectDataProto.pb.h"
 
@@ -7,8 +7,8 @@ class QStringList;
 class OrderInterface
 {
 public:
-	OrderInterface();
-	~OrderInterface();
+    OrderInterface();
+    ~OrderInterface();
 public:
     virtual void signal_respConnect() = 0;
     virtual void signal_respDevices(const QStringList& devicesList) = 0;

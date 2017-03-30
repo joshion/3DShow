@@ -3,28 +3,28 @@
 #include "KinectDataProto.pb.h"
 
 #include "ui_mainwindow.h"
-#include "orderinterface.hpp"
+#include "orderinterface.h"
 #include <QWidget>
 
 class OrderSocketThread;
 
-class MainWindow : public QWidget ,public OrderInterface
+class MainWindow : public QWidget, public OrderInterface
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	MainWindow(QWidget * parent = Q_NULLPTR);
-	~MainWindow();
+    MainWindow(QWidget * parent = Q_NULLPTR);
+    ~MainWindow();
 private:
     void disconnectFromServer();
 private:
-	Ui::MainWindow ui;
+    Ui::MainWindow ui;
 
 private:
     OrderSocketThread *m_pOrderSocketThread;
 
 /***********************************************************************************/
-/*åº•å±‚C++ä¸æœ¬GUIç±»é€šä¿¡æ‰€ç”¨æ¥å£*/
+/*µ×²ãC++Óë±¾GUIÀàÍ¨ĞÅËùÓÃ½Ó¿Ú*/
 signals: void signal_respConnect() override;
 signals: void signal_respDevices(const QStringList& devicesList) override;
 signals: void signal_reqEndConnect() override;

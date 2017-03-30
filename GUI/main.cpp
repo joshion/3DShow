@@ -1,4 +1,4 @@
-#include "mainwindow.hpp"
+#include "mainwindow.h"
 
 #include "utilities.h"
 #include "singleapplication.h"

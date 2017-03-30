@@ -1,7 +1,7 @@
 #include "ordersocketthread.h"
 
 #include "ordersocket.h"
-#include "orderinterface.hpp"
+#include "orderinterface.h"
 
 OrderSocketThread::OrderSocketThread(QString adress, unsigned int port,
     OrderInterface *pInterface, QObject *parent)

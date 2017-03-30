@@ -97,9 +97,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="orderinterface.hpp">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
     <CustomBuild Include="ordersocket.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
@@ -121,6 +118,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="transferinterface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orderinterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
