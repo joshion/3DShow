@@ -6,11 +6,15 @@
 #include <qdebug.h>
 
 MainWindow::MainWindow(QWidget * parent)
-    : QWidget(parent)
+    : QWidget(parent),
+    m_pConfig(nullptr),
+    m_pOrderSocketThread(nullptr)
 {
+    m_pConfig = Config::GetInstance();
+    m_pConfig->setIPAdress("127.0.0.1");
+    m_pConfig->setServerPort(7892);
     ui.setupUi(this);
-
-    m_pOrderSocketThread = OrderSocketThread::GetInstance("127.0.0.1", 7892, this);
+    m_pOrderSocketThread = OrderSocketThread::GetInstance(m_pConfig->IPAdress(), m_pConfig->serverPort(), this);
 
     /* 客户端向服务端请求连接 */
     connect(ui.m_ReqConnect, &QPushButton::clicked, m_pOrderSocketThread, &OrderSocketThread::signal_requireConnect);
@@ -42,6 +46,11 @@ MainWindow::~MainWindow()
     {
         OrderSocketThread::ReleaseInstance();
         m_pOrderSocketThread = nullptr;
+    }
+    if (m_pConfig)
+    {
+        Config::ReleaseInstance();
+        m_pConfig = nullptr;
     }
 }
 

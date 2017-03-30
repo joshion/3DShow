@@ -20,7 +20,7 @@ class OrderSocket : public QTcpSocket
 {
     Q_OBJECT
 public:
-    explicit OrderSocket(QString adress="127.0.0.1", unsigned int port= 7892, QObject *parent = nullptr);
+    explicit OrderSocket(QString adress, unsigned int port, QObject *parent = nullptr);
     OrderSocket(const OrderSocket& other) = delete;
     OrderSocket& operator= (const OrderSocket& other) = delete;
     ~OrderSocket();

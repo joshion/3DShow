@@ -25,8 +25,8 @@ MultiShowArea::~MultiShowArea()
 
 }
 
-/* 发送信号到orderSocket, 向服务器请求返回传输数据所有的端口号 */
-void MultiShowArea::informServerToReturnGuid(const QString &strWindowTile)
+/* 发送信号到orderSocket, 向服务器请求开始传输Kinect数据 */
+void MultiShowArea::informServerToStartTransfer(const QString &strWindowTile)
 {
     m_ReqStart.set_devicename(strWindowTile.toStdString());
 
@@ -38,7 +38,14 @@ void MultiShowArea::slot_startTransfer(KinectDataProto::pbRespStart respStart)
     QString strWindowTile = QString::fromStdString(respStart.devicename());
     if (m_Title_Widget.contains(strWindowTile))
     {
-        m_Title_Widget[strWindowTile]->createTransferSocketThreads(respStart);
+        if (1 == respStart.resulttype())
+        {
+            m_Title_Widget[strWindowTile]->createTransferSocketThreads();
+        }
+        else
+        {
+            // 添加代码处理未能成功打开传输信道
+        }
     }
 }
 
@@ -64,7 +71,7 @@ void MultiShowArea::slot_showSubWidget(QString strWindowTitle, Utilities::ShowTy
         m_Title_Widget.insert(strWindowTitle, p);
         p = nullptr;
 
-        informServerToReturnGuid(strWindowTitle);
+        informServerToStartTransfer(strWindowTitle);
     }
 }
 

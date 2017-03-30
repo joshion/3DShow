@@ -7,7 +7,8 @@ class ImageTransferSocket : public TransferSocket
     Q_OBJECT
 
 public:
-    ImageTransferSocket(QString deviceName, QString guid, Utilities::SocketType type, QString strIPAdress = "127.0.0.1");
+    ImageTransferSocket(QString deviceName, Utilities::SocketType type,
+        QString strIPAdress, unsigned int port);
     ~ImageTransferSocket();
 
 protected:

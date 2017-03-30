@@ -12,8 +12,7 @@ class OrderSocketThread : public QThread, public SingleTon<OrderSocketThread>
     Q_OBJECT
 
 private:
-    OrderSocketThread(QString adress = "127.0.0.1", unsigned int port = 7892, 
-        OrderInterface *pInterface = nullptr, QObject *parent = nullptr);
+    OrderSocketThread(QString adress, unsigned int, OrderInterface *pInterface = nullptr, QObject *parent = nullptr);
     ~OrderSocketThread();
 
     friend class SingleTon<OrderSocketThread>;

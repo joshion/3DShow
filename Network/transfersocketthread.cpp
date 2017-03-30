@@ -4,14 +4,13 @@
 #include "imagetransfersocket.h"
 #include "transferinterface.h"
 
-TransferSocketThread::TransferSocketThread(QString deviceName, QString guid, Utilities::SocketType type,
-    unsigned int port, QString strIPAdress, TransferInterface *pInterface, QObject *parent)
+TransferSocketThread::TransferSocketThread(QString deviceName, Utilities::SocketType type,
+    QString strIPAdress, unsigned int port, TransferInterface *pInterface, QObject *parent)
     : QThread(parent),
     m_strDeviceName(deviceName),
-    m_strGuid(guid),
     m_eSocketType(type),
-    m_uPort(port),
     m_strIPAdress(strIPAdress),
+    m_uPort(port),
     m_pTransferInterface(pInterface),
     m_pTransferSocket(nullptr)
 {
@@ -33,15 +32,15 @@ void TransferSocketThread::createTransferSocket(Utilities::SocketType type)
 {
     if (type == Utilities::SocketType::Color)
     {
-        m_pTransferSocket = new ImageTransferSocket { m_strDeviceName, m_strGuid, type };
+        m_pTransferSocket = new ImageTransferSocket { m_strDeviceName, type, m_strIPAdress, m_uPort };
     }
     else if (type == Utilities::SocketType::Depth)
     {
-        m_pTransferSocket = new ImageTransferSocket { m_strDeviceName, m_strGuid, type };
+        m_pTransferSocket = new ImageTransferSocket { m_strDeviceName, type, m_strIPAdress, m_uPort };
     }
     else if (type == Utilities::SocketType::Skele)
     {
-        m_pTransferSocket = new FrameTransferSocket { m_strDeviceName, m_strGuid, type };
+        m_pTransferSocket = new FrameTransferSocket { m_strDeviceName, type, m_strIPAdress, m_uPort };
     }
     m_pTransferSocket->registerGUIClass(m_pTransferInterface);
     m_pTransferSocket->connectToServer();

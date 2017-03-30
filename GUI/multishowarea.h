@@ -29,7 +29,7 @@ private:
 private:
     KinectDataProto::pbReqStart m_ReqStart;
 private:
-    void informServerToReturnGuid(const QString &strWindowTile);
+    void informServerToStartTransfer(const QString &strWindowTile);
 
 /* 发送到orderSocket的信号 */
 signals: void signal_reqStart(KinectDataProto::pbReqStart reqStart);

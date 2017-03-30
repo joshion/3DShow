@@ -3,6 +3,8 @@
 #include "transferframebuffer.h"
 
 #include "orderframebuffer.h"
+#include "config.h"
+
 #include "DataChannelProto.pb.h"
 
 #include <QByteArray>
@@ -16,13 +18,12 @@ namespace
     static const unsigned int VALIDATE_PORT = 1;
 }
 
-TransferSocket::TransferSocket(QString deviceName, QString guid, Utilities::SocketType type,
-    QString strIPAdress)
+TransferSocket::TransferSocket(QString deviceName, Utilities::SocketType type,
+    QString strIPAdress, unsigned int port)
     : m_strDeviceName(deviceName),
-    m_strGuid(guid),
     m_eSocketType(type),
-    m_uPort(0),
     m_strIPAdress(strIPAdress),
+    m_uPort(port),
     m_bConnected(false),
     m_bNotHasHead(true), 
     m_pReceiveFrameBuffer(nullptr)
@@ -78,7 +79,7 @@ void TransferSocket::validatePort()
 {
     DataChannelProto::pbValidatePort pbValidatePort;
     pbValidatePort.set_devicename(m_strDeviceName.toStdString());
-    pbValidatePort.set_guid(m_strGuid.toStdString());
+    pbValidatePort.set_guid(Config::GetInstance()->guid().toStdString());
 
     OrderFrameBuffer orderBuffer;
     orderBuffer.setCmdType(DATA_CHANNEL_PROTOCOL);

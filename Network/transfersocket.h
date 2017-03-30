@@ -18,8 +18,8 @@ class TransferSocket : public QTcpSocket, public Thread
     Q_OBJECT
 
 public:
-    explicit TransferSocket(QString deviceName, QString guid, Utilities::SocketType type,
-        QString strIPAdress = "127.0.0.1");
+    explicit TransferSocket(QString deviceName, Utilities::SocketType type,
+        QString strIPAdress, unsigned int port);
     TransferSocket(TransferSocket &) = delete;
     TransferSocket& operator= (const TransferSocket &other) = delete;
     ~TransferSocket();
@@ -40,10 +40,9 @@ private:
 
 private:
     QString m_strDeviceName;
-    QString m_strGuid;
     Utilities::SocketType m_eSocketType;
-    unsigned int m_uPort;
     QString m_strIPAdress;
+    unsigned int m_uPort;
     bool m_bConnected;
 /***********************************************************************************/
 /*与GUI通信所用接口*/

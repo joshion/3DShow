@@ -3,6 +3,8 @@
 #include "transfersocketthread.h"
 #include "imagetransfersocket.h"
 
+#include "config.h"
+
 #include <QTimer>
 #include <QDebug>
 
@@ -142,29 +144,27 @@ void ShowWidget::closeEvent(QCloseEvent * event)
     emit signal_closed(m_strTitle);
 }
 
-void ShowWidget::createTransferSocketThreads(KinectDataProto::pbRespStart respStart)
+void ShowWidget::createTransferSocketThreads()
 {
-    // QString strGuid = QString::fromStdString(respStart.guid());
-
     TransferSocketThread *pSocketThread = nullptr;
     if (m_eShowType & Utilities::ShowType::Color)
     {
-        pSocketThread = new TransferSocketThread { m_strTitle, "", Utilities::SocketType::Color,
-            0, IP_ADRESS, this };
+        pSocketThread = new TransferSocketThread { m_strTitle, Utilities::SocketType::Color,
+            Config::GetInstance()->IPAdress(), Config::GetInstance()->colorPort(), this };
         m_Type_Socket.insert(Utilities::ShowType::Color, pSocketThread);
     }
 
     if (m_eShowType & Utilities::ShowType::Depth)
     {
-        pSocketThread = new TransferSocketThread { m_strTitle, "", Utilities::SocketType::Depth,
-            0, IP_ADRESS, this };
+        pSocketThread = new TransferSocketThread { m_strTitle, Utilities::SocketType::Depth,
+            Config::GetInstance()->IPAdress(), Config::GetInstance()->depthPort(), this };
         m_Type_Socket.insert(Utilities::ShowType::Depth, pSocketThread);
     }
 
     if (m_eShowType & Utilities::ShowType::Skele)
     {
-        pSocketThread = new TransferSocketThread { m_strTitle, "", Utilities::SocketType::Skele,
-            0, IP_ADRESS, this };
+        pSocketThread = new TransferSocketThread { m_strTitle, Utilities::SocketType::Skele,
+            Config::GetInstance()->IPAdress(), Config::GetInstance()->skelePort(), this };
         m_Type_Socket.insert(Utilities::ShowType::Skele, pSocketThread);
     }
     pSocketThread = nullptr;

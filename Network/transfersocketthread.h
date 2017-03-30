@@ -14,8 +14,8 @@ class TransferSocketThread : public QThread
     Q_OBJECT
 
 public:
-    TransferSocketThread(QString deviceName, QString guid, Utilities::SocketType type, unsigned int port,
-        QString strIPAdress = "127.0.0.1", TransferInterface *pInterface = nullptr, QObject *parent = nullptr);
+    TransferSocketThread(QString deviceName, Utilities::SocketType type, QString strIPAdress, unsigned int port,
+        TransferInterface *pInterface = nullptr, QObject *parent = nullptr);
     ~TransferSocketThread();
 public:
     TransferSocket* getTransferSocketPtr()
@@ -24,10 +24,9 @@ public:
     }
 private:
     QString m_strDeviceName;
-    QString m_strGuid;
     Utilities::SocketType m_eSocketType;
-    unsigned int m_uPort;
     QString m_strIPAdress;
+    unsigned int m_uPort;
     TransferInterface *m_pTransferInterface;    // 上层GUI类的虚基类, 传递其到下层C++服务,用于上下层的通信
 
 /***********************************************************************************/

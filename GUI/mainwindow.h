@@ -2,6 +2,8 @@
 
 #include "KinectDataProto.pb.h"
 
+#include "config.h"
+
 #include "ui_mainwindow.h"
 #include "orderinterface.h"
 #include <QWidget>
@@ -21,6 +23,7 @@ private:
     Ui::MainWindow ui;
 
 private:
+    Config *m_pConfig;  // 此对象是单例,仅且在此类中创建和释放一次
     OrderSocketThread *m_pOrderSocketThread;
 
 /***********************************************************************************/

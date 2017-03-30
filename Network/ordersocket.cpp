@@ -2,6 +2,8 @@
 #include "orderinterface.h"
 #include "orderframebuffer.h"
 
+#include "config.h"
+
 #include "ConnectProto.pb.h"
 #include "KinectDataProto.pb.h"
 
@@ -224,6 +226,22 @@ void OrderSocket::analysisReceiveFrameBuffer(const OrderFrameBuffer & buffer)
             ConnectProto::pbRespConnect resp;
             resp.ParseFromArray(buffer.data(), buffer.length());
             resp.PrintDebugString();
+
+            /* 根据服务器返回的GUID和三种数据传输端口,对本程序进行配置 */
+            Config::GetInstance()->setGuid(QString::fromStdString(resp.guid()));
+            if (resp.colorport() > 0)
+            {
+                Config::GetInstance()->setColorPort(static_cast<unsigned int>(resp.colorport()));
+            }
+            if (resp.depthport() > 0)
+            {
+                Config::GetInstance()->setDepthPort(static_cast<unsigned int>(resp.depthport()));
+            }
+            if (resp.skeleport() > 0)
+            {
+                Config::GetInstance()->setSkelePort(static_cast<unsigned int>(resp.depthport()));
+            }
+
             if (m_pGUI)
             {
                 m_pGUI->signal_respConnect();
