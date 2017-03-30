@@ -3,13 +3,9 @@ syntax="proto3";
 package KinectDataProto;
 
 // 客户端向服务器请求某特定设备数据的传输
-// 1为需要该种类型数据, -1则为不需要
 message pbReqStart
 {
     string deviceName = 1;
-    int32 color = 2;
-    int32 depth = 3;
-    int32 skele = 4;
 }
 
 // 服务器向客户端返回为 某特定设备数据的传输 开启的端口
@@ -20,9 +16,6 @@ message pbRespStart
     string guid = 2;
     int32 resultType = 3;
     string failReason = 4;
-    int32 colorPort = 5;
-    int32 depthPort = 6;
-    int32 skelePort = 7;
 }
 
 // 服务器主动断开某特定设备的数据传输

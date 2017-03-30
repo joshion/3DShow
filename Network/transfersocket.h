@@ -34,7 +34,7 @@ public:
     * 是因为注册上层GUI是在构造之后,如果在构造函数内建立连接
     * 会导致信号无法传递到上层GUI
     */
-    void connectToServer(unsigned int port);
+    virtual void connectToServer() final;
 private:
     void validatePort();
 

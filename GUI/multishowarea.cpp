@@ -26,18 +26,9 @@ MultiShowArea::~MultiShowArea()
 }
 
 /* 发送信号到orderSocket, 向服务器请求返回传输数据所有的端口号 */
-void MultiShowArea::informServerToReturnTransferPorts(const QString &strWindowTile, Utilities::ShowType type)
+void MultiShowArea::informServerToReturnGuid(const QString &strWindowTile)
 {
     m_ReqStart.set_devicename(strWindowTile.toStdString());
-
-    if (Utilities::ShowType::Color & type) { m_ReqStart.set_color(1); }
-    else { m_ReqStart.set_color(-1); }
-
-    if (Utilities::ShowType::Depth & type) { m_ReqStart.set_depth(1); }
-    else { m_ReqStart.set_depth(-1); }
-
-    if (Utilities::ShowType::Skele & type) { m_ReqStart.set_skele(1); }
-    else { m_ReqStart.set_skele(-1); }
 
     emit signal_reqStart(m_ReqStart);
 }
@@ -73,7 +64,7 @@ void MultiShowArea::slot_showSubWidget(QString strWindowTitle, Utilities::ShowTy
         m_Title_Widget.insert(strWindowTitle, p);
         p = nullptr;
 
-        informServerToReturnTransferPorts(strWindowTitle, type);
+        informServerToReturnGuid(strWindowTitle);
     }
 }
 

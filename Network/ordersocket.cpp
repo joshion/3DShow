@@ -71,6 +71,15 @@ OrderSocket::~OrderSocket()
 void OrderSocket::slot_setConnected()
 {
     m_bConnected = true;
+
+    /*
+    * 与服务器建立连接后,
+    * 发送连接验证信息
+    */
+    m_pSendFrameBuffer->setCmdType(CONNECT_PROTOCOL);
+    m_pSendFrameBuffer->setCmdNum(REQUIRE_CONNECT);
+    m_pSendFrameBuffer->setData(nullptr, 0);
+    writeBufferToServer();
 }
 
 void OrderSocket::slot_setDisConnected()
@@ -102,27 +111,15 @@ bool OrderSocket::slot_requireConnect()
 {
     qDebug() << "enter require connect";
 
-    if (!m_bConnected)
-    {
-        connectToHost(m_strIPAdress, m_uPort);
-
-        /*
-        * 给予socket一定时间进行建立连接
-        * 等待一秒后,再向服务器发送申请连接信息
-        */
-        QTimer::singleShot(1000, [&] {
-            m_pSendFrameBuffer->setCmdType(CONNECT_PROTOCOL);
-            m_pSendFrameBuffer->setCmdNum(REQUIRE_CONNECT);
-            m_pSendFrameBuffer->setData(nullptr, 0);
-            writeBufferToServer();
-        });
-
-        return true;
-    }
-    else
+    if (m_bConnected)
     {
         m_pGUI->signal_hasBeenConnected();
         return false;
+    }
+    else
+    {
+        connectToHost(m_strIPAdress, m_uPort);
+        return true;
     }
 }
 
@@ -135,13 +132,8 @@ bool OrderSocket::slot_exitConnect()
     m_pSendFrameBuffer->setData(nullptr, 0);
     bool flag = this->writeBufferToServer();
 
-    /*
-    * 给予socket一定时间发送信息
-    * 等待一秒后断开与服务器的连接
-    */
-    QTimer::singleShot(1000, [&] {
-        disconnectFromHost();
-    });
+    /* 发送完退出连接信息后,断开与服务器之间的连接 */
+    disconnectFromHost();
 
     return flag;
 }

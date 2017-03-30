@@ -69,9 +69,8 @@ void TransferSocket::slot_disConnected()
     this->stop(); // 停止并关闭解析线程
 }
 
-void TransferSocket::connectToServer(unsigned int port)
+void TransferSocket::connectToServer()
 {
-    m_uPort = port;
     connectToHost(m_strIPAdress, m_uPort, QIODevice::ReadWrite);
 }
 

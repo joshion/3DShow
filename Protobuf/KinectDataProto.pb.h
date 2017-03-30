@@ -114,33 +114,12 @@ class pbReqStart : public ::google::protobuf::Message /* @@protoc_insertion_poin
   ::std::string* release_devicename();
   void set_allocated_devicename(::std::string* devicename);
 
-  // optional int32 color = 2;
-  void clear_color();
-  static const int kColorFieldNumber = 2;
-  ::google::protobuf::int32 color() const;
-  void set_color(::google::protobuf::int32 value);
-
-  // optional int32 depth = 3;
-  void clear_depth();
-  static const int kDepthFieldNumber = 3;
-  ::google::protobuf::int32 depth() const;
-  void set_depth(::google::protobuf::int32 value);
-
-  // optional int32 skele = 4;
-  void clear_skele();
-  static const int kSkeleFieldNumber = 4;
-  ::google::protobuf::int32 skele() const;
-  void set_skele(::google::protobuf::int32 value);
-
   // @@protoc_insertion_point(class_scope:KinectDataProto.pbReqStart)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   bool _is_default_instance_;
   ::google::protobuf::internal::ArenaStringPtr devicename_;
-  ::google::protobuf::int32 color_;
-  ::google::protobuf::int32 depth_;
-  ::google::protobuf::int32 skele_;
   mutable int _cached_size_;
   friend void  protobuf_AddDesc_KinectDataProto_2eproto();
   friend void protobuf_AssignDesc_KinectDataProto_2eproto();
@@ -250,24 +229,6 @@ class pbRespStart : public ::google::protobuf::Message /* @@protoc_insertion_poi
   ::std::string* release_failreason();
   void set_allocated_failreason(::std::string* failreason);
 
-  // optional int32 colorPort = 5;
-  void clear_colorport();
-  static const int kColorPortFieldNumber = 5;
-  ::google::protobuf::int32 colorport() const;
-  void set_colorport(::google::protobuf::int32 value);
-
-  // optional int32 depthPort = 6;
-  void clear_depthport();
-  static const int kDepthPortFieldNumber = 6;
-  ::google::protobuf::int32 depthport() const;
-  void set_depthport(::google::protobuf::int32 value);
-
-  // optional int32 skelePort = 7;
-  void clear_skeleport();
-  static const int kSkelePortFieldNumber = 7;
-  ::google::protobuf::int32 skeleport() const;
-  void set_skeleport(::google::protobuf::int32 value);
-
   // @@protoc_insertion_point(class_scope:KinectDataProto.pbRespStart)
  private:
 
@@ -277,9 +238,6 @@ class pbRespStart : public ::google::protobuf::Message /* @@protoc_insertion_poi
   ::google::protobuf::internal::ArenaStringPtr guid_;
   ::google::protobuf::internal::ArenaStringPtr failreason_;
   ::google::protobuf::int32 resulttype_;
-  ::google::protobuf::int32 colorport_;
-  ::google::protobuf::int32 depthport_;
-  ::google::protobuf::int32 skeleport_;
   mutable int _cached_size_;
   friend void  protobuf_AddDesc_KinectDataProto_2eproto();
   friend void protobuf_AssignDesc_KinectDataProto_2eproto();
@@ -538,48 +496,6 @@ inline void pbReqStart::set_allocated_devicename(::std::string* devicename) {
   // @@protoc_insertion_point(field_set_allocated:KinectDataProto.pbReqStart.deviceName)
 }
 
-// optional int32 color = 2;
-inline void pbReqStart::clear_color() {
-  color_ = 0;
-}
-inline ::google::protobuf::int32 pbReqStart::color() const {
-  // @@protoc_insertion_point(field_get:KinectDataProto.pbReqStart.color)
-  return color_;
-}
-inline void pbReqStart::set_color(::google::protobuf::int32 value) {
-  
-  color_ = value;
-  // @@protoc_insertion_point(field_set:KinectDataProto.pbReqStart.color)
-}
-
-// optional int32 depth = 3;
-inline void pbReqStart::clear_depth() {
-  depth_ = 0;
-}
-inline ::google::protobuf::int32 pbReqStart::depth() const {
-  // @@protoc_insertion_point(field_get:KinectDataProto.pbReqStart.depth)
-  return depth_;
-}
-inline void pbReqStart::set_depth(::google::protobuf::int32 value) {
-  
-  depth_ = value;
-  // @@protoc_insertion_point(field_set:KinectDataProto.pbReqStart.depth)
-}
-
-// optional int32 skele = 4;
-inline void pbReqStart::clear_skele() {
-  skele_ = 0;
-}
-inline ::google::protobuf::int32 pbReqStart::skele() const {
-  // @@protoc_insertion_point(field_get:KinectDataProto.pbReqStart.skele)
-  return skele_;
-}
-inline void pbReqStart::set_skele(::google::protobuf::int32 value) {
-  
-  skele_ = value;
-  // @@protoc_insertion_point(field_set:KinectDataProto.pbReqStart.skele)
-}
-
 // -------------------------------------------------------------------
 
 // pbRespStart
@@ -728,48 +644,6 @@ inline void pbRespStart::set_allocated_failreason(::std::string* failreason) {
   }
   failreason_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), failreason);
   // @@protoc_insertion_point(field_set_allocated:KinectDataProto.pbRespStart.failReason)
-}
-
-// optional int32 colorPort = 5;
-inline void pbRespStart::clear_colorport() {
-  colorport_ = 0;
-}
-inline ::google::protobuf::int32 pbRespStart::colorport() const {
-  // @@protoc_insertion_point(field_get:KinectDataProto.pbRespStart.colorPort)
-  return colorport_;
-}
-inline void pbRespStart::set_colorport(::google::protobuf::int32 value) {
-  
-  colorport_ = value;
-  // @@protoc_insertion_point(field_set:KinectDataProto.pbRespStart.colorPort)
-}
-
-// optional int32 depthPort = 6;
-inline void pbRespStart::clear_depthport() {
-  depthport_ = 0;
-}
-inline ::google::protobuf::int32 pbRespStart::depthport() const {
-  // @@protoc_insertion_point(field_get:KinectDataProto.pbRespStart.depthPort)
-  return depthport_;
-}
-inline void pbRespStart::set_depthport(::google::protobuf::int32 value) {
-  
-  depthport_ = value;
-  // @@protoc_insertion_point(field_set:KinectDataProto.pbRespStart.depthPort)
-}
-
-// optional int32 skelePort = 7;
-inline void pbRespStart::clear_skeleport() {
-  skeleport_ = 0;
-}
-inline ::google::protobuf::int32 pbRespStart::skeleport() const {
-  // @@protoc_insertion_point(field_get:KinectDataProto.pbRespStart.skelePort)
-  return skeleport_;
-}
-inline void pbRespStart::set_skeleport(::google::protobuf::int32 value) {
-  
-  skeleport_ = value;
-  // @@protoc_insertion_point(field_set:KinectDataProto.pbRespStart.skelePort)
 }
 
 // -------------------------------------------------------------------

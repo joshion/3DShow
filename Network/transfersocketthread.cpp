@@ -44,7 +44,7 @@ void TransferSocketThread::createTransferSocket(Utilities::SocketType type)
         m_pTransferSocket = new FrameTransferSocket { m_strDeviceName, m_strGuid, type };
     }
     m_pTransferSocket->registerGUIClass(m_pTransferInterface);
-    m_pTransferSocket->connectToServer(m_uPort);
+    m_pTransferSocket->connectToServer();
     connect(this, &TransferSocketThread::finished, m_pTransferSocket, &ImageTransferSocket::deleteLater);
     exec();
 }

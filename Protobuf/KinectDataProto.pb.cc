@@ -45,11 +45,8 @@ void protobuf_AssignDesc_KinectDataProto_2eproto() {
       "KinectDataProto.proto");
   GOOGLE_CHECK(file != NULL);
   pbReqStart_descriptor_ = file->message_type(0);
-  static const int pbReqStart_offsets_[4] = {
+  static const int pbReqStart_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(pbReqStart, devicename_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(pbReqStart, color_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(pbReqStart, depth_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(pbReqStart, skele_),
   };
   pbReqStart_reflection_ =
     ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
@@ -63,14 +60,11 @@ void protobuf_AssignDesc_KinectDataProto_2eproto() {
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(pbReqStart, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(pbReqStart, _is_default_instance_));
   pbRespStart_descriptor_ = file->message_type(1);
-  static const int pbRespStart_offsets_[7] = {
+  static const int pbRespStart_offsets_[4] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(pbRespStart, devicename_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(pbRespStart, guid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(pbRespStart, resulttype_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(pbRespStart, failreason_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(pbRespStart, colorport_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(pbRespStart, depthport_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(pbRespStart, skeleport_),
   };
   pbRespStart_reflection_ =
     ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
@@ -160,15 +154,12 @@ void protobuf_AddDesc_KinectDataProto_2eproto() {
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\025KinectDataProto.proto\022\017KinectDataProto"
-    "\"M\n\npbReqStart\022\022\n\ndeviceName\030\001 \001(\t\022\r\n\005co"
-    "lor\030\002 \001(\005\022\r\n\005depth\030\003 \001(\005\022\r\n\005skele\030\004 \001(\005\""
-    "\220\001\n\013pbRespStart\022\022\n\ndeviceName\030\001 \001(\t\022\014\n\004g"
-    "uid\030\002 \001(\t\022\022\n\nresultType\030\003 \001(\005\022\022\n\nfailRea"
-    "son\030\004 \001(\t\022\021\n\tcolorPort\030\005 \001(\005\022\021\n\tdepthPor"
-    "t\030\006 \001(\005\022\021\n\tskelePort\030\007 \001(\005\"3\n\rpbEndTrans"
-    "fer\022\022\n\ndeviceName\030\001 \001(\t\022\016\n\006reason\030\002 \001(\t\""
-    ".\n\010pbReqEnd\022\022\n\ndeviceName\030\001 \001(\t\022\016\n\006reaso"
-    "n\030\002 \001(\tb\006proto3", 375);
+    "\" \n\npbReqStart\022\022\n\ndeviceName\030\001 \001(\t\"W\n\013pb"
+    "RespStart\022\022\n\ndeviceName\030\001 \001(\t\022\014\n\004guid\030\002 "
+    "\001(\t\022\022\n\nresultType\030\003 \001(\005\022\022\n\nfailReason\030\004 "
+    "\001(\t\"3\n\rpbEndTransfer\022\022\n\ndeviceName\030\001 \001(\t"
+    "\022\016\n\006reason\030\002 \001(\t\".\n\010pbReqEnd\022\022\n\ndeviceNa"
+    "me\030\001 \001(\t\022\016\n\006reason\030\002 \001(\tb\006proto3", 272);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "KinectDataProto.proto", &protobuf_RegisterTypes);
   pbReqStart::default_instance_ = new pbReqStart();
@@ -193,9 +184,6 @@ struct StaticDescriptorInitializer_KinectDataProto_2eproto {
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int pbReqStart::kDeviceNameFieldNumber;
-const int pbReqStart::kColorFieldNumber;
-const int pbReqStart::kDepthFieldNumber;
-const int pbReqStart::kSkeleFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 pbReqStart::pbReqStart()
@@ -221,9 +209,6 @@ void pbReqStart::SharedCtor() {
   ::google::protobuf::internal::GetEmptyString();
   _cached_size_ = 0;
   devicename_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  color_ = 0;
-  depth_ = 0;
-  skele_ = 0;
 }
 
 pbReqStart::~pbReqStart() {
@@ -264,28 +249,7 @@ pbReqStart* pbReqStart::New(::google::protobuf::Arena* arena) const {
 
 void pbReqStart::Clear() {
 // @@protoc_insertion_point(message_clear_start:KinectDataProto.pbReqStart)
-#if defined(__clang__)
-#define ZR_HELPER_(f) \
-  _Pragma("clang diagnostic push") \
-  _Pragma("clang diagnostic ignored \"-Winvalid-offsetof\"") \
-  __builtin_offsetof(pbReqStart, f) \
-  _Pragma("clang diagnostic pop")
-#else
-#define ZR_HELPER_(f) reinterpret_cast<char*>(\
-  &reinterpret_cast<pbReqStart*>(16)->f)
-#endif
-
-#define ZR_(first, last) do {\
-  ::memset(&first, 0,\
-           ZR_HELPER_(last) - ZR_HELPER_(first) + sizeof(last));\
-} while (0)
-
-  ZR_(color_, skele_);
   devicename_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-
-#undef ZR_HELPER_
-#undef ZR_
-
 }
 
 bool pbReqStart::MergePartialFromCodedStream(
@@ -307,51 +271,6 @@ bool pbReqStart::MergePartialFromCodedStream(
             this->devicename().data(), this->devicename().length(),
             ::google::protobuf::internal::WireFormatLite::PARSE,
             "KinectDataProto.pbReqStart.deviceName"));
-        } else {
-          goto handle_unusual;
-        }
-        if (input->ExpectTag(16)) goto parse_color;
-        break;
-      }
-
-      // optional int32 color = 2;
-      case 2: {
-        if (tag == 16) {
-         parse_color:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &color_)));
-
-        } else {
-          goto handle_unusual;
-        }
-        if (input->ExpectTag(24)) goto parse_depth;
-        break;
-      }
-
-      // optional int32 depth = 3;
-      case 3: {
-        if (tag == 24) {
-         parse_depth:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &depth_)));
-
-        } else {
-          goto handle_unusual;
-        }
-        if (input->ExpectTag(32)) goto parse_skele;
-        break;
-      }
-
-      // optional int32 skele = 4;
-      case 4: {
-        if (tag == 32) {
-         parse_skele:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &skele_)));
-
         } else {
           goto handle_unusual;
         }
@@ -393,21 +312,6 @@ void pbReqStart::SerializeWithCachedSizes(
       1, this->devicename(), output);
   }
 
-  // optional int32 color = 2;
-  if (this->color() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->color(), output);
-  }
-
-  // optional int32 depth = 3;
-  if (this->depth() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->depth(), output);
-  }
-
-  // optional int32 skele = 4;
-  if (this->skele() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(4, this->skele(), output);
-  }
-
   // @@protoc_insertion_point(serialize_end:KinectDataProto.pbReqStart)
 }
 
@@ -425,21 +329,6 @@ void pbReqStart::SerializeWithCachedSizes(
         1, this->devicename(), target);
   }
 
-  // optional int32 color = 2;
-  if (this->color() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->color(), target);
-  }
-
-  // optional int32 depth = 3;
-  if (this->depth() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->depth(), target);
-  }
-
-  // optional int32 skele = 4;
-  if (this->skele() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(4, this->skele(), target);
-  }
-
   // @@protoc_insertion_point(serialize_to_array_end:KinectDataProto.pbReqStart)
   return target;
 }
@@ -453,27 +342,6 @@ int pbReqStart::ByteSize() const {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->devicename());
-  }
-
-  // optional int32 color = 2;
-  if (this->color() != 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int32Size(
-        this->color());
-  }
-
-  // optional int32 depth = 3;
-  if (this->depth() != 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int32Size(
-        this->depth());
-  }
-
-  // optional int32 skele = 4;
-  if (this->skele() != 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int32Size(
-        this->skele());
   }
 
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
@@ -508,15 +376,6 @@ void pbReqStart::MergeFrom(const pbReqStart& from) {
 
     devicename_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.devicename_);
   }
-  if (from.color() != 0) {
-    set_color(from.color());
-  }
-  if (from.depth() != 0) {
-    set_depth(from.depth());
-  }
-  if (from.skele() != 0) {
-    set_skele(from.skele());
-  }
 }
 
 void pbReqStart::CopyFrom(const ::google::protobuf::Message& from) {
@@ -544,9 +403,6 @@ void pbReqStart::Swap(pbReqStart* other) {
 }
 void pbReqStart::InternalSwap(pbReqStart* other) {
   devicename_.Swap(&other->devicename_);
-  std::swap(color_, other->color_);
-  std::swap(depth_, other->depth_);
-  std::swap(skele_, other->skele_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   std::swap(_cached_size_, other->_cached_size_);
 }
@@ -606,48 +462,6 @@ void pbReqStart::clear_devicename() {
   // @@protoc_insertion_point(field_set_allocated:KinectDataProto.pbReqStart.deviceName)
 }
 
-// optional int32 color = 2;
-void pbReqStart::clear_color() {
-  color_ = 0;
-}
- ::google::protobuf::int32 pbReqStart::color() const {
-  // @@protoc_insertion_point(field_get:KinectDataProto.pbReqStart.color)
-  return color_;
-}
- void pbReqStart::set_color(::google::protobuf::int32 value) {
-  
-  color_ = value;
-  // @@protoc_insertion_point(field_set:KinectDataProto.pbReqStart.color)
-}
-
-// optional int32 depth = 3;
-void pbReqStart::clear_depth() {
-  depth_ = 0;
-}
- ::google::protobuf::int32 pbReqStart::depth() const {
-  // @@protoc_insertion_point(field_get:KinectDataProto.pbReqStart.depth)
-  return depth_;
-}
- void pbReqStart::set_depth(::google::protobuf::int32 value) {
-  
-  depth_ = value;
-  // @@protoc_insertion_point(field_set:KinectDataProto.pbReqStart.depth)
-}
-
-// optional int32 skele = 4;
-void pbReqStart::clear_skele() {
-  skele_ = 0;
-}
- ::google::protobuf::int32 pbReqStart::skele() const {
-  // @@protoc_insertion_point(field_get:KinectDataProto.pbReqStart.skele)
-  return skele_;
-}
- void pbReqStart::set_skele(::google::protobuf::int32 value) {
-  
-  skele_ = value;
-  // @@protoc_insertion_point(field_set:KinectDataProto.pbReqStart.skele)
-}
-
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
 
 // ===================================================================
@@ -657,9 +471,6 @@ const int pbRespStart::kDeviceNameFieldNumber;
 const int pbRespStart::kGuidFieldNumber;
 const int pbRespStart::kResultTypeFieldNumber;
 const int pbRespStart::kFailReasonFieldNumber;
-const int pbRespStart::kColorPortFieldNumber;
-const int pbRespStart::kDepthPortFieldNumber;
-const int pbRespStart::kSkelePortFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 pbRespStart::pbRespStart()
@@ -688,9 +499,6 @@ void pbRespStart::SharedCtor() {
   guid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   resulttype_ = 0;
   failreason_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  colorport_ = 0;
-  depthport_ = 0;
-  skeleport_ = 0;
 }
 
 pbRespStart::~pbRespStart() {
@@ -733,30 +541,10 @@ pbRespStart* pbRespStart::New(::google::protobuf::Arena* arena) const {
 
 void pbRespStart::Clear() {
 // @@protoc_insertion_point(message_clear_start:KinectDataProto.pbRespStart)
-#if defined(__clang__)
-#define ZR_HELPER_(f) \
-  _Pragma("clang diagnostic push") \
-  _Pragma("clang diagnostic ignored \"-Winvalid-offsetof\"") \
-  __builtin_offsetof(pbRespStart, f) \
-  _Pragma("clang diagnostic pop")
-#else
-#define ZR_HELPER_(f) reinterpret_cast<char*>(\
-  &reinterpret_cast<pbRespStart*>(16)->f)
-#endif
-
-#define ZR_(first, last) do {\
-  ::memset(&first, 0,\
-           ZR_HELPER_(last) - ZR_HELPER_(first) + sizeof(last));\
-} while (0)
-
-  ZR_(resulttype_, skeleport_);
   devicename_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   guid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  resulttype_ = 0;
   failreason_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-
-#undef ZR_HELPER_
-#undef ZR_
-
 }
 
 bool pbRespStart::MergePartialFromCodedStream(
@@ -830,51 +618,6 @@ bool pbRespStart::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(40)) goto parse_colorPort;
-        break;
-      }
-
-      // optional int32 colorPort = 5;
-      case 5: {
-        if (tag == 40) {
-         parse_colorPort:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &colorport_)));
-
-        } else {
-          goto handle_unusual;
-        }
-        if (input->ExpectTag(48)) goto parse_depthPort;
-        break;
-      }
-
-      // optional int32 depthPort = 6;
-      case 6: {
-        if (tag == 48) {
-         parse_depthPort:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &depthport_)));
-
-        } else {
-          goto handle_unusual;
-        }
-        if (input->ExpectTag(56)) goto parse_skelePort;
-        break;
-      }
-
-      // optional int32 skelePort = 7;
-      case 7: {
-        if (tag == 56) {
-         parse_skelePort:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &skeleport_)));
-
-        } else {
-          goto handle_unusual;
-        }
         if (input->ExpectAtEnd()) goto success;
         break;
       }
@@ -938,21 +681,6 @@ void pbRespStart::SerializeWithCachedSizes(
       4, this->failreason(), output);
   }
 
-  // optional int32 colorPort = 5;
-  if (this->colorport() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(5, this->colorport(), output);
-  }
-
-  // optional int32 depthPort = 6;
-  if (this->depthport() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(6, this->depthport(), output);
-  }
-
-  // optional int32 skelePort = 7;
-  if (this->skeleport() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(7, this->skeleport(), output);
-  }
-
   // @@protoc_insertion_point(serialize_end:KinectDataProto.pbRespStart)
 }
 
@@ -997,21 +725,6 @@ void pbRespStart::SerializeWithCachedSizes(
         4, this->failreason(), target);
   }
 
-  // optional int32 colorPort = 5;
-  if (this->colorport() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(5, this->colorport(), target);
-  }
-
-  // optional int32 depthPort = 6;
-  if (this->depthport() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(6, this->depthport(), target);
-  }
-
-  // optional int32 skelePort = 7;
-  if (this->skeleport() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(7, this->skeleport(), target);
-  }
-
   // @@protoc_insertion_point(serialize_to_array_end:KinectDataProto.pbRespStart)
   return target;
 }
@@ -1046,27 +759,6 @@ int pbRespStart::ByteSize() const {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->failreason());
-  }
-
-  // optional int32 colorPort = 5;
-  if (this->colorport() != 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int32Size(
-        this->colorport());
-  }
-
-  // optional int32 depthPort = 6;
-  if (this->depthport() != 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int32Size(
-        this->depthport());
-  }
-
-  // optional int32 skelePort = 7;
-  if (this->skeleport() != 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int32Size(
-        this->skeleport());
   }
 
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
@@ -1112,15 +804,6 @@ void pbRespStart::MergeFrom(const pbRespStart& from) {
 
     failreason_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.failreason_);
   }
-  if (from.colorport() != 0) {
-    set_colorport(from.colorport());
-  }
-  if (from.depthport() != 0) {
-    set_depthport(from.depthport());
-  }
-  if (from.skeleport() != 0) {
-    set_skeleport(from.skeleport());
-  }
 }
 
 void pbRespStart::CopyFrom(const ::google::protobuf::Message& from) {
@@ -1151,9 +834,6 @@ void pbRespStart::InternalSwap(pbRespStart* other) {
   guid_.Swap(&other->guid_);
   std::swap(resulttype_, other->resulttype_);
   failreason_.Swap(&other->failreason_);
-  std::swap(colorport_, other->colorport_);
-  std::swap(depthport_, other->depthport_);
-  std::swap(skeleport_, other->skeleport_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   std::swap(_cached_size_, other->_cached_size_);
 }
@@ -1313,48 +993,6 @@ void pbRespStart::clear_failreason() {
   }
   failreason_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), failreason);
   // @@protoc_insertion_point(field_set_allocated:KinectDataProto.pbRespStart.failReason)
-}
-
-// optional int32 colorPort = 5;
-void pbRespStart::clear_colorport() {
-  colorport_ = 0;
-}
- ::google::protobuf::int32 pbRespStart::colorport() const {
-  // @@protoc_insertion_point(field_get:KinectDataProto.pbRespStart.colorPort)
-  return colorport_;
-}
- void pbRespStart::set_colorport(::google::protobuf::int32 value) {
-  
-  colorport_ = value;
-  // @@protoc_insertion_point(field_set:KinectDataProto.pbRespStart.colorPort)
-}
-
-// optional int32 depthPort = 6;
-void pbRespStart::clear_depthport() {
-  depthport_ = 0;
-}
- ::google::protobuf::int32 pbRespStart::depthport() const {
-  // @@protoc_insertion_point(field_get:KinectDataProto.pbRespStart.depthPort)
-  return depthport_;
-}
- void pbRespStart::set_depthport(::google::protobuf::int32 value) {
-  
-  depthport_ = value;
-  // @@protoc_insertion_point(field_set:KinectDataProto.pbRespStart.depthPort)
-}
-
-// optional int32 skelePort = 7;
-void pbRespStart::clear_skeleport() {
-  skeleport_ = 0;
-}
- ::google::protobuf::int32 pbRespStart::skeleport() const {
-  // @@protoc_insertion_point(field_get:KinectDataProto.pbRespStart.skelePort)
-  return skeleport_;
-}
- void pbRespStart::set_skeleport(::google::protobuf::int32 value) {
-  
-  skeleport_ = value;
-  // @@protoc_insertion_point(field_set:KinectDataProto.pbRespStart.skelePort)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS

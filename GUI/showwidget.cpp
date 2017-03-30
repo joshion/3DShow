@@ -150,21 +150,21 @@ void ShowWidget::createTransferSocketThreads(KinectDataProto::pbRespStart respSt
     if (m_eShowType & Utilities::ShowType::Color)
     {
         pSocketThread = new TransferSocketThread { m_strTitle, strGuid, Utilities::SocketType::Color,
-            static_cast<unsigned int>(respStart.colorport()), IP_ADRESS, this };
+            0, IP_ADRESS, this };
         m_Type_Socket.insert(Utilities::ShowType::Color, pSocketThread);
     }
 
     if (m_eShowType & Utilities::ShowType::Depth)
     {
         pSocketThread = new TransferSocketThread { m_strTitle, strGuid, Utilities::SocketType::Depth,
-            static_cast<unsigned int>(respStart.depthport()), IP_ADRESS, this };
+            0, IP_ADRESS, this };
         m_Type_Socket.insert(Utilities::ShowType::Depth, pSocketThread);
     }
 
     if (m_eShowType & Utilities::ShowType::Skele)
     {
         pSocketThread = new TransferSocketThread { m_strTitle, strGuid, Utilities::SocketType::Skele,
-            static_cast<unsigned int>(respStart.skeleport()), IP_ADRESS, this };
+            0, IP_ADRESS, this };
         m_Type_Socket.insert(Utilities::ShowType::Skele, pSocketThread);
     }
     pSocketThread = nullptr;
