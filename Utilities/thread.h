@@ -6,12 +6,12 @@
 class Thread
 {
 public:
-	Thread();
-	virtual ~Thread();
+    Thread();
+    virtual ~Thread();
 
-	virtual void start();
-	virtual void stop();
-	bool isWorking();
+    virtual void start();
+    virtual void stop();
+    bool isWorking();
 
 protected:
     /*
@@ -23,14 +23,13 @@ protected:
     void notifyThreadToContinue();
 
 private:
-	std::mutex m_mutexThread;
-	std::thread *m_thread;
-    
+    std::mutex m_mutexThread;
+    std::thread *m_thread;
+
     std::mutex m_mutexWorking;
     bool m_bWorking;
 
     std::condition_variable m_cvStatus;
     std::mutex m_mutexStatus;
     bool m_bStatus;
-
 };

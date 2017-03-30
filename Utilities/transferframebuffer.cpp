@@ -31,7 +31,7 @@ TransferFrameBuffer::TransferFrameBuffer(const TransferFrameBuffer & other)
 
     if (other.m_Data && other.m_u32BodyLength > 0)
     {
-        this->m_Data = new unsigned char [other.m_u32BodyLength] {0};
+        this->m_Data = new unsigned char[other.m_u32BodyLength] { 0 };
         memcpy(this->m_Data, other.m_Data, other.m_u32BodyLength);
         this->m_u32BodyLength = other.m_u32BodyLength;
     }
@@ -46,7 +46,6 @@ TransferFrameBuffer::TransferFrameBuffer(const TransferFrameBuffer & other)
         delete[] pOrig;
         pOrig = nullptr;
     }
-
 }
 
 TransferFrameBuffer::~TransferFrameBuffer()

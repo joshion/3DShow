@@ -42,7 +42,6 @@ DevicesWidget::DevicesWidget(QWidget *parent)
 
 DevicesWidget::~DevicesWidget()
 {
-
 }
 
 void DevicesWidget::slot_startRequireRgb()

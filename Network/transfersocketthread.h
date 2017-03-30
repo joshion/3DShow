@@ -37,5 +37,5 @@ private:
     void createTransferSocket(Utilities::SocketType type);
 private:
     TransferSocket *m_pTransferSocket;
-/***********************************************************************************/
+    /***********************************************************************************/
 };

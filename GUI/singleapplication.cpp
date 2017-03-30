@@ -9,13 +9,11 @@ SingleApplication::SingleApplication(int &argc, char **argv)
     , w(NULL)
     , _isRunning(false)
     , _localServer(NULL) {
-
     // 取应用程序名作为LocalServer的名字
     _serverName = QFileInfo(QCoreApplication::applicationFilePath()).fileName();
 
     _initLocalConnection();
 }
-
 
 ////////////////////////////////////////////////////////////////////////////////
 // 说明：

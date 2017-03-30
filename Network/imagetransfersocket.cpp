@@ -26,7 +26,6 @@ ImageTransferSocket::~ImageTransferSocket()
     }
 }
 
-
 void ImageTransferSocket::analysisReceiveFrameBuffer(const TransferFrameBuffer& buffer)
 {
     switch (buffer.dataType())

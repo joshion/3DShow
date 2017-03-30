@@ -22,7 +22,6 @@ MultiShowArea::MultiShowArea(QWidget *parent)
 
 MultiShowArea::~MultiShowArea()
 {
-
 }
 
 /* 发送信号到orderSocket, 向服务器请求开始传输Kinect数据 */

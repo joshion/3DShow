@@ -17,9 +17,9 @@ public:
         unsigned short* pElement, unsigned int elementSize);
 
 private:
-    GLuint m_VertexArraysObject[1];
-    GLuint m_PointsBuffer[1];
-    GLuint m_ElementBuffer[1];
+    GLuint m_VertexArraysObject;
+    GLuint m_PointsBuffer;
+    GLuint m_ElementBuffer;
 
     QVector4D *m_pTriangleVertices;
     QVector4D *m_pColor;

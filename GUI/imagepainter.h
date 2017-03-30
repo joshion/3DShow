@@ -6,7 +6,6 @@
 
 class ImagePainter : public Painter
 {
-
 public:
     ImagePainter();
     ~ImagePainter();
@@ -21,5 +20,5 @@ public:
 private:
     QVector4D *m_pTriangleVertices;
     QVector2D *m_pCoord;
-    GLuint m_Textures[1];
+    GLuint m_Texture;
 };

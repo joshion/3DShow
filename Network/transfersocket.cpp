@@ -25,7 +25,7 @@ TransferSocket::TransferSocket(QString deviceName, Utilities::SocketType type,
     m_strIPAdress(strIPAdress),
     m_uPort(port),
     m_bConnected(false),
-    m_bNotHasHead(true), 
+    m_bNotHasHead(true),
     m_pReceiveFrameBuffer(nullptr)
 {
     m_receiveBuffer.clear();
@@ -97,7 +97,6 @@ void TransferSocket::run()
 
 void TransferSocket::analysisReceiveBytesBuffer()
 {
-
 #ifdef COMMENT
     {
         std::lock_guard<std::mutex> lock_buffer(m_mutexReceiveBuffer);

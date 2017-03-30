@@ -1,7 +1,7 @@
 #include "thread.h"
 
 Thread::Thread()
-	: m_thread(nullptr),
+    : m_thread(nullptr),
     m_bWorking(false),
     m_bStatus(false)
 {
@@ -9,14 +9,14 @@ Thread::Thread()
 
 Thread::~Thread()
 {
-	stop();
+    stop();
 }
 
 void Thread::start()
 {
-	std::lock_guard<std::mutex> lock(m_mutexThread);
-	if (m_thread == nullptr)
-	{
+    std::lock_guard<std::mutex> lock(m_mutexThread);
+    if (m_thread == nullptr)
+    {
         m_thread = new std::thread([&]() {
             {
                 std::lock_guard<std::mutex> lock_working(m_mutexWorking);
@@ -54,32 +54,32 @@ void Thread::start()
                 }
             }
         });
-	}
+    }
 }
 
 void Thread::stop()
 {
     std::lock_guard<std::mutex> lock(m_mutexThread);
-	if (m_thread)
-	{
+    if (m_thread)
+    {
         {
             std::lock_guard<std::mutex> lock_working(m_mutexWorking);
             m_bWorking = false;
         }
         notifyThreadToContinue();
         if (m_thread)
-		{
-			m_thread->join();
-			delete m_thread;
-			m_thread = nullptr;
-		}
-	}
+        {
+            m_thread->join();
+            delete m_thread;
+            m_thread = nullptr;
+        }
+    }
 }
 
 bool Thread::isWorking()
 {
     std::lock_guard<std::mutex> lock_working(m_mutexWorking);
-	return m_bWorking;
+    return m_bWorking;
 }
 
 void Thread::notifyThreadToContinue()

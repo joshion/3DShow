@@ -233,7 +233,6 @@ void ShowWidget::slot_update()
 
     if (m_eShowType & Utilities::ShowType::Depth)
     {
-
     }
 
     if (m_eShowType & Utilities::ShowType::Skele)
@@ -243,4 +242,3 @@ void ShowWidget::slot_update()
     }
     update();
 }
-

@@ -6,7 +6,6 @@
 
 Painter::Painter()
 {
-
 }
 
 Painter::~Painter()

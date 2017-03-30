@@ -30,7 +30,6 @@ public:
     bool setData(const QByteArray &bytes, const unsigned int length);
     bool setData(const unsigned char *data, const unsigned int length);
 
-
     inline unsigned int timeStamp() const
     {
         return m_u32TimeStamp;
@@ -74,4 +73,3 @@ private:
 
     static const unsigned int s_u32HeadLength = 12;
 };
-

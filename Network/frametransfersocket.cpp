@@ -4,12 +4,10 @@ FrameTransferSocket::FrameTransferSocket(QString deviceName, Utilities::SocketTy
     QString strIPAdress, unsigned int port)
     : TransferSocket(deviceName, type, strIPAdress, port)
 {
-
 }
 
 FrameTransferSocket::~FrameTransferSocket()
 {
-
 }
 
 void FrameTransferSocket::analysisReceiveFrameBuffer(const TransferFrameBuffer & buffer)

@@ -2,10 +2,8 @@
 
 OrderInterface::OrderInterface()
 {
-	
 }
 
 OrderInterface::~OrderInterface()
 {
-	
 }

@@ -22,5 +22,4 @@ public:
     int matsSize();
 private:
     DecodeVideoStream *m_pDecoder;
-    
 };

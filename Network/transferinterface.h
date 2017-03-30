@@ -16,9 +16,7 @@ public:
     virtual ~TransferInterface();
 public:
     virtual void signal_connectedToServer() = 0;
-
 };
-
 
 class TransferInterfaceManager
 {

@@ -42,9 +42,9 @@ bool FramePainter::buildShaderProgram(const QString & strVertFile, const QString
         projection_Matrix.ortho(-1, 1, -1, 1, 0.30, 5);    // 正交投影
         m_Program.setUniformValue(PROJECTION_LOCATION, projection_Matrix);
 
-        glGenVertexArrays(1, m_VertexArraysObject);
-        glGenBuffers(1, m_PointsBuffer);
-        glGenBuffers(1, m_ElementBuffer);
+        glGenVertexArrays(1, &m_VertexArraysObject);
+        glGenBuffers(1, &m_PointsBuffer);
+        glGenBuffers(1, &m_ElementBuffer);
 
         glBindVertexArray(0);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -57,8 +57,8 @@ void FramePainter::paint()
 {
     m_Program.bind();
 
-    glBindVertexArray(m_VertexArraysObject[0]);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ElementBuffer[0]);
+    glBindVertexArray(m_VertexArraysObject);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ElementBuffer);
 
     m_Program.enableAttributeArray(VERTEX_LOCATION);
     m_Program.enableAttributeArray(COLOR_LOCATION);
@@ -116,15 +116,15 @@ void FramePainter::loadFrame(QVector4D* pVertices, QVector4D* pColors, unsigned 
     /*
     传输绘制索引到 opengl 服务器上的缓存上
     */
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ElementBuffer[0]);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ElementBuffer);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementSize * sizeof(GLushort), pElement, GL_STATIC_DRAW);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
     /*
     传输顶点和颜色到 opengl 服务器的缓存上
     */
-    glBindVertexArray(m_VertexArraysObject[0]);
-    glBindBuffer(GL_ARRAY_BUFFER, m_PointsBuffer[0]);
+    glBindVertexArray(m_VertexArraysObject);
+    glBindBuffer(GL_ARRAY_BUFFER, m_PointsBuffer);
 
     glBufferData(GL_ARRAY_BUFFER, 2 * verticesSize * sizeof(QVector4D), nullptr, GL_STATIC_DRAW);
     glBufferSubData(GL_ARRAY_BUFFER, 0, verticesSize * sizeof(QVector4D), pVertices);

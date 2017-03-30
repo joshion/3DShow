@@ -47,15 +47,15 @@ private:
     AVPacket m_Packet;  // h264数据包
 
     bool m_bFirstTime;  // 判断是否为解码第一帧
-    /* 
+    /*
     * 将FFmpeg的yuv图片数据转为cv::Mat的中转缓存,
     * 该类中有2个线程,此变量只能在解码线程中使用
     */
-    cv::Mat m_mYUVBuffer;   
+    cv::Mat m_mYUVBuffer;
 
     /*
     * 将socket接收到H264数据拆分成AVPacket包的中转缓存
-    * 该类中有2个线程,此变量只能在解码线程中使用 
+    * 该类中有2个线程,此变量只能在解码线程中使用
     */
     QByteArray m_DecodeBytesBuffer;
 
@@ -66,4 +66,3 @@ private:
     QList<cv::Mat> m_MatsBuffer;
     std::mutex m_mutexMatsBuffer;
 };
-

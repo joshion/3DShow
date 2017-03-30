@@ -11,11 +11,10 @@
 #include <QOpenGLContext>
 #include <QOpenGLFunctions>
 
-
 class QTimer;
 class TransferSocketThread;
 
-class ShowWidget : public QOpenGLWidget, public TransferInterface , protected QOpenGLFunctions
+class ShowWidget : public QOpenGLWidget, public TransferInterface, protected QOpenGLFunctions
 {
     Q_OBJECT
 
@@ -23,8 +22,8 @@ public:
     ShowWidget(QString title, Utilities::ShowType type = Utilities::ShowType::Color, QWidget *parent = 0);
     ~ShowWidget();
 
-/*******************************************************************************************/
-/*openGL相关*/
+    /*******************************************************************************************/
+    /*openGL相关*/
 protected:
     void initializeGL() override;
     void paintGL() override;
@@ -39,7 +38,7 @@ private:
     FramePainter *m_pSkelePainter;
     QTimer* m_pTimer;
 
-/********************************************************************************************/
+    /********************************************************************************************/
 
 protected:
     void closeEvent(QCloseEvent *event) override;

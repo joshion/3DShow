@@ -4,14 +4,11 @@
 
 TransferInterface::TransferInterface()
 {
-
 }
 
 TransferInterface::~TransferInterface()
 {
-
 }
-
 
 TransferInterfaceManager::TransferInterfaceManager()
 {

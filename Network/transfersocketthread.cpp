@@ -47,4 +47,3 @@ void TransferSocketThread::createTransferSocket(Utilities::SocketType type)
     connect(this, &TransferSocketThread::finished, m_pTransferSocket, &ImageTransferSocket::deleteLater);
     exec();
 }
-

@@ -12,7 +12,7 @@ namespace
     static const unsigned int DECODE_BUFFER_TOTAL_SIZE = DECODE_BUFFER_SIZE + AV_INPUT_BUFFER_PADDING_SIZE;
 }
 
-DecodeVideoStream::DecodeVideoStream() 
+DecodeVideoStream::DecodeVideoStream()
     : m_pCodecCtx(nullptr),
     m_pCodecParserCtx(nullptr),
     m_pCodec(nullptr),
@@ -32,7 +32,6 @@ DecodeVideoStream::DecodeVideoStream()
     this->initDecodec();
     // this->start();
 }
-
 
 DecodeVideoStream::~DecodeVideoStream()
 {

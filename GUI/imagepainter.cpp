@@ -33,7 +33,7 @@ ImagePainter::~ImagePainter()
     m_Program.disableAttributeArray(VERTEX_LOCATION);
     m_Program.disableAttributeArray(COORD_LOCATION);
     glBindTexture(GL_TEXTURE_2D, 0);
-    glDeleteTextures(1, m_Textures);
+    glDeleteTextures(1, &m_Texture);
 
     delete[] m_pTriangleVertices;
     delete[] m_pCoord;
@@ -54,7 +54,7 @@ bool ImagePainter::buildShaderProgram(const QString & strVertFile, const QString
         projection_Matrix.ortho(-1, 1, -1, 1, 0.30, 5);    // 正交投影
         m_Program.setUniformValue(PROJECTION_LOCATION, projection_Matrix);
 
-        glGenTextures(1, m_Textures);
+        glGenTextures(1, &m_Texture);
     }
     return flag;
 }
@@ -69,7 +69,7 @@ void ImagePainter::paint()
     m_Program.enableAttributeArray(COORD_LOCATION);
     m_Program.setAttributeArray(COORD_LOCATION, m_pCoord);
 
-    glBindTexture(GL_TEXTURE_2D, m_Textures[0]);
+    glBindTexture(GL_TEXTURE_2D, m_Texture);
     // glClear(GL_COLOR_BUFFER_BIT);
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
     glFlush();
@@ -85,7 +85,7 @@ void ImagePainter::loadTexture(cv::Mat &mat)
     //glBindTexture(GL_TEXTURE_2D, 0);
     //glDeleteTextures(1, m_Textures);
     //glGenTextures(1, m_Textures);
-    glBindTexture(GL_TEXTURE_2D, m_Textures[0]);
+    glBindTexture(GL_TEXTURE_2D, m_Texture);
 
     glTexStorage2D(GL_TEXTURE_2D, 2, GL_RGBA8, mat.cols, mat.rows);
     glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, mat.cols, mat.rows,

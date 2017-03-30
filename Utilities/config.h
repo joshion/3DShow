@@ -97,4 +97,3 @@ private:
     unsigned int  m_uDepthPort;
     unsigned int  m_uSkelePort;
 };
-

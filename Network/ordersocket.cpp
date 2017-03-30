@@ -92,7 +92,7 @@ void OrderSocket::slot_setDisConnected()
 bool OrderSocket::writeBufferToServer()
 {
     QByteArray bytes = OrderFrameBuffer::toBytes(*m_pSendFrameBuffer);
-    
+
     if (m_bConnected)
     {
         return write(bytes) == bytes.length();
@@ -283,12 +283,10 @@ void OrderSocket::analysisReceiveFrameBuffer(const OrderFrameBuffer & buffer)
             {
                 m_pGUI->signal_respStart(resp);
             }
-
         }
         break;
         case SERVER_END_TRANSFER:
         {
-
         }
         break;
         default:
@@ -304,5 +302,4 @@ void OrderSocket::slot_readDataFromServer()
 {
     m_receiveBuffer.append(this->readAll());
     analysisReceiveByteArrayBuffer();
-
 }

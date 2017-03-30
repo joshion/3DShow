@@ -13,5 +13,4 @@ public:
 protected:
     void analysisReceiveFrameBuffer(const TransferFrameBuffer& buffer) override;
 private:
-    
 };

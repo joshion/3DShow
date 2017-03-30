@@ -38,6 +38,5 @@ void OrderSocketThread::run()
     connect(this, &OrderSocketThread::signal_endRequire,
         m_pOrderSocket, &OrderSocket::slot_endRequire, Qt::QueuedConnection);
 
-
     exec();
 }

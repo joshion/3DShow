@@ -1,6 +1,5 @@
 #include "config.h"
 
-
 Config::Config()
     : m_strIPAdress("127.0.0.1"),
     m_strGuid(""),

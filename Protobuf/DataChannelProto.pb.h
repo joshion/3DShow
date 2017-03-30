@@ -30,213 +30,204 @@
 // @@protoc_insertion_point(includes)
 
 namespace DataChannelProto {
+    // Internal implementation detail -- do not call these.
+    void protobuf_AddDesc_DataChannelProto_2eproto();
+    void protobuf_AssignDesc_DataChannelProto_2eproto();
+    void protobuf_ShutdownFile_DataChannelProto_2eproto();
 
-// Internal implementation detail -- do not call these.
-void protobuf_AddDesc_DataChannelProto_2eproto();
-void protobuf_AssignDesc_DataChannelProto_2eproto();
-void protobuf_ShutdownFile_DataChannelProto_2eproto();
+    class pbValidatePort;
 
-class pbValidatePort;
+    // ===================================================================
 
-// ===================================================================
+    class pbValidatePort : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:DataChannelProto.pbValidatePort) */ {
+    public:
+        pbValidatePort();
+        virtual ~pbValidatePort();
 
-class pbValidatePort : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:DataChannelProto.pbValidatePort) */ {
- public:
-  pbValidatePort();
-  virtual ~pbValidatePort();
+        pbValidatePort(const pbValidatePort& from);
 
-  pbValidatePort(const pbValidatePort& from);
+        inline pbValidatePort& operator=(const pbValidatePort& from) {
+            CopyFrom(from);
+            return *this;
+        }
 
-  inline pbValidatePort& operator=(const pbValidatePort& from) {
-    CopyFrom(from);
-    return *this;
-  }
+        static const ::google::protobuf::Descriptor* descriptor();
+        static const pbValidatePort& default_instance();
 
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const pbValidatePort& default_instance();
+        void Swap(pbValidatePort* other);
 
-  void Swap(pbValidatePort* other);
+        // implements Message ----------------------------------------------
 
-  // implements Message ----------------------------------------------
+        inline pbValidatePort* New() const {
+            return New(NULL);
+        }
 
-  inline pbValidatePort* New() const { return New(NULL); }
+        pbValidatePort* New(::google::protobuf::Arena* arena) const;
+        void CopyFrom(const ::google::protobuf::Message& from);
+        void MergeFrom(const ::google::protobuf::Message& from);
+        void CopyFrom(const pbValidatePort& from);
+        void MergeFrom(const pbValidatePort& from);
+        void Clear();
+        bool IsInitialized() const;
 
-  pbValidatePort* New(::google::protobuf::Arena* arena) const;
-  void CopyFrom(const ::google::protobuf::Message& from);
-  void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const pbValidatePort& from);
-  void MergeFrom(const pbValidatePort& from);
-  void Clear();
-  bool IsInitialized() const;
+        int ByteSize() const;
+        bool MergePartialFromCodedStream(
+            ::google::protobuf::io::CodedInputStream* input);
+        void SerializeWithCachedSizes(
+            ::google::protobuf::io::CodedOutputStream* output) const;
+        ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+            bool deterministic, ::google::protobuf::uint8* output) const;
+        ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const {
+            return InternalSerializeWithCachedSizesToArray(false, output);
+        }
+        int GetCachedSize() const {
+            return _cached_size_;
+        }
+    private:
+        void SharedCtor();
+        void SharedDtor();
+        void SetCachedSize(int size) const;
+        void InternalSwap(pbValidatePort* other);
+    private:
+        inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+            return _internal_metadata_.arena();
+        }
+        inline void* MaybeArenaPtr() const {
+            return _internal_metadata_.raw_arena_ptr();
+        }
+    public:
 
-  int ByteSize() const;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input);
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const;
-  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
-      bool deterministic, ::google::protobuf::uint8* output) const;
-  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const {
-    return InternalSerializeWithCachedSizesToArray(false, output);
-  }
-  int GetCachedSize() const { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const;
-  void InternalSwap(pbValidatePort* other);
-  private:
-  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return _internal_metadata_.arena();
-  }
-  inline void* MaybeArenaPtr() const {
-    return _internal_metadata_.raw_arena_ptr();
-  }
-  public:
+        ::google::protobuf::Metadata GetMetadata() const;
 
-  ::google::protobuf::Metadata GetMetadata() const;
+        // nested types ----------------------------------------------------
 
-  // nested types ----------------------------------------------------
+        // accessors -------------------------------------------------------
 
-  // accessors -------------------------------------------------------
+        // optional string deviceName = 1;
+        void clear_devicename();
+        static const int kDeviceNameFieldNumber = 1;
+        const ::std::string& devicename() const;
+        void set_devicename(const ::std::string& value);
+        void set_devicename(const char* value);
+        void set_devicename(const char* value, size_t size);
+        ::std::string* mutable_devicename();
+        ::std::string* release_devicename();
+        void set_allocated_devicename(::std::string* devicename);
 
-  // optional string deviceName = 1;
-  void clear_devicename();
-  static const int kDeviceNameFieldNumber = 1;
-  const ::std::string& devicename() const;
-  void set_devicename(const ::std::string& value);
-  void set_devicename(const char* value);
-  void set_devicename(const char* value, size_t size);
-  ::std::string* mutable_devicename();
-  ::std::string* release_devicename();
-  void set_allocated_devicename(::std::string* devicename);
+        // optional string guid = 2;
+        void clear_guid();
+        static const int kGuidFieldNumber = 2;
+        const ::std::string& guid() const;
+        void set_guid(const ::std::string& value);
+        void set_guid(const char* value);
+        void set_guid(const char* value, size_t size);
+        ::std::string* mutable_guid();
+        ::std::string* release_guid();
+        void set_allocated_guid(::std::string* guid);
 
-  // optional string guid = 2;
-  void clear_guid();
-  static const int kGuidFieldNumber = 2;
-  const ::std::string& guid() const;
-  void set_guid(const ::std::string& value);
-  void set_guid(const char* value);
-  void set_guid(const char* value, size_t size);
-  ::std::string* mutable_guid();
-  ::std::string* release_guid();
-  void set_allocated_guid(::std::string* guid);
+        // @@protoc_insertion_point(class_scope:DataChannelProto.pbValidatePort)
+    private:
 
-  // @@protoc_insertion_point(class_scope:DataChannelProto.pbValidatePort)
- private:
+        ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+        bool _is_default_instance_;
+        ::google::protobuf::internal::ArenaStringPtr devicename_;
+        ::google::protobuf::internal::ArenaStringPtr guid_;
+        mutable int _cached_size_;
+        friend void  protobuf_AddDesc_DataChannelProto_2eproto();
+        friend void protobuf_AssignDesc_DataChannelProto_2eproto();
+        friend void protobuf_ShutdownFile_DataChannelProto_2eproto();
 
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  bool _is_default_instance_;
-  ::google::protobuf::internal::ArenaStringPtr devicename_;
-  ::google::protobuf::internal::ArenaStringPtr guid_;
-  mutable int _cached_size_;
-  friend void  protobuf_AddDesc_DataChannelProto_2eproto();
-  friend void protobuf_AssignDesc_DataChannelProto_2eproto();
-  friend void protobuf_ShutdownFile_DataChannelProto_2eproto();
+        void InitAsDefaultInstance();
+        static pbValidatePort* default_instance_;
+    };
+    // ===================================================================
 
-  void InitAsDefaultInstance();
-  static pbValidatePort* default_instance_;
-};
-// ===================================================================
-
-
-// ===================================================================
+    // ===================================================================
 
 #if !PROTOBUF_INLINE_NOT_IN_HEADERS
 // pbValidatePort
 
 // optional string deviceName = 1;
-inline void pbValidatePort::clear_devicename() {
-  devicename_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline const ::std::string& pbValidatePort::devicename() const {
-  // @@protoc_insertion_point(field_get:DataChannelProto.pbValidatePort.deviceName)
-  return devicename_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void pbValidatePort::set_devicename(const ::std::string& value) {
-  
-  devicename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:DataChannelProto.pbValidatePort.deviceName)
-}
-inline void pbValidatePort::set_devicename(const char* value) {
-  
-  devicename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:DataChannelProto.pbValidatePort.deviceName)
-}
-inline void pbValidatePort::set_devicename(const char* value, size_t size) {
-  
-  devicename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:DataChannelProto.pbValidatePort.deviceName)
-}
-inline ::std::string* pbValidatePort::mutable_devicename() {
-  
-  // @@protoc_insertion_point(field_mutable:DataChannelProto.pbValidatePort.deviceName)
-  return devicename_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* pbValidatePort::release_devicename() {
-  // @@protoc_insertion_point(field_release:DataChannelProto.pbValidatePort.deviceName)
-  
-  return devicename_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void pbValidatePort::set_allocated_devicename(::std::string* devicename) {
-  if (devicename != NULL) {
-    
-  } else {
-    
-  }
-  devicename_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), devicename);
-  // @@protoc_insertion_point(field_set_allocated:DataChannelProto.pbValidatePort.deviceName)
-}
+    inline void pbValidatePort::clear_devicename() {
+        devicename_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+    }
+    inline const ::std::string& pbValidatePort::devicename() const {
+        // @@protoc_insertion_point(field_get:DataChannelProto.pbValidatePort.deviceName)
+        return devicename_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+    }
+    inline void pbValidatePort::set_devicename(const ::std::string& value) {
+        devicename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+        // @@protoc_insertion_point(field_set:DataChannelProto.pbValidatePort.deviceName)
+    }
+    inline void pbValidatePort::set_devicename(const char* value) {
+        devicename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+        // @@protoc_insertion_point(field_set_char:DataChannelProto.pbValidatePort.deviceName)
+    }
+    inline void pbValidatePort::set_devicename(const char* value, size_t size) {
+        devicename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+            ::std::string(reinterpret_cast<const char*>(value), size));
+        // @@protoc_insertion_point(field_set_pointer:DataChannelProto.pbValidatePort.deviceName)
+    }
+    inline ::std::string* pbValidatePort::mutable_devicename() {
+        // @@protoc_insertion_point(field_mutable:DataChannelProto.pbValidatePort.deviceName)
+        return devicename_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+    }
+    inline ::std::string* pbValidatePort::release_devicename() {
+        // @@protoc_insertion_point(field_release:DataChannelProto.pbValidatePort.deviceName)
 
-// optional string guid = 2;
-inline void pbValidatePort::clear_guid() {
-  guid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline const ::std::string& pbValidatePort::guid() const {
-  // @@protoc_insertion_point(field_get:DataChannelProto.pbValidatePort.guid)
-  return guid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void pbValidatePort::set_guid(const ::std::string& value) {
-  
-  guid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:DataChannelProto.pbValidatePort.guid)
-}
-inline void pbValidatePort::set_guid(const char* value) {
-  
-  guid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:DataChannelProto.pbValidatePort.guid)
-}
-inline void pbValidatePort::set_guid(const char* value, size_t size) {
-  
-  guid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:DataChannelProto.pbValidatePort.guid)
-}
-inline ::std::string* pbValidatePort::mutable_guid() {
-  
-  // @@protoc_insertion_point(field_mutable:DataChannelProto.pbValidatePort.guid)
-  return guid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* pbValidatePort::release_guid() {
-  // @@protoc_insertion_point(field_release:DataChannelProto.pbValidatePort.guid)
-  
-  return guid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void pbValidatePort::set_allocated_guid(::std::string* guid) {
-  if (guid != NULL) {
-    
-  } else {
-    
-  }
-  guid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), guid);
-  // @@protoc_insertion_point(field_set_allocated:DataChannelProto.pbValidatePort.guid)
-}
+        return devicename_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+    }
+    inline void pbValidatePort::set_allocated_devicename(::std::string* devicename) {
+        if (devicename != NULL) {
+        }
+        else {
+        }
+        devicename_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), devicename);
+        // @@protoc_insertion_point(field_set_allocated:DataChannelProto.pbValidatePort.deviceName)
+    }
+
+    // optional string guid = 2;
+    inline void pbValidatePort::clear_guid() {
+        guid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+    }
+    inline const ::std::string& pbValidatePort::guid() const {
+        // @@protoc_insertion_point(field_get:DataChannelProto.pbValidatePort.guid)
+        return guid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+    }
+    inline void pbValidatePort::set_guid(const ::std::string& value) {
+        guid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+        // @@protoc_insertion_point(field_set:DataChannelProto.pbValidatePort.guid)
+    }
+    inline void pbValidatePort::set_guid(const char* value) {
+        guid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+        // @@protoc_insertion_point(field_set_char:DataChannelProto.pbValidatePort.guid)
+    }
+    inline void pbValidatePort::set_guid(const char* value, size_t size) {
+        guid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+            ::std::string(reinterpret_cast<const char*>(value), size));
+        // @@protoc_insertion_point(field_set_pointer:DataChannelProto.pbValidatePort.guid)
+    }
+    inline ::std::string* pbValidatePort::mutable_guid() {
+        // @@protoc_insertion_point(field_mutable:DataChannelProto.pbValidatePort.guid)
+        return guid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+    }
+    inline ::std::string* pbValidatePort::release_guid() {
+        // @@protoc_insertion_point(field_release:DataChannelProto.pbValidatePort.guid)
+
+        return guid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+    }
+    inline void pbValidatePort::set_allocated_guid(::std::string* guid) {
+        if (guid != NULL) {
+        }
+        else {
+        }
+        guid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), guid);
+        // @@protoc_insertion_point(field_set_allocated:DataChannelProto.pbValidatePort.guid)
+    }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
 
-// @@protoc_insertion_point(namespace_scope)
-
+    // @@protoc_insertion_point(namespace_scope)
 }  // namespace DataChannelProto
 
 // @@protoc_insertion_point(global_scope)

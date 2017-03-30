@@ -20,9 +20,9 @@ private:
     QMenu *m_pMenu;
     QAction *m_pCascadeSubWindows;
     QAction *m_pTileSubWindows;
-    /* 
-    * 根据子窗口的名字管理所有的子窗口 
-    * 此处要求程序保证每个窗口名字不同 
+    /*
+    * 根据子窗口的名字管理所有的子窗口
+    * 此处要求程序保证每个窗口名字不同
     */
     QMap<QString, ShowWidget*> m_Title_Widget;
 
@@ -31,7 +31,7 @@ private:
 private:
     void informServerToStartTransfer(const QString &strWindowTile);
 
-/* 发送到orderSocket的信号 */
+    /* 发送到orderSocket的信号 */
 signals: void signal_reqStart(KinectDataProto::pbReqStart reqStart);
 
 /***********************************************************************************/
@@ -49,5 +49,4 @@ private slots:
     void slot_customContextMenuRequested(QPoint point);
     void slot_removeSubWidget(QString title);
 /***********************************************************************************/
-
 };
