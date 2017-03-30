@@ -19,7 +19,7 @@ public:
         Color_Depth = 0x3,
         Color_Skele = 0x5,
         Depth_Skele = 0x6,
-        Color_Depth_Color = 0x7
+        Color_Depth_Skele = 0x7
     };
 
     enum class SocketType : unsigned char
