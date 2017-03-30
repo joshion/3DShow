@@ -131,6 +131,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="config.cpp" />
     <ClCompile Include="decodevideostream.cpp" />
     <ClCompile Include="orderframebuffer.cpp" />
     <ClCompile Include="thread.cpp" />
@@ -138,6 +139,7 @@
     <ClCompile Include="utilities.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="config.h" />
     <ClInclude Include="decodevideostream.h" />
     <ClInclude Include="orderframebuffer.h" />
     <ClInclude Include="singleton.h" />

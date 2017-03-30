@@ -8,21 +8,22 @@ message pbReqStart
     string deviceName = 1;
 }
 
-// 服务器向客户端返回为 某特定设备数据的传输 开启的端口
-// 若没有给某种数据开启传输端口 则返回值置-1
+// 服务器向客户端返回为 是否成功开启某设备数据的传输
 message pbRespStart
 {
     string deviceName = 1;
-    string guid = 2;
-    int32 resultType = 3;
-    string failReason = 4;
+    int32 resultType = 2;
+    string failReason = 3;
 }
 
 // 服务器主动断开某特定设备的数据传输
+// type为1时,服务器到客户端间的socket断开
+// type为2时,服务器为Kinect设备的连接断开 
 message pbEndTransfer
 {
     string deviceName = 1;
-    string reason = 2;
+    int32 type = 2;
+    string reason = 3;
 }
 
 // 客户端主动向服务器请求断开某特定设备的数据传输

@@ -1,8 +1,8 @@
-﻿#pragma once
+#pragma once
 #include <mutex>
 
 /*
-* 继承此模板类
+* 继承此模板类, 并将构造析构函数声明为private
 * 并在子类中添加此类的友元声明
 * friend class SingleTon<T>;
 */

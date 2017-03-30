@@ -7,9 +7,10 @@ message pbRespConnect
 {
     int32 resultType = 1;
     string failReason = 2;
-    int32 colorPort = 3;
-    int32 depthPort = 4;
-    int32 skelePort = 5;
+    string guid = 3;
+    int32 colorPort = 4;
+    int32 depthPort = 5;
+    int32 skelePort = 6;
 }
 
 // 服务器对客户端的请求设备列表进行回应

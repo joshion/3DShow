@@ -144,26 +144,26 @@ void ShowWidget::closeEvent(QCloseEvent * event)
 
 void ShowWidget::createTransferSocketThreads(KinectDataProto::pbRespStart respStart)
 {
-    QString strGuid = QString::fromStdString(respStart.guid());
+    // QString strGuid = QString::fromStdString(respStart.guid());
 
     TransferSocketThread *pSocketThread = nullptr;
     if (m_eShowType & Utilities::ShowType::Color)
     {
-        pSocketThread = new TransferSocketThread { m_strTitle, strGuid, Utilities::SocketType::Color,
+        pSocketThread = new TransferSocketThread { m_strTitle, "", Utilities::SocketType::Color,
             0, IP_ADRESS, this };
         m_Type_Socket.insert(Utilities::ShowType::Color, pSocketThread);
     }
 
     if (m_eShowType & Utilities::ShowType::Depth)
     {
-        pSocketThread = new TransferSocketThread { m_strTitle, strGuid, Utilities::SocketType::Depth,
+        pSocketThread = new TransferSocketThread { m_strTitle, "", Utilities::SocketType::Depth,
             0, IP_ADRESS, this };
         m_Type_Socket.insert(Utilities::ShowType::Depth, pSocketThread);
     }
 
     if (m_eShowType & Utilities::ShowType::Skele)
     {
-        pSocketThread = new TransferSocketThread { m_strTitle, strGuid, Utilities::SocketType::Skele,
+        pSocketThread = new TransferSocketThread { m_strTitle, "", Utilities::SocketType::Skele,
             0, IP_ADRESS, this };
         m_Type_Socket.insert(Utilities::ShowType::Skele, pSocketThread);
     }

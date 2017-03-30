@@ -39,9 +39,10 @@ void protobuf_AssignDesc_ConnectProto_2eproto() {
       "ConnectProto.proto");
   GOOGLE_CHECK(file != NULL);
   pbRespConnect_descriptor_ = file->message_type(0);
-  static const int pbRespConnect_offsets_[5] = {
+  static const int pbRespConnect_offsets_[6] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(pbRespConnect, resulttype_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(pbRespConnect, failreason_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(pbRespConnect, guid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(pbRespConnect, colorport_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(pbRespConnect, depthport_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(pbRespConnect, skeleport_),
@@ -109,12 +110,12 @@ void protobuf_AddDesc_ConnectProto_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\022ConnectProto.proto\022\014ConnectProto\"p\n\rpb"
+    "\n\022ConnectProto.proto\022\014ConnectProto\"~\n\rpb"
     "RespConnect\022\022\n\nresultType\030\001 \001(\005\022\022\n\nfailR"
-    "eason\030\002 \001(\t\022\021\n\tcolorPort\030\003 \001(\005\022\021\n\tdepthP"
-    "ort\030\004 \001(\005\022\021\n\tskelePort\030\005 \001(\005\"6\n\rpbRespDe"
-    "vices\022\022\n\ndeviceList\030\001 \001(\t\022\021\n\tseparator\030\002"
-    " \001(\tb\006proto3", 212);
+    "eason\030\002 \001(\t\022\014\n\004guid\030\003 \001(\t\022\021\n\tcolorPort\030\004"
+    " \001(\005\022\021\n\tdepthPort\030\005 \001(\005\022\021\n\tskelePort\030\006 \001"
+    "(\005\"6\n\rpbRespDevices\022\022\n\ndeviceList\030\001 \001(\t\022"
+    "\021\n\tseparator\030\002 \001(\tb\006proto3", 226);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "ConnectProto.proto", &protobuf_RegisterTypes);
   pbRespConnect::default_instance_ = new pbRespConnect();
@@ -136,6 +137,7 @@ struct StaticDescriptorInitializer_ConnectProto_2eproto {
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int pbRespConnect::kResultTypeFieldNumber;
 const int pbRespConnect::kFailReasonFieldNumber;
+const int pbRespConnect::kGuidFieldNumber;
 const int pbRespConnect::kColorPortFieldNumber;
 const int pbRespConnect::kDepthPortFieldNumber;
 const int pbRespConnect::kSkelePortFieldNumber;
@@ -165,6 +167,7 @@ void pbRespConnect::SharedCtor() {
   _cached_size_ = 0;
   resulttype_ = 0;
   failreason_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  guid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   colorport_ = 0;
   depthport_ = 0;
   skeleport_ = 0;
@@ -177,6 +180,7 @@ pbRespConnect::~pbRespConnect() {
 
 void pbRespConnect::SharedDtor() {
   failreason_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  guid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (this != default_instance_) {
   }
 }
@@ -224,8 +228,10 @@ void pbRespConnect::Clear() {
            ZR_HELPER_(last) - ZR_HELPER_(first) + sizeof(last));\
 } while (0)
 
-  ZR_(resulttype_, skeleport_);
+  ZR_(resulttype_, colorport_);
+  ZR_(depthport_, skeleport_);
   failreason_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  guid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 
 #undef ZR_HELPER_
 #undef ZR_
@@ -269,13 +275,30 @@ bool pbRespConnect::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(24)) goto parse_colorPort;
+        if (input->ExpectTag(26)) goto parse_guid;
         break;
       }
 
-      // optional int32 colorPort = 3;
+      // optional string guid = 3;
       case 3: {
-        if (tag == 24) {
+        if (tag == 26) {
+         parse_guid:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_guid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->guid().data(), this->guid().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "ConnectProto.pbRespConnect.guid"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(32)) goto parse_colorPort;
+        break;
+      }
+
+      // optional int32 colorPort = 4;
+      case 4: {
+        if (tag == 32) {
          parse_colorPort:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
@@ -284,13 +307,13 @@ bool pbRespConnect::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(32)) goto parse_depthPort;
+        if (input->ExpectTag(40)) goto parse_depthPort;
         break;
       }
 
-      // optional int32 depthPort = 4;
-      case 4: {
-        if (tag == 32) {
+      // optional int32 depthPort = 5;
+      case 5: {
+        if (tag == 40) {
          parse_depthPort:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
@@ -299,13 +322,13 @@ bool pbRespConnect::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(40)) goto parse_skelePort;
+        if (input->ExpectTag(48)) goto parse_skelePort;
         break;
       }
 
-      // optional int32 skelePort = 5;
-      case 5: {
-        if (tag == 40) {
+      // optional int32 skelePort = 6;
+      case 6: {
+        if (tag == 48) {
          parse_skelePort:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
@@ -357,19 +380,29 @@ void pbRespConnect::SerializeWithCachedSizes(
       2, this->failreason(), output);
   }
 
-  // optional int32 colorPort = 3;
+  // optional string guid = 3;
+  if (this->guid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->guid().data(), this->guid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "ConnectProto.pbRespConnect.guid");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      3, this->guid(), output);
+  }
+
+  // optional int32 colorPort = 4;
   if (this->colorport() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->colorport(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(4, this->colorport(), output);
   }
 
-  // optional int32 depthPort = 4;
+  // optional int32 depthPort = 5;
   if (this->depthport() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(4, this->depthport(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(5, this->depthport(), output);
   }
 
-  // optional int32 skelePort = 5;
+  // optional int32 skelePort = 6;
   if (this->skeleport() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(5, this->skeleport(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(6, this->skeleport(), output);
   }
 
   // @@protoc_insertion_point(serialize_end:ConnectProto.pbRespConnect)
@@ -394,19 +427,30 @@ void pbRespConnect::SerializeWithCachedSizes(
         2, this->failreason(), target);
   }
 
-  // optional int32 colorPort = 3;
+  // optional string guid = 3;
+  if (this->guid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->guid().data(), this->guid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "ConnectProto.pbRespConnect.guid");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        3, this->guid(), target);
+  }
+
+  // optional int32 colorPort = 4;
   if (this->colorport() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->colorport(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(4, this->colorport(), target);
   }
 
-  // optional int32 depthPort = 4;
+  // optional int32 depthPort = 5;
   if (this->depthport() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(4, this->depthport(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(5, this->depthport(), target);
   }
 
-  // optional int32 skelePort = 5;
+  // optional int32 skelePort = 6;
   if (this->skeleport() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(5, this->skeleport(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(6, this->skeleport(), target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:ConnectProto.pbRespConnect)
@@ -431,21 +475,28 @@ int pbRespConnect::ByteSize() const {
         this->failreason());
   }
 
-  // optional int32 colorPort = 3;
+  // optional string guid = 3;
+  if (this->guid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->guid());
+  }
+
+  // optional int32 colorPort = 4;
   if (this->colorport() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
         this->colorport());
   }
 
-  // optional int32 depthPort = 4;
+  // optional int32 depthPort = 5;
   if (this->depthport() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
         this->depthport());
   }
 
-  // optional int32 skelePort = 5;
+  // optional int32 skelePort = 6;
   if (this->skeleport() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
@@ -487,6 +538,10 @@ void pbRespConnect::MergeFrom(const pbRespConnect& from) {
 
     failreason_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.failreason_);
   }
+  if (from.guid().size() > 0) {
+
+    guid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.guid_);
+  }
   if (from.colorport() != 0) {
     set_colorport(from.colorport());
   }
@@ -524,6 +579,7 @@ void pbRespConnect::Swap(pbRespConnect* other) {
 void pbRespConnect::InternalSwap(pbRespConnect* other) {
   std::swap(resulttype_, other->resulttype_);
   failreason_.Swap(&other->failreason_);
+  guid_.Swap(&other->guid_);
   std::swap(colorport_, other->colorport_);
   std::swap(depthport_, other->depthport_);
   std::swap(skeleport_, other->skeleport_);
@@ -600,7 +656,51 @@ void pbRespConnect::clear_failreason() {
   // @@protoc_insertion_point(field_set_allocated:ConnectProto.pbRespConnect.failReason)
 }
 
-// optional int32 colorPort = 3;
+// optional string guid = 3;
+void pbRespConnect::clear_guid() {
+  guid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& pbRespConnect::guid() const {
+  // @@protoc_insertion_point(field_get:ConnectProto.pbRespConnect.guid)
+  return guid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void pbRespConnect::set_guid(const ::std::string& value) {
+  
+  guid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:ConnectProto.pbRespConnect.guid)
+}
+ void pbRespConnect::set_guid(const char* value) {
+  
+  guid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:ConnectProto.pbRespConnect.guid)
+}
+ void pbRespConnect::set_guid(const char* value, size_t size) {
+  
+  guid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:ConnectProto.pbRespConnect.guid)
+}
+ ::std::string* pbRespConnect::mutable_guid() {
+  
+  // @@protoc_insertion_point(field_mutable:ConnectProto.pbRespConnect.guid)
+  return guid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* pbRespConnect::release_guid() {
+  // @@protoc_insertion_point(field_release:ConnectProto.pbRespConnect.guid)
+  
+  return guid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void pbRespConnect::set_allocated_guid(::std::string* guid) {
+  if (guid != NULL) {
+    
+  } else {
+    
+  }
+  guid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), guid);
+  // @@protoc_insertion_point(field_set_allocated:ConnectProto.pbRespConnect.guid)
+}
+
+// optional int32 colorPort = 4;
 void pbRespConnect::clear_colorport() {
   colorport_ = 0;
 }
@@ -614,7 +714,7 @@ void pbRespConnect::clear_colorport() {
   // @@protoc_insertion_point(field_set:ConnectProto.pbRespConnect.colorPort)
 }
 
-// optional int32 depthPort = 4;
+// optional int32 depthPort = 5;
 void pbRespConnect::clear_depthport() {
   depthport_ = 0;
 }
@@ -628,7 +728,7 @@ void pbRespConnect::clear_depthport() {
   // @@protoc_insertion_point(field_set:ConnectProto.pbRespConnect.depthPort)
 }
 
-// optional int32 skelePort = 5;
+// optional int32 skelePort = 6;
 void pbRespConnect::clear_skeleport() {
   skeleport_ = 0;
 }
