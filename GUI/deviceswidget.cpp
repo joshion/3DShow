@@ -5,56 +5,16 @@
 DevicesWidget::DevicesWidget(QWidget *parent)
     : QListWidget(parent),
     m_pMenu(nullptr),
-    m_pStartRequire_Color(nullptr),
-    m_pStartRequire_Depth(nullptr),
-    m_pStartRequire_Skele(nullptr),
-    m_pEndRequireData(nullptr),
     m_pLastClickedItem(nullptr)
 {
     QStringList deviceList;
     for (int i = 0; i < 10; ++i)
     {
-        deviceList << "aa";
+        deviceList << QString("aa");
     }
     this->addItems(deviceList);
 
-    m_pStartRequire_Color = new QAction("Show Color", this);
-    m_pStartRequire_Depth = new QAction("Show Depth", this);
-    m_pStartRequire_Skele = new QAction("Show Skele", this);
-
-
-    m_pStartRequire_Color_Skele = new QAction("Show Color_Skele", this);
-    m_pStartRequire_Depth_Skele = new QAction("Show Depth_Skele", this);
-    m_pStartRequire_Color_Depth = new QAction("Show Color_Depth", this);
-
-    m_pStartRequire_Color_Depth_Skele = new QAction("Color_Depth_Skele", this);
-
-    m_pEndRequireData = new QAction("End Require", this);
-
-    connect(m_pStartRequire_Color, &QAction::triggered, this, &DevicesWidget::slot_startRequire_Color);
-    connect(m_pStartRequire_Depth, &QAction::triggered, this, &DevicesWidget::slot_startRequire_Depth);
-    connect(m_pStartRequire_Skele, &QAction::triggered, this, &DevicesWidget::slot_startRequire_Skele);
-
-    connect(m_pStartRequire_Color_Skele, &QAction::triggered, this, &DevicesWidget::slot_startRequire_Color_Skele);
-    connect(m_pStartRequire_Depth_Skele, &QAction::triggered, this, &DevicesWidget::slot_startRequire_Depth_Skele);
-    connect(m_pStartRequire_Color_Depth, &QAction::triggered, this, &DevicesWidget::slot_startRequire_Color_Depth);
-
-    connect(m_pStartRequire_Color_Depth_Skele, &QAction::triggered, this, &DevicesWidget::slot_startRequire_Color_Depth_Skele);
-
-    connect(m_pEndRequireData, &QAction::triggered, this, &DevicesWidget::slot_endRequireData);
-
-    QMenu *subMenu = new QMenu("Start Require", this);
-    subMenu->addAction(m_pStartRequire_Color);
-    subMenu->addAction(m_pStartRequire_Depth);
-    subMenu->addAction(m_pStartRequire_Skele);
-    subMenu->addAction(m_pStartRequire_Color_Skele);
-    subMenu->addAction(m_pStartRequire_Depth_Skele);
-    subMenu->addAction(m_pStartRequire_Color_Depth);
-    subMenu->addAction(m_pStartRequire_Color_Depth_Skele);
-
-    m_pMenu = new QMenu(this);
-    m_pMenu->addMenu(subMenu);
-    m_pMenu->addAction(m_pEndRequireData);
+    createMenu();
     setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this, &DevicesWidget::customContextMenuRequested, this, &DevicesWidget::slot_customContextMenuRequested);
 }
@@ -63,66 +23,80 @@ DevicesWidget::~DevicesWidget()
 {
 }
 
-void DevicesWidget::slot_startRequire_Color()
+void DevicesWidget::createMenu()
 {
-    if (m_pLastClickedItem)
+    if (m_pMenu)
     {
-        QString strWindowTitle = m_pLastClickedItem->text();
-        emit signal_createShowWidget(strWindowTitle, Utilities::ShowType::Color);
+        m_pMenu->clear();
+        delete m_pMenu;
+        m_pMenu = nullptr;
     }
+
+    m_pMenu = new QMenu(this);
+
+    QMenu *subMenu = new QMenu("Start Require", this);
+    QAction *p = nullptr;
+
+    p = new QAction("Show Color", this);
+    connect(p, &QAction::triggered, [this] {
+        informMultiAreaToCreateWidget(Utilities::ShowType::Color);
+    });
+    subMenu->addAction(p);
+
+    p = new QAction("Show Depth", this);
+    connect(p, &QAction::triggered, [this] {
+        informMultiAreaToCreateWidget(Utilities::ShowType::Depth);
+    });
+    subMenu->addAction(p);
+
+    p = new QAction("Show Skele", this);
+    connect(p, &QAction::triggered, [this] {
+        informMultiAreaToCreateWidget(Utilities::ShowType::Skele);
+    });
+    subMenu->addAction(p);
+
+    p = new QAction("Show Color_Skele", this);
+    connect(p, &QAction::triggered, [this] {
+        informMultiAreaToCreateWidget(Utilities::ShowType::Color_Skele);
+    });
+    subMenu->addAction(p);
+
+    p = new QAction("Show Depth_Skele", this);
+    connect(p, &QAction::triggered, [this] {
+        informMultiAreaToCreateWidget(Utilities::ShowType::Depth_Skele);
+    });
+    subMenu->addAction(p);
+
+    p = new QAction("Show Color_Depth", this);
+    connect(p, &QAction::triggered, [this] {
+        informMultiAreaToCreateWidget(Utilities::ShowType::Color_Depth);
+    });
+    subMenu->addAction(p);
+
+    p = new QAction("Show Color_Depth_Skele", this);
+    connect(p, &QAction::triggered, [this] {
+        informMultiAreaToCreateWidget(Utilities::ShowType::Color_Depth_Skele);
+    });
+    subMenu->addAction(p);
+
+    m_pMenu->addMenu(subMenu);
+
+
+    p = new QAction("End Require", this);
+    connect(p, &QAction::triggered, this, &DevicesWidget::slot_endRequireData);
+    m_pMenu->addAction(p);
+
+
+    subMenu = nullptr;
+    p = nullptr;
 }
 
-void DevicesWidget::slot_startRequire_Depth()
+void DevicesWidget::informMultiAreaToCreateWidget(Utilities::ShowType type)
 {
     if (m_pLastClickedItem)
     {
         QString strWindowTitle = m_pLastClickedItem->text();
-        emit signal_createShowWidget(strWindowTitle, Utilities::ShowType::Depth);
-    }
-}
-
-void DevicesWidget::slot_startRequire_Skele()
-{
-    if (m_pLastClickedItem)
-    {
-        QString strWindowTitle = m_pLastClickedItem->text();
-        emit signal_createShowWidget(strWindowTitle, Utilities::ShowType::Skele);
-    }
-}
-
-void DevicesWidget::slot_startRequire_Color_Skele()
-{
-    if (m_pLastClickedItem)
-    {
-        QString strWindowTitle = m_pLastClickedItem->text();
-        emit signal_createShowWidget(strWindowTitle, Utilities::ShowType::Color_Skele);
-    }
-}
-
-void DevicesWidget::slot_startRequire_Depth_Skele()
-{
-    if (m_pLastClickedItem)
-    {
-        QString strWindowTitle = m_pLastClickedItem->text();
-        emit signal_createShowWidget(strWindowTitle, Utilities::ShowType::Depth_Skele);
-    }
-}
-
-void DevicesWidget::slot_startRequire_Color_Depth()
-{
-    if (m_pLastClickedItem)
-    {
-        QString strWindowTitle = m_pLastClickedItem->text();
-        emit signal_createShowWidget(strWindowTitle, Utilities::ShowType::Color_Depth);
-    }
-}
-
-void DevicesWidget::slot_startRequire_Color_Depth_Skele()
-{
-    if (m_pLastClickedItem)
-    {
-        QString strWindowTitle = m_pLastClickedItem->text();
-        emit signal_createShowWidget(strWindowTitle, Utilities::ShowType::Color_Depth_Skele);
+        emit signal_createShowWidget(strWindowTitle, type);
     }
 }
 
