@@ -38,6 +38,17 @@ ShowWidget::ShowWidget(QString title, Utilities::ShowType type, QWidget *parent)
     connect(this, &ShowWidget::signal_connectedToServer, this, &ShowWidget::slot_connectedToServer);
     connect(this, &ShowWidget::customContextMenuRequested, this, &ShowWidget::slot_customContextMenuRequested);
 
+    /*
+    * 如服务器在5秒内 没有对客户端的请求开始传输做出回应
+    * 则关闭该窗口,终止向服务器请求传输
+    */
+    m_pTimerCloseSelf = new QTimer(this);
+    m_pTimerCloseSelf->setSingleShot(true);
+    connect(m_pTimerCloseSelf, &QTimer::timeout, [=] {
+        close();
+    });
+    m_pTimerCloseSelf->start(5000);
+
     m_pTimer = new QTimer(this);
     connect(m_pTimer, &QTimer::timeout, this, &ShowWidget::slot_update);
     m_pTimer->start(40);
@@ -195,6 +206,16 @@ void ShowWidget::createMenu()
     }
 }
 
+void ShowWidget::KeepThisWidget()
+{
+    if (m_pTimerCloseSelf)
+    {
+        m_pTimerCloseSelf->stop();
+        delete m_pTimerCloseSelf;
+        m_pTimerCloseSelf = nullptr;
+    }
+}
+
 void ShowWidget::closeEvent(QCloseEvent * event)
 {
     emit signal_closed(m_strTitle);
@@ -243,28 +264,53 @@ void ShowWidget::updateColor()
 
     if (m_Type_Socket[Utilities::ShowType::Color] && m_Type_Socket[Utilities::ShowType::Color]->getTransferSocketPtr())
     {
-        ImageTransferSocket* m_pSocket = (ImageTransferSocket*) m_Type_Socket[Utilities::ShowType::Color]->getTransferSocketPtr();
+        ImageTransferSocket* pSocket = (ImageTransferSocket*) m_Type_Socket[Utilities::ShowType::Color]->getTransferSocketPtr();
         if (m_bFirstTime)
         {
-            if (m_pSocket && m_pSocket->matsSize() > 0)
+            if (pSocket && pSocket->matsSize() > 0)
             {
-                cv::Mat mat = m_pSocket->popMat();
+                cv::Mat mat = pSocket->popMat();
                 m_fAspectRatio = (float) mat.cols / mat.rows;
                 m_bFirstTime = false;
             }
         }
 
-        if (m_pColorPainter && m_pSocket && m_pSocket->matsSize() > 0)
+        if (m_pColorPainter && pSocket && pSocket->matsSize() > 0)
         {
-            m_pColorPainter->loadTexture(m_pSocket->popMat());
+            m_pColorPainter->loadTexture(pSocket->popMat());
         }
 
-        m_pSocket = nullptr;
+        pSocket = nullptr;
     }
 }
 
 void ShowWidget::updateDepth()
 {
+    if (false == m_Type_Socket.contains(Utilities::ShowType::Depth))
+    {
+        return;
+    }
+
+    if (m_Type_Socket[Utilities::ShowType::Depth] && m_Type_Socket[Utilities::ShowType::Depth]->getTransferSocketPtr())
+    {
+        ImageTransferSocket* pSocket = (ImageTransferSocket*) m_Type_Socket[Utilities::ShowType::Depth]->getTransferSocketPtr();
+        if (m_bFirstTime)
+        {
+            if (pSocket && pSocket->matsSize() > 0)
+            {
+                cv::Mat mat = pSocket->popMat();
+                m_fAspectRatio = (float) mat.cols / mat.rows;
+                m_bFirstTime = false;
+            }
+        }
+
+        if (m_pDepthPainter && pSocket && pSocket->matsSize() > 0)
+        {
+            m_pDepthPainter->loadTexture(pSocket->popMat());
+        }
+
+        pSocket = nullptr;
+    }
 }
 
 void ShowWidget::updateSkele()
@@ -297,6 +343,8 @@ void ShowWidget::slot_update()
 
     if (m_eShowType & Utilities::ShowType::Depth)
     {
+        makeCurrent();
+        updateDepth();
     }
 
     if (m_eShowType & Utilities::ShowType::Skele)

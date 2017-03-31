@@ -4,6 +4,7 @@
 
 #include <QMenu>
 #include <QAction>
+#include <QMdiSubWindow>
 
 MultiShowArea::MultiShowArea(QWidget *parent)
     : QMdiArea(parent)
@@ -39,7 +40,13 @@ void MultiShowArea::slot_startTransfer(KinectDataProto::pbRespStart respStart)
     {
         if (Utilities::PROTO_SUCCESS == respStart.resulttype())
         {
-            m_Title_Widget[strWindowTile]->createTransferSocketThreads();
+            /*
+            * 该MDI窗口的 子窗口只包含了ShowWidget*类型的窗口
+            * 故可以直接转换
+            */
+            ShowWidget *p = (ShowWidget*) m_Title_Widget[strWindowTile]->widget();
+            p->KeepThisWidget();
+            p->createTransferSocketThreads();
         }
         else if (Utilities::PROTO_FAILURED == respStart.resulttype())
         {
@@ -47,11 +54,6 @@ void MultiShowArea::slot_startTransfer(KinectDataProto::pbRespStart respStart)
             // 添加代码处理未能成功打开传输信道
         }
     }
-}
-
-void MultiShowArea::slot_removeSubWidget(QString title)
-{
-    m_Title_Widget.remove(title);
 }
 
 void MultiShowArea::slot_showSubWidget(QString strWindowTitle, Utilities::ShowType type)
@@ -62,14 +64,25 @@ void MultiShowArea::slot_showSubWidget(QString strWindowTitle, Utilities::ShowTy
     }
     else
     {
-        ShowWidget *p = new ShowWidget { strWindowTitle, type };
-        p->setAttribute(Qt::WA_DeleteOnClose);
-        this->addSubWindow(p, Qt::Widget);
-        p->showMaximized();
-        connect(p, &ShowWidget::signal_closed, this, &MultiShowArea::slot_removeSubWidget);
+        QMdiSubWindow *pSubWindow = new QMdiSubWindow;
+        ShowWidget *pShowWidget = new ShowWidget { strWindowTitle, type };
+        pSubWindow->setWidget(pShowWidget);
+        pSubWindow->setAttribute(Qt::WA_DeleteOnClose);
+        this->addSubWindow(pSubWindow, Qt::Widget);
+        m_Title_Widget.insert(strWindowTitle, pSubWindow);
 
-        m_Title_Widget.insert(strWindowTitle, p);
-        p = nullptr;
+        /* showWidget关闭时, 包含它的容器也相对应的关闭 */
+        connect(pShowWidget, &ShowWidget::signal_closed, pSubWindow, &QMdiSubWindow::close);
+
+        /* 子窗口关闭时即销毁, 在map表的所对应的项也需要删除 */
+        connect(pSubWindow, &QMdiSubWindow::destroyed, [=] {
+            m_Title_Widget.remove(strWindowTitle);
+        });
+
+
+        pShowWidget->showMaximized();
+        pShowWidget = nullptr;
+        pSubWindow = nullptr;
 
         informServerToStartTransfer(strWindowTitle);
     }

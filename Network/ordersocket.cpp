@@ -3,7 +3,6 @@
 #include "orderframebuffer.h"
 
 #include "ConnectProto.pb.h"
-#include "KinectDataProto.pb.h"
 
 #include <QTcpSocket>
 #include <QString>

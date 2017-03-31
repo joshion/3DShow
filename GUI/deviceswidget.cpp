@@ -10,7 +10,7 @@ DevicesWidget::DevicesWidget(QWidget *parent)
     QStringList deviceList;
     for (int i = 0; i < 10; ++i)
     {
-        deviceList << QString("aa");
+        deviceList << QString("aa") + QString::number(i);
     }
     this->addItems(deviceList);
 

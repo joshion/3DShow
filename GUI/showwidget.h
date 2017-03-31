@@ -44,6 +44,8 @@ private:
     bool m_bShowDepth;
     bool m_bShowSkele;
 
+    QTimer *m_pTimerCloseSelf;
+
     /********************************************************************************************/
 
 protected:
@@ -59,6 +61,7 @@ signals: void signal_closed(const QString &strWindowTitle);
 signals: void signal_connectedToServer() override;
 
 public:
+    void KeepThisWidget();  // 从该窗口构造开始5秒钟内,如果与服务器建立了传输连接,则保留此窗口
     void createTransferSocketThreads();
 private slots :
     void slot_update();
