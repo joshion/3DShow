@@ -108,4 +108,23 @@ private:
     unsigned char *m_data;
 
     static const unsigned int s_u32HeadLength = 11;
+
+public:
+    const static unsigned int TYPE_CONNECT_PROTOCOL = 1;
+
+    const static unsigned int NUM_REQUIRE_CONNECT = 1;
+    const static unsigned int NUM_EXIT_CONNECT = 2;
+    const static unsigned int NUM_REQUIRE_DEVICES = 3;
+    const static unsigned int NUM_RESP_REQUIRE_CONNECT = 100;
+    const static unsigned int NUM_RESP_DEVICES = 101;
+
+    const static unsigned int TYPE_KINECT_PROTOCOL = 2;
+
+    const static unsigned int NUM_START_REQUIRE = 1;
+    const static unsigned int NUM_END_REQUIRE = 2;
+    const static unsigned int NUM_RESP_START_REQUIRE = 100;
+    const static unsigned int NUM_SERVER_END_TRANSFER = 101;
+
+    const static unsigned int TYPE_DATA_CHANNEL_PROTOCOL = 3;
+    const static unsigned int NUM_VALIDATE_PORT = 1;
 };

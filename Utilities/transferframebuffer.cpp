@@ -144,7 +144,7 @@ bool TransferFrameBuffer::setData(const QByteArray & bytes, const unsigned int l
 
 bool TransferFrameBuffer::setData(const unsigned char * data, const unsigned int length)
 {
-    if (data || length <= 0)
+    if (nullptr == data || length <= 0)
     {
         return false;
     }

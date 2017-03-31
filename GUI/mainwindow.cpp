@@ -2,6 +2,9 @@
 
 #include "ordersocketthread.h"
 
+#include "utilities.h"
+
+#include <QString>
 #include <QToolTip>
 #include <qdebug.h>
 
@@ -24,16 +27,50 @@ MainWindow::MainWindow(QWidget * parent)
     * 也需要在客户端内做出断开所有 数据传输socket
     */
     connect(ui.m_ExitConnect, &QPushButton::clicked, m_pOrderSocketThread, &OrderSocketThread::signal_exitConnect);
-    connect(ui.m_ExitConnect, &QPushButton::clicked, this, &MainWindow::slot_exitConnect);
+    connect(ui.m_ExitConnect, &QPushButton::clicked, this, [this] {
+        disconnectFromServer();
+    });
 
     connect(ui.m_MultiShowArea, &MultiShowArea::signal_reqStart, m_pOrderSocketThread, &OrderSocketThread::signal_reqStart);
 
     /* 从 底层服务orderSocket 发回到 主窗口 的消息 */
     connect(this, &MainWindow::signal_respConnect, this, &MainWindow::slot_respConnect);
+
+    /* 成功从服务器返回设备列表 */
     connect(this, &MainWindow::signal_respDevices, ui.m_DevicesWidget, &DevicesWidget::slot_setDevices);
-    connect(this, &MainWindow::signal_reqEndConnect, this, &MainWindow::slot_reqEndConnect);    // 服务器端主动断开连接
-    connect(this, &MainWindow::signal_respStart, ui.m_MultiShowArea, &MultiShowArea::slot_startTransfer);   // 服务器返回端口号
-    connect(this, &MainWindow::signal_hasBeenConnected, this, &MainWindow::slot_hasBeenConnected);  // 控制socket已经连接
+    connect(this, &MainWindow::signal_respDevices, this, [this] {
+        showInfo("Refresh the devices list successed!");
+    });
+
+    /* 服务器端主动断开连接 */
+    connect(this, &MainWindow::signal_reqEndConnect, this, [this] {
+        disconnectFromServer();
+        showInfo("Server has ended all connections!");
+    });
+
+    /*
+    * 依据服务器返回的 回应 信息
+    * 如果服务器允许传输,在通知区显示开始传输信息,通知对应窗口开启建立传输,
+    * 否则,在通知区显示失败原因,通知对应窗口关闭
+    */
+    connect(this, &MainWindow::signal_respStart, ui.m_MultiShowArea, &MultiShowArea::slot_startTransfer);
+    connect(this, &MainWindow::signal_respStart, this, [this](KinectDataProto::pbRespStart resp) {
+        if (Utilities::PROTO_SUCCESS == resp.resulttype())
+        {
+            showInfo(QString("Server has started transfer ") + QString::fromStdString(resp.devicename()) + "'s data");
+        }
+        else
+        {
+            showInfo(QString("Server can\'t transfer ")
+                + QString::fromStdString(resp.devicename()) + "\'s data,"
+                + QString::fromStdString(resp.failreason()));
+        }
+    });
+
+    /* 控制socket已经连接, 无需再次连接*/
+    connect(this, &MainWindow::signal_hasBeenConnected, this ,[this] {
+        showInfo("Has been connected to server, no need to require connect!");
+    });
 
     /* 从 设备列表窗口 发送到 多窗口显示窗口 的消息 */
     connect(ui.m_DevicesWidget, &DevicesWidget::signal_createShowWidget,
@@ -54,6 +91,11 @@ MainWindow::~MainWindow()
     }
 }
 
+void MainWindow::showInfo(const QString & info)
+{
+    QToolTip::showText(QPoint(x() + 260, y() + 23), info, this, QRect(), 2000);
+}
+
 void MainWindow::disconnectFromServer()
 {
     /*
@@ -66,32 +108,47 @@ void MainWindow::disconnectFromServer()
     // 添加代码, 让设备列表清空列表, 已经打开的显示窗口全部关闭
 }
 
-void MainWindow::slot_respConnect()
+void MainWindow::slot_respConnect(ConnectProto::pbRespConnect resp)
 {
-    /* 服务器端回应连接成功后, 允许向服务器端请求设备列表 */
-    connect(ui.m_ReqDevices, &QPushButton::clicked, m_pOrderSocketThread, &OrderSocketThread::signal_requireDevices);
-
-    QToolTip::showText(QPoint(x() + 250, y()), "connected to server successed!", this, QRect(), 2000);
     qDebug() << "enter" << __FILE__ << __LINE__ << "slot_respConnect";
-}
 
-/* 服务器主动断开连接 触发事件 */
-void MainWindow::slot_reqEndConnect()
-{
-    disconnectFromServer();
-    qDebug() << "enter" << __FILE__ << __LINE__ << "slot_reqEndConnect";
-}
+    if (Utilities::PROTO_FAILURED == resp.resulttype())
+    {
+        showInfo("Can\'t connected to server! Reason:" + QString::fromStdString(resp.failreason()));
+    }
+    else if (Utilities::PROTO_SUCCESS == resp.resulttype() && m_pConfig)
+    {
+        /* 根据服务器返回的GUID和三种数据传输端口,对本程序进行配置 */
+        m_pConfig->setGuid(QString::fromStdString(resp.guid()));
+        if (resp.colorport() > 0)
+        {
+            m_pConfig->setColorPort(static_cast<unsigned int>(resp.colorport()));
+        }
+        else
+        {
+            m_pConfig->setColorPort(0);
+        }
 
-/* 控制socket已经成功连接到服务器后 再点击申请连接时 会触发该事件 */
-void MainWindow::slot_hasBeenConnected()
-{
-    QToolTip::showText(QPoint(x() + 250, y()),
-        "Has been connected to server,\n no need to require connect!", this, QRect(), 2000);
-}
+        if (resp.depthport() > 0)
+        {
+            m_pConfig->setDepthPort(static_cast<unsigned int>(resp.depthport()));
+        }
+        else
+        {
+            m_pConfig->setDepthPort(0);
+        }
 
-/* 退出所有连接时 触发的事件 */
-void MainWindow::slot_exitConnect()
-{
-    disconnectFromServer();
-    qDebug() << "enter" << __FILE__ << __LINE__ << "slot_exitConnect";
+        if (resp.skeleport() > 0)
+        {
+            m_pConfig->setSkelePort(static_cast<unsigned int>(resp.skeleport()));
+        }
+        else
+        {
+            m_pConfig->setSkelePort(0);
+        }
+
+        /* 服务器端回应连接成功后, 允许向服务器端请求设备列表 */
+        connect(ui.m_ReqDevices, &QPushButton::clicked, m_pOrderSocketThread, &OrderSocketThread::signal_requireDevices);
+        showInfo("Connected to server successed!");
+    }
 }

@@ -200,7 +200,7 @@ bool OrderFrameBuffer::setData(const QByteArray & bytes, const unsigned int leng
 
 bool OrderFrameBuffer::setData(const unsigned char * data, const unsigned int length)
 {
-    if (data || length <= 0)
+    if (nullptr == data || length <= 0)
     {
         return false;
     }

@@ -9,7 +9,8 @@ class Utilities
 {
 public:
     Utilities() = delete;
-
+    static const int PROTO_SUCCESS = 1;
+    static const int PROTO_FAILURED = -100;
 public:
     enum class ShowType : unsigned char
     {

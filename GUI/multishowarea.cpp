@@ -37,12 +37,13 @@ void MultiShowArea::slot_startTransfer(KinectDataProto::pbRespStart respStart)
     QString strWindowTile = QString::fromStdString(respStart.devicename());
     if (m_Title_Widget.contains(strWindowTile))
     {
-        if (1 == respStart.resulttype())
+        if (Utilities::PROTO_SUCCESS == respStart.resulttype())
         {
             m_Title_Widget[strWindowTile]->createTransferSocketThreads();
         }
-        else
+        else if (Utilities::PROTO_FAILURED == respStart.resulttype())
         {
+            m_Title_Widget[strWindowTile]->close();
             // 添加代码处理未能成功打开传输信道
         }
     }

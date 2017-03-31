@@ -2,8 +2,6 @@
 #include "orderinterface.h"
 #include "orderframebuffer.h"
 
-#include "config.h"
-
 #include "ConnectProto.pb.h"
 #include "KinectDataProto.pb.h"
 
@@ -12,24 +10,6 @@
 #include <QStringList>
 
 #include <QTimer>
-
-namespace
-{
-    const static unsigned int CONNECT_PROTOCOL = 1;
-
-    const static unsigned int REQUIRE_CONNECT = 1;
-    const static unsigned int EXIT_CONNECT = 2;
-    const static unsigned int REQUIRE_DEVICES = 3;
-    const static unsigned int RESP_REQUIRE_CONNECT = 100;
-    const static unsigned int RESP_DEVICES = 101;
-
-    const static unsigned int KINECT_PROTOCOL = 2;
-
-    const static unsigned int START_REQUIRE = 1;
-    const static unsigned int END_REQUIRE = 2;
-    const static unsigned int RESP_START_REQUIRE = 100;
-    const static unsigned int SERVER_END_TRANSFER = 101;
-}
 
 OrderSocket::OrderSocket(QString adress, unsigned int port, QObject *parent)
     : QTcpSocket(parent),
@@ -78,8 +58,8 @@ void OrderSocket::slot_setConnected()
     * 与服务器建立连接后,
     * 发送连接验证信息
     */
-    m_pSendFrameBuffer->setCmdType(CONNECT_PROTOCOL);
-    m_pSendFrameBuffer->setCmdNum(REQUIRE_CONNECT);
+    m_pSendFrameBuffer->setCmdType(OrderFrameBuffer::TYPE_CONNECT_PROTOCOL);
+    m_pSendFrameBuffer->setCmdNum(OrderFrameBuffer::NUM_REQUIRE_CONNECT);
     m_pSendFrameBuffer->setData(nullptr, 0);
     writeBufferToServer();
 }
@@ -91,10 +71,9 @@ void OrderSocket::slot_setDisConnected()
 
 bool OrderSocket::writeBufferToServer()
 {
-    QByteArray bytes = OrderFrameBuffer::toBytes(*m_pSendFrameBuffer);
-
     if (m_bConnected)
     {
+        QByteArray bytes = OrderFrameBuffer::toBytes(*m_pSendFrameBuffer);
         return write(bytes) == bytes.length();
     }
     else
@@ -129,8 +108,8 @@ bool OrderSocket::slot_exitConnect()
 {
     qDebug() << "enter exit connect";
 
-    m_pSendFrameBuffer->setCmdType(CONNECT_PROTOCOL);
-    m_pSendFrameBuffer->setCmdNum(EXIT_CONNECT);
+    m_pSendFrameBuffer->setCmdType(OrderFrameBuffer::TYPE_CONNECT_PROTOCOL);
+    m_pSendFrameBuffer->setCmdNum(OrderFrameBuffer::NUM_EXIT_CONNECT);
     m_pSendFrameBuffer->setData(nullptr, 0);
     bool flag = this->writeBufferToServer();
 
@@ -144,19 +123,8 @@ bool OrderSocket::slot_requireDevices()
 {
     qDebug() << "enter require devices";
 
-    m_pSendFrameBuffer->setCmdType(CONNECT_PROTOCOL);
-    m_pSendFrameBuffer->setCmdNum(REQUIRE_DEVICES);
-    m_pSendFrameBuffer->setData(nullptr, 0);
-
-    return this->writeBufferToServer();
-}
-
-bool OrderSocket::slot_endRequire()
-{
-    qDebug() << "enter end connect";
-
-    m_pSendFrameBuffer->setCmdType(KINECT_PROTOCOL);
-    m_pSendFrameBuffer->setCmdNum(END_REQUIRE);
+    m_pSendFrameBuffer->setCmdType(OrderFrameBuffer::TYPE_CONNECT_PROTOCOL);
+    m_pSendFrameBuffer->setCmdNum(OrderFrameBuffer::NUM_REQUIRE_DEVICES);
     m_pSendFrameBuffer->setData(nullptr, 0);
 
     return this->writeBufferToServer();
@@ -166,9 +134,20 @@ bool OrderSocket::slot_startRequire(KinectDataProto::pbReqStart protoReqStart)
 {
     qDebug() << "enter start require";
 
-    m_pSendFrameBuffer->setCmdType(KINECT_PROTOCOL);
-    m_pSendFrameBuffer->setCmdNum(START_REQUIRE);
+    m_pSendFrameBuffer->setCmdType(OrderFrameBuffer::TYPE_KINECT_PROTOCOL);
+    m_pSendFrameBuffer->setCmdNum(OrderFrameBuffer::NUM_START_REQUIRE);
     m_pSendFrameBuffer->setData(protoReqStart);
+
+    return this->writeBufferToServer();
+}
+
+bool OrderSocket::slot_endRequire()
+{
+    qDebug() << "enter end connect";
+
+    m_pSendFrameBuffer->setCmdType(OrderFrameBuffer::TYPE_KINECT_PROTOCOL);
+    m_pSendFrameBuffer->setCmdNum(OrderFrameBuffer::NUM_END_REQUIRE);
+    m_pSendFrameBuffer->setData(nullptr, 0);
 
     return this->writeBufferToServer();
 }
@@ -218,37 +197,21 @@ void OrderSocket::analysisReceiveFrameBuffer(const OrderFrameBuffer & buffer)
 {
     switch (buffer.cmdType())
     {
-    case CONNECT_PROTOCOL:
+    case OrderFrameBuffer::TYPE_CONNECT_PROTOCOL:
         switch (buffer.cmdNum())
         {
-        case RESP_REQUIRE_CONNECT:
+        case OrderFrameBuffer::NUM_RESP_REQUIRE_CONNECT:
         {
             ConnectProto::pbRespConnect resp;
             resp.ParseFromArray(buffer.data(), buffer.length());
             resp.PrintDebugString();
-
-            /* 根据服务器返回的GUID和三种数据传输端口,对本程序进行配置 */
-            Config::GetInstance()->setGuid(QString::fromStdString(resp.guid()));
-            if (resp.colorport() > 0)
-            {
-                Config::GetInstance()->setColorPort(static_cast<unsigned int>(resp.colorport()));
-            }
-            if (resp.depthport() > 0)
-            {
-                Config::GetInstance()->setDepthPort(static_cast<unsigned int>(resp.depthport()));
-            }
-            if (resp.skeleport() > 0)
-            {
-                Config::GetInstance()->setSkelePort(static_cast<unsigned int>(resp.depthport()));
-            }
-
             if (m_pGUI)
             {
-                m_pGUI->signal_respConnect();
+                m_pGUI->signal_respConnect(resp);
             }
         }
         break;
-        case RESP_DEVICES:
+        case OrderFrameBuffer::NUM_RESP_DEVICES:
         {
             ConnectProto::pbRespDevices resp;
             resp.ParseFromArray(buffer.data(), buffer.length());
@@ -271,10 +234,10 @@ void OrderSocket::analysisReceiveFrameBuffer(const OrderFrameBuffer & buffer)
             break;
         }
         break;
-    case KINECT_PROTOCOL:
+    case OrderFrameBuffer::TYPE_KINECT_PROTOCOL :
         switch (buffer.cmdNum())
         {
-        case RESP_START_REQUIRE:
+        case OrderFrameBuffer::NUM_RESP_START_REQUIRE:
         {
             KinectDataProto::pbRespStart resp;
             resp.ParseFromArray(buffer.data(), buffer.length());
@@ -285,7 +248,7 @@ void OrderSocket::analysisReceiveFrameBuffer(const OrderFrameBuffer & buffer)
             }
         }
         break;
-        case SERVER_END_TRANSFER:
+        case OrderFrameBuffer::NUM_SERVER_END_TRANSFER:
         {
         }
         break;

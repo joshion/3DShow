@@ -11,6 +11,7 @@ int main(int argc, char *argv[])
 {
     qRegisterMetaType<Utilities::ShowType>("Utilities::ShowType");
     qRegisterMetaType<Utilities::SocketType>("Utilities::SocketType");
+    qRegisterMetaType<ConnectProto::pbRespConnect>("ConnectProto::pbRespConnect");
     qRegisterMetaType<KinectDataProto::pbReqStart>("KinectDataProto::pbReqStart");
 
     SingleApplication a(argc, argv);
