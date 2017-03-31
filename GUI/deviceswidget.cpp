@@ -7,13 +7,6 @@ DevicesWidget::DevicesWidget(QWidget *parent)
     m_pMenu(nullptr),
     m_pLastClickedItem(nullptr)
 {
-    QStringList deviceList;
-    for (int i = 0; i < 10; ++i)
-    {
-        deviceList << QString("aa") + QString::number(i);
-    }
-    this->addItems(deviceList);
-
     createMenu();
     setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this, &DevicesWidget::customContextMenuRequested, this, &DevicesWidget::slot_customContextMenuRequested);

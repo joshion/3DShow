@@ -13,6 +13,7 @@ int main(int argc, char *argv[])
     qRegisterMetaType<Utilities::SocketType>("Utilities::SocketType");
     qRegisterMetaType<ConnectProto::pbRespConnect>("ConnectProto::pbRespConnect");
     qRegisterMetaType<KinectDataProto::pbReqStart>("KinectDataProto::pbReqStart");
+    qRegisterMetaType<KinectDataProto::pbRespStart>("KinectDataProto::pbRespStart");
 
     SingleApplication a(argc, argv);
     if (!a.isRunning())

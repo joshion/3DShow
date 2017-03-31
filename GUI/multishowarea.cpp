@@ -6,6 +6,8 @@
 #include <QAction>
 #include <QMdiSubWindow>
 
+QMap<QString, QMdiSubWindow*> MultiShowArea::m_Title_Widget;
+
 MultiShowArea::MultiShowArea(QWidget *parent)
     : QMdiArea(parent)
 {
@@ -23,6 +25,10 @@ MultiShowArea::MultiShowArea(QWidget *parent)
 
 MultiShowArea::~MultiShowArea()
 {
+    for (auto a : m_Title_Widget)
+    {
+        a->close();
+    }
 }
 
 /* 发送信号到orderSocket, 向服务器请求开始传输Kinect数据 */

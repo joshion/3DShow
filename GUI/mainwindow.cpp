@@ -14,7 +14,7 @@ MainWindow::MainWindow(QWidget * parent)
     m_pOrderSocketThread(nullptr)
 {
     m_pConfig = Config::GetInstance();
-    m_pConfig->setIPAdress("127.0.0.1");
+    m_pConfig->setIPAdress("192.168.31.250");
     m_pConfig->setServerPort(7892);
     ui.setupUi(this);
     m_pOrderSocketThread = OrderSocketThread::GetInstance(m_pConfig->IPAdress(), m_pConfig->serverPort(), this);

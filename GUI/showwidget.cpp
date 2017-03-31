@@ -47,11 +47,11 @@ ShowWidget::ShowWidget(QString title, Utilities::ShowType type, QWidget *parent)
     connect(m_pTimerCloseSelf, &QTimer::timeout, [=] {
         close();
     });
-    m_pTimerCloseSelf->start(5000);
+    m_pTimerCloseSelf->start(500000);
 
-    m_pTimer = new QTimer(this);
-    connect(m_pTimer, &QTimer::timeout, this, &ShowWidget::slot_update);
-    m_pTimer->start(40);
+    //m_pTimer = new QTimer(this);
+    //connect(m_pTimer, &QTimer::timeout, this, &ShowWidget::slot_update);
+    //m_pTimer->start(40);
 }
 
 ShowWidget::~ShowWidget()
@@ -277,6 +277,8 @@ void ShowWidget::updateColor()
 
         if (m_pColorPainter && pSocket && pSocket->matsSize() > 0)
         {
+            static int i = 0;
+            qDebug() << ++i;
             m_pColorPainter->loadTexture(pSocket->popMat());
         }
 
@@ -328,9 +330,9 @@ void ShowWidget::slot_connectedToServer()
 
 void ShowWidget::firstTimeShow()
 {
-    //m_pTimer = new QTimer(this);
-    //connect(m_pTimer, &QTimer::timeout, this, &ShowWidget::slot_update);
-    //m_pTimer->start(40);
+    m_pTimer = new QTimer(this);
+    connect(m_pTimer, &QTimer::timeout, this, &ShowWidget::slot_update);
+    m_pTimer->start(5);
 }
 
 void ShowWidget::slot_update()

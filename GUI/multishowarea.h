@@ -25,7 +25,7 @@ private:
     * 根据子窗口的名字管理所有的子窗口
     * 此处要求程序保证每个窗口名字不同
     */
-    QMap<QString, QMdiSubWindow*> m_Title_Widget;
+    static QMap<QString, QMdiSubWindow*> m_Title_Widget;
 
 private:
     KinectDataProto::pbReqStart m_ReqStart;
