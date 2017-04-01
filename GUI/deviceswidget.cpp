@@ -95,6 +95,14 @@ void DevicesWidget::informMultiAreaToCreateWidget(Utilities::ShowType type)
 
 void DevicesWidget::slot_endRequireData()
 {
+    if (m_pLastClickedItem)
+    {
+        QString strWindowTitle = m_pLastClickedItem->text();
+        KinectDataProto::pbReqEnd reqEnd;
+        reqEnd.set_devicename(strWindowTitle.toStdString());
+        reqEnd.set_reason("Client require to end the transfer!");
+        emit signal_requireEndTransfer(reqEnd);
+    }
 }
 
 void DevicesWidget::slot_customContextMenuRequested(QPoint point)

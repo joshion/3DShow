@@ -34,6 +34,7 @@ void ImageTransferSocket::analysisReceiveFrameBuffer(const TransferFrameBuffer& 
     case DATATYPE_DEPTH:
     {
         m_pDecoder->pushBytes(buffer.data(), buffer.bodyLength());
+        qDebug() << __FILE__ << __LINE__ << buffer.bodyLength();
     }
     break;
     default:

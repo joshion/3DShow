@@ -66,6 +66,10 @@ void OrderSocket::slot_setConnected()
 void OrderSocket::slot_setDisConnected()
 {
     m_bConnected = false;
+    if (m_pGUI)
+    {
+        m_pGUI->signal_EndConnect();
+    }
 }
 
 bool OrderSocket::writeBufferToServer()
@@ -140,13 +144,13 @@ bool OrderSocket::slot_startRequire(KinectDataProto::pbReqStart protoReqStart)
     return this->writeBufferToServer();
 }
 
-bool OrderSocket::slot_endRequire()
+bool OrderSocket::slot_endRequire(KinectDataProto::pbReqEnd reqEnd)
 {
     qDebug() << "enter end connect";
 
     m_pSendFrameBuffer->setCmdType(OrderFrameBuffer::TYPE_KINECT_PROTOCOL);
     m_pSendFrameBuffer->setCmdNum(OrderFrameBuffer::NUM_END_REQUIRE);
-    m_pSendFrameBuffer->setData(nullptr, 0);
+    m_pSendFrameBuffer->setData(reqEnd);
 
     return this->writeBufferToServer();
 }
@@ -249,6 +253,12 @@ void OrderSocket::analysisReceiveFrameBuffer(const OrderFrameBuffer & buffer)
         break;
         case OrderFrameBuffer::NUM_SERVER_END_TRANSFER:
         {
+            KinectDataProto::pbEndTransfer resp;
+            resp.ParseFromArray(buffer.data(), buffer.length());
+            if (m_pGUI)
+            {
+                m_pGUI->signal_reqEndTransfer(resp);
+            }
         }
         break;
         default:

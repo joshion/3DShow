@@ -27,7 +27,7 @@ MainWindow::MainWindow(QWidget * parent)
     * 也需要在客户端内做出断开所有 数据传输socket
     */
     connect(ui.m_ExitConnect, &QPushButton::clicked, m_pOrderSocketThread, &OrderSocketThread::signal_exitConnect);
-    connect(ui.m_ExitConnect, &QPushButton::clicked, this, [this] {
+    connect(ui.m_ExitConnect, &QPushButton::clicked, this, [&] {
         disconnectFromServer();
     });
 
@@ -42,11 +42,12 @@ MainWindow::MainWindow(QWidget * parent)
         showInfo("Refresh the devices list successed!");
     });
 
-    /* 服务器端主动断开连接 */
-    connect(this, &MainWindow::signal_reqEndConnect, this, [this] {
+    /* 网络异常断开连接 */
+    connect(this, &MainWindow::signal_EndConnect, this, [this] {
         disconnectFromServer();
         showInfo("Server has ended all connections!");
     });
+
 
     /*
     * 依据服务器返回的 回应 信息
@@ -67,6 +68,13 @@ MainWindow::MainWindow(QWidget * parent)
         }
     });
 
+    /* 服务器端主动断开数据传输的连接 */
+    connect(this, &MainWindow::signal_reqEndTransfer, this, [this](KinectDataProto::pbEndTransfer protoEndTransfer) {
+        protoEndTransfer.PrintDebugString();
+        showInfo("Server has ended all connections!");
+    });
+
+
     /* 控制socket已经连接, 无需再次连接*/
     connect(this, &MainWindow::signal_hasBeenConnected, this ,[this] {
         showInfo("Has been connected to server, no need to require connect!");
@@ -75,6 +83,12 @@ MainWindow::MainWindow(QWidget * parent)
     /* 从 设备列表窗口 发送到 多窗口显示窗口 的消息 */
     connect(ui.m_DevicesWidget, &DevicesWidget::signal_createShowWidget,
         ui.m_MultiShowArea, &MultiShowArea::slot_showSubWidget);
+
+    connect(ui.m_DevicesWidget, &DevicesWidget::signal_requireEndTransfer,
+        ui.m_MultiShowArea, &MultiShowArea::slot_endRequire);
+
+    connect(ui.m_MultiShowArea, &MultiShowArea::signal_endRequire,
+        m_pOrderSocketThread, &OrderSocketThread::signal_endRequire);
 }
 
 MainWindow::~MainWindow()
@@ -106,6 +120,7 @@ void MainWindow::disconnectFromServer()
     disconnect(ui.m_ReqDevices, &QPushButton::clicked, m_pOrderSocketThread, &OrderSocketThread::signal_requireDevices);
 
     // 添加代码, 让设备列表清空列表, 已经打开的显示窗口全部关闭
+    ui.m_DevicesWidget->clear();
 }
 
 void MainWindow::slot_respConnect(ConnectProto::pbRespConnect resp)

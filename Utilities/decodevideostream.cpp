@@ -6,7 +6,7 @@
 
 namespace
 {
-    static const unsigned int BYTES_BUFFER_RESERVED_SIZE = 4096000;
+    static const unsigned int BYTES_BUFFER_RESERVED_SIZE = 40960000;
     static const unsigned int MATS_BUFFER_RESERVED_SIZE = 24 * 2;
     static const unsigned int DECODE_BUFFER_SIZE = 4096;
     static const unsigned int DECODE_BUFFER_TOTAL_SIZE = DECODE_BUFFER_SIZE + AV_INPUT_BUFFER_PADDING_SIZE;
@@ -54,6 +54,7 @@ cv::Mat DecodeVideoStream::popMat()
     }
     else
     {
+        qDebug() << __FILE__ << __LINE__ << m_MatsBuffer.size();
         cv::Mat mat = m_MatsBuffer.first();
         m_MatsBuffer.pop_front();
         return mat;
@@ -173,6 +174,7 @@ void DecodeVideoStream::decodeH264()
         {
             std::lock_guard<std::mutex> lock_buffer(m_mutexBytesBuffer);
             buffer_size = m_BytesBuffer.size();   // 缓冲区数据长度
+            qDebug() << __FILE__ << __LINE__ << buffer_size;
         }
     }
 }
@@ -194,7 +196,7 @@ void DecodeVideoStream::decodeBuffer(const QByteArray & buffer, const int buffer
 
         currentPtr += len;
         currentLen -= len;
-
+        qDebug() << __FILE__ << __LINE__ << currentLen;
         if (m_Packet.size > 0)
         {
             if (avcodec_send_packet(m_pCodecCtx, &m_Packet) == 0    // 返回0时成功把数据放到解码器中

@@ -14,17 +14,24 @@ int main(int argc, char *argv[])
     qRegisterMetaType<ConnectProto::pbRespConnect>("ConnectProto::pbRespConnect");
     qRegisterMetaType<KinectDataProto::pbReqStart>("KinectDataProto::pbReqStart");
     qRegisterMetaType<KinectDataProto::pbRespStart>("KinectDataProto::pbRespStart");
+    qRegisterMetaType<KinectDataProto::pbEndTransfer>("KinectDataProto::pbEndTransfer");
+    qRegisterMetaType<KinectDataProto::pbReqEnd>("KinectDataProto::pbReqEnd");
 
-    SingleApplication a(argc, argv);
-    if (!a.isRunning())
-    {
-        MainWindow mainwindow;
-        a.w = &mainwindow;
-        mainwindow.show();
-        return a.exec();
-    }
-    else
-    {
-        return 0;
-    }
+    //SingleApplication a(argc, argv);
+    //if (!a.isRunning())
+    //{
+    //    MainWindow mainwindow;
+    //    a.w = &mainwindow;
+    //    mainwindow.show();
+    //    return a.exec();
+    //}
+    //else
+    //{
+    //    return 0;
+    //}
+    QApplication a(argc, argv);
+
+    MainWindow mainwindow;
+    mainwindow.show();
+    return a.exec();
 }

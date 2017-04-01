@@ -38,11 +38,12 @@ private:
 /*底层C++与本GUI类通信所用接口*/
 signals: void signal_respConnect(ConnectProto::pbRespConnect resp) override;
 signals: void signal_respDevices(const QStringList& devicesList) override;
-signals: void signal_reqEndConnect() override;
+signals: void signal_EndConnect() override;
+signals: void signal_hasBeenConnected() override;
 
 signals: void signal_respStart(KinectDataProto::pbRespStart protoRespStart) override;
 
-signals: void signal_hasBeenConnected() override;
+signals: void signal_reqEndTransfer(KinectDataProto::pbEndTransfer protoEndTransfer) override;
 
 private slots:
     void slot_respConnect(ConnectProto::pbRespConnect resp);
