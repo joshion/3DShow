@@ -134,6 +134,7 @@
     <ClCompile Include="config.cpp" />
     <ClCompile Include="decodevideostream.cpp" />
     <ClCompile Include="orderframebuffer.cpp" />
+    <ClCompile Include="SkeletonFrame.cpp" />
     <ClCompile Include="thread.cpp" />
     <ClCompile Include="transferframebuffer.cpp" />
     <ClCompile Include="utilities.cpp" />
@@ -143,6 +144,7 @@
     <ClInclude Include="decodevideostream.h" />
     <ClInclude Include="orderframebuffer.h" />
     <ClInclude Include="singleton.h" />
+    <ClInclude Include="SkeletonFrame.h" />
     <ClInclude Include="thread.h" />
     <ClInclude Include="transferframebuffer.h" />
     <ClInclude Include="utilities.h" />
