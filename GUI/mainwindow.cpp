@@ -23,10 +23,11 @@ MainWindow::MainWindow(QWidget * parent)
     connect(ui.m_ReqConnect, &QPushButton::clicked, m_pOrderSocketThread, &OrderSocketThread::signal_requireConnect);
     /*
     * 客户端申请断开连接
-    * 断开连接时 通过控制socket通知服务器外
-    * 也需要在客户端内做出断开所有 数据传输socket
+    * 断开连接时 通过控制套接字通知服务器
+    * 客户端的多窗口显示 关闭所有子窗口,与此同时也关闭了所有的传输套接字
     */
     connect(ui.m_ExitConnect, &QPushButton::clicked, m_pOrderSocketThread, &OrderSocketThread::signal_exitConnect);
+    connect(ui.m_ExitConnect, &QPushButton::clicked, ui.m_MultiShowArea, &MultiShowArea::closeAllSubWindows);
     connect(ui.m_ExitConnect, &QPushButton::clicked, this, [&] {
         disconnectFromServer();
     });
@@ -68,10 +69,16 @@ MainWindow::MainWindow(QWidget * parent)
         }
     });
 
-    /* 服务器端主动断开数据传输的连接 */
+    /*
+    * 服务器端主动断开某个设备的数据传输连接
+    * 关闭对应该设备的显示窗口
+    */
     connect(this, &MainWindow::signal_reqEndTransfer, this, [this](KinectDataProto::pbEndTransfer protoEndTransfer) {
         protoEndTransfer.PrintDebugString();
-        showInfo("Server has ended all connections!");
+        QString strWindowTitle = QString::fromStdString(protoEndTransfer.devicename());
+        ui.m_MultiShowArea->slot_closeSubWidget(strWindowTitle);
+        showInfo("Server has ended " + strWindowTitle + "'s connections! " 
+            + QString::fromStdString(protoEndTransfer.reason()));
     });
 
 
@@ -84,9 +91,11 @@ MainWindow::MainWindow(QWidget * parent)
     connect(ui.m_DevicesWidget, &DevicesWidget::signal_createShowWidget,
         ui.m_MultiShowArea, &MultiShowArea::slot_showSubWidget);
 
-    connect(ui.m_DevicesWidget, &DevicesWidget::signal_requireEndTransfer,
-        ui.m_MultiShowArea, &MultiShowArea::slot_endRequire);
+    /* 设备列表中item的右键点击事件 关闭多窗口显示中的子窗口 */
+    connect(ui.m_DevicesWidget, &DevicesWidget::signal_closeShowWidget,
+        ui.m_MultiShowArea, &MultiShowArea::slot_closeSubWidget);
 
+    /* 关闭Kinect显示子窗口的同时,会发送客户端结束请求到服务器 */
     connect(ui.m_MultiShowArea, &MultiShowArea::signal_endRequire,
         m_pOrderSocketThread, &OrderSocketThread::signal_endRequire);
 }

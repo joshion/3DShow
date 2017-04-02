@@ -76,7 +76,13 @@ void DevicesWidget::createMenu()
 
 
     p = new QAction("End Require", this);
-    connect(p, &QAction::triggered, this, &DevicesWidget::slot_endRequireData);
+    connect(p, &QAction::triggered, [this] {
+        if (m_pLastClickedItem)
+        {
+            QString strWindowTitle = m_pLastClickedItem->text();
+            emit signal_closeShowWidget(strWindowTitle);
+        }
+    });
     m_pMenu->addAction(p);
 
 
@@ -95,14 +101,6 @@ void DevicesWidget::informMultiAreaToCreateWidget(Utilities::ShowType type)
 
 void DevicesWidget::slot_endRequireData()
 {
-    if (m_pLastClickedItem)
-    {
-        QString strWindowTitle = m_pLastClickedItem->text();
-        KinectDataProto::pbReqEnd reqEnd;
-        reqEnd.set_devicename(strWindowTitle.toStdString());
-        reqEnd.set_reason("Client require to end the transfer!");
-        emit signal_requireEndTransfer(reqEnd);
-    }
 }
 
 void DevicesWidget::slot_customContextMenuRequested(QPoint point)

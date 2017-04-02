@@ -39,6 +39,8 @@ private:
     FramePainter *m_pSkelePainter;
     QTimer* m_pTimer;
     QMenu *m_pMenu;
+    QAction *m_pColor = nullptr;
+    QAction *m_pDepth = nullptr;
 
     bool m_bShowColor;
     bool m_bShowDepth;

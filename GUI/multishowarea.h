@@ -25,7 +25,7 @@ private:
     * 根据子窗口的名字管理所有的子窗口
     * 此处要求程序保证每个窗口名字不同
     */
-    QMap<QString, QMdiSubWindow*> *m_Title_Widget;
+    QMap<QString, QMdiSubWindow*> *m_p_Title_Widget;
 
 private:
     KinectDataProto::pbReqStart m_ReqStart;
@@ -45,7 +45,7 @@ public slots:
     * 并连接到服务器返回的端口,接收数据
     */
     void slot_startTransfer(KinectDataProto::pbRespStart respStart);
-    void slot_endRequire(KinectDataProto::pbReqEnd reqEnd);
+    void slot_closeSubWidget(QString strWindowTitle);
 
 private slots:
     void slot_customContextMenuRequested(QPoint point);

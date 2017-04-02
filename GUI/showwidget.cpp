@@ -168,28 +168,52 @@ void ShowWidget::createMenu()
     m_pMenu->clear();
     if (m_eShowType & Utilities::ShowType::Color)
     {
-        QAction *p = new QAction("Show Color", this);
+        m_pColor = new QAction("Show Color", this);
+        m_pColor->setCheckable(true);
+        m_pColor->setChecked(true);
         m_bShowColor = true;
-        p->setCheckable(true);
-        p->setChecked(true);
-        connect(p, &QAction::toggled, [&](bool flag) {
-            m_bShowColor = flag;
+        m_pMenu->addAction(m_pColor);
+        connect(m_pColor, &QAction::triggered, [&](bool flag) {
+            m_pColor->setChecked(true);
+            m_bShowColor = true;
+            if (m_pDepth)
+            {
+                m_pDepth->setChecked(false);
+                m_bShowDepth = false;
+            }
         });
-        m_pMenu->addAction(p);
-        p = nullptr;
     }
 
     if (m_eShowType & Utilities::ShowType::Depth)
     {
-        QAction *p = new QAction("Show Depth", this);
-        m_bShowDepth = true;
-        p->setCheckable(true);
-        p->setChecked(true);
-        connect(p, &QAction::toggled, [&](bool flag) {
-            m_bShowDepth = flag;
+        m_pDepth = new QAction("Show Depth", this);
+        m_pDepth->setCheckable(true);
+        if (false == m_bShowColor)
+        {
+            m_pDepth->setChecked(true);
+            m_bShowDepth = true;
+        }
+        else
+        {
+            m_pDepth->setChecked(false);
+            m_bShowDepth = false;
+        }
+        m_pMenu->addAction(m_pDepth);
+        connect(m_pDepth, &QAction::triggered, [&](bool flag) {
+            m_pDepth->setChecked(true);
+            m_bShowDepth = true;
+            if (m_pColor)
+            {
+                m_pColor->setChecked(false);
+                m_bShowColor = false;
+            }
         });
-        m_pMenu->addAction(p);
-        p = nullptr;
+    }
+
+    if (m_pColor || m_pDepth)
+    {
+        m_pMenu->setDefaultAction(m_pColor);
+        m_pMenu->addSeparator();
     }
 
     if (m_eShowType & Utilities::ShowType::Skele)

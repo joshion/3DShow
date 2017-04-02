@@ -1,4 +1,5 @@
 #include "frametransfersocket.h"
+#include "transferframebuffer.h"
 
 FrameTransferSocket::FrameTransferSocket(QString deviceName, Utilities::SocketType type,
     QString strIPAdress, unsigned int port)

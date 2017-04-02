@@ -1,6 +1,5 @@
 #pragma once
 #include "utilities.h"
-#include "KinectDataProto.pb.h"
 #include <QListWidget>
 
 class QMenu;
@@ -22,7 +21,7 @@ private:
     QListWidgetItem *m_pLastClickedItem;
 
 signals: void signal_createShowWidget(QString strWindowTile, Utilities::ShowType type);
-signals: void signal_requireEndTransfer(KinectDataProto::pbReqEnd reqEnd);
+signals: void signal_closeShowWidget(QString strWindowTile);
 public slots:
     void slot_setDevices(const QStringList& devicesList);
 private slots:
