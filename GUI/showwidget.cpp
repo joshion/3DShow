@@ -2,6 +2,7 @@
 
 #include "transfersocketthread.h"
 #include "imagetransfersocket.h"
+#include "frametransfersocket.h"
 
 #include "config.h"
 
@@ -296,13 +297,20 @@ void ShowWidget::updateColor()
                 cv::Mat mat = pSocket->popMat();
                 m_fAspectRatio = (float) mat.cols / mat.rows;
                 m_bFirstTime = false;
+
+                if (m_pColorPainter)
+                {
+                    m_pColorPainter->loadTexture(mat);
+                }
             }
         }
-
-        if (m_pColorPainter && pSocket && pSocket->matsSize() > 0)
+        else
         {
-            qDebug() << __FILE__ << __LINE__ <<  pSocket->matsSize();
-            m_pColorPainter->loadTexture(pSocket->popMat());
+            if (m_pColorPainter && pSocket && pSocket->matsSize() > 0)
+            {
+                qDebug() << __FILE__ << __LINE__ << pSocket->matsSize();
+                m_pColorPainter->loadTexture(pSocket->popMat());
+            }
         }
 
         pSocket = nullptr;
@@ -326,12 +334,18 @@ void ShowWidget::updateDepth()
                 cv::Mat mat = pSocket->popMat();
                 m_fAspectRatio = (float) mat.cols / mat.rows;
                 m_bFirstTime = false;
+                if (m_pDepthPainter)
+                {
+                    m_pDepthPainter->loadTexture(mat);
+                }
             }
         }
-
-        if (m_pDepthPainter && pSocket && pSocket->matsSize() > 0)
+        else
         {
-            m_pDepthPainter->loadTexture(pSocket->popMat());
+            if (m_pDepthPainter && pSocket && pSocket->matsSize() > 0)
+            {
+                m_pDepthPainter->loadTexture(pSocket->popMat());
+            }
         }
 
         pSocket = nullptr;
@@ -340,10 +354,49 @@ void ShowWidget::updateDepth()
 
 void ShowWidget::updateSkele()
 {
+
+    if (false == m_Type_Socket.contains(Utilities::ShowType::Skele))
+    {
+        return;
+    }
+
+    if (m_Type_Socket[Utilities::ShowType::Skele] && m_Type_Socket[Utilities::ShowType::Skele]->getTransferSocketPtr())
+    {
+        FrameTransferSocket* pSocket = (FrameTransferSocket*) m_Type_Socket[Utilities::ShowType::Skele]->getTransferSocketPtr();
+        if (m_bFirstTime)
+        {
+            if (pSocket && pSocket->SkeletonFramesSizes() > 0)
+            {
+                SkeletonFrame frame = pSocket->popSkeletonFrame();
+                m_fAspectRatio = (float) frame.width() / frame.height();
+                m_bFirstTime = false;
+            }
+            
+            if (m_pSkelePainter)
+            {
+                if (m_pSkelePainter && pSocket && pSocket->SkeletonFramesSizes() > 0)
+                {
+                    m_pSkelePainter->loadFrame(pSocket->popSkeletonFrame());
+                }
+            }
+        }
+        else
+        {
+            if (m_pSkelePainter && pSocket && pSocket->SkeletonFramesSizes() > 0)
+            {
+                m_pSkelePainter->loadFrame(pSocket->popSkeletonFrame());
+            }
+        }
+
+        pSocket = nullptr;
+    }
+
+    /*
     if (m_pSkelePainter)
     {
         m_pSkelePainter->loadFrame();
     }
+    */
 }
 
 void ShowWidget::slot_connectedToServer()

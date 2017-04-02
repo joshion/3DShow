@@ -1,5 +1,6 @@
 #include "framepainter.h"
 
+
 #include <random>
 
 namespace
@@ -12,9 +13,6 @@ namespace
 
 FramePainter::FramePainter()
 {
-    m_pTriangleVertices = new QVector4D[6];
-    m_pColor = new QVector4D[6];
-    m_pElement = new GLushort[8];
 }
 
 FramePainter::~FramePainter()
@@ -22,9 +20,6 @@ FramePainter::~FramePainter()
     m_Program.bind();
     m_Program.disableAttributeArray(VERTEX_LOCATION);
     m_Program.disableAttributeArray(COLOR_LOCATION);
-
-    delete[] m_pTriangleVertices;
-    delete[] m_pColor;
 }
 
 bool FramePainter::buildShaderProgram(const QString & strVertFile, const QString & strFragFile)
@@ -75,37 +70,24 @@ void FramePainter::paint()
     glBindVertexArray(0);
 }
 
-void FramePainter::loadFrame()
+void FramePainter::loadFrame(const SkeletonFrame& frame)
 {
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_real_distribution<double> dis(-1.0, 1.0);
-    for (int i = 0; i < 2; ++i)
+    QVector4D *pVertices = new QVector4D[frame.pointSize()];
+    QVector4D *pColors = new QVector4D[frame.pointSize()];
+
+    float x = 0.0;
+    float y = 0.0;
+    for (int i = 0; i < frame.pointSize(); ++i)
     {
-        m_pTriangleVertices[i * 3 + 0] = QVector4D(dis(gen), dis(gen), -0.31, 1.0);
-        m_pTriangleVertices[i * 3 + 1] = QVector4D(dis(gen), dis(gen), -0.31, 1.0);
-        m_pTriangleVertices[i * 3 + 2] = QVector4D(dis(gen), dis(gen), -0.31, 1.0);
+        x = *(frame.pointData() + 2 * i) / frame.width();
+        y = *(frame.pointData() + 2 * i + i) / frame.height();
+        *(pVertices + i) = QVector4D(x, y, -3.0, 1.0);
+        *(pColors + i) = QVector4D(1.0, 1.0, 0, 0);
     }
 
-    for (int i = 0; i < 2; ++i)
-    {
-        m_pColor[i * 3 + 0] = QVector4D(0.8, 0.0, 0.0, 1.0);
-        m_pColor[i * 3 + 1] = QVector4D(0.8, 0.0, 0.0, 1.0);
-        m_pColor[i * 3 + 2] = QVector4D(0.8, 0.0, 0.0, 1.0);
-    }
-
-    {
-        m_pElement[0] = 0;
-        m_pElement[1] = 1;
-        m_pElement[2] = -1;
-        m_pElement[3] = 2;
-        m_pElement[4] = 3;
-        m_pElement[5] = -1;
-        m_pElement[6] = 4;
-        m_pElement[7] = 5;
-    }
-
-    loadFrame(m_pTriangleVertices, m_pColor, 6, m_pElement, 8);
+    loadFrame(pVertices, pColors, frame.pointSize() , frame.element(), frame.elementLength());
+    delete[] pVertices;
+    delete[] pColors;
 }
 
 void FramePainter::loadFrame(QVector4D* pVertices, QVector4D* pColors, unsigned int verticesSize,
