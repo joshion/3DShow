@@ -54,7 +54,7 @@ cv::Mat DecodeVideoStream::popMat()
     }
     else
     {
-        qDebug() << __FILE__ << __LINE__ << m_MatsBuffer.size();
+        // qDebug() << __FILE__ << __LINE__ << m_MatsBuffer.size();
         cv::Mat mat = m_MatsBuffer.first();
         m_MatsBuffer.pop_front();
         return mat;
@@ -174,7 +174,7 @@ void DecodeVideoStream::decodeH264()
         {
             std::lock_guard<std::mutex> lock_buffer(m_mutexBytesBuffer);
             buffer_size = m_BytesBuffer.size();   // 缓冲区数据长度
-            qDebug() << __FILE__ << __LINE__ << buffer_size;
+            // qDebug() << __FILE__ << __LINE__ << buffer_size;
         }
     }
 }
@@ -196,7 +196,7 @@ void DecodeVideoStream::decodeBuffer(const QByteArray & buffer, const int buffer
 
         currentPtr += len;
         currentLen -= len;
-        qDebug() << __FILE__ << __LINE__ << currentLen;
+        // qDebug() << __FILE__ << __LINE__ << currentLen;
         if (m_Packet.size > 0)
         {
             if (avcodec_send_packet(m_pCodecCtx, &m_Packet) == 0    // 返回0时成功把数据放到解码器中

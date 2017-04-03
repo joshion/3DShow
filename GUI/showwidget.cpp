@@ -308,7 +308,7 @@ void ShowWidget::updateColor()
         {
             if (m_pColorPainter && pSocket && pSocket->matsSize() > 0)
             {
-                qDebug() << __FILE__ << __LINE__ << pSocket->matsSize();
+                //qDebug() << __FILE__ << __LINE__ << pSocket->matsSize();
                 m_pColorPainter->loadTexture(pSocket->popMat());
             }
         }

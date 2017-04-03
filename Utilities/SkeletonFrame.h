@@ -36,7 +36,7 @@ public:
         return m_ElementLength;
     }
 
-    unsigned short* element() const
+    short* element() const
     {
         return m_pElement;
     }
@@ -71,7 +71,7 @@ private:
     unsigned char *m_pPointsSizePerLines;
 
     unsigned int m_ElementLength;
-    unsigned short *m_pElement;
+    short *m_pElement;
 
     unsigned int m_DataLength;  // 此值为m_pPointsSizePerLines里各元素值之和
     unsigned short *m_pPointsData;

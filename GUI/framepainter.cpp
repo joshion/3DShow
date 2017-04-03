@@ -58,9 +58,9 @@ void FramePainter::paint()
     m_Program.enableAttributeArray(VERTEX_LOCATION);
     m_Program.enableAttributeArray(COLOR_LOCATION);
 
-    glDrawArrays(GL_POINTS, 0, 6);
+    glDrawArrays(GL_POINTS, 0, m_pointSize);
     glLineWidth(3.0);
-    glDrawElements(GL_LINE_STRIP, 8, GL_UNSIGNED_SHORT, nullptr);
+    glDrawElements(GL_LINE_STRIP, m_elementSize, GL_UNSIGNED_SHORT, nullptr);
     glFlush();
 
     m_Program.disableAttributeArray(VERTEX_LOCATION);
@@ -70,28 +70,42 @@ void FramePainter::paint()
     glBindVertexArray(0);
 }
 
-void FramePainter::loadFrame(const SkeletonFrame& frame)
+void FramePainter::loadFrame(const SkeletonFrame &frame)
 {
     QVector4D *pVertices = new QVector4D[frame.pointSize()];
     QVector4D *pColors = new QVector4D[frame.pointSize()];
 
-    float x = 0.0;
-    float y = 0.0;
+    GLfloat x = 0.0;
+    GLfloat y = 0.0;
+    GLfloat width = frame.width() / 2;
+    GLfloat height = frame.height() / 2;
+    qDebug() << __FILE__ << __LINE__;
     for (int i = 0; i < frame.pointSize(); ++i)
     {
-        x = *(frame.pointData() + 2 * i) / frame.width();
-        y = *(frame.pointData() + 2 * i + i) / frame.height();
+        x = ((GLfloat) (*(frame.pointData() + 2 * i)) - width);
+        y = ((GLfloat) (*(frame.pointData() + 2 * i + i)) - height);
+        x = x / width;
+        y = y / height;
+
         *(pVertices + i) = QVector4D(x, y, -3.0, 1.0);
+        qDebug() << *(pVertices + i);
         *(pColors + i) = QVector4D(1.0, 1.0, 0, 0);
     }
 
-    loadFrame(pVertices, pColors, frame.pointSize() , frame.element(), frame.elementLength());
+    for (int i = 0; i < frame.elementLength(); ++i)
+    {
+        qDebug() << *(frame.element() + i);
+    }
+    m_pointSize = 4;
+    m_elementSize = 4;
+
+    loadFrame(pVertices, pColors, 4 , frame.element(), 4);
     delete[] pVertices;
     delete[] pColors;
 }
 
 void FramePainter::loadFrame(QVector4D* pVertices, QVector4D* pColors, unsigned int verticesSize,
-    unsigned short* pElement, unsigned int elementSize)
+    short* pElement, unsigned int elementSize)
 {
     m_Program.bind();
 
@@ -99,7 +113,7 @@ void FramePainter::loadFrame(QVector4D* pVertices, QVector4D* pColors, unsigned 
     传输绘制索引到 opengl 服务器上的缓存上
     */
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ElementBuffer);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementSize * sizeof(GLushort), pElement, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementSize * sizeof(GLshort), pElement, GL_STATIC_DRAW);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
     /*
