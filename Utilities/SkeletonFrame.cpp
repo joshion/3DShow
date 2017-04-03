@@ -55,7 +55,7 @@ SkeletonFrame::SkeletonFrame(const SkeletonFrame & other)
     {
         this->m_pPointsSizePerLines = new unsigned char[other.m_LinesSize];
         memcpy(this->m_pPointsSizePerLines, other.m_pPointsSizePerLines,
-            other.m_LinesSize * sizeof(unsigned short));
+            other.m_LinesSize * sizeof(unsigned char));
     }
     else
     {
@@ -67,7 +67,7 @@ SkeletonFrame::SkeletonFrame(const SkeletonFrame & other)
     {
         this->m_pElement = new short[other.m_ElementLength];
         memcpy(this->m_pElement, other.m_pElement,
-            other.m_ElementLength * sizeof(unsigned short));
+            other.m_ElementLength * sizeof(short));
     }
     else
     {
@@ -120,7 +120,7 @@ SkeletonFrame & SkeletonFrame::operator=(const SkeletonFrame & other)
     {
         this->m_pPointsSizePerLines = new unsigned char[other.m_LinesSize];
         memcpy(this->m_pPointsSizePerLines, other.m_pPointsSizePerLines,
-            other.m_LinesSize * sizeof(unsigned short));
+            other.m_LinesSize * sizeof(unsigned char));
     }
     else
     {
@@ -132,7 +132,7 @@ SkeletonFrame & SkeletonFrame::operator=(const SkeletonFrame & other)
     {
         this->m_pElement = new short[other.m_ElementLength];
         memcpy(this->m_pElement, other.m_pElement,
-            other.m_ElementLength * sizeof(unsigned short));
+            other.m_ElementLength * sizeof(short));
     }
     else
     {
@@ -168,6 +168,16 @@ SkeletonFrame & SkeletonFrame::operator=(const SkeletonFrame & other)
         pOrigPointsData = nullptr;
     }
 
+    for (int i = 0; i < other.m_DataLength / 2; ++i)
+    {
+        qDebug() << *(other.m_pPointsData + 2 * i) << *(other.m_pPointsData + 2 * i + 1);
+    }
+    qDebug() << "------------------------";
+    for (int i = 0; i < this->m_DataLength / 2; ++i)
+    {
+        qDebug() << *(this->m_pPointsData + 2 * i) << *(this->m_pPointsData + 2 * i + 1);
+    }
+
     return *this;
 }
 
@@ -194,9 +204,9 @@ SkeletonFrame SkeletonFrame::fromBytes(const unsigned char * pData, unsigned int
         result.m_DataLength += *(result.m_pPointsSizePerLines + i);
     }
 
+    /*5段线段 + 每段线段的点数*/
     result.m_ElementLength = result.m_LinesSize + result.m_DataLength;
     result.m_pElement = new short[result.m_ElementLength];
-
     {
         int k = 0;
         int l = 0;
@@ -221,6 +231,5 @@ SkeletonFrame SkeletonFrame::fromBytes(const unsigned char * pData, unsigned int
     {
         *(result.m_pPointsData + i) = qToBigEndian(*(result.m_pPointsData + i));
     }
-
     return result;
 }

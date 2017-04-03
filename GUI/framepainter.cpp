@@ -82,13 +82,14 @@ void FramePainter::loadFrame(const SkeletonFrame &frame)
     qDebug() << __FILE__ << __LINE__;
     for (int i = 0; i < frame.pointSize(); ++i)
     {
+        qDebug() << *(frame.pointData() + 2 * i) << *(frame.pointData() + 2 * i + 1);
         x = ((GLfloat) (*(frame.pointData() + 2 * i)) - width);
-        y = ((GLfloat) (*(frame.pointData() + 2 * i + i)) - height);
+        y = ((GLfloat) (*(frame.pointData() + 2 * i + 1)) - height);
         x = x / width;
         y = y / height;
 
-        *(pVertices + i) = QVector4D(x, y, -3.0, 1.0);
-        qDebug() << *(pVertices + i);
+        *(pVertices + i) = QVector4D(x, -y, -3.0, 1.0);
+        // qDebug() << *(pVertices + i);
         *(pColors + i) = QVector4D(1.0, 1.0, 0, 0);
     }
 
@@ -96,10 +97,10 @@ void FramePainter::loadFrame(const SkeletonFrame &frame)
     {
         qDebug() << *(frame.element() + i);
     }
-    m_pointSize = 4;
-    m_elementSize = 4;
+    m_pointSize = frame.pointSize();
+    m_elementSize = frame.elementLength() - 1;
 
-    loadFrame(pVertices, pColors, 4 , frame.element(), 4);
+    loadFrame(pVertices, pColors, m_pointSize, frame.element(), m_elementSize);
     delete[] pVertices;
     delete[] pColors;
 }

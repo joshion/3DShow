@@ -370,11 +370,7 @@ void ShowWidget::updateSkele()
                 SkeletonFrame frame = pSocket->popSkeletonFrame();
                 m_fAspectRatio = (float) frame.width() / frame.height();
                 m_bFirstTime = false;
-            }
-            
-            if (m_pSkelePainter)
-            {
-                if (m_pSkelePainter && pSocket && pSocket->SkeletonFramesSizes() > 0)
+                if (m_pSkelePainter)
                 {
                     m_pSkelePainter->loadFrame(pSocket->popSkeletonFrame());
                 }
