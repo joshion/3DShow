@@ -22,6 +22,6 @@ private:
     GLuint m_PointsBuffer;
     GLuint m_ElementBuffer;
 
-    int m_pointSize = 0;
-    int m_elementSize = 0;
+    int m_pointSize;
+    int m_elementSize;
 };

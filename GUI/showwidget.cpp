@@ -36,7 +36,8 @@ ShowWidget::ShowWidget(QString title, Utilities::ShowType type, QWidget *parent)
     setContextMenuPolicy(Qt::CustomContextMenu);
     createMenu();
 
-    connect(this, &ShowWidget::signal_connectedToServer, this, &ShowWidget::slot_connectedToServer);
+    connect(this, &ShowWidget::signal_connectedToServer, this,
+        &ShowWidget::slot_connectedToServer, Qt::QueuedConnection);
     connect(this, &ShowWidget::customContextMenuRequested, this, &ShowWidget::slot_customContextMenuRequested);
 
     /*
@@ -49,10 +50,6 @@ ShowWidget::ShowWidget(QString title, Utilities::ShowType type, QWidget *parent)
         close();
     });
     m_pTimerCloseSelf->start(5000);
-
-    //m_pTimer = new QTimer(this);
-    //connect(m_pTimer, &QTimer::timeout, this, &ShowWidget::slot_update);
-    //m_pTimer->start(40);
 }
 
 ShowWidget::~ShowWidget()

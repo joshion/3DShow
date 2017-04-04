@@ -12,6 +12,11 @@ namespace
 }
 
 FramePainter::FramePainter()
+    : m_VertexArraysObject(0),
+    m_PointsBuffer(0),
+    m_ElementBuffer(0),
+    m_pointSize(0),
+    m_elementSize(0)
 {
 }
 

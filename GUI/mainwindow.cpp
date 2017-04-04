@@ -34,20 +34,25 @@ MainWindow::MainWindow(QWidget * parent)
 
     connect(ui.m_MultiShowArea, &MultiShowArea::signal_reqStart, m_pOrderSocketThread, &OrderSocketThread::signal_reqStart);
 
-    /* 从 底层服务orderSocket 发回到 主窗口 的消息 */
-    connect(this, &MainWindow::signal_respConnect, this, &MainWindow::slot_respConnect);
+    /* 服务返回对 客户端申请连接 的响应 */
+    connect(this, &MainWindow::signal_respConnect, this, &MainWindow::slot_respConnect, Qt::QueuedConnection);
+    /* 控制socket已经连接, 无需再次连接 */
+    connect(this, &MainWindow::signal_hasBeenConnected, this, [this] {
+        showInfo("Has been connected to server, no need to require connect!");
+    }, Qt::QueuedConnection);
 
     /* 成功从服务器返回设备列表 */
-    connect(this, &MainWindow::signal_respDevices, ui.m_DevicesWidget, &DevicesWidget::slot_setDevices);
+    connect(this, &MainWindow::signal_respDevices, ui.m_DevicesWidget,
+        &DevicesWidget::slot_setDevices, Qt::QueuedConnection);
     connect(this, &MainWindow::signal_respDevices, this, [this] {
         showInfo("Refresh the devices list successed!");
-    });
+    }, Qt::QueuedConnection);
 
     /* 网络异常断开连接 */
     connect(this, &MainWindow::signal_EndConnect, this, [this] {
         disconnectFromServer();
         showInfo("Server has ended all connections!");
-    });
+    }, Qt::QueuedConnection);
 
 
     /*
@@ -55,7 +60,8 @@ MainWindow::MainWindow(QWidget * parent)
     * 如果服务器允许传输,在通知区显示开始传输信息,通知对应窗口开启建立传输,
     * 否则,在通知区显示失败原因,通知对应窗口关闭
     */
-    connect(this, &MainWindow::signal_respStart, ui.m_MultiShowArea, &MultiShowArea::slot_startTransfer);
+    connect(this, &MainWindow::signal_respStart, ui.m_MultiShowArea,
+        &MultiShowArea::slot_startTransfer, Qt::QueuedConnection);
     connect(this, &MainWindow::signal_respStart, this, [this](KinectDataProto::pbRespStart resp) {
         if (Utilities::PROTO_SUCCESS == resp.resulttype())
         {
@@ -67,10 +73,10 @@ MainWindow::MainWindow(QWidget * parent)
                 + QString::fromStdString(resp.devicename()) + "\'s data,"
                 + QString::fromStdString(resp.failreason()));
         }
-    });
+    }, Qt::QueuedConnection);
 
     /*
-    * 服务器端主动断开某个设备的数据传输连接
+    * 服务器端断开了某个设备的数据传输连接
     * 关闭对应该设备的显示窗口
     */
     connect(this, &MainWindow::signal_reqEndTransfer, this, [this](KinectDataProto::pbEndTransfer protoEndTransfer) {
@@ -79,13 +85,8 @@ MainWindow::MainWindow(QWidget * parent)
         ui.m_MultiShowArea->slot_closeSubWidget(strWindowTitle);
         showInfo("Server has ended " + strWindowTitle + "'s connections! " 
             + QString::fromStdString(protoEndTransfer.reason()));
-    });
+    }, Qt::QueuedConnection);
 
-
-    /* 控制socket已经连接, 无需再次连接*/
-    connect(this, &MainWindow::signal_hasBeenConnected, this ,[this] {
-        showInfo("Has been connected to server, no need to require connect!");
-    });
 
     /* 从 设备列表窗口 发送到 多窗口显示窗口 的消息 */
     connect(ui.m_DevicesWidget, &DevicesWidget::signal_createShowWidget,
