@@ -1,5 +1,7 @@
 #pragma once
 
+class QVector4D;
+
 class SkeletonFrame
 {
 public:
@@ -21,59 +23,34 @@ public:
         return m_Height;
     }
 
-    int linesSize() const
+    unsigned int elementSize() const
     {
-        return m_LinesSize;
+        return m_ElementSize;
     }
 
-    unsigned char * pointsSizePerLines() const
+    const short *const elementData() const
     {
-        return m_pPointsSizePerLines;
+        return m_pElementData;
     }
 
-    int elementLength() const
+    unsigned int pointSize() const
     {
-        return m_ElementLength;
+        return m_PointSize;
     }
 
-    short* element() const
+    const QVector4D *const pointData()  const
     {
-        return m_pElement;
-    }
-
-    int pointSize() const
-    {
-        return m_DataLength / 2;
-    }
-
-    int dataLength() const
-    {
-        return m_DataLength;
-    }
-
-    unsigned short* pointData() const
-    {
-        return m_pPointsData;
+        return m_pPointData;
     }
 
 private:
-    union
-    {
-        char m_cWidth[2];
-        short m_Width;
-    };
-    union
-    {
-        char m_cHeight[2];
-        short m_Height;
-    };
-    unsigned char m_LinesSize;
-    unsigned char *m_pPointsSizePerLines;
+    short m_Width;
+    short m_Height;
 
-    unsigned int m_ElementLength;
-    short *m_pElement;
+    unsigned int m_ElementSize;
+    short *m_pElementData;
 
-    unsigned int m_DataLength;  // 此值为m_pPointsSizePerLines里各元素值之和
-    unsigned short *m_pPointsData;
+    unsigned int m_PointSize;
+    QVector4D* m_pPointData;
 };
 

@@ -1,6 +1,6 @@
 #pragma once
 #include "painter.h"
-#include "SkeletonFrame.h"
+#include "skeletonframe.h"
 
 class FramePainter : public Painter
 {
@@ -14,8 +14,8 @@ public:
 
 public:
     void loadFrame(const SkeletonFrame& frame);
-    void loadFrame(QVector4D* pVertices, QVector4D* pColors, unsigned int verticesSize,
-        short* pElement, unsigned int elementSize);
+    void loadFrame(const QVector4D* pVertices, unsigned int verticesSize,
+        const short* pElement, unsigned int elementSize);
 
 private:
     GLuint m_VertexArraysObject;

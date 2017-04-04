@@ -1,6 +1,6 @@
 #version 430 core
 layout (location = 1) in vec4 vertex;
-layout (location = 2) in vec4 color;
+layout (location = 2) uniform vec4 color;
 
 layout (location = 3) uniform mat4 view_matrix;
 layout (location = 4) uniform mat4 projection_matrix;

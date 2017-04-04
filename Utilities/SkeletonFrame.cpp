@@ -1,5 +1,6 @@
-#include "SkeletonFrame.h"
+#include "skeletonframe.h"
 
+#include <QVector4D>
 #include <QtEndian>
 #include <qDebug>
 #include <memory>
@@ -8,99 +9,71 @@
 SkeletonFrame::SkeletonFrame() 
     :  m_Width(0),
     m_Height(0),
-    m_LinesSize(0),
-    m_pPointsSizePerLines(nullptr),
-    m_pElement(nullptr),
-    m_ElementLength(0),
-    m_pPointsData(nullptr),
-    m_DataLength(0)
+    m_ElementSize(0),
+    m_pElementData(nullptr),
+    m_PointSize(0),
+    m_pPointData(nullptr)
 {
 }
 
 
 SkeletonFrame::~SkeletonFrame()
 {
-    if (m_pPointsSizePerLines)
+
+    if (m_pElementData)
     {
-        delete[] m_pPointsSizePerLines;
-        m_pPointsSizePerLines = nullptr;
+        delete[] m_pElementData;
+        m_pElementData = nullptr;
     }
-    if (m_pElement)
+    if (m_pPointData)
     {
-        delete[] m_pElement;
-        m_pElement = nullptr;
-    }
-    if (m_pPointsData)
-    {
-        delete[] m_pPointsData;
-        m_pPointsData = nullptr;
+        delete[] m_pPointData;
+        m_pPointData = nullptr;
     }
 }
 
 SkeletonFrame::SkeletonFrame(const SkeletonFrame & other)
     : m_Width(other.m_Width),
     m_Height(other.m_Height),
-    m_LinesSize(other.m_LinesSize),
-    m_pPointsSizePerLines(nullptr),
-    m_ElementLength(other.m_ElementLength),
-    m_pElement(nullptr),
-    m_DataLength(other.m_DataLength),
-    m_pPointsData(nullptr)
+    m_ElementSize(other.m_ElementSize),
+    m_pElementData(nullptr),
+    m_PointSize(other.m_PointSize),
+    m_pPointData(nullptr)
 {
-    unsigned char *pOrigPointsSizePerLines = this->m_pPointsSizePerLines;
-    short *pOrigElement = this->m_pElement;
-    unsigned short *pOrigPointsData = this->m_pPointsData;
+    short *pOrigElement = this->m_pElementData;
+    QVector4D *pOrigPointData = this->m_pPointData;
 
-    if (other.m_LinesSize > 0 && other.m_pPointsSizePerLines)
+    if (other.m_ElementSize > 0 && other.m_pElementData)
     {
-        this->m_pPointsSizePerLines = new unsigned char[other.m_LinesSize];
-        memcpy(this->m_pPointsSizePerLines, other.m_pPointsSizePerLines,
-            other.m_LinesSize * sizeof(unsigned char));
+        this->m_pElementData = new short[other.m_ElementSize];
+        memcpy(this->m_pElementData, other.m_pElementData, other.m_ElementSize * sizeof(short));
     }
     else
     {
-        m_LinesSize = 0;
-        this->m_pPointsSizePerLines = nullptr;
+        this->m_ElementSize = 0;
+        this->m_pElementData = nullptr;
     }
 
-    if (other.m_ElementLength > 0 && other.m_pElement)
+    if (other.m_PointSize > 0 && other.m_pPointData)
     {
-        this->m_pElement = new short[other.m_ElementLength];
-        memcpy(this->m_pElement, other.m_pElement,
-            other.m_ElementLength * sizeof(short));
+        this->m_pPointData = new QVector4D[other.m_PointSize];
+        memcpy(this->m_pPointData, other.m_pPointData, other.m_PointSize * sizeof(QVector4D));
     }
     else
     {
-        this->m_ElementLength = 0;
-        this->m_pElement = nullptr;
+        this->m_PointSize = 0;
+        this->m_pPointData = nullptr;
     }
 
-    if (other.m_DataLength > 0 && other.m_pPointsData)
-    {
-        this->m_pPointsData = new unsigned short[other.m_DataLength];
-        memcpy(this->m_pPointsData, other.m_pPointsData,
-            other.m_DataLength * sizeof(unsigned short));
-    }
-    else
-    {
-        this->m_DataLength = 0;
-        this->m_pPointsData = nullptr;
-    }
-
-    if (pOrigPointsSizePerLines)
-    {
-        delete[] pOrigPointsSizePerLines;
-        pOrigPointsSizePerLines = nullptr;
-    }
     if (pOrigElement)
     {
         delete[] pOrigElement;
         pOrigElement = nullptr;
     }
-    if (pOrigPointsData)
+    if (pOrigPointData)
     {
-        delete[] pOrigPointsData;
-        pOrigPointsData = nullptr;
+        delete[] pOrigPointData;
+        pOrigPointData = nullptr;
     }
 }
 
@@ -108,128 +81,132 @@ SkeletonFrame & SkeletonFrame::operator=(const SkeletonFrame & other)
 {
     this->m_Width = other.m_Width;
     this->m_Height = other.m_Height;
-    this->m_LinesSize = other.m_LinesSize;
-    this->m_ElementLength = other.m_ElementLength;
-    this->m_DataLength = other.m_DataLength;
+    this->m_ElementSize = other.m_ElementSize;
+    this->m_PointSize = other.m_PointSize;
 
-    unsigned char *pOrigPointsSizePerLines = this->m_pPointsSizePerLines;
-    short *pOrigElement = this->m_pElement;
-    unsigned short *pOrigPointsData = this->m_pPointsData;
+    short *pOrigElement = this->m_pElementData;
+    QVector4D *pOrigPointData = this->m_pPointData;
 
-    if (other.m_LinesSize > 0 && other.m_pPointsSizePerLines)
+    if (other.m_ElementSize > 0 && other.m_pElementData)
     {
-        this->m_pPointsSizePerLines = new unsigned char[other.m_LinesSize];
-        memcpy(this->m_pPointsSizePerLines, other.m_pPointsSizePerLines,
-            other.m_LinesSize * sizeof(unsigned char));
+        this->m_pElementData = new short[other.m_ElementSize];
+        memcpy(this->m_pElementData, other.m_pElementData, other.m_ElementSize * sizeof(short));
     }
     else
     {
-        m_LinesSize = 0;
-        this->m_pPointsSizePerLines = nullptr;
+        this->m_ElementSize = 0;
+        this->m_pElementData = nullptr;
     }
 
-    if (other.m_ElementLength > 0 && other.m_pElement)
+    if (other.m_PointSize > 0 && other.m_pPointData)
     {
-        this->m_pElement = new short[other.m_ElementLength];
-        memcpy(this->m_pElement, other.m_pElement,
-            other.m_ElementLength * sizeof(short));
+        this->m_pPointData = new QVector4D[other.m_PointSize];
+        memcpy(this->m_pPointData, other.m_pPointData, other.m_PointSize * sizeof(QVector4D));
     }
     else
     {
-        this->m_ElementLength = 0;
-        this->m_pElement = nullptr;
+        this->m_PointSize = 0;
+        this->m_pPointData = nullptr;
     }
 
-    if (other.m_DataLength > 0 && other.m_pPointsData)
-    {
-        this->m_pPointsData = new unsigned short[other.m_DataLength];
-        memcpy(this->m_pPointsData, other.m_pPointsData,
-            other.m_DataLength * sizeof(unsigned short));
-    }
-    else
-    {
-        this->m_DataLength = 0;
-        this->m_pPointsData = nullptr;
-    }
-
-    if (pOrigPointsSizePerLines)
-    {
-        delete[] pOrigPointsSizePerLines;
-        pOrigPointsSizePerLines = nullptr;
-    }
     if (pOrigElement)
     {
         delete[] pOrigElement;
         pOrigElement = nullptr;
     }
-    if (pOrigPointsData)
+    if (pOrigPointData)
     {
-        delete[] pOrigPointsData;
-        pOrigPointsData = nullptr;
-    }
-
-    for (int i = 0; i < other.m_DataLength / 2; ++i)
-    {
-        qDebug() << *(other.m_pPointsData + 2 * i) << *(other.m_pPointsData + 2 * i + 1);
-    }
-    qDebug() << "------------------------";
-    for (int i = 0; i < this->m_DataLength / 2; ++i)
-    {
-        qDebug() << *(this->m_pPointsData + 2 * i) << *(this->m_pPointsData + 2 * i + 1);
+        delete[] pOrigPointData;
+        pOrigPointData = nullptr;
     }
 
     return *this;
 }
 
+/*
+* 数据的完整性需要由外部保证
+* 该函数默认传进来的数据是完整的一帧
+* 不做数据的出错处理
+*/
 SkeletonFrame SkeletonFrame::fromBytes(const unsigned char * pData, unsigned int uLength)
 {
-    SkeletonFrame result;
     if (nullptr == pData || uLength <= 0)
     {
         return SkeletonFrame();
     }
-    memcpy(&result.m_cWidth, pData, 2);
-    memcpy(&result.m_cHeight, pData + 2, 2);
+    SkeletonFrame result;
 
+    /* 解析出图像的 宽 高 */
+    memcpy(&result.m_Width, pData, 2);
+    memcpy(&result.m_Height, pData + 2, 2);
     result.m_Width = qToBigEndian(result.m_Width);
     result.m_Height = qToBigEndian(result.m_Height);
 
-    memcpy(&result.m_LinesSize, pData + 4, 1);
-    result.m_pPointsSizePerLines = new unsigned char[result.m_LinesSize];
-    memcpy(result.m_pPointsSizePerLines, pData + 5, result.m_LinesSize);
+    /* 解析出线段的段数 */
+    unsigned char linesSize = 0;
+    memcpy(&linesSize, pData + 4, 1);
 
-    result.m_DataLength = 0;
-    for (int i = 0; i < result.m_LinesSize; ++i)
+    /* 解析出各线段分别包含的点数 */
+    unsigned char* pPointsSizePerLines = new unsigned char[linesSize];
+    memcpy(pPointsSizePerLines, pData + 5, linesSize);
+
+    /* 全部线段包含点的总数 */
+    int pointSize = 0;
+    for (int i = 0; i < linesSize; ++i)
     {
-        result.m_DataLength += *(result.m_pPointsSizePerLines + i);
+        pointSize += *(pPointsSizePerLines + i);
+    }
+    result.m_PointSize = pointSize;
+    /* 如被解析的数据长度不够, 抛出异常*/
+    if (5 + linesSize + pointSize * 2 * sizeof(unsigned short) > uLength)
+    {
+        throw("out of range");
     }
 
-    /*5段线段 + 每段线段的点数*/
-    result.m_ElementLength = result.m_LinesSize + result.m_DataLength;
-    result.m_pElement = new short[result.m_ElementLength];
+    /*
+    * 计算出opengl绘图索引,
+    * 各线段之间以-1 隔开
+    */
+    result.m_ElementSize = linesSize + pointSize;
+    result.m_pElementData = new short[result.m_ElementSize];
     {
         int k = 0;
         int l = 0;
-        for (int i = 0; i < result.m_LinesSize; ++i)
+        for (int i = 0; i < linesSize; ++i)
         {
-            for (int j = 0; j < *(result.m_pPointsSizePerLines + i); ++j)
+            for (int j = 0; j < *(pPointsSizePerLines + i); ++j)
             {
-                *(result.m_pElement + k) = l;
+                *(result.m_pElementData + k) = l;
                 ++k;
                 ++l;
             }
-            *(result.m_pElement + k) = -1;
+            *(result.m_pElementData + k) = -1;
             ++k;
         }
     }
 
-    result.m_DataLength *= 2; // 每个点有x,y两个值,所有需要翻倍
-    result.m_pPointsData = new unsigned short[result.m_DataLength];
-    memcpy(result.m_pPointsData, pData + 5 + result.m_LinesSize, result.m_DataLength * sizeof(unsigned short));
+    // 每个点有x,y两个值,所有需要翻倍
+    unsigned short* pPointsData = new unsigned short[pointSize * 2];
 
-    for (int i = 0; i < result.m_DataLength; ++i)
+    memcpy(pPointsData, pData + 5 + linesSize, pointSize * 2 * sizeof(unsigned short));
+    for (int i = 0; i < pointSize; ++i)
     {
-        *(result.m_pPointsData + i) = qToBigEndian(*(result.m_pPointsData + i));
+        /* 大端字节转为小端 */
+        float x = static_cast<float>(qToBigEndian(*(pPointsData + i)));
+        float y = static_cast<float>(qToBigEndian(*(pPointsData + 2 * i + 1)));
+
+        float width = result.m_Width / 2;
+        float height = result.m_Height / 2;
+
+        x = (x - width) / width;
+        y = (y - height) / height;
+
+        *(result.m_pPointData + i) = QVector4D { x, y, -3.0, 1.0 };
     }
+    delete pPointsSizePerLines;
+    pPointsSizePerLines = nullptr;
+    delete pPointsData;
+    pPointsData = nullptr;
+
     return result;
 }
