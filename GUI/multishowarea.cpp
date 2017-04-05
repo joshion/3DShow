@@ -83,7 +83,7 @@ void MultiShowArea::slot_closeSubWidget(QString strWindowTitle)
     }
 }
 
-void MultiShowArea::slot_showSubWidget(QString strWindowTitle, Utilities::ShowType type)
+void MultiShowArea::slot_createSubWidget(QString strWindowTitle, Utilities::ShowType type)
 {
     if (m_p_Title_Widget->contains(strWindowTitle))
     {

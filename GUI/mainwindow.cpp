@@ -90,7 +90,7 @@ MainWindow::MainWindow(QWidget * parent)
 
     /* 从 设备列表窗口 发送到 多窗口显示窗口 的消息 */
     connect(ui.m_DevicesWidget, &DevicesWidget::signal_createShowWidget,
-        ui.m_MultiShowArea, &MultiShowArea::slot_showSubWidget);
+        ui.m_MultiShowArea, &MultiShowArea::slot_createSubWidget);
 
     /* 设备列表中item的右键点击事件 关闭多窗口显示中的子窗口 */
     connect(ui.m_DevicesWidget, &DevicesWidget::signal_closeShowWidget,

@@ -38,7 +38,7 @@ signals: void signal_endRequire(KinectDataProto::pbReqEnd reqEnd);
 /***********************************************************************************/
 /*GUI内部的通信*/
 public slots:
-    void slot_showSubWidget(QString strWindowTile, Utilities::ShowType type);
+    void slot_createSubWidget(QString strWindowTile, Utilities::ShowType type);
     /*
     * 处理从orderSocket返回的端口信息
     * 通知对应的子窗口创建数据socket
