@@ -1,5 +1,6 @@
 #pragma once
 
+#include <stdint.h>
 class QByteArray;
 
 class TransferFrameBuffer
@@ -14,15 +15,15 @@ public:
 public:
     inline void setTimeStamp(unsigned int timeStamp)
     {
-        this->m_u32TimeStamp = timeStamp;
+        this->m_timeStamp = timeStamp;
     }
     inline void setDataType(unsigned int dataType)
     {
-        this->m_u32DataType = dataType;
+        this->m_dataType = dataType;
     }
     inline void setBodyLength(unsigned int bodyLength)
     {
-        this->m_u32BodyLength = bodyLength;
+        this->m_bodyLength = bodyLength;
     }
 
     bool setHead(const QByteArray &bytes);
@@ -32,15 +33,15 @@ public:
 
     inline unsigned int timeStamp() const
     {
-        return m_u32TimeStamp;
+        return m_timeStamp;
     }
     inline unsigned int dataType() const
     {
-        return m_DataType;
+        return m_dataType;
     }
     inline unsigned int bodyLength() const
     {
-        return m_u32BodyLength;
+        return m_bodyLength;
     }
 
     inline unsigned char* data() const
@@ -50,26 +51,14 @@ public:
 
     inline unsigned int headLength() const
     {
-        return s_u32HeadLength;
+        return s_headLength;
     }
 
 private:
-    union
-    {
-        char m_TimeStamp[4];
-        unsigned int m_u32TimeStamp;    // 时间戳
-    };
-    union
-    {
-        char m_DataType;
-        unsigned int m_u32DataType;     // 数据类型
-    };
-    union
-    {
-        char m_BodyLength[4];
-        unsigned int m_u32BodyLength;   // 包体长度
-    };
+    uint32_t m_timeStamp;    // 时间戳
+    uint32_t m_dataType;     // 数据类型
+    uint32_t m_bodyLength;   // 包体长度
     unsigned char *m_Data;
 
-    static const unsigned int s_u32HeadLength = 12;
+    static const unsigned int s_headLength = 12;
 };
