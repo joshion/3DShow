@@ -1,5 +1,7 @@
 #include "deviceswidget.h"
 
+#include "config.h"
+
 #include <QMenu>
 
 DevicesWidget::DevicesWidget(QWidget *parent)
@@ -27,67 +29,65 @@ void DevicesWidget::createMenu()
 
     m_pMenu = new QMenu(this);
 
-    QMenu *subMenu = new QMenu("Start Require", this);
+    m_pSubMenu = new QMenu("Start Require", this);
     QAction *p = nullptr;
 
     p = new QAction("Show Color", this);
     connect(p, &QAction::triggered, [this] {
         informMultiAreaToCreateWidget(Utilities::ShowType::Color);
     });
-    subMenu->addAction(p);
+    m_pSubMenu->addAction(p);
 
     p = new QAction("Show Depth", this);
     connect(p, &QAction::triggered, [this] {
         informMultiAreaToCreateWidget(Utilities::ShowType::Depth);
     });
-    subMenu->addAction(p);
+    m_pSubMenu->addAction(p);
 
     p = new QAction("Show Skele", this);
     connect(p, &QAction::triggered, [this] {
         informMultiAreaToCreateWidget(Utilities::ShowType::Skele);
     });
-    subMenu->addAction(p);
+    m_pSubMenu->addAction(p);
 
     p = new QAction("Show Color_Skele", this);
     connect(p, &QAction::triggered, [this] {
         informMultiAreaToCreateWidget(Utilities::ShowType::Color_Skele);
     });
-    subMenu->addAction(p);
+    m_pSubMenu->addAction(p);
 
     p = new QAction("Show Depth_Skele", this);
     connect(p, &QAction::triggered, [this] {
         informMultiAreaToCreateWidget(Utilities::ShowType::Depth_Skele);
     });
-    subMenu->addAction(p);
+    m_pSubMenu->addAction(p);
 
     p = new QAction("Show Color_Depth", this);
     connect(p, &QAction::triggered, [this] {
         informMultiAreaToCreateWidget(Utilities::ShowType::Color_Depth);
     });
-    subMenu->addAction(p);
+    m_pSubMenu->addAction(p);
 
     p = new QAction("Show Color_Depth_Skele", this);
     connect(p, &QAction::triggered, [this] {
         informMultiAreaToCreateWidget(Utilities::ShowType::Color_Depth_Skele);
     });
-    subMenu->addAction(p);
+    m_pSubMenu->addAction(p);
+    p = nullptr;
 
-    m_pMenu->addMenu(subMenu);
+    m_pMenu->addMenu(m_pSubMenu);
 
-
-    p = new QAction("End Require", this);
-    connect(p, &QAction::triggered, [this] {
+    m_pEndRequire = new QAction("End Require", this);
+    connect(m_pEndRequire, &QAction::triggered, [this] {
         if (m_pLastClickedItem)
         {
             QString strWindowTitle = m_pLastClickedItem->text();
             emit signal_closeShowWidget(strWindowTitle);
         }
     });
-    m_pMenu->addAction(p);
 
+    //m_pMenu->addAction(m_pEndRequire);
 
-    subMenu = nullptr;
-    p = nullptr;
 }
 
 void DevicesWidget::informMultiAreaToCreateWidget(Utilities::ShowType type)
@@ -109,6 +109,15 @@ void DevicesWidget::slot_customContextMenuRequested(QPoint point)
 
     if (m_pLastClickedItem)
     {
+        m_pMenu->clear();
+        if (Config::GetInstance()->getDeviceStatus(m_pLastClickedItem->text()))
+        {
+            m_pMenu->addAction(m_pEndRequire);
+        }
+        else
+        {
+            m_pMenu->addMenu(m_pSubMenu);
+        }
         m_pMenu->exec(QCursor::pos());
     }
 }

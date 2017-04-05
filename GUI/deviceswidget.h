@@ -18,6 +18,8 @@ private:
 
 private:
     QMenu *m_pMenu;
+    QMenu *m_pSubMenu;
+    QAction *m_pEndRequire;
     QListWidgetItem *m_pLastClickedItem;
 
 signals: void signal_createShowWidget(QString strWindowTile, Utilities::ShowType type);

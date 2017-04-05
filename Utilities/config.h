@@ -3,7 +3,7 @@
 #include "singleton.h"
 
 #include <QString>
-
+#include <QMap>
 #include <mutex>
 
 class Config : public SingleTon<Config>
@@ -86,6 +86,31 @@ public:
         return m_uSkelePort;
     }
 
+    void setDeviceOnline(QString device)
+    {
+        std::lock_guard<std::mutex> lock(m_mutex);
+        m_Device_Online.insert(device, true);
+    }
+
+    void setDeviceOffline(QString device)
+    {
+        std::lock_guard<std::mutex> lock(m_mutex);
+        m_Device_Online.insert(device, false);
+    }
+
+    bool getDeviceStatus(QString device)
+    {
+        std::lock_guard<std::mutex> lock(m_mutex);
+        if (m_Device_Online.contains(device))
+        {
+            return m_Device_Online[device];
+        }
+        else
+        {
+            return false;
+        }
+    }
+
 private:
     /* 本类的所有变量存取共用一个锁 */
     std::mutex m_mutex;
@@ -96,4 +121,6 @@ private:
     unsigned int  m_uColorPort;
     unsigned int  m_uDepthPort;
     unsigned int  m_uSkelePort;
+
+    QMap<QString, bool> m_Device_Online;
 };

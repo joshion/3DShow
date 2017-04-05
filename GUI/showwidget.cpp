@@ -241,10 +241,12 @@ void ShowWidget::KeepThisWidget()
 void ShowWidget::closeEvent(QCloseEvent * event)
 {
     emit signal_closed(m_strTitle);
+    Config::GetInstance()->setDeviceOffline(this->windowTitle());
 }
 
 void ShowWidget::createTransferSocketThreads()
 {
+    Config::GetInstance()->setDeviceOnline(this->windowTitle());
     TransferSocketThread *pSocketThread = nullptr;
     if (m_eShowType & Utilities::ShowType::Color)
     {

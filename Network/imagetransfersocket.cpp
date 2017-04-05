@@ -31,10 +31,13 @@ void ImageTransferSocket::analysisReceiveFrameBuffer(const TransferFrameBuffer& 
     switch (buffer.dataType())
     {
     case DATATYPE_RGB:
+    {
+        m_pDecoder->pushBytes(buffer.data(), buffer.bodyLength());
+    }
+    break;
     case DATATYPE_DEPTH:
     {
         m_pDecoder->pushBytes(buffer.data(), buffer.bodyLength());
-        // qDebug() << __FILE__ << __LINE__ << buffer.bodyLength();
     }
     break;
     default:

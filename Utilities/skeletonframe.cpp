@@ -198,7 +198,7 @@ SkeletonFrame SkeletonFrame::fromBytes(const unsigned char * pData, unsigned int
         float height = result.m_Height / 2;
 
         x = (x - width) / width;
-        y = (y - height) / height;
+        y = (y - height) / height * 0.85;
 
         *(result.m_pPointData + i) = QVector4D { x, -y, -3.0, 1.0 };
     }
