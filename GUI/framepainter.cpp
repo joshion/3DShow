@@ -62,11 +62,11 @@ void FramePainter::paint()
 
     m_Program.enableAttributeArray(VERTEX_LOCATION);
 
-    m_Program.setUniformValue(COLOR_LOCATION, QVector4D { 0.0, 0.0, 1.0, 1.0 });
-    glDrawArrays(GL_POINTS, 0, m_pointSize);
     glLineWidth(3.0);
     m_Program.setUniformValue(COLOR_LOCATION, QVector4D { 1.0, 0.0, 0.0, 1.0 });
     glDrawElements(GL_LINE_STRIP, m_elementSize, GL_UNSIGNED_SHORT, nullptr);
+    m_Program.setUniformValue(COLOR_LOCATION, QVector4D { 0.0, 0.0, 1.0, 1.0 });
+    glDrawArrays(GL_POINTS, 0, m_pointSize);
     glFlush();
 
     m_Program.disableAttributeArray(VERTEX_LOCATION);

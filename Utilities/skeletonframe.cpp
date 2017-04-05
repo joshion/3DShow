@@ -186,22 +186,21 @@ SkeletonFrame SkeletonFrame::fromBytes(const unsigned char * pData, unsigned int
     }
 
     // 每个点有x,y两个值,所有需要翻倍
-    unsigned short* pPointsData = new unsigned short[pointSize * 2];
-
-    memcpy(pPointsData, pData + 5 + linesSize, pointSize * 2 * sizeof(unsigned short));
+    result.m_pPointData = new QVector4D[pointSize];
+    short* pPointsData = new short[pointSize * 2];
+    memcpy(pPointsData, pData + 5 + linesSize, pointSize * 2 * sizeof(short));
     for (int i = 0; i < pointSize; ++i)
     {
         /* 大端字节转为小端 */
-        float x = static_cast<float>(qToBigEndian(*(pPointsData + i)));
-        float y = static_cast<float>(qToBigEndian(*(pPointsData + 2 * i + 1)));
-
+        float x = static_cast<float>(qFromBigEndian(*(pPointsData + 2 * i)));
+        float y = static_cast<float>(qFromBigEndian(*(pPointsData + 2 * i + 1)));
         float width = result.m_Width / 2;
         float height = result.m_Height / 2;
 
         x = (x - width) / width;
         y = (y - height) / height;
 
-        *(result.m_pPointData + i) = QVector4D { x, y, -3.0, 1.0 };
+        *(result.m_pPointData + i) = QVector4D { x, -y, -3.0, 1.0 };
     }
     delete pPointsSizePerLines;
     pPointsSizePerLines = nullptr;

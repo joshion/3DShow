@@ -96,14 +96,10 @@ bool TransferFrameBuffer::setHead(const QByteArray & bytes)
         memcpy(&this->m_dataType, bytes.data() + 4, 4);
         memcpy(&this->m_bodyLength, bytes.data() + 8, 4);
 
-        /*
-        * 将网络传输的大端数据转换回小端数据
-        * 用qToLittleEndian不会将数据顺序翻转
-        * 但是用qToBigEndian却会
-        */
-        this->m_timeStamp = qToBigEndian(this->m_timeStamp);
-        this->m_dataType = qToBigEndian(this->m_dataType);
-        this->m_bodyLength = qToBigEndian(this->m_bodyLength);
+        /* 将网络传输的大端数据转换回小端数据 */
+        this->m_timeStamp = qFromBigEndian(this->m_timeStamp);
+        this->m_dataType = qFromBigEndian(this->m_dataType);
+        this->m_bodyLength = qFromBigEndian(this->m_bodyLength);
 
         /*
         清空数据,保留包体长度,之后的设置数据需要用到包体长度

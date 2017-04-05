@@ -130,13 +130,9 @@ OrderFrameBuffer OrderFrameBuffer::fromBytes(const QByteArray & bytes)
     memcpy(&buffer.m_version, bytes.data() + 6, 1);
     memcpy(&buffer.m_bodyLength, bytes.data() + 7, 4);
 
-    /*
-    * 将网络传输的大端数据转换回小端数据
-    * 用qToLittleEndian不会将数据顺序翻转
-    * 但是用qToBigEndian却会
-    */
-    buffer.m_sequence = qToBigEndian(buffer.m_sequence);
-    buffer.m_bodyLength = qToBigEndian(buffer.m_bodyLength);
+    /* 将网络传输的大端数据转换回小端数据 */
+    buffer.m_sequence = qFromBigEndian(buffer.m_sequence);
+    buffer.m_bodyLength = qFromBigEndian(buffer.m_bodyLength);
 
     if (buffer.m_bodyLength > 0)
     {
@@ -165,13 +161,9 @@ bool OrderFrameBuffer::setHead(const QByteArray & bytes)
     memcpy(&this->m_version, bytes.data() + 6, 1);
     memcpy(&this->m_bodyLength, bytes.data() + 7, 4);
 
-    /*
-    * 将网络传输的大端数据转换回小端数据
-    * 用qToLittleEndian不会将数据顺序翻转
-    * 但是用qToBigEndian却会
-    */
-    this->m_sequence = qToBigEndian(this->m_sequence);
-    this->m_bodyLength = qToBigEndian(this->m_bodyLength);
+    /* 将网络传输的大端数据转换回小端数据 */
+    this->m_sequence = qFromBigEndian(this->m_sequence);
+    this->m_bodyLength = qFromBigEndian(this->m_bodyLength);
 
     // 清空数据,保留包体长度,之后的设置数据需要用到包体长度
     if (m_data != nullptr)
