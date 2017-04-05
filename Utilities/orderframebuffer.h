@@ -36,14 +36,7 @@ public:
         m_version = version;
     }
 
-    /*
-    头的长度为11,故bytes的长度至少要有11
-    在此设置了头部,里面包含了包体长度,此时data内容清空,但是包体长度不变
-    */
     bool setHead(const QByteArray &bytes);
-    /*
-    与m_u32length相关联,如m_data == nullptr时, m_u32length也置0
-    */
     bool setData(const QByteArray &bytes, const unsigned int length);
     bool setData(const unsigned char *data, const unsigned int length);
     void setData(const ::google::protobuf::Message &data);

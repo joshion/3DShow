@@ -131,9 +131,9 @@ OrderFrameBuffer OrderFrameBuffer::fromBytes(const QByteArray & bytes)
     memcpy(&buffer.m_bodyLength, bytes.data() + 7, 4);
 
     /*
-    将网络传输的大端数据转换回小端数据
-    用qToLittleEndian不会将数据顺序翻转
-    但是用qToBigEndian却会
+    * 将网络传输的大端数据转换回小端数据
+    * 用qToLittleEndian不会将数据顺序翻转
+    * 但是用qToBigEndian却会
     */
     buffer.m_sequence = qToBigEndian(buffer.m_sequence);
     buffer.m_bodyLength = qToBigEndian(buffer.m_bodyLength);
@@ -150,10 +150,13 @@ OrderFrameBuffer OrderFrameBuffer::fromBytes(const QByteArray & bytes)
     return buffer;
 }
 
-//
+/*
+* 头的长度为11,故bytes的长度至少要有11
+* 在此设置了头部,里面包含了包体长度,此时data内容清空,但是包体长度不变
+*/
 bool OrderFrameBuffer::setHead(const QByteArray & bytes)
 {
-    if (bytes.length() < 11)
+    if (bytes.length() < s_headLength)
         return false;
 
     memcpy(&this->m_cmdType, bytes.data(), 1);
@@ -163,9 +166,9 @@ bool OrderFrameBuffer::setHead(const QByteArray & bytes)
     memcpy(&this->m_bodyLength, bytes.data() + 7, 4);
 
     /*
-    将网络传输的大端数据转换回小端数据
-    用qToLittleEndian不会将数据顺序翻转
-    但是用qToBigEndian却会
+    * 将网络传输的大端数据转换回小端数据
+    * 用qToLittleEndian不会将数据顺序翻转
+    * 但是用qToBigEndian却会
     */
     this->m_sequence = qToBigEndian(this->m_sequence);
     this->m_bodyLength = qToBigEndian(this->m_bodyLength);
@@ -229,5 +232,6 @@ void OrderFrameBuffer::setData(const ::google::protobuf::Message & data)
     if (byteArray != nullptr)
     {
         delete[] byteArray;
+        byteArray = nullptr;
     }
 }
