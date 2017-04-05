@@ -69,14 +69,14 @@ public:
     {
         return m_data;
     }
-    inline unsigned int length() const
+    inline unsigned int bodyLength() const
     {
-        return m_length;
+        return m_bodyLength;
     }
 
     inline unsigned int headLength() const
     {
-        return s_u32HeadLength;
+        return s_headLength;
     }
 
 private:
@@ -85,10 +85,10 @@ private:
     uint8_t m_cmdNum;
     uint32_t m_sequence;
     uint8_t m_version;
-    uint32_t m_length;   //包体长度,也即是m_data数据的长度,不包括头部长度
+    uint32_t m_bodyLength;   //包体长度,也即是m_data数据的长度,不包括头部长度
     unsigned char *m_data;
 
-    static const unsigned int s_u32HeadLength = 11; // 头部长度固定为11Bytes
+    static const unsigned int s_headLength = 11; // 头部长度固定为11Bytes
 
 public:
     const static unsigned int TYPE_CONNECT_PROTOCOL = 1;

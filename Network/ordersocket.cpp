@@ -177,10 +177,10 @@ void OrderSocket::analysisReceiveByteArrayBuffer()
             /*
             若没有读取到头部或者缓存的长度比头部指定的protobuf的长度小时跳过此部分,等待下次读取到更多缓存时再进行判断
             */
-            if (!m_bNotHasHead && m_receiveBuffer.length() >= m_pReceiveFrameBuffer->length())
+            if (!m_bNotHasHead && m_receiveBuffer.length() >= m_pReceiveFrameBuffer->bodyLength())
             {
-                m_pReceiveFrameBuffer->setData(m_receiveBuffer, m_pReceiveFrameBuffer->length());
-                m_receiveBuffer.remove(0, m_pReceiveFrameBuffer->length());
+                m_pReceiveFrameBuffer->setData(m_receiveBuffer, m_pReceiveFrameBuffer->bodyLength());
+                m_receiveBuffer.remove(0, m_pReceiveFrameBuffer->bodyLength());
                 m_bNotHasHead = true;
                 bIsACompleteFrameBuffer = true;
             }
@@ -206,7 +206,7 @@ void OrderSocket::analysisReceiveFrameBuffer(const OrderFrameBuffer & buffer)
         case OrderFrameBuffer::NUM_RESP_REQUIRE_CONNECT:
         {
             ConnectProto::pbRespConnect resp;
-            resp.ParseFromArray(buffer.data(), buffer.length());
+            resp.ParseFromArray(buffer.data(), buffer.bodyLength());
             resp.PrintDebugString();
             if (m_pGUI)
             {
@@ -217,7 +217,7 @@ void OrderSocket::analysisReceiveFrameBuffer(const OrderFrameBuffer & buffer)
         case OrderFrameBuffer::NUM_RESP_DEVICES:
         {
             ConnectProto::pbRespDevices resp;
-            resp.ParseFromArray(buffer.data(), buffer.length());
+            resp.ParseFromArray(buffer.data(), buffer.bodyLength());
             resp.PrintDebugString();
             if (m_pGUI)
             {
@@ -243,7 +243,7 @@ void OrderSocket::analysisReceiveFrameBuffer(const OrderFrameBuffer & buffer)
         case OrderFrameBuffer::NUM_RESP_START_REQUIRE:
         {
             KinectDataProto::pbRespStart resp;
-            resp.ParseFromArray(buffer.data(), buffer.length());
+            resp.ParseFromArray(buffer.data(), buffer.bodyLength());
             resp.PrintDebugString();
             if (m_pGUI)
             {
@@ -254,7 +254,7 @@ void OrderSocket::analysisReceiveFrameBuffer(const OrderFrameBuffer & buffer)
         case OrderFrameBuffer::NUM_SERVER_END_TRANSFER:
         {
             KinectDataProto::pbEndTransfer resp;
-            resp.ParseFromArray(buffer.data(), buffer.length());
+            resp.ParseFromArray(buffer.data(), buffer.bodyLength());
             if (m_pGUI)
             {
                 m_pGUI->signal_reqEndTransfer(resp);
