@@ -21,19 +21,19 @@ public:
 public:
     inline void setCmdType(const unsigned char cmdType)
     {
-        m_ucCmdType = cmdType;
+        m_cmdType = cmdType;
     }
     inline void setCmdNum(const unsigned char cmdNum)
     {
-        m_ucCmdNum = cmdNum;
+        m_cmdNum = cmdNum;
     }
     inline void setSequence(const unsigned int sequence)
     {
-        m_u32Sequence = sequence;
+        m_sequence = sequence;
     }
     inline void setVersion(const unsigned char version)
     {
-        m_ucVsersion = version;
+        m_version = version;
     }
 
     /*
@@ -50,19 +50,19 @@ public:
 
     inline unsigned char cmdType() const
     {
-        return m_ucCmdType;
+        return m_cmdType;
     }
     inline unsigned char cmdNum() const
     {
-        return m_ucCmdNum;
+        return m_cmdNum;
     }
     inline unsigned int sequence() const
     {
-        return m_u32Sequence;
+        return m_sequence;
     }
     inline unsigned char version() const
     {
-        return m_ucVsersion;
+        return m_version;
     }
 
     inline const unsigned char* data() const
@@ -71,7 +71,7 @@ public:
     }
     inline unsigned int length() const
     {
-        return m_u32Length;
+        return m_length;
     }
 
     inline unsigned int headLength() const
@@ -80,34 +80,15 @@ public:
     }
 
 private:
-    union
-    {
-        char m_cmdType;
-        unsigned char m_ucCmdType;
-    };
-    union
-    {
-        char m_cmdNum;
-        unsigned char m_ucCmdNum;
-    };
-    union
-    {
-        char m_sequence[4];
-        unsigned int m_u32Sequence;
-    };
-    union
-    {
-        char m_version;
-        unsigned char m_ucVsersion;
-    };
-    union
-    {
-        char m_length[4];
-        unsigned int m_u32Length;
-    };  //包体长度,也即是m_data的长度,不包括头部长度。头部长度固定为11Bytes
+
+    uint8_t m_cmdType;
+    uint8_t m_cmdNum;
+    uint32_t m_sequence;
+    uint8_t m_version;
+    uint32_t m_length;   //包体长度,也即是m_data数据的长度,不包括头部长度
     unsigned char *m_data;
 
-    static const unsigned int s_u32HeadLength = 11;
+    static const unsigned int s_u32HeadLength = 11; // 头部长度固定为11Bytes
 
 public:
     const static unsigned int TYPE_CONNECT_PROTOCOL = 1;
