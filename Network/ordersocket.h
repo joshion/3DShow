@@ -55,11 +55,11 @@ private:
     bool writeBufferToServer(const OrderFrameBuffer & buffer);
 
 public slots:
-    bool slot_requireConnect();
-    bool slot_exitConnect();
-    bool slot_requireDevices();
-    bool slot_startRequire(KinectDataProto::pbReqStart protoReqStart);
-    bool slot_endRequire(KinectDataProto::pbReqEnd reqEnd);
+    void slot_requireConnect();
+    void slot_exitConnect();
+    void slot_requireDevices();
+    void slot_startRequire(KinectDataProto::pbReqStart protoReqStart);
+    void slot_endRequire(KinectDataProto::pbReqEnd reqEnd);
 /***********************************************************************************/
 
 /***********************************************************************************/
@@ -76,4 +76,10 @@ private:
 private slots:
     void slot_readDataFromServer();
 /***********************************************************************************/
+private:
+    unsigned int m_Sequence_Main;
+    unsigned int m_Sequence_RequireConnect;
+    unsigned int m_Sequence_RequireDevices;
+    unsigned int m_Sequence_StartRequire;
+    unsigned int m_Sequence_EndRequire;
 };

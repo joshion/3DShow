@@ -18,7 +18,12 @@ OrderSocket::OrderSocket(QString adress, unsigned int port, QObject *parent)
     m_pGUI(nullptr),
     m_pSendFrameBuffer(nullptr),
     m_bNotHasHead(true),
-    m_pReceiveFrameBuffer(nullptr)
+    m_pReceiveFrameBuffer(nullptr),
+    m_Sequence_Main(0),
+    m_Sequence_RequireConnect(0),
+    m_Sequence_RequireDevices(0),
+    m_Sequence_StartRequire(0),
+    m_Sequence_EndRequire(0)
 
 {
     m_pSendFrameBuffer = new OrderFrameBuffer {};
@@ -57,10 +62,12 @@ void OrderSocket::slot_setConnected()
     * 与服务器建立连接后,
     * 发送连接验证信息
     */
+    m_pSendFrameBuffer->setSequence(m_Sequence_Main++);
     m_pSendFrameBuffer->setCmdType(OrderFrameBuffer::TYPE_CONNECT_PROTOCOL);
     m_pSendFrameBuffer->setCmdNum(OrderFrameBuffer::NUM_REQUIRE_CONNECT);
     m_pSendFrameBuffer->setData(nullptr, 0);
     writeBufferToServer();
+    m_Sequence_RequireConnect = m_Sequence_Main;
 }
 
 void OrderSocket::slot_setDisConnected()
@@ -91,68 +98,68 @@ bool OrderSocket::writeBufferToServer(const OrderFrameBuffer & buffer)
     return write(bytes) == bytes.length();
 }
 
-bool OrderSocket::slot_requireConnect()
+void OrderSocket::slot_requireConnect()
 {
-    qDebug() << "enter require connect";
+    qDebug() << __FILE__ << __LINE__ << "enter require connect";
 
     if (m_bConnected)
     {
         m_pGUI->signal_hasBeenConnected();
-        return false;
     }
     else
     {
         connectToHost(m_strIPAdress, m_uPort);
-        return true;
     }
 }
 
-bool OrderSocket::slot_exitConnect()
+void OrderSocket::slot_exitConnect()
 {
-    qDebug() << "enter exit connect";
+    qDebug() << __FILE__ << __LINE__ << "enter exit connect";
 
+    m_pSendFrameBuffer->setSequence(m_Sequence_Main++);
     m_pSendFrameBuffer->setCmdType(OrderFrameBuffer::TYPE_CONNECT_PROTOCOL);
     m_pSendFrameBuffer->setCmdNum(OrderFrameBuffer::NUM_EXIT_CONNECT);
     m_pSendFrameBuffer->setData(nullptr, 0);
-    bool flag = this->writeBufferToServer();
+    this->writeBufferToServer();
 
     /* 发送完退出连接信息后,断开与服务器之间的连接 */
     disconnectFromHost();
-
-    return flag;
 }
 
-bool OrderSocket::slot_requireDevices()
+void OrderSocket::slot_requireDevices()
 {
-    qDebug() << "enter require devices";
+    qDebug() << __FILE__ << __LINE__ <<"enter require devices";
 
+    m_pSendFrameBuffer->setSequence(m_Sequence_Main++);
     m_pSendFrameBuffer->setCmdType(OrderFrameBuffer::TYPE_CONNECT_PROTOCOL);
     m_pSendFrameBuffer->setCmdNum(OrderFrameBuffer::NUM_REQUIRE_DEVICES);
     m_pSendFrameBuffer->setData(nullptr, 0);
-
-    return this->writeBufferToServer();
+    this->writeBufferToServer();
+    m_Sequence_RequireDevices = m_Sequence_Main;
 }
 
-bool OrderSocket::slot_startRequire(KinectDataProto::pbReqStart protoReqStart)
+void OrderSocket::slot_startRequire(KinectDataProto::pbReqStart protoReqStart)
 {
-    qDebug() << "enter start require";
+    qDebug() << __FILE__ << __LINE__ << "enter start require";
 
+    m_pSendFrameBuffer->setSequence(m_Sequence_Main++);
     m_pSendFrameBuffer->setCmdType(OrderFrameBuffer::TYPE_KINECT_PROTOCOL);
     m_pSendFrameBuffer->setCmdNum(OrderFrameBuffer::NUM_START_REQUIRE);
     m_pSendFrameBuffer->setData(protoReqStart);
-
-    return this->writeBufferToServer();
+    this->writeBufferToServer();
+    m_Sequence_StartRequire = m_Sequence_Main;
 }
 
-bool OrderSocket::slot_endRequire(KinectDataProto::pbReqEnd reqEnd)
+void OrderSocket::slot_endRequire(KinectDataProto::pbReqEnd reqEnd)
 {
-    qDebug() << "enter end connect";
+    qDebug() << __FILE__ << __LINE__ << "enter end connect";
 
+    m_pSendFrameBuffer->setSequence(m_Sequence_Main++);
     m_pSendFrameBuffer->setCmdType(OrderFrameBuffer::TYPE_KINECT_PROTOCOL);
     m_pSendFrameBuffer->setCmdNum(OrderFrameBuffer::NUM_END_REQUIRE);
     m_pSendFrameBuffer->setData(reqEnd);
-
-    return this->writeBufferToServer();
+    this->writeBufferToServer();
+    m_Sequence_EndRequire = m_Sequence_Main;
 }
 
 void OrderSocket::analysisReceiveByteArrayBuffer()
@@ -198,6 +205,7 @@ void OrderSocket::analysisReceiveByteArrayBuffer()
 
 void OrderSocket::analysisReceiveFrameBuffer(const OrderFrameBuffer & buffer)
 {
+    unsigned int sequence = buffer.sequence();
     switch (buffer.cmdType())
     {
     case OrderFrameBuffer::TYPE_CONNECT_PROTOCOL:
@@ -207,8 +215,7 @@ void OrderSocket::analysisReceiveFrameBuffer(const OrderFrameBuffer & buffer)
         {
             ConnectProto::pbRespConnect resp;
             resp.ParseFromArray(buffer.data(), buffer.bodyLength());
-            resp.PrintDebugString();
-            if (m_pGUI)
+            if (m_pGUI && sequence == m_Sequence_RequireConnect)
             {
                 m_pGUI->signal_respConnect(resp);
             }
@@ -218,8 +225,7 @@ void OrderSocket::analysisReceiveFrameBuffer(const OrderFrameBuffer & buffer)
         {
             ConnectProto::pbRespDevices resp;
             resp.ParseFromArray(buffer.data(), buffer.bodyLength());
-            resp.PrintDebugString();
-            if (m_pGUI)
+            if (m_pGUI && sequence == m_Sequence_RequireDevices)
             {
                 /*
                 将protobuf 数据转换为 设备列表发送到GUI线程
@@ -244,8 +250,7 @@ void OrderSocket::analysisReceiveFrameBuffer(const OrderFrameBuffer & buffer)
         {
             KinectDataProto::pbRespStart resp;
             resp.ParseFromArray(buffer.data(), buffer.bodyLength());
-            resp.PrintDebugString();
-            if (m_pGUI)
+            if (m_pGUI && sequence == m_Sequence_StartRequire)
             {
                 m_pGUI->signal_respStart(resp);
             }
@@ -255,7 +260,7 @@ void OrderSocket::analysisReceiveFrameBuffer(const OrderFrameBuffer & buffer)
         {
             KinectDataProto::pbEndTransfer resp;
             resp.ParseFromArray(buffer.data(), buffer.bodyLength());
-            if (m_pGUI)
+            if (m_pGUI && sequence == m_Sequence_EndRequire)
             {
                 m_pGUI->signal_reqEndTransfer(resp);
             }
