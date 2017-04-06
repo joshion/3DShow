@@ -23,7 +23,11 @@ void OrderSocketThread::run()
 {
     m_pOrderSocket = new OrderSocket { m_strIPAdress, m_uPort };
     m_pOrderSocket->registerGUIClass(m_pOrderInterface);
-    connect(this, &OrderSocketThread::finished, m_pOrderSocket, &OrderSocket::deleteLater);
+
+    connect(this, &OrderSocketThread::finished,
+        m_pOrderSocket, &OrderSocket::disconnectFromHost, Qt::QueuedConnection);
+    connect(this, &OrderSocketThread::finished,
+        m_pOrderSocket, &OrderSocket::deleteLater, Qt::QueuedConnection);
 
     connect(this, &OrderSocketThread::signal_requireConnect,
         m_pOrderSocket, &OrderSocket::slot_requireConnect, Qt::QueuedConnection);

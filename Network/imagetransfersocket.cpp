@@ -2,13 +2,6 @@
 #include "transferframebuffer.h"
 #include "decodevideostream.h"
 
-namespace
-{
-    static const unsigned int DATATYPE_RGB = 1;
-    static const unsigned int DATATYPE_DEPTH = 2;
-    static const unsigned int DATATYPE_SKELETON = 3;
-}
-
 ImageTransferSocket::ImageTransferSocket(QString deviceName, Utilities::SocketType type,
     QString strIPAdress, unsigned int port)
     : TransferSocket(deviceName, type, strIPAdress, port),
@@ -30,12 +23,12 @@ void ImageTransferSocket::analysisReceiveFrameBuffer(const TransferFrameBuffer& 
 {
     switch (buffer.dataType())
     {
-    case DATATYPE_RGB:
+    case TransferFrameBuffer::DATA_TYPE_COLOR:
     {
         m_pDecoder->pushBytes(buffer.data(), buffer.bodyLength());
     }
     break;
-    case DATATYPE_DEPTH:
+    case TransferFrameBuffer::DATA_TYPE_DEPTH:
     {
         m_pDecoder->pushBytes(buffer.data(), buffer.bodyLength());
     }

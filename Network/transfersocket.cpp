@@ -10,13 +10,6 @@
 #include <QByteArray>
 
 #include <qDebug>
-#include <QHostAddress>
-
-namespace
-{
-    static const unsigned int DATA_CHANNEL_PROTOCOL = 3;
-    static const unsigned int VALIDATE_PORT = 1;
-}
 
 TransferSocket::TransferSocket(QString deviceName, Utilities::SocketType type,
     QString strIPAdress, unsigned int port)
@@ -82,8 +75,8 @@ void TransferSocket::validatePort()
     pbValidatePort.set_guid(Config::GetInstance()->guid().toStdString());
 
     OrderFrameBuffer orderBuffer;
-    orderBuffer.setCmdType(DATA_CHANNEL_PROTOCOL);
-    orderBuffer.setCmdNum(VALIDATE_PORT);
+    orderBuffer.setCmdType(OrderFrameBuffer::TYPE_DATA_CHANNEL_PROTOCOL);
+    orderBuffer.setCmdNum(OrderFrameBuffer::NUM_VALIDATE_PORT);
     orderBuffer.setData(pbValidatePort);
 
     QByteArray bytes = OrderFrameBuffer::toBytes(orderBuffer);

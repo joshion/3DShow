@@ -44,6 +44,10 @@ void TransferSocketThread::createTransferSocket(Utilities::SocketType type)
     }
     m_pTransferSocket->registerGUIClass(m_pTransferInterface);
     m_pTransferSocket->connectToServer();
-    connect(this, &TransferSocketThread::finished, m_pTransferSocket, &ImageTransferSocket::deleteLater);
+
+    connect(this, &TransferSocketThread::finished,
+        m_pTransferSocket, &TransferSocket::disconnectFromHost, Qt::QueuedConnection);
+    connect(this, &TransferSocketThread::finished,
+        m_pTransferSocket, &TransferSocket::deleteLater, Qt::QueuedConnection);
     exec();
 }

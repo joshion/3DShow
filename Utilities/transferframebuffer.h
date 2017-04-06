@@ -61,4 +61,9 @@ private:
     unsigned char *m_Data;
 
     static const unsigned int s_headLength = 12;
+
+public:
+    const static unsigned int DATA_TYPE_COLOR = 1;
+    const static unsigned int DATA_TYPE_DEPTH = 2;
+    const static unsigned int DATA_TYPE_SKELE = 3;
 };

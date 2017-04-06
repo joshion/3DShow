@@ -14,10 +14,19 @@ FrameTransferSocket::~FrameTransferSocket()
 
 void FrameTransferSocket::analysisReceiveFrameBuffer(const TransferFrameBuffer & buffer)
 {
-    if (buffer.data() && buffer.bodyLength() > 0)
+    switch (buffer.dataType())
     {
-        SkeletonFrame frame = SkeletonFrame::fromBytes(buffer.data(), buffer.bodyLength());
-        pushSkeletonFrame(frame);
+    case TransferFrameBuffer::DATA_TYPE_SKELE:
+    {
+        if (buffer.data() && buffer.bodyLength() > 0)
+        {
+            SkeletonFrame frame = SkeletonFrame::fromBytes(buffer.data(), buffer.bodyLength());
+            pushSkeletonFrame(frame);
+        }
+    }
+    break;
+    default:
+        break;
     }
 }
 
