@@ -9,6 +9,7 @@
 #include <QTimer>
 #include <QMenu>
 #include <QAction>
+#include <QACtionGroup>
 #include <QDebug>
 
 namespace
@@ -32,10 +33,10 @@ ShowWidget::ShowWidget(QString title, Utilities::ShowType type, QWidget *parent)
     m_bShowSkele(false)
 {
     setWindowTitle(m_strTitle);
+    Config::GetInstance()->setDeviceOnline(this->windowTitle());
     setMinimumSize(320, 240);
     setContextMenuPolicy(Qt::CustomContextMenu);
     createMenu();
-
     connect(this, &ShowWidget::signal_connectedToServer, this,
         &ShowWidget::slot_connectedToServer, Qt::QueuedConnection);
     connect(this, &ShowWidget::customContextMenuRequested, this, &ShowWidget::slot_customContextMenuRequested);
@@ -159,73 +160,82 @@ void ShowWidget::resizeViewPort()
 
 void ShowWidget::createMenu()
 {
-    if (nullptr == m_pMenu)
-    {
-        m_pMenu = new QMenu(this);
-    }
-    m_pMenu->clear();
+    QAction *pAction = nullptr;
+    QActionGroup *pActionGroup = nullptr;
+
     if (m_eShowType & Utilities::ShowType::Color)
     {
-        m_pColor = new QAction("Show Color", this);
-        m_pColor->setCheckable(true);
-        m_pColor->setChecked(true);
+        if (nullptr == m_pMenu)
+        {
+            m_pMenu = new QMenu(this);
+        }
+        pAction = new QAction("Show Depth", this);
+        pAction->setCheckable(true);
+        pAction->setChecked(true);
         m_bShowColor = true;
-        m_pMenu->addAction(m_pColor);
-        connect(m_pColor, &QAction::triggered, [&](bool flag) {
-            m_pColor->setChecked(true);
-            m_bShowColor = true;
-            if (m_pDepth)
-            {
-                m_pDepth->setChecked(false);
-                m_bShowDepth = false;
-            }
+        connect(pAction, &QAction::toggled, [&](bool flag) {
+            m_bShowColor = flag;
         });
+        if (nullptr == pActionGroup)
+        {
+            pActionGroup = new QActionGroup(this);
+        }
+        pActionGroup->addAction(pAction);
+        m_pMenu->addAction(pAction);
+        pAction = nullptr;
     }
 
     if (m_eShowType & Utilities::ShowType::Depth)
     {
-        m_pDepth = new QAction("Show Depth", this);
-        m_pDepth->setCheckable(true);
-        if (false == m_bShowColor)
+        if (nullptr == m_pMenu)
         {
-            m_pDepth->setChecked(true);
+            m_pMenu = new QMenu(this);
+        }
+
+        pAction = new QAction("Show Depth", this);
+        pAction->setCheckable(true);
+        /*
+        * pActionGroup为空时,没有color数据
+        * 此时仅显示Depth数据
+        * 若pActionGroup不空, 则需要优先默认显示color数据
+        */
+        if (nullptr == pActionGroup)
+        {
+            pActionGroup = new QActionGroup(this);
+            pAction->setChecked(true);
             m_bShowDepth = true;
         }
         else
         {
-            m_pDepth->setChecked(false);
+            pAction->setChecked(false);
             m_bShowDepth = false;
         }
-        m_pMenu->addAction(m_pDepth);
-        connect(m_pDepth, &QAction::triggered, [&](bool flag) {
-            m_pDepth->setChecked(true);
-            m_bShowDepth = true;
-            if (m_pColor)
-            {
-                m_pColor->setChecked(false);
-                m_bShowColor = false;
-            }
+        pActionGroup->addAction(pAction);
+        connect(pAction, &QAction::toggled, [&](bool flag) {
+            m_bShowDepth = flag;
         });
+        m_pMenu->addAction(pAction);
+        pAction = nullptr;
     }
 
-    if (m_pColor || m_pDepth)
+    /* 仅在同时存在 Skele 和其他另外一种数据的情况下才会显示 Show Skele 的Action按钮*/
+    if (pActionGroup && m_pMenu)
     {
-        m_pMenu->setDefaultAction(m_pColor);
         m_pMenu->addSeparator();
+        if (m_eShowType & Utilities::ShowType::Skele)
+        {
+            pAction = new QAction("Show Skele", this);
+            m_bShowSkele = true;
+            pAction->setCheckable(true);
+            pAction->setChecked(true);
+            connect(pAction, &QAction::toggled, [&](bool flag) {
+                m_bShowSkele = flag;
+            });
+            m_pMenu->addAction(pAction);
+            pAction = nullptr;
+        }
     }
-
-    if (m_eShowType & Utilities::ShowType::Skele)
-    {
-        QAction *p = new QAction("Show Skele", this);
-        m_bShowSkele = true;
-        p->setCheckable(true);
-        p->setChecked(true);
-        connect(p, &QAction::toggled, [&](bool flag) {
-            m_bShowSkele = flag;
-        });
-        m_pMenu->addAction(p);
-        p = nullptr;
-    }
+    pActionGroup = nullptr;
 }
 
 void ShowWidget::KeepThisWidget()
@@ -246,7 +256,6 @@ void ShowWidget::closeEvent(QCloseEvent * event)
 
 void ShowWidget::createTransferSocketThreads()
 {
-    Config::GetInstance()->setDeviceOnline(this->windowTitle());
     TransferSocketThread *pSocketThread = nullptr;
     if (m_eShowType & Utilities::ShowType::Color)
     {
@@ -385,13 +394,6 @@ void ShowWidget::updateSkele()
 
         pSocket = nullptr;
     }
-
-    /*
-    if (m_pSkelePainter)
-    {
-        m_pSkelePainter->loadFrame();
-    }
-    */
 }
 
 void ShowWidget::slot_connectedToServer()
