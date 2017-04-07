@@ -21,7 +21,7 @@ class OrderSocket : public QTcpSocket
 {
     Q_OBJECT
 public:
-    explicit OrderSocket(QString adress, unsigned int port, QObject *parent = nullptr);
+    explicit OrderSocket(QString adress = "", unsigned int port = 0, QObject *parent = nullptr);
     OrderSocket(const OrderSocket& other) = delete;
     OrderSocket& operator= (const OrderSocket& other) = delete;
     ~OrderSocket();
@@ -57,7 +57,7 @@ private:
     bool writeBufferToServer(const OrderFrameBuffer & buffer);
 
 public slots:
-    void slot_requireConnect();
+    void slot_requireConnect(const QString &ip, unsigned int port);
     void slot_exitConnect();
     void slot_requireDevices();
     void slot_startRequire(KinectDataProto::pbReqStart protoReqStart);

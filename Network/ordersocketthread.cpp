@@ -3,10 +3,8 @@
 #include "ordersocket.h"
 #include "orderinterface.h"
 
-OrderSocketThread::OrderSocketThread(QString adress, unsigned int port, OrderInterface *pInterface, QObject *parent)
+OrderSocketThread::OrderSocketThread(OrderInterface *pInterface, QObject *parent)
     : QThread(parent),
-    m_strIPAdress(adress),
-    m_uPort(port),
     m_pOrderInterface(pInterface),
     m_pOrderSocket(nullptr)
 {
@@ -21,7 +19,7 @@ OrderSocketThread::~OrderSocketThread()
 
 void OrderSocketThread::run()
 {
-    m_pOrderSocket = new OrderSocket { m_strIPAdress, m_uPort };
+    m_pOrderSocket = new OrderSocket { };
     m_pOrderSocket->registerGUIClass(m_pOrderInterface);
 
     connect(this, &OrderSocketThread::finished,

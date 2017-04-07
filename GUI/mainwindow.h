@@ -46,6 +46,7 @@ signals: void signal_respStart(KinectDataProto::pbRespStart protoRespStart) over
 signals: void signal_reqEndTransfer(KinectDataProto::pbEndTransfer protoEndTransfer) override;
 
 private slots:
+    void slot_login();
     void slot_respConnect(ConnectProto::pbRespConnect resp);
 /***********************************************************************************/
 

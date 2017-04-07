@@ -2,9 +2,11 @@
 #define UTILITIES_H
 
 #pragma once
+#include <QPair>
+
+typedef  QPair<QString, unsigned int> IP_PORT;
 
 class QString;
-
 class Utilities
 {
 public:
@@ -30,6 +32,8 @@ public:
         Skele = 0x4
     };
     static QString readStringFromFile(const QString &fileName);
+
+    static IP_PORT getAdressFromString(QString str);
 };
 
 static bool operator& (const Utilities::ShowType& lh, const Utilities::ShowType & rh)

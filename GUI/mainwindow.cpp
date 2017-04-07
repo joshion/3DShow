@@ -13,24 +13,26 @@ MainWindow::MainWindow(QWidget * parent)
     m_pConfig(nullptr),
     m_pOrderSocketThread(nullptr)
 {
-    m_pConfig = Config::GetInstance();
-    m_pConfig->setIPAdress("192.168.31.250");
-    m_pConfig->setServerPort(7892);
-
     ui.setupUi(this);
+    /* 设置服务器地址输入框 一定要输入齐12位16进制字母 */
+    ui.m_ServerName->setValidator(new QRegExpValidator(QRegExp("[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}"), ui.m_ServerName));
     ui.m_ServerName->setCursorPosition(0);
 
-    m_pOrderSocketThread = OrderSocketThread::GetInstance(m_pConfig->IPAdress(), m_pConfig->serverPort(), this);
+    m_pConfig = Config::GetInstance();
+
+    m_pOrderSocketThread = OrderSocketThread::GetInstance(this);
 
     /* 客户端向服务端请求连接 */
-    connect(ui.m_ReqConnect, &QPushButton::clicked, m_pOrderSocketThread, &OrderSocketThread::signal_requireConnect);
+    connect(ui.m_ReqConnect, &QPushButton::clicked, this, &MainWindow::slot_login);
+    //connect(ui.m_ReqConnect, &QPushButton::clicked, m_pOrderSocketThread, &OrderSocketThread::signal_requireConnect);
+    
     /*
     * 客户端申请断开连接
     * 断开连接时 通过控制套接字通知服务器
     * 客户端的多窗口显示 关闭所有子窗口,与此同时也关闭了所有的传输套接字
     */
     connect(ui.m_ExitConnect, &QPushButton::clicked, m_pOrderSocketThread, &OrderSocketThread::signal_exitConnect);
-    connect(ui.m_ExitConnect, &QPushButton::clicked, ui.m_MultiShowArea, &MultiShowArea::closeAllSubWindows);
+    // connect(ui.m_ExitConnect, &QPushButton::clicked, ui.m_MultiShowArea, &MultiShowArea::closeAllSubWindows);
     connect(ui.m_ExitConnect, &QPushButton::clicked, this, [&] {
         disconnectFromServer();
     });
@@ -138,8 +140,21 @@ void MainWindow::disconnectFromServer()
     */
     disconnect(ui.m_ReqDevices, &QPushButton::clicked, m_pOrderSocketThread, &OrderSocketThread::signal_requireDevices);
 
-    // 添加代码, 让设备列表清空列表, 已经打开的显示窗口全部关闭
+    /*
+    * 让设备列表清空列表
+    * 多显示已经打开的显示窗口全部关闭
+    */
     ui.m_DevicesWidget->clear();
+    ui.m_MultiShowArea->closeAllSubWindows();
+}
+
+void MainWindow::slot_login()
+{
+    if (m_pOrderSocketThread)
+    {
+        IP_PORT ip_port = Utilities::getAdressFromString(ui.m_ServerName->text());
+        m_pOrderSocketThread->signal_requireConnect(ip_port.first, ip_port.second);
+    }
 }
 
 void MainWindow::slot_respConnect(ConnectProto::pbRespConnect resp)

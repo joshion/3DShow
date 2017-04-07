@@ -71,16 +71,22 @@
         <string notr="true"/>
        </property>
        <property name="inputMask">
-        <string>&gt;HHHH-HHHH-HHHH;0</string>
+        <string>&gt;HHHH-HHHH-HHHH</string>
        </property>
        <property name="text">
-        <string>--</string>
+        <string>C0A8-1FFA-D41E</string>
+       </property>
+       <property name="echoMode">
+        <enum>QLineEdit::Normal</enum>
        </property>
        <property name="cursorPosition">
-        <number>0</number>
+        <number>14</number>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
+       </property>
+       <property name="dragEnabled">
+        <bool>false</bool>
        </property>
       </widget>
      </item>

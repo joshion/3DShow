@@ -12,15 +12,12 @@ class OrderSocketThread : public QThread, public SingleTon<OrderSocketThread>
     Q_OBJECT
 
 private:
-    OrderSocketThread(QString adress, unsigned int, OrderInterface *pInterface = nullptr, QObject *parent = nullptr);
+    OrderSocketThread(OrderInterface *pInterface = nullptr, QObject *parent = nullptr);
     ~OrderSocketThread();
 
     friend class SingleTon<OrderSocketThread>;
 
 private:
-    QString m_strIPAdress;
-    unsigned int m_uPort;
-
     OrderInterface *m_pOrderInterface;  // 上层GUI类的虚基类,传递其到下层C++服务,用于上下层的通信
 
 /***********************************************************************************/
@@ -33,7 +30,7 @@ private:
 
 /***********************************************************************************/
 /*GUI类发送消息到底层C++所用接口*/
-signals: void signal_requireConnect();
+signals: void signal_requireConnect(QString ip, unsigned int port);
 signals: void signal_exitConnect();
 signals: void signal_requireDevices();
 signals: void signal_endRequire(KinectDataProto::pbReqEnd reqEnd);

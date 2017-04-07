@@ -1,6 +1,7 @@
 #include "ordersocket.h"
 #include "orderinterface.h"
 #include "orderframebuffer.h"
+#include "config.h"
 
 #include "ConnectProto.pb.h"
 
@@ -144,17 +145,33 @@ bool OrderSocket::writeBufferToServer(const OrderFrameBuffer & buffer)
     return write(bytes) == bytes.length();
 }
 
-void OrderSocket::slot_requireConnect()
+void OrderSocket::slot_requireConnect(const QString &ip, unsigned int port)
 {
     qDebug() << __FILE__ << __LINE__ << "enter require connect";
-
-    if (m_bConnected)
+    /*
+    * 若改变了服务器地址,
+    * 则无论之前是否连接上服务器,
+    * 都重新连接到新的服务器
+    */
+    if (ip != Config::GetInstance()->IPAdress() || port != Config::GetInstance()->serverPort())
     {
-        m_pGUI->signal_hasBeenConnected();
+        Config::GetInstance()->setIPAdress(ip);
+        Config::GetInstance()->setServerPort(port);
+        m_strIPAdress = Config::GetInstance()->IPAdress();
+        m_uPort = Config::GetInstance()->serverPort();
+        disconnectFromHost();
+        connectToHost(m_strIPAdress, m_uPort);
     }
     else
     {
-        connectToHost(m_strIPAdress, m_uPort);
+        if (m_bConnected)
+        {
+            m_pGUI->signal_hasBeenConnected();
+        }
+        else
+        {
+            connectToHost(m_strIPAdress, m_uPort);
+        }
     }
 }
 
