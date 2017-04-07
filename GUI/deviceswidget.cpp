@@ -21,6 +21,7 @@ DevicesWidget::DevicesWidget(QWidget *parent)
     createMenu();
     setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this, &DevicesWidget::customContextMenuRequested, this, &DevicesWidget::slot_customContextMenuRequested);
+    connect(this, &DevicesWidget::itemDoubleClicked, this, &DevicesWidget::slot_itemDoubleClicked);
 }
 
 DevicesWidget::~DevicesWidget()
@@ -108,10 +109,6 @@ void DevicesWidget::informMultiAreaToCreateWidget(Utilities::ShowType type)
     }
 }
 
-void DevicesWidget::slot_endRequireData()
-{
-}
-
 void DevicesWidget::slot_customContextMenuRequested(QPoint point)
 {
     m_pLastClickedItem = this->itemAt(point);
@@ -128,6 +125,18 @@ void DevicesWidget::slot_customContextMenuRequested(QPoint point)
             m_pMenu->addMenu(m_pSubMenu);
         }
         m_pMenu->exec(QCursor::pos());
+    }
+}
+
+void DevicesWidget::slot_endRequireData()
+{
+}
+
+void DevicesWidget::slot_itemDoubleClicked(QListWidgetItem * item)
+{
+    if (item)
+    {
+        emit signal_showShowWidget(item->text());
     }
 }
 

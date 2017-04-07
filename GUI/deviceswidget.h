@@ -23,10 +23,12 @@ private:
     QListWidgetItem *m_pLastClickedItem;
 
 signals: void signal_createShowWidget(QString strWindowTile, Utilities::ShowType type);
+signals: void signal_showShowWidget(QString strWindowTile);
 signals: void signal_closeShowWidget(QString strWindowTile);
 public slots:
     void slot_setDevices(const QStringList& devicesList);
 private slots:
     void slot_customContextMenuRequested(QPoint point);
     void slot_endRequireData();
+    void slot_itemDoubleClicked(QListWidgetItem *item);
 };

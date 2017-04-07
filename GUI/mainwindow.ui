@@ -10,6 +10,12 @@
     <height>768</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <family>Consolas</family>
+    <pointsize>14</pointsize>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
@@ -41,23 +47,54 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="QPushButton" name="m_ReqConnect">
+      <widget class="QLabel" name="label">
        <property name="text">
-        <string>reqConnect</string>
+        <string>PIN No.:</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="m_ReqDevices">
+      <widget class="QLineEdit" name="m_ServerName">
+       <property name="minimumSize">
+        <size>
+         <width>150</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>150</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="inputMask">
+        <string>&gt;HHHH-HHHH-HHHH;0</string>
+       </property>
        <property name="text">
-        <string>reqDevices</string>
+        <string>--</string>
+       </property>
+       <property name="cursorPosition">
+        <number>0</number>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="m_ReqConnect">
+       <property name="text">
+        <string>Login</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="m_ExitConnect">
        <property name="text">
-        <string>exitConnect</string>
+        <string>Logout</string>
        </property>
       </widget>
      </item>
@@ -82,41 +119,75 @@
       <number>6</number>
      </property>
      <item>
-      <widget class="DevicesWidget" name="m_DevicesWidget">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-         <horstretch>2</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>200</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::StyledPanel</enum>
-       </property>
-       <property name="movement">
-        <enum>QListView::Static</enum>
-       </property>
-       <property name="flow">
-        <enum>QListView::TopToBottom</enum>
-       </property>
-       <property name="spacing">
-        <number>1</number>
-       </property>
-       <property name="viewMode">
-        <enum>QListView::ListMode</enum>
-       </property>
-       <property name="currentRow">
-        <number>-1</number>
-       </property>
-       <property name="sortingEnabled">
-        <bool>false</bool>
-       </property>
-      </widget>
+      <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <widget class="QPushButton" name="m_ReqDevices">
+           <property name="text">
+            <string>Refresh Devices List</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="DevicesWidget" name="m_DevicesWidget">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>2</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>200</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Consolas</family>
+           <pointsize>14</pointsize>
+          </font>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="movement">
+          <enum>QListView::Static</enum>
+         </property>
+         <property name="flow">
+          <enum>QListView::TopToBottom</enum>
+         </property>
+         <property name="spacing">
+          <number>1</number>
+         </property>
+         <property name="viewMode">
+          <enum>QListView::ListMode</enum>
+         </property>
+         <property name="currentRow">
+          <number>-1</number>
+         </property>
+         <property name="sortingEnabled">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
      <item>
       <widget class="MultiShowArea" name="m_MultiShowArea">

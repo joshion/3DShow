@@ -16,7 +16,10 @@ MainWindow::MainWindow(QWidget * parent)
     m_pConfig = Config::GetInstance();
     m_pConfig->setIPAdress("192.168.31.250");
     m_pConfig->setServerPort(7892);
+
     ui.setupUi(this);
+    ui.m_ServerName->setCursorPosition(0);
+
     m_pOrderSocketThread = OrderSocketThread::GetInstance(m_pConfig->IPAdress(), m_pConfig->serverPort(), this);
 
     /* 客户端向服务端请求连接 */
@@ -80,6 +83,7 @@ MainWindow::MainWindow(QWidget * parent)
     * 关闭对应该设备的显示窗口
     */
     connect(this, &MainWindow::signal_reqEndTransfer, this, [this](KinectDataProto::pbEndTransfer protoEndTransfer) {
+        qDebug() << __FILE__ << __LINE__ << "end transfer";
         protoEndTransfer.PrintDebugString();
         QString strWindowTitle = QString::fromStdString(protoEndTransfer.devicename());
         ui.m_MultiShowArea->slot_closeSubWidget(strWindowTitle);
@@ -95,6 +99,10 @@ MainWindow::MainWindow(QWidget * parent)
     /* 设备列表中item的右键点击事件 关闭多窗口显示中的子窗口 */
     connect(ui.m_DevicesWidget, &DevicesWidget::signal_closeShowWidget,
         ui.m_MultiShowArea, &MultiShowArea::slot_closeSubWidget);
+
+    /* 双击设备列表中item的事件 显示多窗口显示中的子窗口 */
+    connect(ui.m_DevicesWidget, &DevicesWidget::signal_showShowWidget,
+        ui.m_MultiShowArea, &MultiShowArea::slot_showSubWidget);
 
     /* 关闭Kinect显示子窗口的同时,会发送客户端结束请求到服务器 */
     connect(ui.m_MultiShowArea, &MultiShowArea::signal_endRequire,
@@ -117,7 +125,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::showInfo(const QString & info)
 {
-    QToolTip::showText(QPoint(x() + 260, y() + 23), info, this, QRect(), 2000);
+    QToolTip::setFont(QFont("Consolas",14));
+    QToolTip::showText(QPoint(x() + 420, y() + 23), info, this, QRect(), 5000);
 }
 
 void MainWindow::disconnectFromServer()

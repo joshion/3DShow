@@ -126,6 +126,14 @@ void MultiShowArea::slot_createSubWidget(QString strWindowTitle, Utilities::Show
     }
 }
 
+void MultiShowArea::slot_showSubWidget(QString strWindowTitle)
+{
+    if (m_p_Title_Widget->contains(strWindowTitle))
+    {
+        (*m_p_Title_Widget)[strWindowTitle]->showMaximized();
+    }
+}
+
 void MultiShowArea::slot_customContextMenuRequested(QPoint point)
 {
     m_pMenu->exec(QCursor::pos());

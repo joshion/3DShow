@@ -86,5 +86,4 @@ private:
     unsigned int m_Sequence_RequireConnect;
     unsigned int m_Sequence_RequireDevices;
     unsigned int m_Sequence_StartRequire;
-    unsigned int m_Sequence_EndRequire;
 };

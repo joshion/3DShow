@@ -25,9 +25,7 @@ OrderSocket::OrderSocket(QString adress, unsigned int port, QObject *parent)
     m_Sequence_Main(0),
     m_Sequence_RequireConnect(0),
     m_Sequence_RequireDevices(0),
-    m_Sequence_StartRequire(0),
-    m_Sequence_EndRequire(0)
-
+    m_Sequence_StartRequire(0)
 {
     m_pSendFrameBuffer = new OrderFrameBuffer {};
     m_pReceiveFrameBuffer = new OrderFrameBuffer {};
@@ -202,7 +200,6 @@ void OrderSocket::slot_endRequire(KinectDataProto::pbReqEnd reqEnd)
 {
     qDebug() << __FILE__ << __LINE__ << "enter end connect";
 
-    m_Sequence_EndRequire = m_Sequence_Main;
     m_pSendFrameBuffer->setSequence(m_Sequence_Main++);
     m_pSendFrameBuffer->setCmdType(OrderFrameBuffer::TYPE_KINECT_PROTOCOL);
     m_pSendFrameBuffer->setCmdNum(OrderFrameBuffer::NUM_END_REQUIRE);
@@ -322,9 +319,10 @@ void OrderSocket::analysisReceiveFrameBuffer(const OrderFrameBuffer & buffer)
         break;
         case OrderFrameBuffer::NUM_SERVER_END_TRANSFER:
         {
+            qDebug() << __FILE__ << __LINE__ << "enter end transfer";
             KinectDataProto::pbEndTransfer resp;
             resp.ParseFromArray(buffer.data(), buffer.bodyLength());
-            if (m_pGUI && sequence == m_Sequence_EndRequire)
+            if (m_pGUI)
             {
                 m_pGUI->signal_reqEndTransfer(resp);
             }
