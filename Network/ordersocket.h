@@ -15,6 +15,7 @@ class OrderInterface;
 class OrderFrameBuffer;
 
 class QString;
+class QTimer;
 
 class OrderSocket : public QTcpSocket
 {
@@ -28,9 +29,10 @@ public:
 private:
     QString m_strIPAdress;
     unsigned int m_uPort;
-
-private:
     bool m_bConnected;
+    QTimer *m_pKeepAliveTimer;  // 客户端主动保活的定时器
+    QTimer *m_pRespKeepAliveTimer;  // 接收服务器保活的定时器
+
 private slots:
     inline void slot_setConnected();
     inline void slot_setDisConnected();
@@ -60,6 +62,9 @@ public slots:
     void slot_requireDevices();
     void slot_startRequire(KinectDataProto::pbReqStart protoReqStart);
     void slot_endRequire(KinectDataProto::pbReqEnd reqEnd);
+
+    void slot_keepAlive();
+    void slot_AliveOverTime();
 /***********************************************************************************/
 
 /***********************************************************************************/

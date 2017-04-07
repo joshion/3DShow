@@ -101,4 +101,8 @@ public:
 
     const static unsigned int TYPE_DATA_CHANNEL_PROTOCOL = 3;
     const static unsigned int NUM_VALIDATE_PORT = 1;
+
+    const static unsigned int TYPE_KEEP_ALIVE_PROTOCOL = 99;
+    const static unsigned int NUM_KEEP_ALIVE = 1;
+    const static unsigned int NUM_RESP_KEEP_ALIVE = 100;
 };

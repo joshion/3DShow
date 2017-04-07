@@ -9,12 +9,14 @@ DevicesWidget::DevicesWidget(QWidget *parent)
     m_pMenu(nullptr),
     m_pLastClickedItem(nullptr)
 {
+#ifdef COMMENT
     QStringList a;
     for (int i = 0; i < 4; ++i)
     {
         a << QString::number(i);
     }
     this->addItems(a);
+#endif // COMMENT
 
     createMenu();
     setContextMenuPolicy(Qt::CustomContextMenu);

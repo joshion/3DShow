@@ -9,12 +9,15 @@
 #include <QStringList>
 
 #include <QTimer>
+#include <QHostInfo>
 
 OrderSocket::OrderSocket(QString adress, unsigned int port, QObject *parent)
     : QTcpSocket(parent),
     m_strIPAdress(adress),
     m_uPort(port),
     m_bConnected(false),
+    m_pKeepAliveTimer(nullptr),
+    m_pRespKeepAliveTimer(nullptr),
     m_pGUI(nullptr),
     m_pSendFrameBuffer(nullptr),
     m_bNotHasHead(true),
@@ -30,9 +33,10 @@ OrderSocket::OrderSocket(QString adress, unsigned int port, QObject *parent)
     m_pReceiveFrameBuffer = new OrderFrameBuffer {};
     m_receiveBuffer.clear();
 
+    // QString strHostName = QHostInfo::localHostName();
+
     setSocketOption(QAbstractSocket::KeepAliveOption, 1);
     setSocketOption(QAbstractSocket::LowDelayOption, 1);
-    // connectToHost(m_strIPAdress, m_uPort);
     connect(this, &OrderSocket::connected, this, &OrderSocket::slot_setConnected, Qt::QueuedConnection);
     connect(this, &OrderSocket::disconnected, this, &OrderSocket::slot_setDisConnected, Qt::QueuedConnection);
     connect(this, &OrderSocket::readyRead, this, &OrderSocket::slot_readDataFromServer, Qt::QueuedConnection);
@@ -41,6 +45,20 @@ OrderSocket::OrderSocket(QString adress, unsigned int port, QObject *parent)
 OrderSocket::~OrderSocket()
 {
     this->close();
+
+    if (nullptr == m_pKeepAliveTimer)
+    {
+        m_pKeepAliveTimer->stop();
+        delete m_pKeepAliveTimer;
+        m_pKeepAliveTimer = nullptr;
+    }
+
+    if (nullptr == m_pRespKeepAliveTimer)
+    {
+        m_pRespKeepAliveTimer->stop();
+        delete m_pRespKeepAliveTimer;
+        m_pRespKeepAliveTimer = nullptr;
+    }
 
     if (m_pSendFrameBuffer)
     {
@@ -62,12 +80,26 @@ void OrderSocket::slot_setConnected()
     * 与服务器建立连接后,
     * 发送连接验证信息
     */
+    m_Sequence_RequireConnect = m_Sequence_Main;
     m_pSendFrameBuffer->setSequence(m_Sequence_Main++);
     m_pSendFrameBuffer->setCmdType(OrderFrameBuffer::TYPE_CONNECT_PROTOCOL);
     m_pSendFrameBuffer->setCmdNum(OrderFrameBuffer::NUM_REQUIRE_CONNECT);
     m_pSendFrameBuffer->setData(nullptr, 0);
     writeBufferToServer();
-    m_Sequence_RequireConnect = m_Sequence_Main;
+
+    if (nullptr == m_pKeepAliveTimer)
+    {
+        m_pKeepAliveTimer = new QTimer(this);
+        connect(m_pKeepAliveTimer, &QTimer::timeout, this, &OrderSocket::slot_keepAlive);
+        m_pKeepAliveTimer->start(5000);
+    }
+
+    if (nullptr == m_pRespKeepAliveTimer)
+    {
+        m_pRespKeepAliveTimer = new QTimer(this);
+        connect(m_pRespKeepAliveTimer, &QTimer::timeout, this, &OrderSocket::slot_AliveOverTime);
+        m_pRespKeepAliveTimer->start(30000);
+    }
 }
 
 void OrderSocket::slot_setDisConnected()
@@ -76,6 +108,20 @@ void OrderSocket::slot_setDisConnected()
     if (m_pGUI)
     {
         m_pGUI->signal_EndConnect();
+    }
+
+    if (nullptr == m_pKeepAliveTimer)
+    {
+        m_pKeepAliveTimer->stop();
+        delete m_pKeepAliveTimer;
+        m_pKeepAliveTimer = nullptr;
+    }
+
+    if (nullptr == m_pRespKeepAliveTimer)
+    {
+        m_pRespKeepAliveTimer->stop();
+        delete m_pRespKeepAliveTimer;
+        m_pRespKeepAliveTimer = nullptr;
     }
 }
 
@@ -130,36 +176,52 @@ void OrderSocket::slot_requireDevices()
 {
     qDebug() << __FILE__ << __LINE__ <<"enter require devices";
 
+    m_Sequence_RequireDevices = m_Sequence_Main;
     m_pSendFrameBuffer->setSequence(m_Sequence_Main++);
     m_pSendFrameBuffer->setCmdType(OrderFrameBuffer::TYPE_CONNECT_PROTOCOL);
     m_pSendFrameBuffer->setCmdNum(OrderFrameBuffer::NUM_REQUIRE_DEVICES);
     m_pSendFrameBuffer->setData(nullptr, 0);
     this->writeBufferToServer();
-    m_Sequence_RequireDevices = m_Sequence_Main;
 }
 
 void OrderSocket::slot_startRequire(KinectDataProto::pbReqStart protoReqStart)
 {
     qDebug() << __FILE__ << __LINE__ << "enter start require";
 
+    m_Sequence_StartRequire = m_Sequence_Main;
     m_pSendFrameBuffer->setSequence(m_Sequence_Main++);
     m_pSendFrameBuffer->setCmdType(OrderFrameBuffer::TYPE_KINECT_PROTOCOL);
     m_pSendFrameBuffer->setCmdNum(OrderFrameBuffer::NUM_START_REQUIRE);
     m_pSendFrameBuffer->setData(protoReqStart);
     this->writeBufferToServer();
-    m_Sequence_StartRequire = m_Sequence_Main;
 }
 
 void OrderSocket::slot_endRequire(KinectDataProto::pbReqEnd reqEnd)
 {
     qDebug() << __FILE__ << __LINE__ << "enter end connect";
 
+    m_Sequence_EndRequire = m_Sequence_Main;
     m_pSendFrameBuffer->setSequence(m_Sequence_Main++);
     m_pSendFrameBuffer->setCmdType(OrderFrameBuffer::TYPE_KINECT_PROTOCOL);
     m_pSendFrameBuffer->setCmdNum(OrderFrameBuffer::NUM_END_REQUIRE);
     m_pSendFrameBuffer->setData(reqEnd);
     this->writeBufferToServer();
-    m_Sequence_EndRequire = m_Sequence_Main;
+}
+
+void OrderSocket::slot_keepAlive()
+{
+    m_pSendFrameBuffer->setSequence(m_Sequence_Main++);
+    m_pSendFrameBuffer->setCmdType(OrderFrameBuffer::TYPE_KEEP_ALIVE_PROTOCOL);
+    m_pSendFrameBuffer->setCmdNum(OrderFrameBuffer::NUM_KEEP_ALIVE);
+    m_pSendFrameBuffer->setData(nullptr, 0);
+    this->writeBufferToServer();
+}
+
+void OrderSocket::slot_AliveOverTime()
+{
+    qDebug() << __FILE__ << __LINE__;
+    /* 30秒没有收到服务器的保活ping, 断开与服务器的连接*/
+    disconnectFromHost();
 }
 
 void OrderSocket::analysisReceiveByteArrayBuffer()
@@ -266,6 +328,20 @@ void OrderSocket::analysisReceiveFrameBuffer(const OrderFrameBuffer & buffer)
             }
         }
         break;
+        default:
+            break;
+        }
+        break;
+    case OrderFrameBuffer::TYPE_KEEP_ALIVE_PROTOCOL:
+        switch (buffer.cmdNum())
+        {
+        case OrderFrameBuffer::NUM_RESP_KEEP_ALIVE:
+        {
+            if (m_pRespKeepAliveTimer)
+            {
+                m_pRespKeepAliveTimer->start(30000);
+            }
+        }
         default:
             break;
         }
