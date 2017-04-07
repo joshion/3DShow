@@ -78,13 +78,15 @@ void OrderSocket::slot_setConnected()
 
     /*
     * 与服务器建立连接后,
-    * 发送连接验证信息
+    * 发送连接验证信息(本机主机名)
     */
     m_Sequence_RequireConnect = m_Sequence_Main;
     m_pSendFrameBuffer->setSequence(m_Sequence_Main++);
     m_pSendFrameBuffer->setCmdType(OrderFrameBuffer::TYPE_CONNECT_PROTOCOL);
     m_pSendFrameBuffer->setCmdNum(OrderFrameBuffer::NUM_REQUIRE_CONNECT);
-    m_pSendFrameBuffer->setData(nullptr, 0);
+    ConnectProto::pbReqConnect reqConnect;
+    reqConnect.set_hostname(QHostInfo::localHostName().toStdString());
+    m_pSendFrameBuffer->setData(reqConnect);
     writeBufferToServer();
 
     if (nullptr == m_pKeepAliveTimer)
