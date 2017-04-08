@@ -111,14 +111,14 @@ void OrderSocket::slot_setDisConnected()
         m_pGUI->signal_EndConnect();
     }
 
-    if (nullptr == m_pKeepAliveTimer)
+    if (m_pKeepAliveTimer)
     {
         m_pKeepAliveTimer->stop();
         delete m_pKeepAliveTimer;
         m_pKeepAliveTimer = nullptr;
     }
 
-    if (nullptr == m_pRespKeepAliveTimer)
+    if (m_pRespKeepAliveTimer)
     {
         m_pRespKeepAliveTimer->stop();
         delete m_pRespKeepAliveTimer;
