@@ -9,7 +9,7 @@ DevicesWidget::DevicesWidget(QWidget *parent)
     m_pMenu(nullptr),
     m_pLastClickedItem(nullptr)
 {
-#ifndef COMMENT
+#ifdef COMMENT
     QStringList a;
     for (int i = 0; i < 4; ++i)
     {
