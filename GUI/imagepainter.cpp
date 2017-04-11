@@ -83,7 +83,7 @@ void ImagePainter::loadTexture(cv::Mat &mat)
 
     glBindTexture(GL_TEXTURE_2D, m_Texture);
 
-    glTexImage2D(GL_TEXTURE_2D, 2, GL_RGBA8, mat.cols, mat.rows, 0, GL_RGB, GL_UNSIGNED_BYTE, mat.data);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, mat.cols, mat.rows, 0, GL_RGB, GL_UNSIGNED_BYTE, mat.data);
     // glTexStorage2D(GL_TEXTURE_2D, 2, GL_RGBA8, mat.cols, mat.rows);
     // glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, mat.cols, mat.rows, GL_RGB, GL_UNSIGNED_BYTE, mat.data);
 
