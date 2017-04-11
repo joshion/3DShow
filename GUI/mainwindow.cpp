@@ -14,8 +14,8 @@ MainWindow::MainWindow(QWidget * parent)
     m_pOrderSocketThread(nullptr)
 {
     ui.setupUi(this);
-    /* 设置服务器地址输入框 一定要输入齐12位16进制字母 */
-    ui.m_ServerName->setValidator(new QRegExpValidator(QRegExp("[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}"), ui.m_ServerName));
+    /* 设置服务器地址输入框  */
+    ui.m_ServerName->setValidator(new QRegExpValidator(QRegExp("([0][0][1-9]|[0][1-9]\\d|[1]\\d{2}|2[0-4]\\d|25[0-5])(\\.([0-1]\\d{2}|2[0-4]\\d|25[0-5])){3}(\\:[0-5](\\d){4})"), ui.m_ServerName));
     ui.m_ServerName->setCursorPosition(0);
 
     m_pConfig = Config::GetInstance();

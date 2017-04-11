@@ -1,11 +1,11 @@
 #pragma once
 
 #include <QOpenGLShaderProgram>
-#include <QOpenGLFunctions_4_3_Core>
+#include <QOpenGLFunctions_3_3_Core>
 
 class QString;
 
-class Painter : protected QOpenGLFunctions_4_3_Core
+class Painter : protected QOpenGLFunctions_3_3_Core
 {
 public:
     Painter();

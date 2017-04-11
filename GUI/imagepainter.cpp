@@ -70,7 +70,6 @@ void ImagePainter::paint()
     m_Program.setAttributeArray(COORD_LOCATION, m_pCoord);
 
     glBindTexture(GL_TEXTURE_2D, m_Texture);
-    // glClear(GL_COLOR_BUFFER_BIT);
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
     glFlush();
 
@@ -82,14 +81,11 @@ void ImagePainter::loadTexture(cv::Mat &mat)
 {
     m_Program.bind();
 
-    //glBindTexture(GL_TEXTURE_2D, 0);
-    //glDeleteTextures(1, m_Textures);
-    //glGenTextures(1, m_Textures);
     glBindTexture(GL_TEXTURE_2D, m_Texture);
 
-    glTexStorage2D(GL_TEXTURE_2D, 2, GL_RGBA8, mat.cols, mat.rows);
-    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, mat.cols, mat.rows,
-        GL_RGB, GL_UNSIGNED_BYTE, mat.data);
+    glTexImage2D(GL_TEXTURE_2D, 2, GL_RGBA8, mat.cols, mat.rows, 0, GL_RGB, GL_UNSIGNED_BYTE, mat.data);
+    // glTexStorage2D(GL_TEXTURE_2D, 2, GL_RGBA8, mat.cols, mat.rows);
+    // glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, mat.cols, mat.rows, GL_RGB, GL_UNSIGNED_BYTE, mat.data);
 
     static const GLint swizzles[] = { GL_BLUE, GL_GREEN, GL_RED, GL_ONE };
     glTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_SWIZZLE_RGBA, swizzles);

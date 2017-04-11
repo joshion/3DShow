@@ -57,13 +57,13 @@
       <widget class="QLineEdit" name="m_ServerName">
        <property name="minimumSize">
         <size>
-         <width>150</width>
+         <width>250</width>
          <height>0</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>150</width>
+         <width>250</width>
          <height>16777215</height>
         </size>
        </property>
@@ -71,16 +71,16 @@
         <string notr="true"/>
        </property>
        <property name="inputMask">
-        <string>&gt;HHHH-HHHH-HHHH</string>
+        <string>999.999.999.999:99999</string>
        </property>
        <property name="text">
-        <string>C0A8-1FFA-D41E</string>
+        <string>000.000.000.000:07892</string>
        </property>
        <property name="echoMode">
         <enum>QLineEdit::Normal</enum>
        </property>
        <property name="cursorPosition">
-        <number>14</number>
+        <number>21</number>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>

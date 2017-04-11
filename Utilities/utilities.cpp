@@ -1,10 +1,8 @@
 #include "utilities.h"
 
 #include <QString>
-#include <QByteArray>
+#include <QStringList>
 #include <QFile>
-
-#include <memory.h>
 
 QString Utilities::readStringFromFile(const QString & fileName)
 {
@@ -21,18 +19,22 @@ QString Utilities::readStringFromFile(const QString & fileName)
 
 IP_PORT Utilities::getAdressFromString(QString str)
 {
-    str.remove(QChar('-'));
-    QByteArray buffer;
-    buffer.append(str);
-    buffer = buffer.fromHex(buffer);
+    QStringList strs = str.split(":");
 
-    QString ip = QString::number(static_cast<unsigned char>(buffer[0])) + "."
-        + QString::number(static_cast<unsigned char>(buffer[1])) + "."
-        + QString::number(static_cast<unsigned char>(buffer[2])) + "."
-        + QString::number(static_cast<unsigned char>(buffer[3]));
+    do
+    {
+        if (strs.size() != 2)
+        {
+            break;
+        }
 
-    unsigned short port = 0;
-    memcpy(&port, buffer.data() + 4, 2);
-
-    return QPair<QString, unsigned int>{ip, port};
+        bool ok = false;
+        unsigned int port = strs[1].toInt(&ok, 10);
+        if (false == ok)
+        {
+            break;
+        }
+        return QPair<QString, unsigned int>{strs[0], port};
+    } while (false);
+    return QPair<QString, unsigned int>{"", 0};
 }
