@@ -128,7 +128,7 @@ MainWindow::~MainWindow()
 void MainWindow::showInfo(const QString & info)
 {
     QToolTip::setFont(QFont("Consolas",14));
-    QToolTip::showText(QPoint(x() + 420, y() + 23), info, this, QRect(), 5000);
+    QToolTip::showText(QPoint(x() + 520, y() + 23), info, this, QRect(), 5000);
 }
 
 void MainWindow::disconnectFromServer()
