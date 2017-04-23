@@ -15,7 +15,7 @@ MainWindow::MainWindow(QWidget * parent)
 {
     ui.setupUi(this);
     /* 设置服务器地址输入框  */
-    ui.m_ServerName->setValidator(new QRegExpValidator(QRegExp("([0][0][1-9]|[0][1-9]\\d|[1]\\d{2}|2[0-4]\\d|25[0-5])(\\.([0-1]\\d{2}|2[0-4]\\d|25[0-5])){3}(\\:[0-5](\\d){4})"), ui.m_ServerName));
+    ui.m_ServerName->setValidator(new QRegExpValidator(QRegExp("([1-9]|[1-9]\\d|[1]\\d{2}|2[0-4]\\d|25[0-5])(\\.([0-9]|[1-9]\\d|[1]\\d{2}|2[0-4]\\d|25[0-5])){3}(\\:(\\d){5})"), ui.m_ServerName));
     ui.m_ServerName->setCursorPosition(0);
 
     m_pConfig = Config::GetInstance();
@@ -128,7 +128,7 @@ MainWindow::~MainWindow()
 void MainWindow::showInfo(const QString & info)
 {
     QToolTip::setFont(QFont("Consolas",14));
-    QToolTip::showText(QPoint(x() + 520, y() + 23), info, this, QRect(), 5000);
+    QToolTip::showText(QPoint(x() + 620, y() + 23), info, this, QRect(), 5000);
 }
 
 void MainWindow::disconnectFromServer()

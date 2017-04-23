@@ -49,7 +49,7 @@
      <item>
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>PIN No.:</string>
+        <string>server adress:</string>
        </property>
       </widget>
      </item>
@@ -71,16 +71,16 @@
         <string notr="true"/>
        </property>
        <property name="inputMask">
-        <string>999.999.999.999:99999</string>
+        <string/>
        </property>
        <property name="text">
-        <string>000.000.000.000:07892</string>
+        <string/>
        </property>
        <property name="echoMode">
         <enum>QLineEdit::Normal</enum>
        </property>
        <property name="cursorPosition">
-        <number>21</number>
+        <number>0</number>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
